@@ -63,7 +63,7 @@ function Footer({ company, links }) {
         &copy; {new Date().getFullYear()}, made with
         <MDBox fontSize={size.md} color="text" mb={-0.5} mx={0.25}>
           <Icon color="inherit" fontSize="inherit">
-            favorite
+            {/* favorite */}
           </Icon>
         </MDBox>
         by

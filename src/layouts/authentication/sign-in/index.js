@@ -16,7 +16,7 @@ Coded by www.creative-tim.com
 // import { useState } from "react";
 
 // react-router-dom components
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -84,7 +84,7 @@ function Basic() {
         <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form">
             <MDBox mb={2}>
-              <MDInput type="email" label="Email" fullWidth />
+              <MDInput type="text" label="Username" fullWidth />
             </MDBox>
             <MDBox mb={2}>
               <MDInput type="password" label="Password" fullWidth />
@@ -102,7 +102,7 @@ function Basic() {
               </MDTypography> */}
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth>
+              <MDButton component={Link} to="/dashboard" variant="gradient" color="info" fullWidth>
                 sign in
               </MDButton>
             </MDBox>

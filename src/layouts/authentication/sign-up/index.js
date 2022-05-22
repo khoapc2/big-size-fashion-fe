@@ -67,15 +67,15 @@ function Cover() {
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Checkbox />
-              <MDTypography
+              {/* <MDTypography
                 variant="button"
                 fontWeight="regular"
                 color="text"
                 sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
               >
                 &nbsp;&nbsp;I agree the&nbsp;
-              </MDTypography>
-              <MDTypography
+              </MDTypography> */}
+              {/* <MDTypography
                 component="a"
                 href="#"
                 variant="button"
@@ -84,25 +84,25 @@ function Cover() {
                 textGradient
               >
                 Terms and Conditions
-              </MDTypography>
+              </MDTypography> */}
             </MDBox>
             <MDBox mt={4} mb={1}>
               <MDButton variant="gradient" color="info" fullWidth>
-                sign in
+                Resister Account
               </MDButton>
             </MDBox>
             <MDBox mt={3} mb={1} textAlign="center">
               <MDTypography variant="button" color="text">
-                Already have an account?{" "}
+                Back to{" "}
                 <MDTypography
                   component={Link}
-                  to="/authentication/sign-in"
+                  to="/dashboard"
                   variant="button"
                   color="info"
                   fontWeight="medium"
                   textGradient
                 >
-                  Sign In
+                  Dashboard
                 </MDTypography>
               </MDTypography>
             </MDBox>
