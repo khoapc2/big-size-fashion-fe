@@ -37,7 +37,7 @@ Coded by www.creative-tim.com
 
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
-import Tables from "layouts/tables";
+import Products from "pages/productList/ProductList";
 import Billing from "layouts/billing";
 
 // import RTL from "layouts/rtl";
@@ -48,7 +48,7 @@ import SignUp from "layouts/authentication/sign-up";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
-import Product from "./pages/product/Product";
+// import Product from "./pages/product/Product";
 
 const routes = [
   {
@@ -69,11 +69,11 @@ const routes = [
   // },
   {
     type: "collapse",
-    name: "Test",
-    key: "test",
+    name: "Product",
+    key: "Product",
     icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/tabless",
-    component: <Tables />,
+    route: "/products",
+    component: <Products />,
   },
   {
     type: "collapse",
@@ -121,17 +121,17 @@ const routes = [
     name: "Sign Up",
     key: "sign-up",
     icon: <Icon fontSize="small">assignment</Icon>,
-    route: "/authentication/sign-up",
+    route: "sign-up",
     component: <SignUp />,
   },
-  {
-    type: "collapse",
-    name: "product",
-    key: "product",
-    // icon: <Icon fontSize="small">assignment</Icon>,
-    route: "/product/:productId",
-    component: <Product />,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "product",
+  //   key: "product",
+  //   icon: <Icon fontSize="small">none</Icon>,
+  //   route: "/product/:productId",
+  //   component: <Product />,
+  // },
 ];
 
 export default routes;

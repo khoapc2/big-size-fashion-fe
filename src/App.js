@@ -1,22 +1,7 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useState, useEffect, useMemo } from "react";
 
 // react-router components
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
@@ -52,6 +37,18 @@ import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "co
 // Images
 import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
+
+import Dashboard from "layouts/dashboard";
+import Products from "pages/productList/ProductList";
+
+import Billing from "layouts/billing";
+import Product from "pages/product/Product";
+import NewProduct from "pages/newProduct/NewProduct";
+
+import Notifications from "layouts/notifications";
+import Profile from "layouts/profile";
+import SignIn from "layouts/authentication/sign-in";
+import SignUp from "layouts/authentication/sign-up";
 // import Product from "./pages/product/Product";
 
 export default function App() {
@@ -110,18 +107,18 @@ export default function App() {
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
 
-  const getRoutes = (allRoutes) =>
-    allRoutes.map((route) => {
-      if (route.collapse) {
-        return getRoutes(route.collapse);
-      }
+  // const getRoutes = (allRoutes) =>
+  //   allRoutes.map((route) => {
+  //     if (route.collapse) {
+  //       return getRoutes(route.collapse);
+  //     }
 
-      if (route.route) {
-        return <Route exact path={route.route} element={route.component} key={route.key} />;
-      }
+  //     if (route.route) {
+  //       return <Route exact path={route.route} element={route.component} key={route.key} />;
+  //     }
 
-      return null;
-    });
+  //     return null;
+  //   });
 
   const configsButton = (
     <MDBox
@@ -167,8 +164,17 @@ export default function App() {
         )}
         {layout === "vr" && <Configurator />}
         <Routes>
-          {getRoutes(routes)}
-          <Route path="*" element={<Navigate to="/sign-in" />} />
+          {/* {getRoutes(routes)}
+          <Route path="*" element={<Navigate to="/sign-in" />} /> */}
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/billing" element={<Billing />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/product:productId" element={<Product />} />
+          <Route path="newproduct" element={<NewProduct />} />
         </Routes>
       </ThemeProvider>
     </CacheProvider>
@@ -191,9 +197,22 @@ export default function App() {
       )}
       {layout === "vr" && <Configurator />}
       <Routes>
-        {getRoutes(routes)}
+        {/* {getRoutes(routes)} */}
         {/* <Route path="*" element={<Navigate to="/dashboard" />} /> */}
-        <Route path="*" element={<Navigate to="/sign-in" />} />
+        <Route path="/" element={<SignIn />} />
+
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="billing" element={<Billing />} />
+        <Route path="notifications" element={<Notifications />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="sign-in" element={<SignIn />} />
+        <Route path="sign-up" element={<SignUp />} />
+        <Route path="products" element={<Products />} />
+        <Route path="product/:productId" element={<Product />} />
+        <Route path="newproduct" element={<NewProduct />} />
+
+        {/* <Route path="*" element={<Navigate to="/sign-in" />} /> */}
+
         {/* <Route path="/product/:productId">
           <Product />
         </Route> */}

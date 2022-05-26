@@ -1,8 +1,11 @@
-import PropTypes from "prop-types";
+/* eslint-disable react/prop-types */
+
+// import PropTypes from "prop-types";
+// import { PropTypes } from "react";
 import "./chart.css";
 import { LineChart, Line, XAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
-function Chart({ title, data, dataKey, grid }) {
+function Chart({ title, data = {}, dataKey, grid }) {
   return (
     <div className="chart">
       <h3 className="chartTitle">{title}</h3>
@@ -17,17 +20,17 @@ function Chart({ title, data, dataKey, grid }) {
     </div>
   );
 }
-Chart.defaultProps = {
-  title: "",
-  data: "",
-  dataKey: "",
-  grid: "",
-};
-Chart.propTypes = {
-  title: PropTypes.string,
-  data: PropTypes.objectOf(PropTypes.object()),
-  dataKey: PropTypes.string,
-  grid: PropTypes.string,
-};
+// Chart.defaultProps = {
+//   title: "",
+//   data: [],
+//   dataKey: "",
+//   grid: "",
+// };
+// Chart.propTypes = {
+//   title: PropTypes.string,
+//   data: PropTypes.arrayOf(PropTypes.object()),
+//   dataKey: PropTypes.string,
+//   grid: PropTypes.string,
+// };
 
 export default Chart;

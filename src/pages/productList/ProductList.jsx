@@ -2,8 +2,10 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { DataGrid } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
-import { productRows } from "../../dummyData";
 import "./productList.css";
+import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
+import DashboardNavbar from "examples/Navbars/DashboardNavbar";
+import { productRows } from "../../dummyData";
 
 export default function ProductList() {
   const [data, setData] = useState(productRows);
@@ -42,7 +44,7 @@ export default function ProductList() {
       width: 150,
       renderCell: (params) => (
         <>
-          <Link to={`/product/ + ${params.row.id}`}>
+          <Link to={`/product/:${params.row.id}`}>
             <button type="submit" className="productListEdit">
               Edit
             </button>
@@ -57,14 +59,17 @@ export default function ProductList() {
   ];
 
   return (
-    <div className="productList">
-      <DataGrid
-        rows={data}
-        disableSelectionOnClick
-        columns={columns}
-        pageSize={8}
-        checkboxSelection
-      />
-    </div>
+    <DashboardLayout>
+      <DashboardNavbar />
+      <div className="productList">
+        <DataGrid
+          rows={data}
+          disableSelectionOnClick
+          columns={columns}
+          pageSize={8}
+          checkboxSelection
+        />
+      </div>
+    </DashboardLayout>
   );
 }

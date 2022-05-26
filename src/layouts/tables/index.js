@@ -21,12 +21,12 @@ Coded by www.creative-tim.com
 // import MDBox from "components/MDBox";
 // import MDTypography from "components/MDTypography";
 // import MDInput from "components/MDInput";
+// import { Outlet } from "react-router-dom";
 
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import ProductList from "../../pages/productList/ProductList";
-
 // import Footer from "examples/Footer";
 // import DataTable from "examples/Tables/DataTable";
 
