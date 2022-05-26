@@ -39,6 +39,7 @@ Coded by www.creative-tim.com
 import Dashboard from "layouts/dashboard";
 import Tables from "layouts/tables";
 import Billing from "layouts/billing";
+
 // import RTL from "layouts/rtl";
 import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
@@ -47,6 +48,7 @@ import SignUp from "layouts/authentication/sign-up";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+import Product from "./pages/product/Product";
 
 const routes = [
   {
@@ -57,12 +59,20 @@ const routes = [
     route: "/dashboard",
     component: <Dashboard />,
   },
+  // {
+  //   type: "collapse",
+  //   name: "Tables",
+  //   key: "tables",
+  //   icon: <Icon fontSize="small">table_view</Icon>,
+  //   route: "/tables",
+  //   component: <ProductList />,
+  // },
   {
     type: "collapse",
-    name: "Tables",
-    key: "tables",
+    name: "Test",
+    key: "test",
     icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/tables",
+    route: "/tabless",
     component: <Tables />,
   },
   {
@@ -113,6 +123,14 @@ const routes = [
     icon: <Icon fontSize="small">assignment</Icon>,
     route: "/authentication/sign-up",
     component: <SignUp />,
+  },
+  {
+    type: "collapse",
+    name: "product",
+    key: "product",
+    // icon: <Icon fontSize="small">assignment</Icon>,
+    route: "/product/:productId",
+    component: <Product />,
   },
 ];
 
