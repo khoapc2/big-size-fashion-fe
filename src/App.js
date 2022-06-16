@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 
 // react-router components
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
@@ -210,8 +210,7 @@ export default function App() {
         <Route path="products" element={<Products />} />
         <Route path="product/:productId" element={<Product />} />
         <Route path="newproduct" element={<NewProduct />} />
-
-        {/* <Route path="*" element={<Navigate to="/sign-in" />} /> */}
+        <Route path="*" element={<Navigate to="/sign-in" />} />
 
         {/* <Route path="/product/:productId">
           <Product />

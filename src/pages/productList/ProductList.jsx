@@ -67,7 +67,12 @@ export default function ProductList() {
           disableSelectionOnClick
           columns={columns}
           pageSize={8}
-          checkboxSelection
+          data={(query) =>
+            new Promise(() => {
+              console.log(query);
+            })
+          }
+          // checkboxSelection
         />
       </div>
     </DashboardLayout>
