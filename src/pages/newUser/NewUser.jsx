@@ -1,3 +1,4 @@
+/* eslint-disable */ 
 import "./newUser.css";
 
 export default function NewUser() {

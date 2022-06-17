@@ -4,9 +4,11 @@ import "./product.css";
 
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
+import { Container } from "semantic-ui-react";
 
 import Chart from "../../components/chart/Chart";
 import { productData } from "../../dummyData";
+import CommentExampleComment from "../comment/commentList";
 
 export default function Product() {
   return (
@@ -95,6 +97,9 @@ export default function Product() {
           </form>
         </div>
       </div>
+      <Container>
+        <CommentExampleComment />
+      </Container>
     </DashboardLayout>
   );
 }
