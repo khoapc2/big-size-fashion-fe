@@ -41,13 +41,18 @@ export default function ProductList() {
     {
       field: "action",
       headerName: "Action",
-      width: 150,
+      width: 250,
       renderCell: (params) => (
         <>
           <Link to={`/product/:${params.row.id}`}>
             <button type="submit" className="productListEdit">
               Edit
             </button>
+            <Link to={`/product/:${params.row.id}`}>
+              <button type="submit" className="productListEdit">
+                View
+              </button>
+            </Link>
           </Link>
           <DeleteOutline
             className="productListDelete"
@@ -61,6 +66,9 @@ export default function ProductList() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
+      <button type="button" className="productAddButton">
+        Create
+      </button>
       <div className="productList">
         <DataGrid
           rows={data}
