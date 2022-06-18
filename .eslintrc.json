@@ -13,6 +13,7 @@
   },
   "plugins": ["react", "prettier"],
   "rules": {
+    "camelcase": "off",
     "no-param-reassign": 0,
     "jsx-a11y/label-has-associated-control": [
       "error",
