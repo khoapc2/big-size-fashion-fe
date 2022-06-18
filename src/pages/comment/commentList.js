@@ -2,10 +2,6 @@ import React from "react";
 import { Icon, Button, Comment, Header } from "semantic-ui-react";
 
 function CommentExampleComment() {
-  const styleLink = document.createElement("link");
-  styleLink.rel = "stylesheet";
-  styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
-  document.head.appendChild(styleLink);
   return (
     <Comment.Group style={{ margin: 30 }}>
       <Header as="h3" dividing>
