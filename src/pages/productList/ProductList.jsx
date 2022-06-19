@@ -11,6 +11,7 @@ import productApi from "../../api/productApi";
 export default function ProductList() {
   const [data, setData] = useState(productRows);
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   // const [paging, setPaging] = useState({});
 
   useEffect(async () => {
@@ -18,6 +19,7 @@ export default function ProductList() {
       const res = await productApi.getListProduct();
       // console.log(`Content:" + ${res.content}`);
       setProducts(res.content);
+      setLoading(false);
       // setPaging({ current_page, total_pages, page_size, total_count, has_previous, has_next });
     } catch (error) {
       console.log(error);
@@ -65,6 +67,7 @@ export default function ProductList() {
       field: "price",
       headerName: "Price",
       width: 160,
+      renderCell: (params) => <div>{params.row.price.toLocaleString("vi-VN")} VNĐ</div>,
     },
     {
       field: "action",
@@ -94,11 +97,14 @@ export default function ProductList() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <button type="button" className="productAddButton">
-        Create
-      </button>
+      <Link to="/newproduct">
+        <button type="button" className="productAddButton">
+          Create
+        </button>
+      </Link>
       <div className="productList">
         <DataGrid
+          loading={loading}
           getRowId={(r) => r.product_id}
           rows={products}
           disableSelectionOnClick

@@ -59,7 +59,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const location = useLocation();
   const collapseName = location.pathname.replace("/", "");
 
-  console.log(location);
+  // console.log(location);
 
   let textColor = "white";
 

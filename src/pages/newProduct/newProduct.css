@@ -1,5 +1,6 @@
 .newProduct {
   flex: 4;
+  padding-left: 2rem;
 }
 
 .addProductForm {
@@ -13,7 +14,7 @@
   margin-bottom: 10px;
 }
 
-.addProductItem > label {
+.addProductItem > .label {
   color: gray;
   font-weight: 600;
   margin-bottom: 10px;
@@ -36,4 +37,8 @@
   color: white;
   font-weight: 600;
   cursor: pointer;
+}
+
+input {
+  margin-left: 100px;
 }
