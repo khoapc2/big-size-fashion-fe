@@ -8,7 +8,7 @@ import { Container } from "semantic-ui-react";
 
 import Chart from "../../components/chart/Chart";
 import { productData } from "../../dummyData";
-import CommentExampleComment from "../comment/commentList";
+import Feedbacks from "../components/feedback/feedbackList";
 
 export default function Product() {
   return (
@@ -98,7 +98,7 @@ export default function Product() {
         </div>
       </div>
       <Container>
-        <CommentExampleComment />
+        <Feedbacks />
       </Container>
     </DashboardLayout>
   );

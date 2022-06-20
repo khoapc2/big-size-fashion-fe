@@ -1,7 +1,7 @@
 import React from "react";
 import { Icon, Button, Comment, Header } from "semantic-ui-react";
 
-function CommentExampleComment() {
+function Feedbacks() {
   return (
     <Comment.Group style={{ margin: 30 }}>
       <Header as="h3" dividing>
@@ -58,4 +58,4 @@ function CommentExampleComment() {
   );
 }
 
-export default CommentExampleComment;
+export default Feedbacks;

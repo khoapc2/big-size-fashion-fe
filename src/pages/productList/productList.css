@@ -32,3 +32,18 @@
   color: red;
   cursor: pointer;
 }
+
+
+.search {
+  width: 35%;
+  margin: 10px;
+}
+
+.exportToExcel {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: flex-end;
+	align-items: stretch;
+	align-content: stretch;
+}

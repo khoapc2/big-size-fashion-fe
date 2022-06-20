@@ -1,15 +1,27 @@
 /* eslint-disable */
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { DataGrid } from "@material-ui/data-grid";
 import { Button } from "semantic-ui-react";
+import IconButton from "@mui/material/IconButton";
+import FormControl from "@mui/material/FormControl";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputAdornment from "@mui/material/InputAdornment";
+import SearchIcon from "@mui/icons-material/Search";
+import InputLabel from "@mui/material/InputLabel";
+import { DataGrid, GridToolbarContainer,
+  GridToolbarColumnsButton,
+  GridToolbarFilterButton,
+  GridToolbarExport,
+  GridToolbarDensitySelector } from "@mui/x-data-grid";
+
 import "./productList.css";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import { productRows } from "../../dummyData";
 import productApi from "../../api/productApi";
-import Notification from "pages/dialog/Notification";
-import ConfirmDialog from "pages/dialog/ConfirmDialog";
+import Notification from "pages/components/dialog/Notification";
+import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
+import ExportToExcel from "pages/helper/exportData";
 
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
@@ -23,6 +35,13 @@ export default function ProductList() {
   const [notify, setNotify] = useState({ isOpen: false, message: "", type: "" });
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
   // const [paging, setPaging] = useState({});
+
+  const [searchText, setSearchText] = useState("");
+  let inputSearchHandler = (e) => {
+    //convert input text to lower case
+    var lowerCase = e.target.value.toLowerCase();
+    setSearchText(lowerCase);
+  };
 
   useEffect(async () => {
     try {
@@ -39,6 +58,16 @@ export default function ProductList() {
   console.log(products);
   // console.log(paging);
 
+  function CustomToolbar() {
+    return (
+      <GridToolbarContainer>
+        <GridToolbarColumnsButton />
+        <GridToolbarFilterButton />
+        <GridToolbarDensitySelector />
+      </GridToolbarContainer>
+    );
+  }
+
   const handleDelete = (id) => {
     setConfirmDialog({
       ...confirmDialog,
@@ -48,7 +77,7 @@ export default function ProductList() {
     setNotify({
       isOpen: true,
       message: "Deleted Successfully",
-      type: "error",
+      type: "success",
     });
   };
 
@@ -127,11 +156,34 @@ export default function ProductList() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
+      <FormControl sx={{ m: 1, width: "35ch" }} variant="outlined">
+        <InputLabel htmlFor="outlined-adornment">Search by name</InputLabel>
+        <OutlinedInput
+          id="outlined-adornment"
+          value={searchText}
+          onChange={inputSearchHandler}
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                //onClick={handleClickSearch}
+                edge="end"
+              >
+                <SearchIcon />
+              </IconButton>
+            </InputAdornment>
+          }
+          label="Search by name"
+        />
+      </FormControl>
       <Link to="/newproduct">
         <button type="button" className="productAddButton">
           Create
         </button>
       </Link>
+      <div className="exportToExcel" style={{ margin:5 }}>
+        <ExportToExcel apiData={products} fileName={"cc"} />
+      </div>
       <div className="productList">
         <DataGrid
           loading={loading}
@@ -145,6 +197,9 @@ export default function ProductList() {
               console.log(query);
             })
           }
+          components={{
+            Toolbar: CustomToolbar,
+          }}
           // checkboxSelection
         />
       </div>
