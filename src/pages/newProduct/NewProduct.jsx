@@ -1,3 +1,4 @@
+/* eslint-disable */
 import "./newProduct.css";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
@@ -9,6 +10,7 @@ import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
+import { Form, Label } from "semantic-ui-react";
 
 const Input = styled("input")({
   display: "none",
@@ -86,6 +88,11 @@ const Input = styled("input")({
 //     height: height * row,
 //   };
 // }
+const options = [
+  { key: "m", text: "Male", value: "male" },
+  { key: "f", text: "Female", value: "female" },
+  { key: "o", text: "Other", value: "other" },
+];
 
 export default function NewProduct() {
   const [selectedImgs, setSelectedImgs] = useState([]);
@@ -109,55 +116,27 @@ export default function NewProduct() {
         <div className="product">
           <div className="productTop">
             <div className="productTopLeft">
-              <div className="productFormLeft">
-                <label>
-                  Product Name
-                  <input type="text" />
-                </label>
-                <label>
-                  Price
-                  <input type="text" />
-                </label>
-                <label>
-                  Category
-                  <select name="inStock" id="idStock">
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                  </select>
-                </label>
-                <label>
-                  Size
-                  <select name="inStock" id="idStock">
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                  </select>
-                </label>
-                <label>
-                  Colour
-                  <select name="active" id="active">
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                  </select>
-                </label>
-                <label>
-                  Gender
-                  <select name="active" id="active">
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                  </select>
-                </label>
-                <label>
-                  Supplier Name:
-                  <input type="text" />
-                </label>
-              </div>
-              <div className="productFormRight">
-                <button type="button" className="productButton">
-                  Update
-                </button>
-              </div>
+              <Form>
+                <Form.Input fluid label="Product name" placeholder="Product name" />
+                <Form.Group widths="equal">
+                  <Form.Select fluid label="Category" options={options} placeholder="Category" />
+                  <Form.Select fluid label="Gender" options={options} placeholder="Gender" />
+                </Form.Group>
+                <Form.Group widths="equal">
+                  <Form.Select fluid label="Size" options={options} placeholder="Size" />
+                  <Form.Select fluid label="Color" options={options} placeholder="Color" />
+                </Form.Group>
+                <Form.TextArea label="About" placeholder="Tell us more about you..." />
+                <Form.Checkbox label="I agree to the Terms and Conditions" />
+                <Form.Button>Submit</Form.Button>
+              </Form>
             </div>
             <div className="productTopRight">
+              <div style={{ margin: 10 }}>
+                <Label as="a" color="teal" tag>
+                  Product Image
+                </Label>
+              </div>
               <div className="productUpload">
                 {/* <img
                   src="https://images.pexels.com/photos/7156886/pexels-photo-7156886.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
