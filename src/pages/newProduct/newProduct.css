@@ -162,7 +162,7 @@ input {
 
 .productUpload {
   display: flex;
-  align-items: center;
+  justify-content: space-between;
 }
 
 .productButton {
@@ -173,4 +173,30 @@ input {
   color: white;
   font-weight: 600;
   cursor: pointer;
+}
+
+.upload-img {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  font-size: large;
+  cursor: pointer;
+  width: 10rem;
+  height: 10rem;
+  border-radius: 20px;
+  border: 1px dotted black;
+  color: gray;
+  font-weight: 600;
+}
+
+label span {
+  font-weight: lighter;
+  font-size: small;
+  padding-top: 0.5rem;
+}
+
+section {
+  padding: 2rem 0;
 }
