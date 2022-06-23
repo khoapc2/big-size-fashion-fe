@@ -8,11 +8,14 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import InputLabel from "@mui/material/InputLabel";
-import { DataGrid, GridToolbarContainer,
+import {
+  DataGrid,
+  GridToolbarContainer,
   GridToolbarColumnsButton,
   GridToolbarFilterButton,
   GridToolbarExport,
-  GridToolbarDensitySelector } from "@mui/x-data-grid";
+  GridToolbarDensitySelector,
+} from "@mui/x-data-grid";
 
 import "./productList.css";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -143,7 +146,7 @@ export default function ProductList() {
               setConfirmDialog({
                 isOpen: true,
                 title: "Are you sure to delete this record?",
-                subTitle: "ccdmm",
+                subTitle: "Delete",
                 onConfirm: () => {
                   handleDelete(params.row.id);
                 },
@@ -185,9 +188,7 @@ export default function ProductList() {
           Create
         </button>
       </Link>
-      <div className="exportToExcel" style={{ margin:5 }}>
-        <ExportToExcel apiData={products} fileName={"cc"} />
-      </div>
+
       <div className="productList">
         <DataGrid
           loading={loading}
@@ -206,6 +207,9 @@ export default function ProductList() {
           }}
           // checkboxSelection
         />
+      </div>
+      <div className="exportToExcel" style={{ margin: 5 }}>
+        <ExportToExcel apiData={products} fileName={"cc"} />
       </div>
       <Notification notify={notify} setNotify={setNotify} />
       <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />

@@ -2,6 +2,7 @@
   flex: 4;
   /* min-height: 600px; */
   height: 600px;
+  margin-left: 10px;
   /* width: 1350px; */
 }
 
@@ -33,17 +34,29 @@
   cursor: pointer;
 }
 
-
 .search {
   width: 35%;
   margin: 10px;
 }
 
 .exportToExcel {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	justify-content: flex-end;
-	align-items: stretch;
-	align-content: stretch;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: stretch;
+  align-content: stretch;
+}
+
+.productAddButton {
+  width: 100px;
+  border: none;
+  padding: 10px;
+  margin-top: 8px;
+  background-color: teal;
+  color: white;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  float: right;
 }
