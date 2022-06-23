@@ -71,6 +71,14 @@ export default function ProductList() {
     );
   }
 
+  const handleClickSearch = (searchText) => {};
+
+  function handleRowClick(rowData) {
+    console.log(rowData);
+    <Link to={`/product/:${rowData.product_id}`}>
+    </Link>;
+  }
+
   const handleDelete = (id) => {
     setConfirmDialog({
       ...confirmDialog,
@@ -169,7 +177,7 @@ export default function ProductList() {
             <InputAdornment position="end">
               <IconButton
                 aria-label="toggle password visibility"
-                //onClick={handleClickSearch}
+                onClick={handleClickSearch}
                 edge="end"
               >
                 <SearchIcon />
@@ -198,6 +206,7 @@ export default function ProductList() {
               console.log(query);
             })
           }
+          onRowClick={(param) => handleRowClick(param.row)}
           components={{
             Toolbar: CustomToolbar,
           }}

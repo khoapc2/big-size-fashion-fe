@@ -10,7 +10,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
-import { Form, Label } from "semantic-ui-react";
+import { Form, Label, Button, Icon } from "semantic-ui-react";
 // import { CircularProgress, Stack } from "@mui/material";
 
 const Input = styled("input")({
@@ -165,13 +165,19 @@ export default function NewProduct() {
                                   "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, " +
                                   "rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)",
                               }}
-                              title="Delete"
                               position="top"
                               onClick={() => selectDelete(item)}
                               actionIcon={
-                                <IconButton sx={{ color: "white" }} aria-label={`star`}>
-                                  <DeleteOutlineIcon color="white" />
-                                </IconButton>
+                                <Button
+                                  icon
+                                  labelPosition="left"
+                                  style={{ margin: 10 }}
+                                  inverted
+                                  color="red"
+                                  size="small"
+                                >
+                                  <Icon name="delete" /> Delete
+                                </Button>
                               }
                               actionPosition="left"
                             />
