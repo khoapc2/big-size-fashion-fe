@@ -9,8 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
-import StarBorderIcon from "@mui/icons-material/StarBorder";
-import { Form, Label } from "semantic-ui-react";
+import { Form, Label, Button, Icon } from "semantic-ui-react";
 
 const Input = styled("input")({
   display: "none",
@@ -208,15 +207,11 @@ export default function NewProduct() {
                                   "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, " +
                                   "rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)",
                               }}
-                              title="Delete"
                               position="top"
                               actionIcon={
-                                <IconButton
-                                  sx={{ color: "white" }}
-                                  aria-label={`star ${item.title}`}
-                                >
-                                  <StarBorderIcon />
-                                </IconButton>
+                                <Button icon labelPosition='left' style={{margin:10}} inverted color="red" size="small">
+                                  <Icon name='delete'/> Delete
+                                </Button>
                               }
                               actionPosition="left"
                             />

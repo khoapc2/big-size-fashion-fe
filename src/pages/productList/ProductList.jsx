@@ -68,6 +68,10 @@ export default function ProductList() {
     );
   }
 
+  const handleClickSearch = (searchText) =>{
+    
+  };
+
   const handleDelete = (id) => {
     setConfirmDialog({
       ...confirmDialog,
@@ -166,7 +170,7 @@ export default function ProductList() {
             <InputAdornment position="end">
               <IconButton
                 aria-label="toggle password visibility"
-                //onClick={handleClickSearch}
+                onClick={handleClickSearch}
                 edge="end"
               >
                 <SearchIcon />
