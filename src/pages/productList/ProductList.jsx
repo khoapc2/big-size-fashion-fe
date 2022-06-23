@@ -71,9 +71,13 @@ export default function ProductList() {
     );
   }
 
-  const handleClickSearch = (searchText) =>{
-    
-  };
+  const handleClickSearch = (searchText) => {};
+
+  function handleRowClick(rowData) {
+    console.log(rowData);
+    <Link to={`/product/:${rowData.product_id}`}>
+    </Link>;
+  }
 
   const handleDelete = (id) => {
     setConfirmDialog({
@@ -202,6 +206,7 @@ export default function ProductList() {
               console.log(query);
             })
           }
+          onRowClick={(param) => handleRowClick(param.row)}
           components={{
             Toolbar: CustomToolbar,
           }}
