@@ -26,7 +26,7 @@ import { SchemaErrorMessageLogin } from "../../../service/Validations/UserValida
 // import userApi from "api/userApi";
 import "./login.css";
 import { guestLogin, triggerReload } from "../../../redux/actions/userAction";
-import { USER_LOGIN_FAIL } from "../../../service/Validations/UserConstant";
+import { USER_LOGIN_FAIL } from "../../../service/Validations/VarConstant";
 
 const initialValues = {
   username: "",
