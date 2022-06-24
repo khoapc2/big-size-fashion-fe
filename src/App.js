@@ -33,7 +33,8 @@ import routes from "routes";
 
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // Images
 import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
@@ -49,6 +50,9 @@ import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
+
+// import Toastify from "./components/Toastify";
+
 // import Product from "./pages/product/Product";
 
 export default function App() {
@@ -180,6 +184,17 @@ export default function App() {
     </CacheProvider>
   ) : (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <CssBaseline />
       {layout === "dashboard" && (
         <>
@@ -200,7 +215,6 @@ export default function App() {
         {/* {getRoutes(routes)} */}
         {/* <Route path="*" element={<Navigate to="/dashboard" />} /> */}
         <Route path="/" element={<SignIn />} />
-
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="billing" element={<Billing />} />
         <Route path="notifications" element={<Notifications />} />
