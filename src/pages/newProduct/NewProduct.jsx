@@ -11,6 +11,7 @@ import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
 import { Form, Label, Button, Icon } from "semantic-ui-react";
+// import { CircularProgress, Stack } from "@mui/material";
 
 const Input = styled("input")({
   display: "none",
@@ -32,17 +33,30 @@ const options = [
 
 export default function NewProduct() {
   const [selectedImgs, setSelectedImgs] = useState([]);
+  // const [loading, setLoading] = useState(true);
 
   const selectedImg = (e) => {
     let selectedFiles = e.target.files;
     const selectedFilesArray = Array.from(selectedFiles);
+    //still have //BUG
     const getFileArray = selectedFilesArray.slice(0, 10);
     const imgsArray = getFileArray.map((file) => URL.createObjectURL(file));
-
-    setSelectedImgs(imgsArray);
+    // if (selectedImg) {
+    // setSelectedImgs(selectedImgs.push(imgsArray));
+    // } else {
+    setSelectedImgs((prevImg) => prevImg.concat(imgsArray));
+    // setLoading(false);
   };
 
-  console.log(selectedImgs);
+  const selectDelete = (image) => {
+    setSelectedImgs(selectedImgs.filter((e) => e !== image));
+  };
+
+  // useEffect(() => {
+  //   setSelectedImgs(pics);
+  // }, [pics]);
+
+  // console.log(selectedImgs);
 
   return (
     <DashboardLayout>
@@ -72,45 +86,41 @@ export default function NewProduct() {
                 </Label>
               </div>
               <div className="productUpload">
-                {/* <img
-                  src="https://images.pexels.com/photos/7156886/pexels-photo-7156886.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
-                  alt=""
-                  className="productUploadImg"
-                /> */}
                 <div className="upload-image">
                   <section>
                     <label htmlFor="icon-button-file">
-                      <div className="upload-img">
-                        + Add Images <br />
-                        <span>Max is 10 images</span>
-                        <Input
-                          accept="image/*"
-                          id="icon-button-file"
-                          type="file"
-                          onChange={selectedImg}
-                          multiple
-                        />
-                        <IconButton color="primary" aria-label="upload picture" component="span">
-                          <Publish />
-                        </IconButton>
-                      </div>
+                      {selectedImgs.length >= 0 &&
+                        (selectedImgs.length > 10 ? (
+                          <p className="error">
+                            You can't upload more than 10 image! <br />
+                            <span>
+                              Please delete <b>{selectedImgs.length - 10}</b> of them
+                            </span>
+                          </p>
+                        ) : (
+                          <div className="upload-img">
+                            + Add Images <br />
+                            <span>Max is 10 images</span>
+                            <Input
+                              accept="image/*"
+                              id="icon-button-file"
+                              type="file"
+                              onChange={selectedImg}
+                              multiple
+                            />
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              <Publish />
+                            </IconButton>
+                          </div>
+                        ))}
                     </label>
                   </section>
                 </div>
                 <div className="images">
-                  {/* {selectedImgs &&
-                    selectedImgs.map((image, index) => (
-                      <div key={image} className="image">
-                        <img src={image} alt="" width="200" height="200" />
-                        <button
-                          type="button"
-                          onClick={() => setSelectedImgs(selectedImgs.filter((e) => e !== image))}
-                        >
-                          Delete img
-                        </button>
-                        <p>{index}</p>
-                      </div>
-                    ))} */}
                   <ImageList
                     sx={{
                       width: 500,
@@ -136,6 +146,19 @@ export default function NewProduct() {
                               loading="lazy"
                               alt={item}
                             />
+                            {/* {loading} ? (
+                            <Stack
+                              width="100%"
+                              height="100%"
+                              direction="column"
+                              alignItems="center"
+                              justifyContent="center"
+                            >
+                              <CircularProgress />
+                            </Stack>
+                            ) : (
+                            
+                            ) */}
                             <ImageListItemBar
                               sx={{
                                 background:
@@ -143,9 +166,17 @@ export default function NewProduct() {
                                   "rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)",
                               }}
                               position="top"
+                              onClick={() => selectDelete(item)}
                               actionIcon={
-                                <Button icon labelPosition='left' style={{margin:10}} inverted color="red" size="small">
-                                  <Icon name='delete'/> Delete
+                                <Button
+                                  icon
+                                  labelPosition="left"
+                                  style={{ margin: 10 }}
+                                  inverted
+                                  color="red"
+                                  size="small"
+                                >
+                                  <Icon name="delete" /> Delete
                                 </Button>
                               }
                               actionPosition="left"
@@ -155,101 +186,12 @@ export default function NewProduct() {
                       })}
                   </ImageList>
                 </div>
-                {/* <input type="file" id="file" style={{ display: "none" }} /> */}
               </div>
             </div>
           </div>
           <div className="productBottom">
             <Form.Button>Submit</Form.Button>
           </div>
-
-          {/* <div className="productBottom">
-            <form className="productForm">
-              <div className="productFormLeft">
-                <label>
-                  Product Name
-                  <input type="text" />
-                </label>
-                <label>
-                  Price
-                  <input type="text" />
-                </label>
-                <label>
-                  Category
-                  <select name="inStock" id="idStock">
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                  </select>
-                </label>
-                <label>
-                  Size
-                  <select name="inStock" id="idStock">
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                  </select>
-                </label>
-                <label>
-                  Colour
-                  <select name="active" id="active">
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                  </select>
-                </label>
-                <label>
-                  Gender
-                  <select name="active" id="active">
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                  </select>
-                </label>
-                <label>
-                  Supplier Name:
-                  <input type="text" />
-                </label>
-              </div>
-              <div className="productFormRight">
-                <div className="productUpload">
-                  <img
-                    src="https://images.pexels.com/photos/7156886/pexels-photo-7156886.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
-                    alt=""
-                    className="productUploadImg"
-                  />
-                  <label htmlFor="icon-button-file">
-                    <Input
-                      accept="image/*"
-                      id="icon-button-file"
-                      type="file"
-                      onChange={selectedImg}
-                      multiple
-                    />
-                    <IconButton color="primary" aria-label="upload picture" component="span">
-                      <Publish />
-                    </IconButton>
-                  </label>
-
-                  <input type="file" id="file" style={{ display: "none" }} />
-                </div>
-                <div className="images">
-                  {selectedImgs &&
-                    selectedImgs.map((image, index) => (
-                      <div key={image} className="image">
-                        <img src={image} alt="" width="200" height="200" />
-                        <button
-                          type="button"
-                          onClick={() => setSelectedImgs(selectedImgs.filter((e) => e !== image))}
-                        >
-                          Delete img
-                        </button>
-                        <p>{index}</p>
-                      </div>
-                    ))}
-                </div>
-                <button type="button" className="productButton">
-                  Update
-                </button>
-              </div>
-            </form>
-          </div> */}
         </div>
       </div>
     </DashboardLayout>
