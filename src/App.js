@@ -49,6 +49,11 @@ import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
+
+// import Fader from "pages/components/Fader";
+// import { onMessageListener } from "./firebase/firebase";
+// import FirebaseNotifications from "./pages/components/FirebaseNotification/FirebaseNotifications";
+// import ReactNotificationComponent from "./pages/components/FirebaseNotification/ReactNotifications";
 // import Product from "./pages/product/Product";
 
 export default function App() {
@@ -66,6 +71,21 @@ export default function App() {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
+  // const [show, setShow] = useState(false);
+  // const [notification, setNotification] = useState({ title: "", body: "" });
+
+  // console.log(show, notification);
+
+  // onMessageListener()
+  //   .then((payload) => {
+  //     setShow(true);
+  //     setNotification({
+  //       title: payload.notification.title,
+  //       body: payload.notification.body,
+  //     });
+  //     console.log(payload);
+  //   })
+  //   .catch((err) => console.log("failed: ", err));
 
   // Cache for the rtl
   useMemo(() => {
@@ -148,6 +168,16 @@ export default function App() {
     <CacheProvider value={rtlCache}>
       <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
         <CssBaseline />
+        {/* {show ? (
+          <ReactNotificationComponent title={notification.title} body={notification.body} />
+        ) : (
+          <>
+            <div />
+            <div />
+          </>
+        )}
+        <FirebaseNotifications />
+        <Fader text="Hello React" /> */}
         {layout === "dashboard" && (
           <>
             <Sidenav
@@ -181,6 +211,16 @@ export default function App() {
   ) : (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
+      {/* {show ? (
+        <ReactNotificationComponent title={notification.title} body={notification.body} />
+      ) : (
+        <>
+          <div />
+          <div />
+        </>
+      )}
+      <FirebaseNotifications />
+      <Fader text="Hello React" /> */}
       {layout === "dashboard" && (
         <>
           <Sidenav
@@ -211,7 +251,6 @@ export default function App() {
         <Route path="product/:productId" element={<Product />} />
         <Route path="newproduct" element={<NewProduct />} />
         <Route path="*" element={<Navigate to="/sign-in" />} />
-
         {/* <Route path="/product/:productId">
           <Product />
         </Route> */}
