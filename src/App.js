@@ -33,7 +33,8 @@ import routes from "routes";
 
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // Images
 import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
@@ -54,6 +55,8 @@ import SignUp from "layouts/authentication/sign-up";
 // import { onMessageListener } from "./firebase/firebase";
 // import FirebaseNotifications from "./pages/components/FirebaseNotification/FirebaseNotifications";
 // import ReactNotificationComponent from "./pages/components/FirebaseNotification/ReactNotifications";
+// import Toastify from "./components/Toastify";
+
 // import Product from "./pages/product/Product";
 
 export default function App() {
@@ -210,6 +213,17 @@ export default function App() {
     </CacheProvider>
   ) : (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <CssBaseline />
       {/* {show ? (
         <ReactNotificationComponent title={notification.title} body={notification.body} />
@@ -240,7 +254,6 @@ export default function App() {
         {/* {getRoutes(routes)} */}
         {/* <Route path="*" element={<Navigate to="/dashboard" />} /> */}
         <Route path="/" element={<SignIn />} />
-
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="billing" element={<Billing />} />
         <Route path="notifications" element={<Notifications />} />

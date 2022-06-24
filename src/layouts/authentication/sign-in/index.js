@@ -1,4 +1,4 @@
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -12,16 +12,21 @@ import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
 import { Formik, Form } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 // Authentication layout components
 import BasicLayout from "layouts/authentication/components/BasicLayout";
+import Loading from "components/Loading";
 
 // Images
 import bgImage from "assets/images/bg-sign-in.jpg";
-// import { useState } from "react";
+import { useEffect } from "react";
 import { SchemaErrorMessageLogin } from "../../../service/Validations/UserValidation";
 // import userApi from "api/userApi";
 import "./login.css";
+import { guestLogin, triggerReload } from "../../../redux/actions/userAction";
+import { USER_LOGIN_FAIL } from "../../../service/Validations/UserConstant";
 
 const initialValues = {
   username: "",
@@ -29,9 +34,14 @@ const initialValues = {
 };
 
 function Basic() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const user = useSelector((state) => state.userLogin);
+  const { userInfo, loading, error } = user;
+
   // const [username, setUsername] = useState("");
   // const [password, setPassword] = useState("");
-  // const navigate = useNavigate();
   // const [error, setErr] = useState("")
   // const handleChange = (e) => {
   //   if (e.target.name === "username") {
@@ -55,10 +65,26 @@ function Basic() {
   //   }
   // };
 
-  const onSubmit = (values, props) => {
-    console.log(values);
-    console.log(props);
+  const onSubmit = ({ username, password }) => {
+    dispatch(guestLogin(username, password));
   };
+
+  useEffect(() => {
+    // console.log(userInfo);
+    if (userInfo) {
+      if (userInfo.role === "Admin") {
+        navigate("/dashboard", { replace: true });
+      } else {
+        toast.error("Tài khoản không có quyền truy cập");
+        localStorage.removeItem("user");
+      }
+    }
+    if (error) {
+      console.log(error);
+      toast.error("Sai tài khoản hoặc mật khẩu, vui lòng thử lại");
+      dispatch({ type: USER_LOGIN_FAIL, payload: false });
+    }
+  }, [navigate, userInfo, error, triggerReload]);
 
   return (
     <BasicLayout image={bgImage}>
@@ -87,7 +113,6 @@ function Basic() {
         >
           {(props) => (
             <Form>
-              {console.log(props)}
               <MDBox pt={4} pb={3} px={3}>
                 {/* <MDBox component="form" role="form"> */}
                 <MDBox mb={2}>
@@ -119,15 +144,19 @@ function Basic() {
                   />
                 </MDBox>
                 <MDBox mt={4} mb={1}>
-                  <MDButton
-                    variant="gradient"
-                    color="info"
-                    fullWidth
-                    disabled={props.error && props.isSubmitting}
-                    type="submit"
-                  >
-                    {props.isSubmitting ? "loading" : "sign in"}
-                  </MDButton>
+                  {loading ? (
+                    <Loading />
+                  ) : (
+                    <MDButton
+                      variant="gradient"
+                      color="info"
+                      fullWidth
+                      disabled={props.error && props.isSubmitting}
+                      type="submit"
+                    >
+                      sign in
+                    </MDButton>
+                  )}
                 </MDBox>
                 {/* </MDBox> */}
               </MDBox>
