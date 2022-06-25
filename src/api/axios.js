@@ -14,6 +14,8 @@ const axiosClient = axios.create({
   paramsSerializer: (params) => queryString.stringify(params),
 });
 
+console.log(axiosClient);
+
 axiosClient.interceptors.request.use(async (config) => {
   // Handle token here ...
   const currentUser = JSON.parse(localStorage.getItem("user"));

@@ -3,7 +3,7 @@ import {
   USER_LOGIN_SUCCESS,
   USER_LOGIN_FAIL,
   TRIGGER_RELOAD,
-} from "../../service/Validations/UserConstant";
+} from "../../service/Validations/VarConstant";
 
 export const userLoginReducer = (state = {}, action) => {
   switch (action.type) {

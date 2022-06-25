@@ -2,12 +2,16 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Button } from "semantic-ui-react";
+import { useDispatch, useSelector } from "react-redux";
+
 import IconButton from "@mui/material/IconButton";
 import FormControl from "@mui/material/FormControl";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import InputLabel from "@mui/material/InputLabel";
+import Stack from "@mui/material/Stack";
+
 import {
   DataGrid,
   GridToolbarContainer,
@@ -20,8 +24,9 @@ import {
 import "./productList.css";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import { productRows } from "../../dummyData";
-import productApi from "../../api/productApi";
+import { listProduct } from "../../redux/actions/productAction";
+
+// import productApi from "../../api/productApi";
 import Notification from "pages/components/dialog/Notification";
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
 import ExportToExcel from "pages/helper/exportData";
@@ -32,33 +37,39 @@ styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css
 document.head.appendChild(styleLink);
 
 export default function ProductList() {
-  const [data, setData] = useState(productRows);
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [notify, setNotify] = useState({ isOpen: false, message: "", type: "" });
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
   // const [paging, setPaging] = useState({});
 
+  //Test
+  const { data, error, loading } = useSelector((state) => state.productList);
+  const [page, setPage] = useState(1);
+  const triggerReload = useSelector((state) => state.triggerReload);
+  // const [keySearch, setKeySearch] = useState("");
+  const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
+
+  useEffect(() => {
+    dispatch(listProduct(searchText, page));
+  }, [dispatch, page, searchText, triggerReload]);
+
   let inputSearchHandler = (e) => {
-    //convert input text to lower case
-    var lowerCase = e.target.value.toLowerCase();
+    let lowerCase = e.target.value.toLowerCase();
     setSearchText(lowerCase);
   };
 
-  useEffect(async () => {
-    try {
-      const res = await productApi.getListProduct();
-      // console.log(`Content:" + ${res.content}`);
-      setProducts(res.content);
-      setLoading(false);
-      // setPaging({ current_page, total_pages, page_size, total_count, has_previous, has_next });
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
+  // useEffect(async () => {
+  //   try {
+  //     const res = await productApi.getListProduct();
+  //     // console.log(`Content:" + ${res.content}`);
+  //     setProducts(res.content);
+  //     setLoading(false);
+  //     // setPaging({ current_page, total_pages, page_size, total_count, has_previous, has_next });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }, []);
 
-  console.log(products);
   // console.log(paging);
 
   function CustomToolbar() {
@@ -75,8 +86,7 @@ export default function ProductList() {
 
   function handleRowClick(rowData) {
     console.log(rowData);
-    <Link to={`/product/:${rowData.product_id}`}>
-    </Link>;
+    <Link to={`/product/:${rowData.product_id}`}></Link>;
   }
 
   const handleDelete = (id) => {
@@ -92,9 +102,21 @@ export default function ProductList() {
     });
   };
 
-  // const log = (params) => {
-  //   console.log(params);
-  // };
+  function NoRowsOverlay() {
+    return (
+      <Stack height="100%" alignItems="center" justifyContent="center">
+        Không tìm thấy sản phẩm nào
+      </Stack>
+    );
+  }
+
+  function NoResultsOverlay() {
+    return (
+      <Stack height="100%" alignItems="center" justifyContent="center">
+        Không tìm thấy sản phẩm nào
+      </Stack>
+    );
+  }
 
   const columns = [
     { field: "product_id", headerName: "ID", width: 90 },
@@ -168,7 +190,7 @@ export default function ProductList() {
     <DashboardLayout>
       <DashboardNavbar />
       <FormControl sx={{ m: 1, width: "35ch" }} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment">Search by name</InputLabel>
+        <InputLabel htmlFor="outlined-adornment">Tìm kiếm tên sản phẩm</InputLabel>
         <OutlinedInput
           id="outlined-adornment"
           value={searchText}
@@ -184,7 +206,7 @@ export default function ProductList() {
               </IconButton>
             </InputAdornment>
           }
-          label="Search by name"
+          label="Tìm kiếm tên sản phẩm"
         />
       </FormControl>
       <Link to="/newproduct">
@@ -197,7 +219,7 @@ export default function ProductList() {
         <DataGrid
           loading={loading}
           getRowId={(r) => r.product_id}
-          rows={products}
+          rows={data}
           disableSelectionOnClick
           columns={columns}
           pageSize={8}
@@ -209,12 +231,13 @@ export default function ProductList() {
           onRowClick={(param) => handleRowClick(param.row)}
           components={{
             Toolbar: CustomToolbar,
+            NoRowsOverlay,
+            NoResultsOverlay,
           }}
-          // checkboxSelection
         />
       </div>
       <div className="exportToExcel" style={{ margin: 5 }}>
-        <ExportToExcel apiData={products} fileName={"cc"} />
+        <ExportToExcel apiData={data} fileName={"product"} />
       </div>
       <Notification notify={notify} setNotify={setNotify} />
       <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />

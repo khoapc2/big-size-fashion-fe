@@ -7,6 +7,11 @@ const productApi = {
     const url = `${URL_ENTITY}`;
     return axios.get(url, params);
   },
+
+  getSearchListProduct: (params) => {
+    const url = `${URL_ENTITY}`;
+    return axios.get(url, { params });
+  },
 };
 
 export default productApi;

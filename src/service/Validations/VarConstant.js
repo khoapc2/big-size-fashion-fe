@@ -1,0 +1,13 @@
+// Trigger reload
+export const TRIGGER_RELOAD = "TRIGGER_RELOAD";
+
+// User
+export const USER_LOGIN_REQUEST = "USER_LOGIN_REQUEST";
+export const USER_LOGIN_SUCCESS = "USER_LOGIN_SUCCESS";
+export const USER_LOGIN_FAIL = "USER_LOGIN_FAIL";
+export const USER_LOGOUT = "USER_LOGOUT";
+
+// Product
+export const PRODUCT_LIST_REQUEST = "PRODUCT_LIST_REQUEST";
+export const PRODUCT_LIST_SUCCESS = "USER_LOGIN_SUCCESS";
+export const PRODUCT_LIST_FAIL = "USER_LOGIN_FAIL";
