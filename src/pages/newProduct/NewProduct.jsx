@@ -10,7 +10,9 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
-import { Form, Label, Button, Icon } from "semantic-ui-react";
+import { Form, Label } from "semantic-ui-react";
+import Box from "@mui/material/Box";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 // import { CircularProgress, Stack } from "@mui/material";
 
 const Input = styled("input")({
@@ -28,7 +30,6 @@ const Input = styled("input")({
 const options = [
   { key: "m", text: "Male", value: "male" },
   { key: "f", text: "Female", value: "female" },
-  { key: "o", text: "Other", value: "other" },
 ];
 
 export default function NewProduct() {
@@ -62,27 +63,52 @@ export default function NewProduct() {
     <DashboardLayout>
       <DashboardNavbar />
       <div className="newProduct">
-        <h1 className="addProductTitle">New Product</h1>
+        <h1 className="addProductTitle">Tạo sản phẩm</h1>
         <div className="product">
           <div className="productTop">
             <div className="productTopLeft">
               <Form>
-                <Form.Input fluid label="Product name" placeholder="Product name" />
+                <Form.Input fluid label="Tên sản phẩm" placeholder="Tên sản phẩm" />
                 <Form.Group widths="equal">
-                  <Form.Select fluid label="Category" options={options} placeholder="Category" />
-                  <Form.Select fluid label="Gender" options={options} placeholder="Gender" />
+                  <Form.Select fluid label="Chủng loại" options={options} placeholder="Chủng loại" />
+                  <Form.Select fluid label="Giới tính" options={options} placeholder="Giới tính" />
                 </Form.Group>
                 <Form.Group widths="equal">
-                  <Form.Select fluid label="Size" options={options} placeholder="Size" />
-                  <Form.Select fluid label="Color" options={options} placeholder="Color" />
+                  <Form.Select fluid label="Màu sắc" options={options} placeholder="Màu sắc" />
+                  <div className="sizeInput">
+                    <label style={{ fontSize: "13px", fontWeight: "700", color: "#000000DE" }}>
+                      Kích cỡ
+                    </label>
+                    <div className="checkboxSize">
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          alignContent: "space-between",
+                          p: 1,
+                          m: 1,
+                          bgcolor: "background.paper",
+                          maxWidth: 300,
+                          borderRadius: 0,
+                          gap: 2,
+                        }}
+                      >
+                        <Form.Checkbox label="Red" placeholder="Color" />
+                        <Form.Checkbox label="Red" placeholder="Color" />
+                        <Form.Checkbox label="Red" placeholder="Color" />
+                        <Form.Checkbox label="Red" placeholder="Color" />
+                        <Form.Checkbox label="Red" placeholder="Color" />
+                        <Form.Checkbox label="Red" placeholder="Color" />
+                      </Box>
+                    </div>
+                  </div>
                 </Form.Group>
-                <Form.TextArea label="About" placeholder="Tell us more about you..." />
               </Form>
             </div>
             <div className="productTopRight">
               <div style={{ margin: 10 }}>
                 <Label as="a" color="teal" tag>
-                  Product Image
+                  Hình ảnh sản phẩm
                 </Label>
               </div>
               <div className="productUpload">
@@ -99,8 +125,8 @@ export default function NewProduct() {
                           </p>
                         ) : (
                           <div className="upload-img">
-                            + Add Images <br />
-                            <span>Max is 10 images</span>
+                            + Thêm hình <br />
+                            <span>Tối đa 10 hình nha!!!</span>
                             <Input
                               accept="image/*"
                               id="icon-button-file"
@@ -168,16 +194,14 @@ export default function NewProduct() {
                               position="top"
                               onClick={() => selectDelete(item)}
                               actionIcon={
-                                <Button
-                                  icon
-                                  labelPosition="left"
+                                <IconButton
+                                  sx={{ color:'white !important' }}
+                                  aria-label='Delete'
                                   style={{ margin: 10 }}
-                                  inverted
-                                  color="red"
-                                  size="small"
+                                  size='large'
                                 >
-                                  <Icon name="delete" /> Delete
-                                </Button>
+                                  <DeleteForeverIcon /> Delete
+                                </IconButton>
                               }
                               actionPosition="left"
                             />
@@ -190,7 +214,7 @@ export default function NewProduct() {
             </div>
           </div>
           <div className="productBottom">
-            <Form.Button>Submit</Form.Button>
+            <Form.Button color="primary">Xác nhận</Form.Button>
           </div>
         </div>
       </div>
