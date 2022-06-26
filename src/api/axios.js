@@ -14,14 +14,12 @@ const axiosClient = axios.create({
   paramsSerializer: (params) => queryString.stringify(params),
 });
 
-console.log(axiosClient);
-
 axiosClient.interceptors.request.use(async (config) => {
   // Handle token here ...
   const currentUser = JSON.parse(localStorage.getItem("user"));
   if (currentUser) {
     // console.log(currentUser);
-    const token = { ...currentUser };
+    const { token } = currentUser;
     // console.log(token);
     config.headers.Authorization = `Bearer ${token}`;
   }
