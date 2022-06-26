@@ -58,20 +58,6 @@ export default function ProductList() {
     setSearchText(lowerCase);
   };
 
-  // useEffect(async () => {
-  //   try {
-  //     const res = await productApi.getListProduct();
-  //     // console.log(`Content:" + ${res.content}`);
-  //     setProducts(res.content);
-  //     setLoading(false);
-  //     // setPaging({ current_page, total_pages, page_size, total_count, has_previous, has_next });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }, []);
-
-  // console.log(paging);
-
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
@@ -211,7 +197,7 @@ export default function ProductList() {
       </FormControl>
       <Link to="/newproduct">
         <button type="button" className="productAddButton">
-          Create
+          Tạo sản phẩm
         </button>
       </Link>
 

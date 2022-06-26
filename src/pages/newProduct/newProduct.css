@@ -189,4 +189,7 @@ section {
   padding: 2rem 0;
 }
 
-
+.MuiBox-root .css-8bvdc8 {
+  margin: 0;
+  border-radius: 5px;
+}

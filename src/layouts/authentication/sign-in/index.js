@@ -40,31 +40,6 @@ function Basic() {
   const user = useSelector((state) => state.userLogin);
   const { userInfo, loading, error } = user;
 
-  // const [username, setUsername] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [error, setErr] = useState("")
-  // const handleChange = (e) => {
-  //   if (e.target.name === "username") {
-  //     setUsername(e.target.value);
-  //   }
-  //   if (e.target.name === "password") {
-  //     setPassword(e.target.value);
-  //   }
-  // };
-
-  // const login = async () => {
-  //   try {
-  //     const response = await userApi.login({ username, password });
-  //     const user = JSON.stringify(response.content);
-  //     console.log(user);
-  //     localStorage.setItem("user", user);
-  //     navigate("/dashboard");
-  //     // console.log(navigate);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-
   const onSubmit = ({ username, password }) => {
     dispatch(guestLogin(username, password));
   };
