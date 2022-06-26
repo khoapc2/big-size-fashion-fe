@@ -6,7 +6,6 @@ import { styled } from "@mui/material/styles";
 import { useState } from "react";
 import { Publish } from "@material-ui/icons";
 import IconButton from "@mui/material/IconButton";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
@@ -51,6 +50,32 @@ export default function NewProduct() {
 
   const selectDelete = (image) => {
     setSelectedImgs(selectedImgs.filter((e) => e !== image));
+  };
+
+  const [inputFields, setInputFields] = useState([
+    { firstName: "", lastName: "" },
+    { firstName: "", lastName: "" }
+  ]);
+
+  const handleChangeInput = (index, event) => {
+    const values = [...inputFields];
+    values[index][event.target.name] = event.target.value;
+    setInputFields(values);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(inputFields);
+  };
+
+  const handleAddFields = () => {
+    setInputFields([...inputFields, { firstName: "", lastName: "" }]);
+  };
+
+  const handleRemoveFields = (index) => {
+    const values = [...inputFields];
+    values.splice(index, 1);
+    setInputFields(values);
   };
 
   // useEffect(() => {
@@ -214,7 +239,7 @@ export default function NewProduct() {
             </div>
           </div>
           <div className="productBottom">
-            <Form.Button color="primary">Xác nhận</Form.Button>
+            <Form.Button color="green">Xác nhận</Form.Button>
           </div>
         </div>
       </div>

@@ -1,9 +1,10 @@
+/* eslint-disable */
 import React from "react";
 import { Icon, Button, Comment, Header } from "semantic-ui-react";
 
-function Feedbacks() {
+function Feedbacks(mode) {
   return (
-    <Comment.Group style={{ margin: 30 }}>
+    <Comment.Group style={{ margin: 10 }}>
       <Header as="h3" dividing>
         Feedbacks
       </Header>
@@ -16,12 +17,16 @@ function Feedbacks() {
             <div>Today at 5:42PM</div>
           </Comment.Metadata>
           <Comment.Text>How artistic!</Comment.Text>
-          <Button animated color="red">
-            <Button.Content visible>Delete</Button.Content>
-            <Button.Content hidden>
-              <Icon name="trash alternate" />
-            </Button.Content>
-          </Button>
+          {mode === "edit" ? (
+            <Button animated color="red">
+              <Button.Content visible>Delete</Button.Content>
+              <Button.Content hidden>
+                <Icon name="trash alternate" />
+              </Button.Content>
+            </Button>
+          ) : (
+            <></>
+          )}
         </Comment.Content>
       </Comment>
 
