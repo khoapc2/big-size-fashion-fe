@@ -29,6 +29,7 @@ export const listProduct = (keySearch, page) => async (dispatch) => {
     dispatch({ type: PRODUCT_LIST_FAIL, payload: message });
   }
 };
+
 export const a = (keySearch, page) => async (dispatch) => {
   // console.log(keySearch, page);
   dispatch({ type: PRODUCT_LIST_REQUEST });
