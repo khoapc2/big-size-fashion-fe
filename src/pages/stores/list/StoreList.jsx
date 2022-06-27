@@ -21,28 +21,27 @@ import {
   GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
 
-import "./productList.css";
+import "./storeList.css";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import { listProduct } from "../../redux/actions/productAction";
+import { listStore } from "../../../redux/actions/storeAction";
 
-// import productApi from "../../api/productApi";
+// import storeApi from "../../api/storeApi";
 import Notification from "pages/components/dialog/Notification";
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
-import ExportToExcel from "pages/helper/exportData";
-import Product from "pages/product/Product";
+
 
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
 styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
 document.head.appendChild(styleLink);
 
-export default function ProductList() {
+export default function SizeList() {
   const [notify, setNotify] = useState({ isOpen: false, message: "", type: "" });
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
   // const [paging, setPaging] = useState({});
   //Test
-  const { data, error, loading } = useSelector((state) => state.productList);
+  const { data, error, loading } = useSelector((state) => state.storeList);
   const [page, setPage] = useState(1);
   const triggerReload = useSelector((state) => state.triggerReload);
   // const [keySearch, setKeySearch] = useState("");
@@ -50,7 +49,7 @@ export default function ProductList() {
   const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
-    dispatch(listProduct(searchText, page));
+    dispatch(listStore(searchText));
   }, [dispatch, page, searchText, triggerReload]);
 
   let inputSearchHandler = (e) => {
@@ -73,11 +72,11 @@ export default function ProductList() {
   function handleRowClick(rowData) {
     // console.log(rowData);
     // <div>
-    //   <Route path={`/product/:${rowData}`}>
+    //   <Route path={`/store/:${rowData}`}>
     //     <Product />
     //   </Route>
     // </div>
-    // <Link to={`/product/:${rowData.product_id}`}></Link>;
+    // <Link to={`/store/:${rowData.store_id}`}></Link>;
   }
 
   const handleDelete = (id) => {
@@ -95,7 +94,7 @@ export default function ProductList() {
   function NoRowsOverlay() {
     return (
       <Stack height="100%" alignItems="center" justifyContent="center">
-        Không tìm thấy sản phẩm nào
+        Không tìm thấy kích cỡ nào
       </Stack>
     );
   }
@@ -103,42 +102,33 @@ export default function ProductList() {
   function NoResultsOverlay() {
     return (
       <Stack height="100%" alignItems="center" justifyContent="center">
-        Không tìm thấy sản phẩm nào
+        Không tìm thấy kích cỡ nào
       </Stack>
     );
   }
 
   const columns = [
-    { field: "product_id", headerName: "ID", width: 90 },
+    { field: "store_id", headerName: "ID", width: 90 },
     {
-      field: "product_name",
-      headerName: "Product",
+      field: "store_address",
+      headerName: "Address",
       width: 200,
       renderCell: (params) => (
-        <div className="productListItem">
-          <img
-            className="productListImg"
-            src={params.row.image_url}
-            alt={params.row.product_name}
-          />
-          {params.row.product_name}
+        <div className="storeListItem">
+          {params.row.store_address}
         </div>
       ),
     },
-    { field: "stock", headerName: "Stock", width: 200 },
+    {
+        field: "store_phone",
+        headerName: "Phone",
+        width: 160,
+        renderCell: (params) => <div>{params.row.store_phone}</div>,
+      },
     {
       field: "status",
       headerName: "Status",
-      width: 120,
-      // renderCell: (params) => (
-
-      // )
-    },
-    {
-      field: "price",
-      headerName: "Price",
-      width: 160,
-      renderCell: (params) => <div>{params.row.price.toLocaleString("vi-VN")} VNĐ</div>,
+      width: 120
     },
     {
       field: "action",
@@ -146,18 +136,18 @@ export default function ProductList() {
       width: 250,
       renderCell: (params) => (
         <>
-          <Link to={`/product/:${params.row.product_id}`}>
-            <button type="submit" className="productListEdit">
+          <Link to={`/store/:${params.row.store_id}`}>
+            <button type="submit" className="storeListEdit">
               Edit
             </button>
-            <Link to={`/product/:${params.row.product_id}`}>
-              <button type="submit" className="productListEdit">
+            <Link to={`/store/:${params.row.store_id}`}>
+              <button type="submit" className="storeListEdit">
                 View
               </button>
             </Link>
           </Link>
           <Button
-            className="productListDelete"
+            className="storeListDelete"
             onClick={() =>
               setConfirmDialog({
                 isOpen: true,
@@ -180,7 +170,7 @@ export default function ProductList() {
     <DashboardLayout>
       <DashboardNavbar />
       <FormControl sx={{ m: 1, width: "35ch" }} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment">Tìm kiếm tên sản phẩm</InputLabel>
+        <InputLabel htmlFor="outlined-adornment">Tìm kiếm địa chỉ</InputLabel>
         <OutlinedInput
           id="outlined-adornment"
           value={searchText}
@@ -196,16 +186,16 @@ export default function ProductList() {
               </IconButton>
             </InputAdornment>
           }
-          label="Tìm kiếm tên sản phẩm"
+          label="Tìm kiếm địa chỉ"
         />
       </FormControl>
-      <Link to="/newproduct">
-        <button type="button" className="productAddButton">
-          Tạo sản phẩm
+      <Link to="/newstore">
+        <button type="button" className="storeAddButton">
+          Tạo cửa hàng mới
         </button>
       </Link>
 
-      <div className="productList">
+      <div className="storeList">
         <DataGrid
           sx={{
             "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {
@@ -216,7 +206,7 @@ export default function ProductList() {
             },
           }}
           loading={loading}
-          getRowId={(r) => r.product_id}
+          getRowId={(r) => r.store_id}
           rows={data}
           disableSelectionOnClick
           columns={columns}
@@ -228,7 +218,7 @@ export default function ProductList() {
           }
           onRowClick={(param) => (
             <>
-              <Link to={`/product/:${param.row.product_id}`}></Link>
+              <Link to={`/store/:${param.row.store_id}`}></Link>
             </>
           )}
           components={{
@@ -237,9 +227,6 @@ export default function ProductList() {
             NoResultsOverlay,
           }}
         />
-      </div>
-      <div className="exportToExcel" style={{ margin: 5 }}>
-        <ExportToExcel apiData={data} fileName={"product"} />
       </div>
       <Notification notify={notify} setNotify={setNotify} />
       <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />

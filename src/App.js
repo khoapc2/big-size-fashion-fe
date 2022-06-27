@@ -51,6 +51,8 @@ import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 
+import Stores from "pages/stores/list/StoreList";
+
 // import Fader from "pages/components/Fader";
 // import { onMessageListener } from "./firebase/firebase";
 // import FirebaseNotifications from "./pages/components/FirebaseNotification/FirebaseNotifications";
@@ -208,6 +210,7 @@ export default function App() {
           <Route path="/products" element={<Products />} />
           <Route path="/product:productId" element={<Product />} />
           <Route path="newproduct" element={<NewProduct />} />
+          <Route path="/stores" element={<Stores />} />
         </Routes>
       </ThemeProvider>
     </CacheProvider>
@@ -264,6 +267,7 @@ export default function App() {
         <Route path="product/:productId" element={<Product />} />
         <Route path="newproduct" element={<NewProduct />} />
         <Route path="*" element={<Navigate to="/sign-in" />} />
+        <Route path="/stores" element={<Stores />} />
         {/* <Route path="/product/:productId">
           <Product />
         </Route> */}

@@ -2,6 +2,7 @@ import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import thunk from "redux-thunk";
 import { userLoginReducer, reloadReducer } from "redux/reducers/userReducer";
 import { listProductReducer } from "redux/reducers/productReducer";
+import { listStoreReducer } from "redux/reducers/storeReducer";
 
 const initialState = {
   userLogin: {
@@ -13,6 +14,7 @@ const reducer = combineReducers({
   userLogin: userLoginReducer,
   triggerReload: reloadReducer,
   productList: listProductReducer,
+  storeList: listStoreReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

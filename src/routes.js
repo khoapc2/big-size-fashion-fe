@@ -39,6 +39,7 @@ Coded by www.creative-tim.com
 import Dashboard from "layouts/dashboard";
 import Products from "pages/productList/ProductList";
 import Billing from "layouts/billing";
+import Stores from "pages/stores/list/StoreList";
 
 // import RTL from "layouts/rtl";
 import Notifications from "layouts/notifications";
@@ -98,6 +99,14 @@ const routes = [
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/products",
     component: <Products />,
+  },
+  {
+    type: "collapse",
+    name: "Store",
+    key: "store",
+    icon: <Icon fontSize="small">receipt_long</Icon>,
+    route: "/stores",
+    component: <Stores />,
   },
   {
     type: "collapse",
