@@ -5,7 +5,7 @@ const URL_ENTITY = "/v1/colour";
 const colorApi = {
   getListColor: (params) => {
     const url = `${URL_ENTITY}`;
-    return axios.get(url, params);
+    return axios.get(url, { params });
   },
 };
 

@@ -4,6 +4,17 @@ import {
   CATEGORY_LIST_FAIL,
 } from "../../service/Validations/VarConstant";
 
+function resultArr(payload) {
+  let result = [];
+  const newArray = [...payload];
+  result = newArray.map(({ category_id, category_name }) => ({
+    key: category_id,
+    text: category_name,
+    value: category_id,
+  }));
+  return result;
+}
+
 export const listCategoryReducer = (state = { loading: true, category: [], error: "" }, action) => {
   switch (action.type) {
     case CATEGORY_LIST_REQUEST:
@@ -12,7 +23,7 @@ export const listCategoryReducer = (state = { loading: true, category: [], error
       return {
         ...state,
         loading: false,
-        category: action.payload,
+        category: [...resultArr(action.payload)],
       };
     case CATEGORY_LIST_FAIL:
       return { ...state, loading: false, error: action.payload };

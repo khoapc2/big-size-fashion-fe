@@ -17,8 +17,8 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import RemoveIcon from "@material-ui/icons/Remove";
 import AddIcon from "@material-ui/icons/Add";
 // import { height, width } from "@mui/system";
-import { Stack } from "@mui/material";
-import { useFormik, FieldArray, Formik } from "formik";
+import { Stack, Checkbox } from "@mui/material";
+import { FieldArray, Formik, Field } from "formik";
 import { SchemaErrorCreateProduct } from "../../service/Validations/ProductValidation";
 import { listSize } from "../../redux/actions/sizeAction";
 import { listColor } from "../../redux/actions/colorAction";
@@ -36,23 +36,29 @@ const Input = styled("input")({
 //   };
 // }
 const options = [
-  { key: "1", text: "Male", value: "male" },
-  { key: "0", text: "Female", value: "female" },
+  { key: "1", text: "Nam", value: "male" },
+  { key: "0", text: "Nữ", value: "female" },
 ];
 
 export default function NewProduct() {
   const dispatch = useDispatch();
 
   const [selectedImgs, setSelectedImgs] = useState([]);
-  const [newColorArray, setNewColorArray] = useState([]);
-  const [newCategoryArray, setNewCategoryArray] = useState([]);
 
   const [price, setPrice] = useState(0);
   const { size } = useSelector((state) => state.sizeList);
-  const { color } = useSelector((state) => state.colorList);
+  const { colour } = useSelector((state) => state.colorList);
+  const { category } = useSelector((state) => state.categoryList);
   const triggerReload = useSelector((state) => state.triggerReload);
 
-  const { category } = useSelector((state) => state.categoryList);
+  console.log(typeof colour);
+  console.log(colour);
+  console.log(typeof size);
+  console.log(size);
+  console.log(typeof category);
+  console.log(category);
+  console.log(typeof options);
+  console.log(options);
 
   // const newColorArray = color.map((item) => {
   //   return {
@@ -62,58 +68,16 @@ export default function NewProduct() {
   //   };
   // });
 
-  console.log(newColorArray);
-
   useEffect(() => {
-    setNewColorArray(
-      color.map((item) => {
-        return {
-          key: item.colour_id,
-          text: item.colour_name,
-          value: item.colour_name,
-        };
-      })
-    );
-    setNewCategoryArray(
-      category.map((item) => {
-        return {
-          key: item.category_id,
-          text: item.category_name,
-          value: item.category_name,
-        };
-      })
-    );
-  }, [dispatch, category]);
-
-  useEffect(() => {
+    const status = true;
     dispatch(listSize());
-    dispatch(listColor());
+    dispatch(listColor({ status }));
     dispatch(listCategory());
   }, [dispatch, triggerReload]);
 
-  const formik = useFormik({
-    initialValues: {
-      productName: "",
-      brandName: "",
-      category: "",
-      sex: "",
-      category: "",
-      sizeOption: [],
-      description: "",
-      price: 0,
-      key: [],
-      colorOption: [],
-      colourWithSize: [{ colour: "", size: [] }],
-    },
-    validationSchema: SchemaErrorCreateProduct,
-
-    onSubmit: (formData, action) => {
-      console.log(formData);
-      console.log(action);
-    },
-  });
-
-  console.log(formik);
+  const onSubmit = (e) => {
+    console.log(e);
+  };
   // const [loading, setLoading] = useState(true);
 
   const selectedImg = (e) => {
@@ -191,330 +155,390 @@ export default function NewProduct() {
       <DashboardNavbar />
       <div className="newProduct">
         <h1 className="addProductTitle">Tạo sản phẩm</h1>
-        <Formik>
-          <div className="product">
-            <Form onSubmit={formik.handleSubmit} validateOnBlur>
-              <div className="productTop">
-                <div className="productTopLeft">
-                  <Form.Input
-                    fluid
-                    label="Tên sản phẩm"
-                    placeholder="Tên sản phẩm"
-                    name="productName"
-                    onChange={formik.handleChange}
-                    value={formik.values.productName}
-                    error={formik.errors.productName}
-                  />
-                  <Form.Group widths="equal" onChange={getFieldValue} value={price}>
-                    <Form.Input
-                      fluid
-                      label="Giá"
-                      placeholder="Giá"
-                      type="number"
-                      name="price"
-                      onChange={formik.handleChange}
-                      value={formik.values.price}
-                      error={formik.errors.price}
-                    />
-                    <Form.Input
-                      fluid
-                      label="Tên thương hiệu"
-                      placeholder="Tên thương hiệu"
-                      name="brandName"
-                      onChange={formik.handleChange}
-                      value={formik.values.brandName}
-                      error={formik.errors.brandName}
-                    />
-                  </Form.Group>
-                  <Form.Group widths="equal">
-                    <Form.Select
-                      fluid
-                      label="Thể Loại"
-                      options={newCategoryArray || []}
-                      placeholder="Thể loại"
-                      onChange={(e, v) => formik.setFieldValue("category", v.value)}
-                      name="category"
-                      value={formik.values.category}
-                      error={formik.errors.category}
-                    />
-                    <Form.Select
-                      fluid
-                      label="Giới tính"
-                      options={options}
-                      placeholder="Giới tính"
-                      onChange={(e, v) => formik.setFieldValue("sex", v.value)}
-                      name="sex"
-                      value={formik.values.sex}
-                      error={formik.errors.sex}
-                    />
-                  </Form.Group>
-                  {/* {inputFields.map((inputField, index) => ( */}
-                  {/* <div key={index}> */}
-                  <FieldArray
-                    name="colourWithSize"
-                    render={({ remove, push }) => (
+        <Formik
+          initialValues={{
+            productName: "",
+            brandName: "",
+            category: "",
+            sex: "",
+            description: "",
+            price: 0,
+            colourWithSize: [
+              { id: 0, colour: "", size: [] },
+              // { id: 1, colour: "A", size: [] },
+            ],
+          }}
+          onSubmit={onSubmit}
+          validationSchema={SchemaErrorCreateProduct}
+          validateOnBlur
+          validateOnChange
+        >
+          {(formik) => {
+            console.log(formik);
+            return (
+              <div className="product">
+                <Form>
+                  <div className="productTop">
+                    <div className="productTopLeft">
+                      <Form.Input
+                        fluid
+                        label="Tên sản phẩm"
+                        placeholder="Tên sản phẩm"
+                        name="productName"
+                        onChange={formik.handleChange}
+                        value={formik.values.productName}
+                        error={formik.errors.productName}
+                      />
                       <Form.Group widths="equal">
-                        {console.log()}
-                        {formik.values.colourWithSize.length > 0 &&
-                          formik.values.colourWithSize.map((node, index) => (
-                            <>
-                              <Form.Select
-                                fluid
-                                label="Màu sắc"
-                                options={newColorArray || []}
-                                onChange={(e, v) =>
-                                  formik.setFieldValue(`colourWithSize.${index}.colour`, v.value)
-                                }
-                                placeholder="Màu sắc"
-                                error={formik.errors.colorOption}
-                                name={`colourWithSize.${index}.colour`}
-                              />
-                              <div className="sizeInput">
-                                <label
-                                  htmlFor={`colourWithSize.${index}.label-size`}
-                                  style={{
-                                    fontSize: "13px",
-                                    fontWeight: "700",
-                                    color: "#000000DE",
-                                  }}
-                                >
-                                  Kích cỡ
-                                </label>
-                                <div className="checkboxSize">
-                                  <Box
-                                    sx={{
-                                      display: "flex",
-                                      flexWrap: "wrap",
-                                      alignContent: "space-between",
-                                      p: 1,
-                                      m: 1,
-                                      bgcolor: "background.paper",
-                                      maxWidth: 300,
-                                      borderRadius: 0,
-                                      gap: 2,
+                        <Form.Input
+                          fluid
+                          label="Giá"
+                          placeholder="Giá"
+                          type="number"
+                          name="price"
+                          onChange={formik.handleChange}
+                          value={formik.values.price}
+                          error={formik.errors.price}
+                        />
+                        <Form.Input
+                          fluid
+                          label="Tên thương hiệu"
+                          placeholder="Tên thương hiệu"
+                          name="brandName"
+                          onChange={formik.handleChange}
+                          value={formik.values.brandName}
+                          error={formik.errors.brandName}
+                        />
+                      </Form.Group>
+                      <Form.Group widths="equal">
+                        <Form.Select
+                          key={category.value}
+                          fluid
+                          label="Thể Loại"
+                          options={category || []}
+                          placeholder="Thể loại"
+                          onChange={(e, v) => {
+                            formik.setFieldValue("category", v.value);
+                          }}
+                          name="category"
+                          value={formik.values.category}
+                          error={formik.errors.category}
+                        />
+                        <Form.Select
+                          fluid
+                          label="Giới tính"
+                          options={options}
+                          placeholder="Giới tính"
+                          onChange={(e, v) => formik.setFieldValue("sex", v.value)}
+                          name="sex"
+                          value={formik.values.sex}
+                          error={formik.errors.sex}
+                        />
+                      </Form.Group>
+                      {/* {inputFields.map((inputField, index) => ( */}
+                      {/* <div key={index}> */}
+                      {/* <div class="block-color-size"></div> */}
+                      <FieldArray
+                        name="colourWithSize"
+                        render={({ remove, push }) => (
+                          <>
+                            {console.log(formik.values.colourWithSize)}
+                            {/* {console.log(formik.values.colourWithSize[1].id)} */}
+                            {formik.values.colourWithSize.length > 0 &&
+                              formik.values.colourWithSize.map((node, index) => (
+                                <>
+                                  <div key={node.id}>
+                                    <Form.Group widths="equal">
+                                      <Form.Select
+                                        key={index}
+                                        name={`colourWithSize[${index}].colour`}
+                                        fluid
+                                        label="Màu sắc"
+                                        options={options || []}
+                                        onChange={(e, v) =>
+                                          formik.setFieldValue(
+                                            `colourWithSize[${index}].colour`,
+                                            v.value
+                                          )
+                                        }
+                                        placeholder="Màu sắc"
+                                        // error={formik.errors.colourWithSize[index].colour}
+                                      />
+                                      <div className="sizeInput">
+                                        <label
+                                          htmlFor={`colourWithSize[${index}].label-size`}
+                                          style={{
+                                            fontSize: "13px",
+                                            fontWeight: "700",
+                                            color: "#000000DE",
+                                          }}
+                                        >
+                                          Kích cỡ
+                                        </label>
+                                        <div className="checkboxSize">
+                                          <Box
+                                            sx={{
+                                              display: "flex",
+                                              flexWrap: "wrap",
+                                              alignContent: "space-between",
+                                              p: 1,
+                                              m: 1,
+                                              bgcolor: "background.paper",
+                                              maxWidth: 300,
+                                              borderRadius: 0,
+                                              gap: 2,
+                                            }}
+                                          >
+                                            <Field
+                                            // name={`colourWithSize.${index}.size.${sizeIndex}`}
+                                            >
+                                              {({ field }) => {
+                                                return size.map((sizeItem, sizeIndex) => {
+                                                  return (
+                                                    <Field
+                                                      type="checkbox"
+                                                      id={sizeIndex}
+                                                      value={sizeItem.size_name}
+                                                      label={sizeItem.size_name}
+                                                      name={`colourWithSize[${index}].size`}
+                                                      as={Checkbox}
+                                                    />
+                                                  );
+                                                });
+                                              }}
+                                            </Field>
+                                            {/* </Field>
+                                          {size.map((item, sizeIndex) => (
+                                              type="checkbox"
+                                              id={item.size_name}
+                                              value={item.size_name}
+                                              label={item.size_name}
+                                              onChange={(e, v) => {
+                                                if (v.checked) {
+                                                  if (
+                                                    formik.values.colourWithSize[
+                                                      index
+                                                    ].size.includes(v.id)
+                                                  ) {
+                                                    const nextValue = formik.values.colourWithSize[
+                                                      index
+                                                    ].size.filter((value) => value !== v.id);
+                                                    formik.setFieldValue(
+                                                      `colourWithSize.${index}.size`,
+                                                      nextValue
+                                                    );
+                                                  } else {
+                                                    const nextValue = formik.values.colourWithSize[
+                                                      index
+                                                    ].size.concat(v.id);
+                                                    formik.setFieldValue(
+                                                      `colourWithSize.${index}.size`,
+                                                      nextValue
+                                                    );
+                                                  }
+                                                } else {
+                                                  if (
+                                                    formik.values.colourWithSize[
+                                                      index
+                                                    ].size.includes(v.id)
+                                                  ) {
+                                                    let newArray = [
+                                                      ...formik.values.colourWithSize[index].size,
+                                                    ];
+                                                    const indexSize = newArray.findIndex(
+                                                      (size) => size === v.id
+                                                    );
+                                                    newArray.splice(indexSize, 1);
+                                                    formik.setFieldValue(
+                                                      `colourWithSize.${index}.size`,
+                                                      newArray
+                                                    );
+                                                  }
+                                                }
+                                              }}
+                                            />
+                                          ))} */}
+                                            ;
+                                          </Box>
+                                          <Form.Input
+                                            type="hidden"
+                                            error={formik.errors.colourWithSize}
+                                          />
+                                        </div>
+                                        <IconButton onClick={() => remove(index)}>
+                                          <RemoveIcon />
+                                        </IconButton>
+                                      </div>
+                                    </Form.Group>
+                                  </div>
+                                  <IconButton
+                                    onClick={(e) => {
+                                      useEffect(() => {
+                                        formik.values.colourWithSize.push({
+                                          id: index + 1,
+                                          colour: "",
+                                          size: [],
+                                        });
+                                      }, [formik.values.colourWithSize]);
                                     }}
                                   >
-                                    {size.map((item) => (
-                                      <Form.Checkbox
-                                        label={item.size_name}
-                                        name={`colourWithSize.${index}.size.${item}`}
-                                        id={item.size_name}
-                                        value={item.size_name}
-                                        onChange={(e, v) => {
-                                          if (v.checked) {
-                                            if (
-                                              formik.values.colourWithSize[index].size.includes(
-                                                v.id
-                                              )
-                                            ) {
-                                              const nextValue = formik.values.colourWithSize[
-                                                index
-                                              ].size.filter((value) => value !== v.id);
-                                              formik.setFieldValue(
-                                                `colourWithSize.${index}.size`,
-                                                nextValue
-                                              );
-                                            } else {
-                                              const nextValue = formik.values.colourWithSize[
-                                                index
-                                              ].size.concat(v.id);
-                                              formik.setFieldValue(
-                                                `colourWithSize.${index}.size`,
-                                                nextValue
-                                              );
-                                            }
-                                          } else {
-                                            if (
-                                              formik.values.colourWithSize[index].size.includes(
-                                                v.id
-                                              )
-                                            ) {
-                                              let newArray = [
-                                                ...formik.values.colourWithSize[index].size,
-                                              ];
-                                              const indexSize = newArray.findIndex(
-                                                (size) => size === v.id
-                                              );
-                                              newArray.splice(indexSize, 1);
-                                              formik.setFieldValue(
-                                                `colourWithSize.${index}.size`,
-                                                newArray
-                                              );
-                                            }
-                                          }
-                                        }}
-                                      />
-                                    ))}
-                                  </Box>
-                                  <Form.Input type="hidden" error={formik.errors.sizeOption} />
-                                </div>
-                                <IconButton onClick={() => remove(index)}>
-                                  <RemoveIcon />
-                                </IconButton>
-                                <IconButton
-                                  onClick={() =>
-                                    push({
-                                      colour: "",
-                                      size: [],
-                                    })
-                                  }
-                                >
-                                  <AddIcon />
-                                </IconButton>
-                              </div>
-                            </>
-                          ))}
-                      </Form.Group>
-                    )}
-                  >
-                    {/* {inputFields.length !== 1 ? (
-                        
-                      ) : (
-                        <></>
-                      )} */}
-                  </FieldArray>
-                  {/* </div>
-                ))} */}
+                                    <AddIcon />
+                                  </IconButton>
+                                </>
+                              ))}
+                          </>
+                        )}
+                      >
+                        {/* {inputFields.length !== 1 ? (
+                    
+                  ) : (
+                    <></>
+                  )} */}
+                      </FieldArray>
+                      {/* </div>
+            ))} */}
 
-                  <Form.TextArea
-                    label="Miêu tả"
-                    placeholder="Cho khách hàng thêm thông tin về sản phẩm..."
-                    name="description"
-                    onChange={formik.handleChange}
-                    value={formik.values.description}
-                    error={formik.errors.description}
-                  />
-                </div>
-                <div className="productTopRight">
-                  <div style={{ margin: 10 }}>
-                    <Label as="a" color="teal" tag>
-                      Hình ảnh sản phẩm
-                    </Label>
-                  </div>
-                  <div className="productUpload">
-                    <div className="upload-image">
-                      <section>
-                        <label htmlFor="icon-button-file">
-                          {selectedImgs.length >= 0 &&
-                            (selectedImgs.length > 10 ? (
-                              <p className="error">
-                                You can't upload more than 10 image! <br />
-                                <span>
-                                  Please delete <b>{selectedImgs.length - 10}</b> of them
-                                </span>
-                              </p>
-                            ) : (
-                              <div className="upload-img">
-                                + Thêm hình <br />
-                                <span>Tối đa 10 hình nha!!!</span>
-                                <Input
-                                  accept="image/*"
-                                  id="icon-button-file"
-                                  type="file"
-                                  onChange={selectedImg}
-                                  multiple
-                                />
-                                <IconButton
-                                  color="primary"
-                                  aria-label="upload picture"
-                                  component="span"
-                                >
-                                  <Publish />
-                                </IconButton>
-                              </div>
-                            ))}
-                        </label>
-                      </section>
+                      <Form.TextArea
+                        label="Miêu tả"
+                        placeholder="Cho khách hàng thêm thông tin về sản phẩm..."
+                        name="description"
+                        onChange={formik.handleChange}
+                        value={formik.values.description}
+                        error={formik.errors.description}
+                      />
                     </div>
+                    <div className="productTopRight">
+                      <div style={{ margin: 10 }}>
+                        <Label as="a" color="teal" tag>
+                          Hình ảnh sản phẩm
+                        </Label>
+                      </div>
+                      <div className="productUpload">
+                        <div className="upload-image">
+                          <section>
+                            <label htmlFor="icon-button-file">
+                              {selectedImgs.length >= 0 &&
+                                (selectedImgs.length > 10 ? (
+                                  <p className="error">
+                                    You can't upload more than 10 image! <br />
+                                    <span>
+                                      Please delete <b>{selectedImgs.length - 10}</b> of them
+                                    </span>
+                                  </p>
+                                ) : (
+                                  <div className="upload-img">
+                                    + Thêm hình <br />
+                                    <span>Tối đa 10 hình nha!!!</span>
+                                    <Input
+                                      accept="image/*"
+                                      id="icon-button-file"
+                                      type="file"
+                                      onChange={selectedImg}
+                                      multiple
+                                    />
+                                    <IconButton
+                                      color="primary"
+                                      aria-label="upload picture"
+                                      component="span"
+                                    >
+                                      <Publish />
+                                    </IconButton>
+                                  </div>
+                                ))}
+                            </label>
+                          </section>
+                        </div>
 
-                    <div className="images">
-                      {selectedImgs.length === 0 ? (
-                        <Stack
-                          direction="column"
-                          alignItems="center"
-                          justifyContent="center"
-                          sx={{
-                            width: 500,
-                            height: 450,
-                          }}
-                        >
-                          <Label>Hiện tại chưa có hình ảnh nào</Label>
-                        </Stack>
-                      ) : (
-                        <ImageList
-                          sx={{
-                            width: 500,
-                            height: 450,
-                            // Promote the list into its own layer in Chrome. This costs memory, but helps keeping high FPS.
-                            transform: "translateZ(0)",
-                          }}
-                          rowHeight={200}
-                          gap={1}
-                        >
-                          {selectedImgs &&
-                            selectedImgs.map((item, index) => {
-                              console.log(item);
-                              const cols = index === 0 ? 2 : 1;
-                              const rows = index === 0 ? 2 : 1;
-                              return (
-                                <ImageListItem key={item} cols={cols} rows={rows}>
-                                  <img
-                                    src={item}
-                                    width="auto"
-                                    height="auto"
-                                    // {...srcset(item, 250, 200, rows, cols)}
-                                    loading="lazy"
-                                    alt={item}
-                                  />
-                                  {/* {loading} ? (
+                        <div className="images">
+                          {selectedImgs.length === 0 ? (
                             <Stack
-                              width="100%"
-                              height="100%"
                               direction="column"
                               alignItems="center"
                               justifyContent="center"
+                              sx={{
+                                width: 500,
+                                height: 450,
+                              }}
                             >
-                              <CircularProgress />
+                              <Label>Hiện tại chưa có hình ảnh nào</Label>
                             </Stack>
-                            ) : (
-                            
-                            ) */}
-                                  <ImageListItemBar
-                                    sx={{
-                                      background:
-                                        "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, " +
-                                        "rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)",
-                                    }}
-                                    position="top"
-                                    onClick={() => selectDelete(item)}
-                                    actionIcon={
-                                      <IconButton
-                                        sx={{ color: "white !important" }}
-                                        aria-label="Delete"
-                                        style={{ margin: 10 }}
-                                        size="large"
-                                      >
-                                        <DeleteForeverIcon /> Delete
-                                      </IconButton>
-                                    }
-                                    actionPosition="left"
-                                  />
-                                </ImageListItem>
-                              );
-                            })}
-                        </ImageList>
-                      )}
+                          ) : (
+                            <ImageList
+                              sx={{
+                                width: 500,
+                                height: 450,
+                                // Promote the list into its own layer in Chrome. This costs memory, but helps keeping high FPS.
+                                transform: "translateZ(0)",
+                              }}
+                              rowHeight={200}
+                              gap={1}
+                            >
+                              {selectedImgs &&
+                                selectedImgs.map((item, index) => {
+                                  console.log(item);
+                                  const cols = index === 0 ? 2 : 1;
+                                  const rows = index === 0 ? 2 : 1;
+                                  return (
+                                    <ImageListItem key={item} cols={cols} rows={rows}>
+                                      <img
+                                        src={item}
+                                        width="auto"
+                                        height="auto"
+                                        // {...srcset(item, 250, 200, rows, cols)}
+                                        loading="lazy"
+                                        alt={item}
+                                      />
+                                      {/* {loading} ? (
+                        <Stack
+                          width="100%"
+                          height="100%"
+                          direction="column"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          <CircularProgress />
+                        </Stack>
+                        ) : (
+                        
+                        ) */}
+                                      <ImageListItemBar
+                                        sx={{
+                                          background:
+                                            "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, " +
+                                            "rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)",
+                                        }}
+                                        position="top"
+                                        onClick={() => selectDelete(item)}
+                                        actionIcon={
+                                          <IconButton
+                                            sx={{ color: "white !important" }}
+                                            aria-label="Delete"
+                                            style={{ margin: 10 }}
+                                            size="large"
+                                          >
+                                            <DeleteForeverIcon /> Delete
+                                          </IconButton>
+                                        }
+                                        actionPosition="left"
+                                      />
+                                    </ImageListItem>
+                                  );
+                                })}
+                            </ImageList>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
+                  <div className="productBottom">
+                    <Form.Button type="submit" color="green">
+                      Xác nhận
+                    </Form.Button>
+                  </div>
+                </Form>
               </div>
-              <div className="productBottom">
-                <Form.Button type="submit" color="green">
-                  Xác nhận
-                </Form.Button>
-              </div>
-            </Form>
-          </div>
+            );
+          }}
         </Formik>
       </div>
     </DashboardLayout>
