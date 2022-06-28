@@ -7,6 +7,10 @@ const colorApi = {
     const url = `${URL_ENTITY}`;
     return axios.get(url, params);
   },
+  getSearchListColor: (params) => {
+    const url = `${URL_ENTITY}`;
+    return axios.get(url, { params });
+  },
 };
 
 export default colorApi;

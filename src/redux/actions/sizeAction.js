@@ -6,17 +6,20 @@ import {
 } from "../../service/Validations/VarConstant";
 
 export const listSize = (keySearch) => async (dispatch) => {
+  const params = {
+    Size: keySearch,
+  };
   dispatch({ type: SIZE_LIST_REQUEST });
   try {
     if (!keySearch) {
       const data = await sizeApi.getListSize();
       dispatch({ type: SIZE_LIST_SUCCESS, payload: data.content });
       dispatch({ type: SIZE_LIST_FAIL, payload: "" });
+    } else {
+      const data = await sizeApi.getSearchListSize(params);
+      dispatch({ type: SIZE_LIST_SUCCESS, payload: data.content });
+      dispatch({ type: SIZE_LIST_FAIL, payload: "" });
     }
-    // else {
-    //   dispatch({ type: SIZE_LIST_SUCCESS, payload: data.content });
-    //   dispatch({ type: SIZE_LIST_FAIL, payload: "" });
-    // }
   } catch (error) {
     const message =
       error.respone && error.respone.content.message

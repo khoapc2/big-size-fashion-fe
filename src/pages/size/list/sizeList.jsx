@@ -21,12 +21,12 @@ import {
   GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
 
-import "./storeList.css";
+import "./sizeList.css";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import { listStore } from "../../../redux/actions/storeAction";
+import { listSize } from "../../../redux/actions/sizeAction";
 
-// import storeApi from "../../api/storeApi";
+// import sizeApi from "../../api/sizeApi";
 import Notification from "pages/components/dialog/Notification";
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
 
@@ -40,15 +40,15 @@ export default function SizeList() {
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
   // const [paging, setPaging] = useState({});
   //Test
-  const { data, error, loading } = useSelector((state) => state.storeList);
+  const { data, error, loading } = useSelector((state) => state.sizeList);
   const [page, setPage] = useState(1);
   const triggerReload = useSelector((state) => state.triggerReload);
   // const [keySearch, setKeySearch] = useState("");
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
-  console.log(data);
+  
   useEffect(() => {
-    dispatch(listStore(searchText));
+    dispatch(listSize(searchText));
   }, [dispatch, page, searchText, triggerReload]);
 
   let inputSearchHandler = (e) => {
@@ -71,11 +71,11 @@ export default function SizeList() {
   function handleRowClick(rowData) {
     // console.log(rowData);
     // <div>
-    //   <Route path={`/store/:${rowData}`}>
+    //   <Route path={`/size/:${rowData}`}>
     //     <Product />
     //   </Route>
     // </div>
-    // <Link to={`/store/:${rowData.store_id}`}></Link>;
+    // <Link to={`/size/:${rowData.size_id}`}></Link>;
   }
 
   const handleDelete = (id) => {
@@ -93,7 +93,7 @@ export default function SizeList() {
   function NoRowsOverlay() {
     return (
       <Stack height="100%" alignItems="center" justifyContent="center">
-        Không tìm thấy kích cỡ nào
+        Không tìm thấy khuyến mãi nào
       </Stack>
     );
   }
@@ -101,24 +101,18 @@ export default function SizeList() {
   function NoResultsOverlay() {
     return (
       <Stack height="100%" alignItems="center" justifyContent="center">
-        Không tìm thấy kích cỡ nào
+        Không tìm thấy khuyến mãi nào
       </Stack>
     );
   }
 
   const columns = [
-    { field: "store_id", headerName: "ID", width: 90 },
+    { field: "size_id", headerName: "ID", width: 90 },
     {
-      field: "store_address",
-      headerName: "Address",
+      field: "size_name",
+      headerName: "Size",
       width: 200,
-      renderCell: (params) => <div className="storeListItem">{params.row.store_address}</div>,
-    },
-    {
-      field: "store_phone",
-      headerName: "Phone",
-      width: 160,
-      renderCell: (params) => <div>{params.row.store_phone}</div>,
+      renderCell: (params) => <div className="sizeListItem">{params.row.size_name}</div>,
     },
     {
       field: "status",
@@ -131,18 +125,18 @@ export default function SizeList() {
       width: 250,
       renderCell: (params) => (
         <>
-          <Link to={`/store/:${params.row.store_id}`}>
-            <button type="submit" className="storeListEdit">
+          <Link to={`/size/:${params.row.size_id}`}>
+            <button type="submit" className="sizeListEdit">
               Edit
             </button>
-            <Link to={`/store/:${params.row.store_id}`}>
-              <button type="submit" className="storeListEdit">
+            <Link to={`/size/:${params.row.size_id}`}>
+              <button type="submit" className="sizeListEdit">
                 View
               </button>
             </Link>
           </Link>
           <Button
-            className="storeListDelete"
+            className="sizeListDelete"
             onClick={() =>
               setConfirmDialog({
                 isOpen: true,
@@ -165,7 +159,7 @@ export default function SizeList() {
     <DashboardLayout>
       <DashboardNavbar />
       <FormControl sx={{ m: 1, width: "35ch" }} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment">Tìm kiếm địa chỉ</InputLabel>
+        <InputLabel htmlFor="outlined-adornment">Tìm kiếm khuyến mãi</InputLabel>
         <OutlinedInput
           id="outlined-adornment"
           value={searchText}
@@ -181,16 +175,16 @@ export default function SizeList() {
               </IconButton>
             </InputAdornment>
           }
-          label="Tìm kiếm địa chỉ"
+          label="Tìm kiếm khuyến mãi"
         />
       </FormControl>
-      <Link to="/newstore">
-        <button type="button" className="storeAddButton">
-          Tạo cửa hàng mới
+      <Link to="/newsize">
+        <button type="button" className="sizeAddButton">
+          Tạo khuyến mãi mới
         </button>
       </Link>
 
-      <div className="storeList">
+      <div className="sizeList">
         <DataGrid
           sx={{
             "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {
@@ -201,7 +195,7 @@ export default function SizeList() {
             },
           }}
           loading={loading}
-          getRowId={(r) => r.store_id}
+          getRowId={(r) => r.size_id}
           rows={data}
           disableSelectionOnClick
           columns={columns}
@@ -213,7 +207,7 @@ export default function SizeList() {
           }
           onRowClick={(param) => (
             <>
-              <Link to={`/store/:${param.row.store_id}`}></Link>
+              <Link to={`/size/:${param.row.size_id}`}></Link>
             </>
           )}
           components={{

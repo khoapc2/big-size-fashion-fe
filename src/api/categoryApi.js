@@ -7,6 +7,10 @@ const categoryApi = {
     const url = `${URL_ENTITY}`;
     return axios.get(url, params);
   },
+  getSearchListCategory: (params) => {
+    const url = `${URL_ENTITY}`;
+    return axios.get(url, { params });
+  },
 };
 
 export default categoryApi;

@@ -40,6 +40,8 @@ import Dashboard from "layouts/dashboard";
 import Products from "pages/productList/ProductList";
 import Billing from "layouts/billing";
 import Stores from "pages/stores/list/StoreList";
+import Promotions from "pages/promotion/list/promotionList";
+import Sizes from "pages/size/list/sizeList";
 
 // import RTL from "layouts/rtl";
 import Notifications from "layouts/notifications";
@@ -94,11 +96,19 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Voucher",
-    key: "voucher",
+    name: "Size",
+    key: "size",
     icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/products",
-    component: <Products />,
+    route: "/sizes",
+    component: <Sizes />,
+  },
+  {
+    type: "collapse",
+    name: "Promotion",
+    key: "promotion",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/promotions",
+    component: <Promotions />,
   },
   {
     type: "collapse",

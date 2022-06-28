@@ -6,6 +6,7 @@ import { listStoreReducer } from "redux/reducers/storeReducer";
 import { listSizeReducer } from "redux/reducers/sizeReducer";
 import { listColorReducer } from "redux/reducers/colorReducer";
 import { listCategoryReducer } from "redux/reducers/categoryReducer";
+import { listPromotionReducer } from "redux/reducers/promotionReducer";
 
 const initialState = {
   userLogin: {
@@ -21,6 +22,7 @@ const reducer = combineReducers({
   sizeList: listSizeReducer,
   colorList: listColorReducer,
   categoryList: listCategoryReducer,
+  promotionList: listPromotionReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

@@ -52,6 +52,8 @@ import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 
 import Stores from "pages/stores/list/StoreList";
+import Promotions from "pages/promotion/list/promotionList";
+import Sizes from "pages/size/list/sizeList";
 
 // import Fader from "pages/components/Fader";
 // import { onMessageListener } from "./firebase/firebase";
@@ -211,6 +213,8 @@ export default function App() {
           <Route path="/product:productId" element={<Product />} />
           <Route path="newproduct" element={<NewProduct />} />
           <Route path="/stores" element={<Stores />} />
+          <Route path="/promotions" element={<Promotions />} />
+          <Route path="/sizes" element={<Sizes />} />
         </Routes>
       </ThemeProvider>
     </CacheProvider>
@@ -268,6 +272,8 @@ export default function App() {
         <Route path="newproduct" element={<NewProduct />} />
         <Route path="*" element={<Navigate to="/sign-in" />} />
         <Route path="/stores" element={<Stores />} />
+        <Route path="/promotions" element={<Promotions />} />
+        <Route path="/sizes" element={<Sizes />} />
         {/* <Route path="/product/:productId">
           <Product />
         </Route> */}

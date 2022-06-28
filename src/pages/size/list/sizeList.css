@@ -1,4 +1,4 @@
-.productList {
+.sizeList {
   flex: 4;
   /* min-height: 600px; */
   height: 600px;
@@ -6,12 +6,12 @@
   /* width: 1350px; */
 }
 
-.productListItem {
+.sizeListItem {
   display: flex;
   align-items: center;
 }
 
-.productListImg {
+.sizeListImg {
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -19,7 +19,7 @@
   margin-right: 10px;
 }
 
-.productListEdit {
+.sizeListEdit {
   border: none;
   border-radius: 10px;
   padding: 5px 10px;
@@ -29,7 +29,7 @@
   margin-right: 20px;
 }
 
-.productListDelete {
+.sizeListDelete {
   color: red;
   cursor: pointer;
 }
@@ -48,8 +48,8 @@
   align-content: stretch;
 }
 
-.productAddButton {
-  width: 200px;
+.sizeAddButton {
+  width: 100px;
   border: none;
   padding: 10px;
   margin-top: 8px;

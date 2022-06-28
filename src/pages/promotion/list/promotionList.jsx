@@ -21,34 +21,35 @@ import {
   GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
 
-import "./storeList.css";
+import "./promotionList.css";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import { listStore } from "../../../redux/actions/storeAction";
+import { listPromotion } from "../../../redux/actions/promotionAction";
 
-// import storeApi from "../../api/storeApi";
+// import promotionApi from "../../api/promotionApi";
 import Notification from "pages/components/dialog/Notification";
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
+
 
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
 styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
 document.head.appendChild(styleLink);
 
-export default function SizeList() {
+export default function PromotionList() {
   const [notify, setNotify] = useState({ isOpen: false, message: "", type: "" });
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
   // const [paging, setPaging] = useState({});
   //Test
-  const { data, error, loading } = useSelector((state) => state.storeList);
+  const { data, error, loading } = useSelector((state) => state.promotionList);
   const [page, setPage] = useState(1);
   const triggerReload = useSelector((state) => state.triggerReload);
   // const [keySearch, setKeySearch] = useState("");
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
-  console.log(data);
+  // console.log(data);
   useEffect(() => {
-    dispatch(listStore(searchText));
+    dispatch(listPromotion(searchText));
   }, [dispatch, page, searchText, triggerReload]);
 
   let inputSearchHandler = (e) => {
@@ -71,11 +72,11 @@ export default function SizeList() {
   function handleRowClick(rowData) {
     // console.log(rowData);
     // <div>
-    //   <Route path={`/store/:${rowData}`}>
+    //   <Route path={`/promotion/:${rowData}`}>
     //     <Product />
     //   </Route>
     // </div>
-    // <Link to={`/store/:${rowData.store_id}`}></Link>;
+    // <Link to={`/promotion/:${rowData.promotion_id}`}></Link>;
   }
 
   const handleDelete = (id) => {
@@ -93,7 +94,7 @@ export default function SizeList() {
   function NoRowsOverlay() {
     return (
       <Stack height="100%" alignItems="center" justifyContent="center">
-        Không tìm thấy kích cỡ nào
+        Không tìm thấy khuyến mãi nào
       </Stack>
     );
   }
@@ -101,29 +102,45 @@ export default function SizeList() {
   function NoResultsOverlay() {
     return (
       <Stack height="100%" alignItems="center" justifyContent="center">
-        Không tìm thấy kích cỡ nào
+        Không tìm thấy khuyến mãi nào
       </Stack>
     );
   }
 
   const columns = [
-    { field: "store_id", headerName: "ID", width: 90 },
+    { field: "promotion_id", headerName: "ID", width: 90 },
     {
-      field: "store_address",
+      field: "promotion_name",
       headerName: "Address",
       width: 200,
-      renderCell: (params) => <div className="storeListItem">{params.row.store_address}</div>,
+      renderCell: (params) => (
+        <div className="promotionListItem">
+          {params.row.promotion_name}
+        </div>
+      ),
     },
     {
-      field: "store_phone",
-      headerName: "Phone",
-      width: 160,
-      renderCell: (params) => <div>{params.row.store_phone}</div>,
+        field: "promotion_value",
+        headerName: "Value",
+        width: 160,
+        renderCell: (params) => <div>{params.row.promotion_value}</div>,
+    },
+    {
+        field: "apply_date",
+        headerName: "Apply",
+        width: 160,
+        renderCell: (params) => <div>{params.row.apply_date}</div>,
+    },
+    {
+        field: "expired_date",
+        headerName: "Expire",
+        width: 160,
+        renderCell: (params) => <div>{params.row.expired_date}</div>,
     },
     {
       field: "status",
       headerName: "Status",
-      width: 120,
+      width: 120
     },
     {
       field: "action",
@@ -131,18 +148,18 @@ export default function SizeList() {
       width: 250,
       renderCell: (params) => (
         <>
-          <Link to={`/store/:${params.row.store_id}`}>
-            <button type="submit" className="storeListEdit">
+          <Link to={`/promotion/:${params.row.promotion_id}`}>
+            <button type="submit" className="promotionListEdit">
               Edit
             </button>
-            <Link to={`/store/:${params.row.store_id}`}>
-              <button type="submit" className="storeListEdit">
+            <Link to={`/promotion/:${params.row.promotion_id}`}>
+              <button type="submit" className="promotionListEdit">
                 View
               </button>
             </Link>
           </Link>
           <Button
-            className="storeListDelete"
+            className="promotionListDelete"
             onClick={() =>
               setConfirmDialog({
                 isOpen: true,
@@ -165,7 +182,7 @@ export default function SizeList() {
     <DashboardLayout>
       <DashboardNavbar />
       <FormControl sx={{ m: 1, width: "35ch" }} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment">Tìm kiếm địa chỉ</InputLabel>
+        <InputLabel htmlFor="outlined-adornment">Tìm kiếm khuyến mãi</InputLabel>
         <OutlinedInput
           id="outlined-adornment"
           value={searchText}
@@ -181,27 +198,27 @@ export default function SizeList() {
               </IconButton>
             </InputAdornment>
           }
-          label="Tìm kiếm địa chỉ"
+          label="Tìm kiếm khuyến mãi"
         />
       </FormControl>
-      <Link to="/newstore">
-        <button type="button" className="storeAddButton">
-          Tạo cửa hàng mới
+      <Link to="/newpromotion">
+        <button type="button" className="promotionAddButton">
+          Tạo khuyến mãi mới
         </button>
       </Link>
 
-      <div className="storeList">
+      <div className="promotionList">
         <DataGrid
           sx={{
             "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {
               outline: "none",
             },
-            "& .MuiDataGrid-cell:hover": {
-              color: "green",
+            '& .MuiDataGrid-cell:hover': {
+              color: 'green'
             },
           }}
           loading={loading}
-          getRowId={(r) => r.store_id}
+          getRowId={(r) => r.promotion_id}
           rows={data}
           disableSelectionOnClick
           columns={columns}
@@ -213,7 +230,7 @@ export default function SizeList() {
           }
           onRowClick={(param) => (
             <>
-              <Link to={`/store/:${param.row.store_id}`}></Link>
+              <Link to={`/promotion/:${param.row.promotion_id}`}></Link>
             </>
           )}
           components={{
