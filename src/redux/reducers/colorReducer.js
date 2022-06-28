@@ -4,7 +4,18 @@ import {
   COLOR_LIST_FAIL,
 } from "../../service/Validations/VarConstant";
 
-export const listColorReducer = (state = { loading: true, color: [], error: "" }, action) => {
+function formatArray(payload) {
+  let result = [];
+  const newArray = [...payload];
+  result = newArray.map(({ colour_id, colour_name }) => ({
+    key: colour_id.toString(),
+    text: colour_name,
+    value: colour_id.toString(),
+  }));
+  return result;
+}
+
+export const listColorReducer = (state = { loading: true, colour: [], error: "" }, action) => {
   switch (action.type) {
     case COLOR_LIST_REQUEST:
       return { ...state, loading: true };
@@ -12,7 +23,7 @@ export const listColorReducer = (state = { loading: true, color: [], error: "" }
       return {
         ...state,
         loading: false,
-        color: action.payload,
+        colour: [...formatArray(action.payload)],
       };
     case COLOR_LIST_FAIL:
       return { ...state, loading: false, error: action.payload };
