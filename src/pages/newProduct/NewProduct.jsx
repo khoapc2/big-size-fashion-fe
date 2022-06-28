@@ -44,6 +44,7 @@ export default function NewProduct() {
   const dispatch = useDispatch();
 
   const [selectedImgs, setSelectedImgs] = useState([]);
+  const [addToggle, setAddToggle] = useState(false);
 
   const [price, setPrice] = useState(0);
   const { size } = useSelector((state) => state.sizeList);
@@ -53,8 +54,8 @@ export default function NewProduct() {
 
   console.log(typeof colour);
   console.log(colour);
-  console.log(typeof size);
-  console.log(size);
+  // console.log(typeof size);
+  // console.log(size);
   console.log(typeof category);
   console.log(category);
   console.log(typeof options);
@@ -67,12 +68,20 @@ export default function NewProduct() {
   //     value: item.colour_name,
   //   };
   // });
+  const handleClick = ({ values }) => {
+    values.colourWithSize.push({
+      id: values.colourWithSize - 1,
+      colour: "",
+      size: [],
+    });
+  };
 
   useEffect(() => {
     const status = true;
-    dispatch(listSize());
+    dispatch(listSize({ status }));
     dispatch(listColor({ status }));
     dispatch(listCategory());
+    console.log("Render");
   }, [dispatch, triggerReload]);
 
   const onSubmit = (e) => {
@@ -165,7 +174,7 @@ export default function NewProduct() {
             price: 0,
             colourWithSize: [
               { id: 0, colour: "", size: [] },
-              // { id: 1, colour: "A", size: [] },
+              // { id: 1, colour: "", size: [] },
             ],
           }}
           onSubmit={onSubmit}
@@ -247,10 +256,10 @@ export default function NewProduct() {
                             {formik.values.colourWithSize.length > 0 &&
                               formik.values.colourWithSize.map((node, index) => (
                                 <>
-                                  <div key={node.id}>
+                                  <div key={node.id.toString()}>
                                     <Form.Group widths="equal">
                                       <Form.Select
-                                        key={index}
+                                        key={node.id.toString()}
                                         name={`colourWithSize[${index}].colour`}
                                         fluid
                                         label="Màu sắc"
@@ -289,20 +298,20 @@ export default function NewProduct() {
                                               gap: 2,
                                             }}
                                           >
-                                            <Field
-                                            // name={`colourWithSize.${index}.size.${sizeIndex}`}
-                                            >
+                                            <Field name={`colourWithSize[${index}].size`}>
                                               {({ field }) => {
                                                 return size.map((sizeItem, sizeIndex) => {
                                                   return (
-                                                    <Field
-                                                      type="checkbox"
-                                                      id={sizeIndex}
-                                                      value={sizeItem.size_name}
-                                                      label={sizeItem.size_name}
-                                                      name={`colourWithSize[${index}].size`}
-                                                      as={Checkbox}
-                                                    />
+                                                    <Label>
+                                                      <Field
+                                                        type="checkbox"
+                                                        id={sizeIndex}
+                                                        value={sizeItem.size_id}
+                                                        name={`colourWithSize[${index}].size`}
+                                                        as={Checkbox}
+                                                      />
+                                                      {sizeItem.size_name}
+                                                    </Label>
                                                   );
                                                 });
                                               }}
@@ -358,7 +367,6 @@ export default function NewProduct() {
                                               }}
                                             />
                                           ))} */}
-                                            ;
                                           </Box>
                                           <Form.Input
                                             type="hidden"
@@ -371,21 +379,19 @@ export default function NewProduct() {
                                       </div>
                                     </Form.Group>
                                   </div>
-                                  <IconButton
-                                    onClick={(e) => {
-                                      useEffect(() => {
-                                        formik.values.colourWithSize.push({
-                                          id: index + 1,
-                                          colour: "",
-                                          size: [],
-                                        });
-                                      }, [formik.values.colourWithSize]);
-                                    }}
-                                  >
-                                    <AddIcon />
-                                  </IconButton>
                                 </>
                               ))}
+                            <IconButton
+                            // onClick={() =>
+                            //   push({
+                            //     id: formik.values.colourWithSize.length - 1,
+                            //     color: "",
+                            //     size: [],
+                            //   })
+                            // }
+                            >
+                              <AddIcon />
+                            </IconButton>
                           </>
                         )}
                       >

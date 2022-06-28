@@ -8,9 +8,9 @@ function resultArr(payload) {
   let result = [];
   const newArray = [...payload];
   result = newArray.map(({ category_id, category_name }) => ({
-    key: category_id,
+    key: category_id.toString(),
     text: category_name,
-    value: category_id,
+    value: category_id.toString(),
   }));
   return result;
 }

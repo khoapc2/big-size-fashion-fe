@@ -11,11 +11,14 @@ export const SchemaErrorCreateProduct = Yup.object().shape({
   price: Yup.number().required("Giá không được bỏ trống"),
   colourWithSize: Yup.array()
     .of(
-      Yup.object({
-        id: Yup.number().required(),
-        colour: Yup.string().required("Màu sắc không được bỏ trống"),
-        size: Yup.array().required("Kích thước không được bỏ trống"),
-      })
+      Yup.object()
+        .shape({
+          id: Yup.number().required(),
+          colour: Yup.string().strict().required("Màu sắc không được bỏ trống"),
+          size: Yup.array().strict().required("Kích thước không được bỏ trống"),
+        })
+        .strict()
+        .required("Không được bỏ trống")
     )
-    .required(),
+    .required("Không được bỏ trống"),
 });

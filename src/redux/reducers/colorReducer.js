@@ -8,9 +8,9 @@ function formatArray(payload) {
   let result = [];
   const newArray = [...payload];
   result = newArray.map(({ colour_id, colour_name }) => ({
-    key: colour_id,
+    key: colour_id.toString(),
     text: colour_name,
-    value: colour_id,
+    value: colour_id.toString(),
   }));
   return result;
 }
