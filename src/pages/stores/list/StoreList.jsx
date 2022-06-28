@@ -93,7 +93,7 @@ export default function SizeList() {
   function NoRowsOverlay() {
     return (
       <Stack height="100%" alignItems="center" justifyContent="center">
-        Không tìm thấy kích cỡ nào
+        Không tìm thấy cửa hàng nào
       </Stack>
     );
   }
@@ -101,33 +101,34 @@ export default function SizeList() {
   function NoResultsOverlay() {
     return (
       <Stack height="100%" alignItems="center" justifyContent="center">
-        Không tìm thấy kích cỡ nào
+        Không tìm thấy cửa hàng nào
       </Stack>
     );
   }
 
   const columns = [
-    { field: "store_id", headerName: "ID", width: 90 },
+    { field: "store_id", headerName: "Mã cửa hàng", width: 150 },
     {
       field: "store_address",
-      headerName: "Address",
+      headerName: "Địa chỉ",
       width: 200,
       renderCell: (params) => <div className="storeListItem">{params.row.store_address}</div>,
     },
     {
       field: "store_phone",
-      headerName: "Phone",
+      headerName: "Điện Thoại",
       width: 160,
       renderCell: (params) => <div>{params.row.store_phone}</div>,
     },
     {
       field: "status",
-      headerName: "Status",
+      headerName: "Tình trạng",
       width: 120,
+      renderCell: (params) => <div>{params.row.store_phone ? "Hoạt động" : "Đóng cửa"}</div>,
     },
     {
       field: "action",
-      headerName: "Action",
+      headerName: "Thao tác",
       width: 250,
       renderCell: (params) => (
         <>

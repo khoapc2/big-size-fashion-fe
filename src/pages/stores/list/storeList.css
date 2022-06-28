@@ -49,7 +49,7 @@
 }
 
 .storeAddButton {
-  width: 100px;
+  width: fit-content;
   border: none;
   padding: 10px;
   margin-top: 8px;

@@ -4,6 +4,7 @@ import {
   USER_LOGIN_SUCCESS,
   USER_LOGIN_FAIL,
   TRIGGER_RELOAD,
+  USER_LOGOUT,
 } from "../../service/Validations/VarConstant";
 
 export const guestLogin = (username, password) => async (dispatch) => {
@@ -17,7 +18,6 @@ export const guestLogin = (username, password) => async (dispatch) => {
     //   username,
     //   password,
     // });
-    console.log(content);
     dispatch({ type: USER_LOGIN_SUCCESS, payload: content });
     localStorage.setItem("user", JSON.stringify(content));
   } catch (error) {
@@ -35,4 +35,9 @@ export const triggerReload = () => async (dispatch) => {
     type: TRIGGER_RELOAD,
     payload: {},
   });
+};
+
+export const logout = () => (dispatch) => {
+  localStorage.removeItem("user");
+  dispatch({ type: USER_LOGOUT });
 };
