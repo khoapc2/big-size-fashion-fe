@@ -3,6 +3,7 @@ import React from "react";
 import { Icon, Button, Comment, Header } from "semantic-ui-react";
 
 function Feedbacks(mode) {
+  console.log(mode)
   return (
     <Comment.Group style={{ margin: 10 }}>
       <Header as="h3" dividing>

@@ -5,10 +5,10 @@ import "./product.css";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import { Form, Label, Container } from "semantic-ui-react";
-import Box from "@mui/material/Box";
 import Feedbacks from "../components/feedback/feedbackList";
 
 const options = [
@@ -40,10 +40,23 @@ export default function Product() {
                 <Form.Input fluid value="cc" label="Chủng loại" placeholder="Chủng loại" readOnly />
                 <Form.Input fluid value="cc" label="Giới tính" placeholder="Giới tính" readOnly />
               </Form.Group>
-              <Form.Group widths="equal" style={{ backgroundColor: "#d9d9dc" }}>
-                <Form.Input fluid value="cc" label="Màu sắc" placeholder="Màu sắc" readOnly />
-                <Form.Input fluid value="cc" label="Kích cỡ" placeholder="Kích cỡ" readOnly />
+              <Form.Group widths="equal" style={{ backgroundColor: "#d9d9dc", padding: 10 }}>
+                <Form.Input fluid value="Vang" label="Màu sắc" placeholder="Màu sắc" readOnly />
+                <Form.Input
+                  fluid
+                  value="XX, XXL, XXXL"
+                  label="Kích cỡ"
+                  placeholder="Kích cỡ"
+                  readOnly
+                />
               </Form.Group>
+              <Form.TextArea
+                label="Miêu tả"
+                placeholder="Cho khách hàng thêm thông tin về sản phẩm..."
+                name="description"
+                value="yeu em la dieu anh khong the ngo"
+                readOnly
+              />
             </Form>
           </div>
           <div className="productTopRight">
@@ -102,7 +115,7 @@ export default function Product() {
         </div>
       </div>
       <Container>
-        <Feedbacks />
+        <Feedbacks mode="edit" />
       </Container>
     </DashboardLayout>
   );
