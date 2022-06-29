@@ -3,6 +3,7 @@ import {
   COLOR_LIST_REQUEST,
   COLOR_LIST_SUCCESS,
   COLOR_LIST_FAIL,
+  COLOR_LIST_ALL_SUCCESS,
 } from "../../service/Validations/VarConstant";
 
 export const listColor =
@@ -15,7 +16,7 @@ export const listColor =
       if (!status) {
         if (!keySearch) {
           const data = await colorApi.getListColor();
-          dispatch({ type: COLOR_LIST_SUCCESS, payload: data.content });
+          dispatch({ type: COLOR_LIST_ALL_SUCCESS, payload: data.content });
           dispatch({ type: COLOR_LIST_FAIL, payload: "" });
         }
       } else {

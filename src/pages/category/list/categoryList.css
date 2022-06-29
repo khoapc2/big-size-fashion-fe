@@ -1,0 +1,62 @@
+.categoryList {
+  flex: 4;
+  /* min-height: 600px; */
+  height: 600px;
+  margin-left: 10px;
+  /* width: 1350px; */
+}
+
+.categoryListItem {
+  display: flex;
+  align-items: center;
+}
+
+.categoryListImg {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.categoryListEdit {
+  border: none;
+  border-radius: 10px;
+  padding: 5px 10px;
+  background-category: #3bb077;
+  category: white;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.categoryListDelete {
+  category: red;
+  cursor: pointer;
+}
+
+.search {
+  width: 35%;
+  margin: 10px;
+}
+
+.exportToExcel {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: stretch;
+  align-content: stretch;
+}
+
+.categoryAddButton {
+  width: 100px;
+  border: none;
+  padding: 10px;
+  margin-top: 8px;
+  background-category: teal;
+  category: white;
+  border-radius: 5px;
+  font-category: 16px;
+  cursor: pointer;
+  float: right;
+}

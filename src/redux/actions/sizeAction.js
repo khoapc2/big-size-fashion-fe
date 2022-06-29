@@ -15,6 +15,13 @@ export const listSize =
           const data = await sizeApi.getListSize();
           dispatch({ type: SIZE_LIST_SUCCESS, payload: data.content });
           dispatch({ type: SIZE_LIST_FAIL, payload: "" });
+        } else {
+          const params = {
+            Size: keySearch,
+          };
+          const data = await sizeApi.getSearchListSize(params);
+          dispatch({ type: SIZE_LIST_SUCCESS, payload: data.content });
+          dispatch({ type: SIZE_LIST_FAIL, payload: "" });
         }
       } else {
         const params = {

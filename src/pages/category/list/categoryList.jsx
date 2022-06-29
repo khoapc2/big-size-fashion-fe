@@ -21,12 +21,12 @@ import {
   GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
 
-import "./sizeList.css";
+import "./categoryList.css";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import { listSize } from "../../../redux/actions/sizeAction";
+import { listCategory } from "../../../redux/actions/categoryAction";
 
-// import sizeApi from "../../api/sizeApi";
+// import categoryApi from "../../api/categoryApi";
 import Notification from "pages/components/dialog/Notification";
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
 
@@ -35,12 +35,12 @@ styleLink.rel = "stylesheet";
 styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
 document.head.appendChild(styleLink);
 
-export default function SizeList() {
+export default function CategoryList() {
   const [notify, setNotify] = useState({ isOpen: false, message: "", type: "" });
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
   // const [paging, setPaging] = useState({});
   //Test
-  const { size, error, loading } = useSelector((state) => state.sizeList);
+  const { data, error, loading } = useSelector((state) => state.categoryList);
   const [page, setPage] = useState(1);
   const triggerReload = useSelector((state) => state.triggerReload);
   // const [keySearch, setKeySearch] = useState("");
@@ -48,7 +48,7 @@ export default function SizeList() {
   const [searchText, setSearchText] = useState("");
   
   useEffect(() => {
-    dispatch(listSize(searchText));
+    dispatch(listCategory(searchText));
   }, [dispatch, page, searchText, triggerReload]);
 
   let inputSearchHandler = (e) => {
@@ -71,11 +71,11 @@ export default function SizeList() {
   function handleRowClick(rowData) {
     // console.log(rowData);
     // <div>
-    //   <Route path={`/size/:${rowData}`}>
+    //   <Route path={`/category/:${rowData}`}>
     //     <Product />
     //   </Route>
     // </div>
-    // <Link to={`/size/:${rowData.size_id}`}></Link>;
+    // <Link to={`/category/:${rowData.category_id}`}></Link>;
   }
 
   const handleDelete = (id) => {
@@ -93,7 +93,7 @@ export default function SizeList() {
   function NoRowsOverlay() {
     return (
       <Stack height="100%" alignItems="center" justifyContent="center">
-        Không tìm thấy kích cỡ nào
+        Không tìm thấy màu sắc nào
       </Stack>
     );
   }
@@ -101,18 +101,18 @@ export default function SizeList() {
   function NoResultsOverlay() {
     return (
       <Stack height="100%" alignItems="center" justifyContent="center">
-        Không tìm thấy kích cỡ nào
+        Không tìm thấy màu sắc nào
       </Stack>
     );
   }
 
   const columns = [
-    { field: "size_id", headerName: "ID", width: 90 },
+    { field: "category_id", headerName: "ID", width: 90 },
     {
-      field: "size_name",
-      headerName: "Size",
+      field: "category_name",
+      headerName: "Category",
       width: 200,
-      renderCell: (params) => <div className="sizeListItem">{params.row.size_name}</div>,
+      renderCell: (params) => <div className="categoryListItem">{params.row.category_name}</div>,
     },
     {
       field: "status",
@@ -125,18 +125,18 @@ export default function SizeList() {
       width: 250,
       renderCell: (params) => (
         <>
-          <Link to={`/size/:${params.row.size_id}`}>
-            <button type="submit" className="sizeListEdit">
+          <Link to={`/category/:${params.row.category_id}`}>
+            <button type="submit" className="categoryListEdit">
               Edit
             </button>
-            <Link to={`/size/:${params.row.size_id}`}>
-              <button type="submit" className="sizeListEdit">
+            <Link to={`/category/:${params.row.category_id}`}>
+              <button type="submit" className="categoryListEdit">
                 View
               </button>
             </Link>
           </Link>
           <Button
-            className="sizeListDelete"
+            className="categoryListDelete"
             onClick={() =>
               setConfirmDialog({
                 isOpen: true,
@@ -159,7 +159,7 @@ export default function SizeList() {
     <DashboardLayout>
       <DashboardNavbar />
       <FormControl sx={{ m: 1, width: "35ch" }} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment">Tìm kiếm kích cỡ</InputLabel>
+        <InputLabel htmlFor="outlined-adornment">Tìm kiếm khuyến mãi</InputLabel>
         <OutlinedInput
           id="outlined-adornment"
           value={searchText}
@@ -175,16 +175,16 @@ export default function SizeList() {
               </IconButton>
             </InputAdornment>
           }
-          label="Tìm kiếm kích cỡ"
+          label="Tìm kiếm khuyến mãi"
         />
       </FormControl>
-      <Link to="/newsize">
-        <button type="button" className="sizeAddButton">
-          Tạo kích cỡ mới
+      <Link to="/newcategory">
+        <button type="button" className="categoryAddButton">
+          Tạo khuyến mãi mới
         </button>
       </Link>
 
-      <div className="sizeList">
+      <div className="categoryList">
         <DataGrid
           sx={{
             "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {
@@ -195,11 +195,11 @@ export default function SizeList() {
             },
           }}
           loading={loading}
-          getRowId={(r) => r.size_id}
-          rows={size}
+          getRowId={(r) => r.category_id}
+          rows={data}
           disableSelectionOnClick
           columns={columns}
-          pageSize={8}
+          pageCategory={8}
           data={(query) =>
             new Promise(() => {
               console.log(query);
@@ -207,7 +207,7 @@ export default function SizeList() {
           }
           onRowClick={(param) => (
             <>
-              <Link to={`/size/:${param.row.size_id}`}></Link>
+              <Link to={`/category/:${param.row.category_id}`}></Link>
             </>
           )}
           components={{
