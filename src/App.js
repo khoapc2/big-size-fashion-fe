@@ -54,6 +54,9 @@ import SignUp from "layouts/authentication/sign-up";
 import Stores from "pages/stores/list/StoreList";
 import Promotions from "pages/promotion/list/promotionList";
 import Sizes from "pages/size/list/sizeList";
+import Colors from "pages/color/list/colorList";
+import Categories from "pages/category/list/categoryList";
+import Employees from "pages/components/createForm/Employees";
 
 // import Fader from "pages/components/Fader";
 // import { onMessageListener } from "./firebase/firebase";
@@ -226,6 +229,9 @@ export default function App() {
         <Route path="/stores" element={<Stores />} />
         <Route path="/promotions" element={<Promotions />} />
         <Route path="/sizes" element={<Sizes />} />
+        <Route path="/colors" element={<Colors />} />
+        <Route path="/categories" element={<Categories />} />
+        <Route path="newstore" element={<Employees />} />
         {/* <Route path="/sizes" element={<Sizes />} /> */}
         <Route path="*" element={<Navigate to="/sign-in" />} />
         {/* <Route path="/product/:productId">

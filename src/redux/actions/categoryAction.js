@@ -11,7 +11,6 @@ export const listCategory = (keySearch) => async (dispatch) => {
     if (!keySearch) {
       const data = await categoryApi.getListCategory();
       dispatch({ type: CATEGORY_LIST_SUCCESS, payload: data.content });
-      console.log(data);
       dispatch({ type: CATEGORY_LIST_FAIL, payload: "" });
     }
   } catch (error) {

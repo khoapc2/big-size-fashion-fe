@@ -6,7 +6,6 @@ import {
 } from "../../service/Validations/VarConstant";
 
 export const listPromotion = (keySearch, page) => async (dispatch) => {
-  console.log("promotionAction");
   const params = {
     PromotionName: keySearch,
   };
@@ -14,7 +13,6 @@ export const listPromotion = (keySearch, page) => async (dispatch) => {
   try {
     if (!keySearch) {
       const data = await promotionApi.getListPromotion(page);
-      console.log(data);
       dispatch({ type: PROMOTION_LIST_SUCCESS, payload: data.content });
       dispatch({ type: PROMOTION_LIST_FAIL, payload: "" });
     } else {

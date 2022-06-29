@@ -7,10 +7,11 @@ import {
 function resultArr(payload) {
   let result = [];
   const newArray = [...payload];
-  result = newArray.map(({ category_id, category_name }) => ({
+  result = newArray.map(({ category_id, category_name, status }) => ({
     key: category_id.toString(),
     text: category_name,
     value: category_id.toString(),
+    status,
   }));
   return result;
 }

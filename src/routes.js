@@ -42,6 +42,8 @@ import Billing from "layouts/billing";
 import Stores from "pages/stores/list/StoreList";
 import Promotions from "pages/promotion/list/promotionList";
 import Sizes from "pages/size/list/sizeList";
+import Colors from "pages/color/list/colorList";
+// import Categories from "pages/category/list/categoryList";
 
 // import RTL from "layouts/rtl";
 import Notifications from "layouts/notifications";
@@ -94,6 +96,14 @@ const routes = [
     route: "/products",
     component: <Products />,
   },
+  // {
+  //   type: "collapse",
+  //   name: "Category",
+  //   key: "category",
+  //   icon: <Icon fontSize="small">table_view</Icon>,
+  //   route: "/categories",
+  //   component: <Categories />,
+  // },
   {
     type: "collapse",
     name: "Size",
@@ -101,6 +111,14 @@ const routes = [
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/sizes",
     component: <Sizes />,
+  },
+  {
+    type: "collapse",
+    name: "Color",
+    key: "color",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/colors",
+    component: <Colors />,
   },
   {
     type: "collapse",

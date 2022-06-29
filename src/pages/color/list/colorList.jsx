@@ -21,12 +21,12 @@ import {
   GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
 
-import "./sizeList.css";
+import "./colorList.css";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import { listSize } from "../../../redux/actions/sizeAction";
+import { listColor } from "../../../redux/actions/colorAction";
 
-// import sizeApi from "../../api/sizeApi";
+// import colorApi from "../../api/colorApi";
 import Notification from "pages/components/dialog/Notification";
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
 
@@ -35,20 +35,20 @@ styleLink.rel = "stylesheet";
 styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
 document.head.appendChild(styleLink);
 
-export default function SizeList() {
+export default function ColorList() {
   const [notify, setNotify] = useState({ isOpen: false, message: "", type: "" });
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
   // const [paging, setPaging] = useState({});
   //Test
-  const { size, error, loading } = useSelector((state) => state.sizeList);
+  const { colour, error, loading } = useSelector((state) => state.colorList);
   const [page, setPage] = useState(1);
   const triggerReload = useSelector((state) => state.triggerReload);
   // const [keySearch, setKeySearch] = useState("");
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
-
+  
   useEffect(() => {
-    dispatch(listSize(searchText));
+    dispatch(listColor(searchText));
   }, [dispatch, page, searchText, triggerReload]);
 
   let inputSearchHandler = (e) => {
@@ -71,11 +71,11 @@ export default function SizeList() {
   function handleRowClick(rowData) {
     // console.log(rowData);
     // <div>
-    //   <Route path={`/size/:${rowData}`}>
+    //   <Route path={`/color/:${rowData}`}>
     //     <Product />
     //   </Route>
     // </div>
-    // <Link to={`/size/:${rowData.size_id}`}></Link>;
+    // <Link to={`/color/:${rowData.color_id}`}></Link>;
   }
 
   const handleDelete = (id) => {
@@ -93,7 +93,7 @@ export default function SizeList() {
   function NoRowsOverlay() {
     return (
       <Stack height="100%" alignItems="center" justifyContent="center">
-        Không tìm thấy kích cỡ nào
+        Không tìm thấy màu sắc nào
       </Stack>
     );
   }
@@ -101,42 +101,48 @@ export default function SizeList() {
   function NoResultsOverlay() {
     return (
       <Stack height="100%" alignItems="center" justifyContent="center">
-        Không tìm thấy kích cỡ nào
+        Không tìm thấy màu sắc nào
       </Stack>
     );
   }
 
   const columns = [
-    { field: "size_id", headerName: "ID", width: 90 },
+    { field: "colour_id", headerName: "ID", width: 90 },
     {
-      field: "size_name",
-      headerName: "Size",
+      field: "colour_name",
+      headerName: "Color",
       width: 200,
-      renderCell: (params) => <div className="sizeListItem">{params.row.size_name}</div>,
+      renderCell: (params) => <div className="colorListItem">{params.row.colour_name}</div>,
+    },
+    {
+      field: "colour_code",
+      headerName: "Code",
+      width: 200,
+      renderCell: (params) => <div className="colorListItem">{params.row.colour_code}</div>,
     },
     {
       field: "status",
-      headerName: "Tình trạng",
+      headerName: "Status",
       width: 120,
     },
     {
       field: "action",
-      headerName: "Thao tác",
+      headerName: "Action",
       width: 250,
       renderCell: (params) => (
         <>
-          <Link to={`/size/:${params.row.size_id}`}>
-            <button type="submit" className="sizeListEdit">
+          <Link to={`/color/:${params.row.colour_id}`}>
+            <button type="submit" className="colorListEdit">
               Edit
             </button>
-            <Link to={`/size/:${params.row.size_id}`}>
-              <button type="submit" className="sizeListEdit">
+            <Link to={`/color/:${params.row.colour_id}`}>
+              <button type="submit" className="colorListEdit">
                 View
               </button>
             </Link>
           </Link>
           <Button
-            className="sizeListDelete"
+            className="colorListDelete"
             onClick={() =>
               setConfirmDialog({
                 isOpen: true,
@@ -159,7 +165,7 @@ export default function SizeList() {
     <DashboardLayout>
       <DashboardNavbar />
       <FormControl sx={{ m: 1, width: "35ch" }} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment">Tìm kiếm kích cỡ</InputLabel>
+        <InputLabel htmlFor="outlined-adornment">Tìm kiếm khuyến mãi</InputLabel>
         <OutlinedInput
           id="outlined-adornment"
           value={searchText}
@@ -175,16 +181,16 @@ export default function SizeList() {
               </IconButton>
             </InputAdornment>
           }
-          label="Tìm kiếm kích cỡ"
+          label="Tìm kiếm khuyến mãi"
         />
       </FormControl>
-      <Link to="/newsize">
-        <button type="button" className="sizeAddButton">
-          Tạo kích cỡ mới
+      <Link to="/newcolor">
+        <button type="button" className="colorAddButton">
+          Tạo khuyến mãi mới
         </button>
       </Link>
 
-      <div className="sizeList">
+      <div className="colorList">
         <DataGrid
           sx={{
             "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {
@@ -195,11 +201,11 @@ export default function SizeList() {
             },
           }}
           loading={loading}
-          getRowId={(r) => r.size_id}
-          rows={size}
+          getRowId={(r) => r.colour_id}
+          rows={colour}
           disableSelectionOnClick
           columns={columns}
-          pageSize={8}
+          pageColor={8}
           data={(query) =>
             new Promise(() => {
               console.log(query);
@@ -207,7 +213,7 @@ export default function SizeList() {
           }
           onRowClick={(param) => (
             <>
-              <Link to={`/size/:${param.row.size_id}`}></Link>
+              <Link to={`/color/:${param.row.colour_id}`}></Link>
             </>
           )}
           components={{
