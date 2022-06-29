@@ -1,19 +1,5 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 // react-router components
 import { useLocation, useNavigate } from "react-router-dom";
@@ -53,6 +39,8 @@ import {
   setOpenConfigurator,
 } from "context";
 
+import { logout } from "../../../redux/actions/userAction";
+
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useMaterialUIController();
@@ -61,6 +49,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [openAccount, setAccount] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
   const navigate = useNavigate();
+  const dispatcher = useDispatch();
 
   useEffect(() => {
     // Setting the navbar type
@@ -97,8 +86,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleCloseAccount = () => setAccount(false);
 
   // Log out
-  const logout = () => {
-    localStorage.clear();
+  const signOut = () => {
+    dispatcher(logout());
     navigate("/");
   };
 
@@ -115,7 +104,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
       onClose={handleCloseAccount}
       sx={{ mt: 2 }}
     >
-      <NotificationItem icon={<Icon>login</Icon>} title="Log out" onClick={logout} />
+      <NotificationItem icon={<Icon>login</Icon>} title="Đăng xuất" onClick={() => signOut()} />
       {/* <NotificationItem icon={<Icon>podcasts</Icon>} title="Manage Podcast sessions" />
       <NotificationItem icon={<Icon>shopping_cart</Icon>} title="Payment successfully completed" /> */}
     </Menu>

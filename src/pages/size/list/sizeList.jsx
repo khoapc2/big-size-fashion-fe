@@ -46,7 +46,7 @@ export default function SizeList() {
   // const [keySearch, setKeySearch] = useState("");
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
-  
+
   useEffect(() => {
     dispatch(listSize(searchText));
   }, [dispatch, page, searchText, triggerReload]);
@@ -116,12 +116,12 @@ export default function SizeList() {
     },
     {
       field: "status",
-      headerName: "Status",
+      headerName: "Tình trạng",
       width: 120,
     },
     {
       field: "action",
-      headerName: "Action",
+      headerName: "Thao tác",
       width: 250,
       renderCell: (params) => (
         <>

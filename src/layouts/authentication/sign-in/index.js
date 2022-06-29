@@ -76,7 +76,7 @@ function Basic() {
           textAlign="center"
         >
           <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-            Sign in
+            Đăng nhập
           </MDTypography>
         </MDBox>
         <Formik
@@ -94,7 +94,7 @@ function Basic() {
                   <MDInput
                     name="username"
                     type="text"
-                    label="Username"
+                    label="Tài khoản"
                     // onChange={handleChange}
                     required
                     fullWidth
@@ -108,7 +108,7 @@ function Basic() {
                   <MDInput
                     name="password"
                     type="password"
-                    label="Password"
+                    label="Mật khẩu"
                     required
                     fullWidth
                     value={props.values.password}
@@ -129,7 +129,7 @@ function Basic() {
                       disabled={props.error && props.isSubmitting}
                       type="submit"
                     >
-                      sign in
+                      Nhập
                     </MDButton>
                   )}
                 </MDBox>

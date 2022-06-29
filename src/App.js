@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 
 // react-router components
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
@@ -6,33 +6,33 @@ import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import Icon from "@mui/material/Icon";
+// import Icon from "@mui/material/Icon";
 
 // Material Dashboard 2 React components
-import MDBox from "components/MDBox";
+// import MDBox from "components/MDBox";
 
 // Material Dashboard 2 React example components
 import Sidenav from "examples/Sidenav";
-import Configurator from "examples/Configurator";
+// import Configurator from "examples/Configurator";
 
 // Material Dashboard 2 React themes
 import theme from "assets/theme";
-import themeRTL from "assets/theme/theme-rtl";
+// import themeRTL from "assets/theme/theme-rtl";
 
 // Material Dashboard 2 React Dark Mode themes
 import themeDark from "assets/theme-dark";
-import themeDarkRTL from "assets/theme-dark/theme-rtl";
+// import themeDarkRTL from "assets/theme-dark/theme-rtl";
 
 // RTL plugins
-import rtlPlugin from "stylis-plugin-rtl";
-import { CacheProvider } from "@emotion/react";
-import createCache from "@emotion/cache";
+// import rtlPlugin from "stylis-plugin-rtl";
+// import { CacheProvider } from "@emotion/react";
+// import createCache from "@emotion/cache";
 
 // Material Dashboard 2 React routes
 import routes from "routes";
 
 // Material Dashboard 2 React contexts
-import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
+import { useMaterialUIController, setMiniSidenav } from "context";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // Images
@@ -72,14 +72,14 @@ export default function App() {
     miniSidenav,
     direction,
     layout,
-    openConfigurator,
+    // openConfigurator,
     sidenavColor,
     transparentSidenav,
     whiteSidenav,
     darkMode,
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
-  const [rtlCache, setRtlCache] = useState(null);
+  // const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
   // const [show, setShow] = useState(false);
   // const [notification, setNotification] = useState({ title: "", body: "" });
@@ -98,14 +98,14 @@ export default function App() {
   //   .catch((err) => console.log("failed: ", err));
 
   // Cache for the rtl
-  useMemo(() => {
-    const cacheRtl = createCache({
-      key: "rtl",
-      stylisPlugins: [rtlPlugin],
-    });
+  // useMemo(() => {
+  //   const cacheRtl = createCache({
+  //     key: "rtl",
+  //     stylisPlugins: [rtlPlugin],
+  //   });
 
-    setRtlCache(cacheRtl);
-  }, []);
+  //   setRtlCache(cacheRtl);
+  // }, []);
 
   // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
@@ -124,7 +124,7 @@ export default function App() {
   };
 
   // Change the openConfigurator state
-  const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
+  // const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
 
   // Setting the dir attribute for the body element
   useEffect(() => {
@@ -150,81 +150,31 @@ export default function App() {
   //     return null;
   //   });
 
-  const configsButton = (
-    <MDBox
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      width="3.25rem"
-      height="3.25rem"
-      bgColor="white"
-      shadow="sm"
-      borderRadius="50%"
-      position="fixed"
-      right="2rem"
-      bottom="2rem"
-      zIndex={99}
-      color="dark"
-      sx={{ cursor: "pointer" }}
-      onClick={handleConfiguratorOpen}
-    >
-      <Icon fontSize="small" color="inherit">
-        settings
-      </Icon>
-    </MDBox>
-  );
+  // const configsButton = (
+  //   <MDBox
+  //     display="flex"
+  //     justifyContent="center"
+  //     alignItems="center"
+  //     width="3.25rem"
+  //     height="3.25rem"
+  //     bgColor="white"
+  //     shadow="sm"
+  //     borderRadius="50%"
+  //     position="fixed"
+  //     right="2rem"
+  //     bottom="2rem"
+  //     zIndex={99}
+  //     color="dark"
+  //     sx={{ cursor: "pointer" }}
+  //     onClick={handleConfiguratorOpen}
+  //   >
+  //     <Icon fontSize="small" color="inherit">
+  //       settings
+  //     </Icon>
+  //   </MDBox>
+  // );
 
-  return direction === "rtl" ? (
-    <CacheProvider value={rtlCache}>
-      <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
-        <CssBaseline />
-        {/* {show ? (
-          <ReactNotificationComponent title={notification.title} body={notification.body} />
-        ) : (
-          <>
-            <div />
-            <div />
-          </>
-        )}
-        <FirebaseNotifications />
-        <Fader text="Hello React" /> */}
-        {layout === "dashboard" && (
-          <>
-            <Sidenav
-              color={sidenavColor}
-              brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-              brandName="Material Dashboard 2"
-              routes={routes}
-              onMouseEnter={handleOnMouseEnter}
-              onMouseLeave={handleOnMouseLeave}
-            />
-            <Configurator />
-            {configsButton}
-          </>
-        )}
-        {layout === "vr" && <Configurator />}
-        <Routes>
-          {/* {getRoutes(routes)}
-          <Route path="*" element={<Navigate to="/sign-in" />} /> */}
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/billing" element={<Billing />} />
-          <Route path="/notifications" element={<Notifications />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/sign-in" element={<SignIn />} />
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/product:productId" element={<Product />} />
-          <Route path="newproduct" element={<NewProduct />} />
-          <Route path="/stores" element={<Stores />} />
-          <Route path="/promotions" element={<Promotions />} />
-          <Route path="/sizes" element={<Sizes />} />
-          <Route path="/colors" element={<Colors />} />
-          <Route path="/categories" element={<Categories />} />
-          <Route path="newstore" element={<Employees />} />
-        </Routes>
-      </ThemeProvider>
-    </CacheProvider>
-  ) : (
+  return (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <ToastContainer
         position="bottom-right"
@@ -258,11 +208,11 @@ export default function App() {
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
           />
-          <Configurator />
-          {configsButton}
+          {/* <Configurator /> */}
+          {/* {configsButton} */}
         </>
       )}
-      {layout === "vr" && <Configurator />}
+      {layout === "vr"}
       <Routes>
         {/* {getRoutes(routes)} */}
         {/* <Route path="*" element={<Navigate to="/dashboard" />} /> */}
@@ -276,13 +226,14 @@ export default function App() {
         <Route path="products" element={<Products />} />
         <Route path="product/:productId" element={<Product />} />
         <Route path="newproduct" element={<NewProduct />} />
-        <Route path="*" element={<Navigate to="/sign-in" />} />
         <Route path="/stores" element={<Stores />} />
         <Route path="/promotions" element={<Promotions />} />
         <Route path="/sizes" element={<Sizes />} />
         <Route path="/colors" element={<Colors />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="newstore" element={<Employees />} />
+        {/* <Route path="/sizes" element={<Sizes />} /> */}
+        <Route path="*" element={<Navigate to="/sign-in" />} />
         {/* <Route path="/product/:productId">
           <Product />
         </Route> */}
