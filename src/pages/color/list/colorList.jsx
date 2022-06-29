@@ -46,7 +46,7 @@ export default function ColorList() {
   // const [keySearch, setKeySearch] = useState("");
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
-  
+
   useEffect(() => {
     dispatch(listColor(searchText));
   }, [dispatch, page, searchText, triggerReload]);
@@ -107,27 +107,27 @@ export default function ColorList() {
   }
 
   const columns = [
-    { field: "colour_id", headerName: "ID", width: 90 },
+    { field: "colour_id", headerName: "ID Màu", width: 90 },
     {
       field: "colour_name",
-      headerName: "Color",
+      headerName: "Màu",
       width: 200,
       renderCell: (params) => <div className="colorListItem">{params.row.colour_name}</div>,
     },
     {
       field: "colour_code",
-      headerName: "Code",
+      headerName: "Mã Màu",
       width: 200,
       renderCell: (params) => <div className="colorListItem">{params.row.colour_code}</div>,
     },
     {
       field: "status",
-      headerName: "Status",
+      headerName: "Tình trạng",
       width: 120,
     },
     {
       field: "action",
-      headerName: "Action",
+      headerName: "Thao tác",
       width: 250,
       renderCell: (params) => (
         <>
@@ -181,12 +181,12 @@ export default function ColorList() {
               </IconButton>
             </InputAdornment>
           }
-          label="Tìm kiếm khuyến mãi"
+          label="Tìm kiếm màu"
         />
       </FormControl>
       <Link to="/newcolor">
         <button type="button" className="colorAddButton">
-          Tạo khuyến mãi mới
+          Tạo màu mới
         </button>
       </Link>
 

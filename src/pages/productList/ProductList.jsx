@@ -112,7 +112,7 @@ export default function ProductList() {
     { field: "product_id", headerName: "ID", width: 90 },
     {
       field: "product_name",
-      headerName: "Product",
+      headerName: "Sản phẩm",
       width: 200,
       renderCell: (params) => (
         <div className="productListItem">
@@ -125,10 +125,9 @@ export default function ProductList() {
         </div>
       ),
     },
-    { field: "stock", headerName: "Stock", width: 200 },
     {
       field: "status",
-      headerName: "Status",
+      headerName: "Tình trạng",
       width: 120,
       // renderCell: (params) => (
 
@@ -136,13 +135,26 @@ export default function ProductList() {
     },
     {
       field: "price",
-      headerName: "Price",
+      headerName: "Giá bán (VNĐ)",
       width: 160,
-      renderCell: (params) => <div>{params.row.price.toLocaleString("vi-VN")} VNĐ</div>,
+      renderCell: (params) => <div>{params.row.price.toLocaleString("vi-VN")} </div>,
     },
     {
+      field: "promotion_price",
+      headerName: "Giá áp dụng khuyến mãi (VNĐ)",
+      width: 250,
+      renderCell: (params) => (
+        <div>
+          {params.promotion_price
+            ? `${params.row.price.toLocaleString("vi-VN")}`
+            : "Hiện chưa áp dụng"}
+        </div>
+      ),
+    },
+    { field: "promotion_value", headerName: "Giá trị khuyến mãi (%)", width: 200 },
+    {
       field: "action",
-      headerName: "Action",
+      headerName: "Thao tác",
       width: 250,
       renderCell: (params) => (
         <>
@@ -211,8 +223,8 @@ export default function ProductList() {
             "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {
               outline: "none",
             },
-            '& .MuiDataGrid-cell:hover': {
-              color: 'green'
+            "& .MuiDataGrid-cell:hover": {
+              color: "green",
             },
           }}
           loading={loading}

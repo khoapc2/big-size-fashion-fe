@@ -90,7 +90,7 @@ export default function EmployeeForm() {
               value={values.password}
               onChange={handleInputChange}
               type={values.showPassword ? "text" : "password"}
-              endAdornment={
+              endadornment={
                 <InputAdornment position="end">
                   <IconButton
                     aria-label="toggle password visibility"

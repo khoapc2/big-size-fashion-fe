@@ -3,6 +3,9 @@ import {
   STORE_LIST_REQUEST,
   STORE_LIST_SUCCESS,
   STORE_LIST_FAIL,
+  CREATE_STORE_REQUEST,
+  CREATE_STORE_SUCCESS,
+  CREATE_STORE_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listStore = (keySearch, page) => async (dispatch) => {
@@ -28,20 +31,27 @@ export const listStore = (keySearch, page) => async (dispatch) => {
     dispatch({ type: STORE_LIST_FAIL, payload: message });
   }
 };
-export const a = (keySearch, page) => async (dispatch) => {
-  // console.log(keySearch, page);
-  dispatch({ type: STORE_LIST_REQUEST });
+
+export const createStore = (storeModels) => async (dispatch) => {
+  console.log(storeModels);
+  dispatch({
+    type: CREATE_STORE_REQUEST,
+    // payload: { storeModels },
+  });
   try {
-    if (keySearch) {
-      const data = await storeApi.getListStore(page);
-      dispatch({ type: STORE_LIST_SUCCESS, payload: data });
-      dispatch({ type: STORE_LIST_FAIL, payload: "" });
-    } else {
-      const { data } = await storeApi.getListStore({ page, keySearch });
-      dispatch({ type: STORE_LIST_SUCCESS, payload: data });
+    if (storeModels) {
+      const param = {
+        store_address: storeModels.storeAddress,
+        store_phone: storeModels.phone,
+      };
+      const { data } = await storeApi.createNewStore(param);
+      dispatch({ type: CREATE_STORE_SUCCESS, payload: data });
     }
   } catch (error) {
-    const message = error.response.data;
-    dispatch({ type: STORE_LIST_FAIL, payload: message });
+    dispatch({
+      type: CREATE_STORE_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
   }
 };

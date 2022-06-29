@@ -30,6 +30,7 @@
     "file-saver": "^2.0.5",
     "firebase": "^9.8.3",
     "formik": "^2.2.9",
+    "material-ui-phone-number": "^3.0.0",
     "prop-types": "^15.8.1",
     "query-string": "^7.1.1",
     "react": "^17.0.2",
