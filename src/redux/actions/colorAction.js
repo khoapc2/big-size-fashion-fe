@@ -8,7 +8,7 @@ import {
 export const listColor =
   ({ keySearch, status }) =>
   async (dispatch) => {
-    console.log(status);
+    console.log("test list color here");
 
     dispatch({ type: COLOR_LIST_REQUEST });
     try {
