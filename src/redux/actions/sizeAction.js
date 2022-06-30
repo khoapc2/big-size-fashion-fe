@@ -16,10 +16,10 @@ export const listSize =
           dispatch({ type: SIZE_LIST_SUCCESS, payload: data.content });
           dispatch({ type: SIZE_LIST_FAIL, payload: "" });
         } else {
-          const params = {
+          const searchParams = {
             Size: keySearch,
           };
-          const data = await sizeApi.getSearchListSize(params);
+          const data = await sizeApi.getSearchListSize(searchParams);
           dispatch({ type: SIZE_LIST_SUCCESS, payload: data.content });
           dispatch({ type: SIZE_LIST_FAIL, payload: "" });
         }

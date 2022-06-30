@@ -21,12 +21,12 @@ import {
   GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
 
-import "./colorList.css";
+import "./staffList.css";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import { listColor } from "../../../redux/actions/colorAction";
+import { listStaff } from "../../../redux/actions/staffAction";
 
-// import colorApi from "../../api/colorApi";
+// import staffApi from "../../api/staffApi";
 import Notification from "pages/components/dialog/Notification";
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
 
@@ -35,21 +35,21 @@ styleLink.rel = "stylesheet";
 styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
 document.head.appendChild(styleLink);
 
-export default function ColorList() {
+export default function StaffList() {
   const [notify, setNotify] = useState({ isOpen: false, message: "", type: "" });
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
   // const [paging, setPaging] = useState({});
   //Test
-  const { colour, error, loading } = useSelector((state) => state.colorList);
+  const { data, error, loading } = useSelector((state) => state.staffList);
   const [page, setPage] = useState(1);
   const triggerReload = useSelector((state) => state.triggerReload);
   // const [keySearch, setKeySearch] = useState("");
   const dispatch = useDispatch();
-  const [keySearch, setSearchText] = useState("");
-
+  const [searchText, setSearchText] = useState("");
+  console.log(data);
   useEffect(() => {
-    dispatch(listColor({keySearch}));
-  }, [dispatch, page, keySearch, triggerReload]);
+    dispatch(listStaff(searchText));
+  }, [dispatch, page, searchText, triggerReload]);
 
   let inputSearchHandler = (e) => {
     let lowerCase = e.target.value.toLowerCase();
@@ -66,16 +66,16 @@ export default function ColorList() {
     );
   }
 
-  const handleClickSearch = (keySearch) => {};
+  const handleClickSearch = (searchText) => {};
 
   function handleRowClick(rowData) {
     // console.log(rowData);
     // <div>
-    //   <Route path={`/color/:${rowData}`}>
+    //   <Route path={`/staff/:${rowData}`}>
     //     <Product />
     //   </Route>
     // </div>
-    // <Link to={`/color/:${rowData.color_id}`}></Link>;
+    // <Link to={`/staff/:${rowData.staff_id}`}></Link>;
   }
 
   const handleDelete = (id) => {
@@ -93,7 +93,7 @@ export default function ColorList() {
   function NoRowsOverlay() {
     return (
       <Stack height="100%" alignItems="center" justifyContent="center">
-        Không tìm thấy màu sắc nào
+        Không tìm thấy quan nào
       </Stack>
     );
   }
@@ -101,29 +101,36 @@ export default function ColorList() {
   function NoResultsOverlay() {
     return (
       <Stack height="100%" alignItems="center" justifyContent="center">
-        Không tìm thấy màu sắc nào
+        Không tìm thấy cửa hàng nào
       </Stack>
     );
   }
 
   const columns = [
-    { field: "colour_id", headerName: "ID Màu", width: 90 },
+    { field: "uid", headerName: "Mã", width: 150 },
     {
-      field: "colour_name",
-      headerName: "Màu",
-      width: 200,
-      renderCell: (params) => <div className="colorListItem">{params.row.colour_name}</div>,
+      field: "fullname",
+      headerName: "Họ tên",
+      width: 400,
+      renderCell: (params) => <div className="staffListItem">{params.row.fullname}</div>,
     },
     {
-      field: "colour_code",
-      headerName: "Mã Màu",
-      width: 200,
-      renderCell: (params) => <div className="colorListItem">{params.row.colour_code}</div>,
+      field: "username",
+      headerName: "Tài khoản",
+      width: 160,
+      renderCell: (params) => <div>{params.row.username}</div>,
+    },
+    {
+      field: "create_at",
+      headerName: "Ngày tạo",
+      width: 160,
+      renderCell: (params) => <div>{params.row.create_at}</div>,
     },
     {
       field: "status",
       headerName: "Tình trạng",
       width: 120,
+      renderCell: (params) => <div>{params.row.status === "Active" ? "Hoạt động" : "Đóng cửa"}</div>,
     },
     {
       field: "action",
@@ -131,18 +138,18 @@ export default function ColorList() {
       width: 250,
       renderCell: (params) => (
         <>
-          <Link to={`/color/:${params.row.colour_id}`}>
-            <button type="submit" className="colorListEdit">
+          <Link to={`/staff/:${params.row.uid}`}>
+            <button type="submit" className="staffListEdit">
               Edit
             </button>
-            <Link to={`/color/:${params.row.colour_id}`}>
-              <button type="submit" className="colorListEdit">
+            <Link to={`/staff/:${params.row.uid}`}>
+              <button type="submit" className="staffListEdit">
                 View
               </button>
             </Link>
           </Link>
           <Button
-            className="colorListDelete"
+            className="staffListDelete"
             onClick={() =>
               setConfirmDialog({
                 isOpen: true,
@@ -165,10 +172,10 @@ export default function ColorList() {
     <DashboardLayout>
       <DashboardNavbar />
       <FormControl sx={{ m: 1, width: "35ch" }} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment">Tìm kiếm màu sắc</InputLabel>
+        <InputLabel htmlFor="outlined-adornment">Tìm kiếm nhân viên</InputLabel>
         <OutlinedInput
           id="outlined-adornment"
-          value={keySearch}
+          value={searchText}
           onChange={inputSearchHandler}
           endAdornment={
             <InputAdornment position="end">
@@ -181,16 +188,16 @@ export default function ColorList() {
               </IconButton>
             </InputAdornment>
           }
-          label="Tìm kiếm màu sắc"
+          label="Tìm kiếm nhân viên"
         />
       </FormControl>
-      <Link to="/newcolor">
-        <button type="button" className="colorAddButton">
-          Tạo màu mới
+      <Link to="/newstaff">
+        <button type="button" className="staffAddButton">
+          Tạo nhân viên mới
         </button>
       </Link>
 
-      <div className="colorList">
+      <div className="staffList">
         <DataGrid
           sx={{
             "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {
@@ -201,11 +208,11 @@ export default function ColorList() {
             },
           }}
           loading={loading}
-          getRowId={(r) => r.colour_id}
-          rows={colour}
+          getRowId={(r) => r.uid}
+          rows={data}
           disableSelectionOnClick
           columns={columns}
-          pageColor={8}
+          pageSize={8}
           data={(query) =>
             new Promise(() => {
               console.log(query);
@@ -213,7 +220,7 @@ export default function ColorList() {
           }
           onRowClick={(param) => (
             <>
-              <Link to={`/color/:${param.row.colour_id}`}></Link>
+              <Link to={`/staff/:${param.row.uid}`}></Link>
             </>
           )}
           components={{

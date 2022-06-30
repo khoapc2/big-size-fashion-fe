@@ -111,7 +111,7 @@ export default function SizeList() {
     {
       field: "store_address",
       headerName: "Địa chỉ",
-      width: 200,
+      width: 400,
       renderCell: (params) => <div className="storeListItem">{params.row.store_address}</div>,
     },
     {
@@ -121,10 +121,16 @@ export default function SizeList() {
       renderCell: (params) => <div>{params.row.store_phone}</div>,
     },
     {
+      field: "manager_name",
+      headerName: "Quản lý",
+      width: 160,
+      renderCell: (params) => <div>{params.row.manager_name ? params.row.manager_name : "Không có"}</div>,
+    },
+    {
       field: "status",
       headerName: "Tình trạng",
       width: 120,
-      renderCell: (params) => <div>{params.row.store_phone ? "Hoạt động" : "Đóng cửa"}</div>,
+      renderCell: (params) => <div>{params.row.status ? "Hoạt động" : "Đóng cửa"}</div>,
     },
     {
       field: "action",

@@ -22,6 +22,7 @@ export const listStore = (keySearch, page) => async (dispatch) => {
       dispatch({ type: STORE_LIST_SUCCESS, payload: data.content });
       dispatch({ type: STORE_LIST_FAIL, payload: "" });
     } else {
+      console.log("data  colour in Search Action");
       const data = await storeApi.getSearchListStore(params);
       dispatch({ type: STORE_LIST_SUCCESS, payload: data.content });
       dispatch({ type: STORE_LIST_FAIL, payload: "" });
