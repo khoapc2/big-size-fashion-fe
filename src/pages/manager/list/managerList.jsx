@@ -21,12 +21,12 @@ import {
   GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
 
-import "./storeList.css";
+import "./managerList.css";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import { listStore } from "../../../redux/actions/storeAction";
+import { listManager } from "../../../redux/actions/managerAction";
 
-// import storeApi from "../../api/storeApi";
+// import managerApi from "../../api/managerApi";
 import Notification from "pages/components/dialog/Notification";
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
 
@@ -35,12 +35,12 @@ styleLink.rel = "stylesheet";
 styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
 document.head.appendChild(styleLink);
 
-export default function SizeList() {
+export default function ManagerList() {
   const [notify, setNotify] = useState({ isOpen: false, message: "", type: "" });
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
   // const [paging, setPaging] = useState({});
   //Test
-  const { data, error, loading } = useSelector((state) => state.storeList);
+  const { data, error, loading } = useSelector((state) => state.managerList);
   const [page, setPage] = useState(1);
   const triggerReload = useSelector((state) => state.triggerReload);
   // const [keySearch, setKeySearch] = useState("");
@@ -48,7 +48,7 @@ export default function SizeList() {
   const [searchText, setSearchText] = useState("");
   console.log(data);
   useEffect(() => {
-    dispatch(listStore(searchText));
+    dispatch(listManager(searchText));
   }, [dispatch, page, searchText, triggerReload]);
 
   let inputSearchHandler = (e) => {
@@ -71,11 +71,11 @@ export default function SizeList() {
   function handleRowClick(rowData) {
     // console.log(rowData);
     // <div>
-    //   <Route path={`/store/:${rowData}`}>
+    //   <Route path={`/manager/:${rowData}`}>
     //     <Product />
     //   </Route>
     // </div>
-    // <Link to={`/store/:${rowData.store_id}`}></Link>;
+    // <Link to={`/manager/:${rowData.manager_id}`}></Link>;
   }
 
   const handleDelete = (id) => {
@@ -93,7 +93,7 @@ export default function SizeList() {
   function NoRowsOverlay() {
     return (
       <Stack height="100%" alignItems="center" justifyContent="center">
-        Không tìm thấy cửa hàng nào
+        Không tìm thấy quản lý nào
       </Stack>
     );
   }
@@ -101,36 +101,36 @@ export default function SizeList() {
   function NoResultsOverlay() {
     return (
       <Stack height="100%" alignItems="center" justifyContent="center">
-        Không tìm thấy cửa hàng nào
+        Không tìm thấy quản lý nào
       </Stack>
     );
   }
 
   const columns = [
-    { field: "store_id", headerName: "Mã cửa hàng", width: 150 },
+    { field: "uid", headerName: "Mã", width: 150 },
     {
-      field: "store_address",
-      headerName: "Địa chỉ",
+      field: "fullname",
+      headerName: "Họ tên",
       width: 400,
-      renderCell: (params) => <div className="storeListItem">{params.row.store_address}</div>,
+      renderCell: (params) => <div className="managerListItem">{params.row.fullname}</div>,
     },
     {
-      field: "store_phone",
-      headerName: "Điện Thoại",
+      field: "username",
+      headerName: "Tài khoản",
       width: 160,
-      renderCell: (params) => <div>{params.row.store_phone}</div>,
+      renderCell: (params) => <div>{params.row.username}</div>,
     },
     {
-      field: "manager_name",
-      headerName: "Quản lý",
+      field: "create_at",
+      headerName: "Ngày tạo",
       width: 160,
-      renderCell: (params) => <div>{params.row.manager_name ? params.row.manager_name : "Không có"}</div>,
+      renderCell: (params) => <div>{params.row.create_at}</div>,
     },
     {
       field: "status",
       headerName: "Tình trạng",
       width: 120,
-      renderCell: (params) => <div>{params.row.status ? "Hoạt động" : "Đóng cửa"}</div>,
+      renderCell: (params) => <div>{params.row.status === "Active" ? "Hoạt động" : "Đóng cửa"}</div>,
     },
     {
       field: "action",
@@ -138,25 +138,25 @@ export default function SizeList() {
       width: 250,
       renderCell: (params) => (
         <>
-          <Link to={`/store/:${params.row.store_id}`}>
-            <button type="submit" className="storeListEdit">
+          <Link to={`/manager/:${params.row.uid}`}>
+            <button type="submit" className="managerListEdit">
               Edit
             </button>
-            <Link to={`/store/:${params.row.store_id}`}>
-              <button type="submit" className="storeListEdit">
+            <Link to={`/manager/:${params.row.uid}`}>
+              <button type="submit" className="managerListEdit">
                 View
               </button>
             </Link>
           </Link>
           <Button
-            className="storeListDelete"
+            className="managerListDelete"
             onClick={() =>
               setConfirmDialog({
                 isOpen: true,
                 title: "Are you sure to delete this record?",
                 subTitle: "Delete",
                 onConfirm: () => {
-                  handleDelete(params.row.id);
+                  handleDelete(params.row.uid);
                 },
               })
             }
@@ -172,7 +172,7 @@ export default function SizeList() {
     <DashboardLayout>
       <DashboardNavbar />
       <FormControl sx={{ m: 1, width: "35ch" }} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment">Tìm kiếm địa chỉ</InputLabel>
+        <InputLabel htmlFor="outlined-adornment">Tìm kiếm quản lý</InputLabel>
         <OutlinedInput
           id="outlined-adornment"
           value={searchText}
@@ -188,16 +188,16 @@ export default function SizeList() {
               </IconButton>
             </InputAdornment>
           }
-          label="Tìm kiếm địa chỉ"
+          label="Tìm kiếm quản lý"
         />
       </FormControl>
-      <Link to="/newstore">
-        <button type="button" className="storeAddButton">
-          Tạo cửa hàng mới
+      <Link to="/newmanager">
+        <button type="button" className="managerAddButton">
+          Tạo quản lý mới
         </button>
       </Link>
 
-      <div className="storeList">
+      <div className="managerList">
         <DataGrid
           sx={{
             "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {
@@ -208,7 +208,7 @@ export default function SizeList() {
             },
           }}
           loading={loading}
-          getRowId={(r) => r.store_id}
+          getRowId={(r) => r.uid}
           rows={data}
           disableSelectionOnClick
           columns={columns}
@@ -220,7 +220,7 @@ export default function SizeList() {
           }
           onRowClick={(param) => (
             <>
-              <Link to={`/store/:${param.row.store_id}`}></Link>
+              <Link to={`/manager/:${param.row.manager_id}`}></Link>
             </>
           )}
           components={{

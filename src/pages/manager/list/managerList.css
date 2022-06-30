@@ -1,4 +1,4 @@
-.colorList {
+.managerList {
   flex: 4;
   /* min-height: 600px; */
   height: 600px;
@@ -6,12 +6,12 @@
   /* width: 1350px; */
 }
 
-.colorListItem {
+.managerListItem {
   display: flex;
   align-items: center;
 }
 
-.colorListImg {
+.managerListImg {
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -19,7 +19,7 @@
   margin-right: 10px;
 }
 
-.colorListEdit {
+.managerListEdit {
   border: none;
   border-radius: 10px;
   padding: 5px 10px;
@@ -29,7 +29,7 @@
   margin-right: 20px;
 }
 
-.colorListDelete {
+.managerListDelete {
   color: red;
   cursor: pointer;
 }
@@ -48,15 +48,15 @@
   align-content: stretch;
 }
 
-.colorAddButton {
-  width: 200px;
+.managerAddButton {
+  width: fit-content;
   border: none;
   padding: 10px;
   margin-top: 8px;
   background-color: teal;
   color: white;
   border-radius: 5px;
-  font-color: 16px;
+  font-size: 16px;
   cursor: pointer;
   float: right;
 }
