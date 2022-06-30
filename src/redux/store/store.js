@@ -34,7 +34,6 @@ const reducer = combineReducers({
   deleteStore: deleteStoreReducer,
   managerList: listManagerReducer,
   staffList: listStaffReducer,
-  createStore: createEmployeeReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
