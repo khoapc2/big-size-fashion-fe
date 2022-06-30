@@ -6,6 +6,9 @@ import {
   CREATE_STORE_REQUEST,
   CREATE_STORE_SUCCESS,
   CREATE_STORE_FAIL,
+  DELETE_STORE_REQUEST,
+  DELETE_STORE_SUCCESS,
+  DELETE_STORE_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listStore = (keySearch, page) => async (dispatch) => {
@@ -45,11 +48,30 @@ export const createStore = (storeModels) => async (dispatch) => {
         store_phone: storeModels.phone,
       };
       const { data } = await storeApi.createNewStore(param);
+      console.log(data);
       dispatch({ type: CREATE_STORE_SUCCESS, payload: data });
     }
   } catch (error) {
     dispatch({
       type: CREATE_STORE_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const deleteStore = (storeId) => async (dispatch) => {
+  dispatch({
+    type: DELETE_STORE_REQUEST,
+    payload: { storeId },
+  });
+  try {
+    const data = await storeApi.deleteStoreService(storeId);
+    dispatch({ type: DELETE_STORE_SUCCESS, payload: data });
+    console.log(data);
+  } catch (error) {
+    dispatch({
+      type: DELETE_STORE_FAIL,
       payload:
         error.response && error.response.data.message ? error.response.data.message : error.message,
     });
