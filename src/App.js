@@ -56,9 +56,11 @@ import Promotions from "pages/promotion/list/promotionList";
 import Sizes from "pages/size/list/sizeList";
 import Colors from "pages/color/list/colorList";
 import Categories from "pages/category/list/categoryList";
-import Employees from "pages/components/createForm/Employees";
+// import Employees from "pages/components/createForm/Employees";
 import Staffs from "pages/staff/list/staffList";
 import Managers from "pages/manager/list/managerList";
+// import Employees from "pages/components/createForm/Employees";
+import Store from "pages/stores/detail/Store";
 
 // import Fader from "pages/components/Fader";
 // import { onMessageListener } from "./firebase/firebase";
@@ -233,7 +235,7 @@ export default function App() {
         <Route path="/sizes" element={<Sizes />} />
         <Route path="/colors" element={<Colors />} />
         <Route path="/categories" element={<Categories />} />
-        <Route path="newstore" element={<Employees />} />
+        <Route path="newstore" element={<Store />} />
         {/* <Route path="/sizes" element={<Sizes />} /> */}
         <Route path="*" element={<Navigate to="/sign-in" />} />
         <Route path="/staffs" element={<Staffs />} />

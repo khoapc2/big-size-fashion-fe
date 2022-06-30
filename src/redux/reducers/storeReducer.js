@@ -2,6 +2,9 @@ import {
   STORE_LIST_REQUEST,
   STORE_LIST_SUCCESS,
   STORE_LIST_FAIL,
+  CREATE_STORE_REQUEST,
+  CREATE_STORE_SUCCESS,
+  CREATE_STORE_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listStoreReducer = (state = { loading: true, data: [], error: "" }, action) => {
@@ -21,17 +24,14 @@ export const listStoreReducer = (state = { loading: true, data: [], error: "" },
   }
 };
 
-export const ee = (state = { loading: true, data: [], error: "" }, action) => {
+export const createEmployeeReducer = (state = {}, action) => {
+  console.log(state, action);
   switch (action.type) {
-    case STORE_LIST_REQUEST:
+    case CREATE_STORE_REQUEST:
       return { ...state, loading: true };
-    case STORE_LIST_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        data: action.payload,
-      };
-    case STORE_LIST_FAIL:
+    case CREATE_STORE_SUCCESS:
+      return { ...state, loading: false, success: action.payload };
+    case CREATE_STORE_FAIL:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;

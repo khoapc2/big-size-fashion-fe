@@ -9,13 +9,20 @@ import {
 export const listColor =
   ({ keySearch, status }) =>
   async (dispatch) => {
-    console.log(status);
-
     dispatch({ type: COLOR_LIST_REQUEST });
+    console.log(keySearch);
     try {
       if (!status) {
         if (!keySearch) {
           const data = await colorApi.getListColor();
+          dispatch({ type: COLOR_LIST_ALL_SUCCESS, payload: data.content });
+          dispatch({ type: COLOR_LIST_FAIL, payload: "" });
+        } else {
+          console.log("data  colour in Search Action");
+          const searchParams = {
+            Colour: keySearch,
+          };
+          const data = await colorApi.getSearchListColor(searchParams);
           dispatch({ type: COLOR_LIST_ALL_SUCCESS, payload: data.content });
           dispatch({ type: COLOR_LIST_FAIL, payload: "" });
         }
@@ -24,15 +31,9 @@ export const listColor =
           Status: status,
         };
         const data = await colorApi.getListColor(params);
-        console.log("data  colour in Action", data.content);
         dispatch({ type: COLOR_LIST_SUCCESS, payload: data.content });
         dispatch({ type: COLOR_LIST_FAIL, payload: "" });
       }
-      // else {
-      //   const data = await colorApi.getSearchListProduct(params);
-      //   dispatch({ type: COLOR_LIST_REQUEST, payload: data.content });
-      //   dispatch({ type: COLOR_LIST_FAIL, payload: "" });
-      // }}
     } catch (error) {
       const message =
         error.respone && error.respone.content.message

@@ -30,7 +30,6 @@ import { listPromotion } from "../../../redux/actions/promotionAction";
 import Notification from "pages/components/dialog/Notification";
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
 
-
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
 styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
@@ -111,40 +110,37 @@ export default function PromotionList() {
     { field: "promotion_id", headerName: "ID", width: 90 },
     {
       field: "promotion_name",
-      headerName: "Address",
-      width: 200,
-      renderCell: (params) => (
-        <div className="promotionListItem">
-          {params.row.promotion_name}
-        </div>
-      ),
+      headerName: "Tên mã khuyến mãi",
+      width: 250,
+      renderCell: (params) => <div className="promotionListItem">{params.row.promotion_name}</div>,
     },
     {
-        field: "promotion_value",
-        headerName: "Value",
-        width: 160,
-        renderCell: (params) => <div>{params.row.promotion_value}</div>,
+      field: "promotion_value",
+      headerName: "Giá trị khuyến mãi (%)",
+      width: 160,
+      renderCell: (params) => <div>{params.row.promotion_value}</div>,
     },
     {
-        field: "apply_date",
-        headerName: "Apply",
-        width: 160,
-        renderCell: (params) => <div>{params.row.apply_date}</div>,
+      field: "apply_date",
+      headerName: "Ngày áp dụng",
+      width: 160,
+      renderCell: (params) => <div>{params.row.apply_date}</div>,
     },
     {
-        field: "expired_date",
-        headerName: "Expire",
-        width: 160,
-        renderCell: (params) => <div>{params.row.expired_date}</div>,
+      field: "expired_date",
+      headerName: "Ngày hết hạn",
+      width: 160,
+      renderCell: (params) => <div>{params.row.expired_date}</div>,
     },
     {
       field: "status",
-      headerName: "Status",
-      width: 120
+      headerName: "Tình trạng",
+      width: 120,
+      renderCell: (params) => <div>{params.row.status ? "Đang áp dụng" : "Hết hạn"}</div>,
     },
     {
       field: "action",
-      headerName: "Action",
+      headerName: "Thao tác",
       width: 250,
       renderCell: (params) => (
         <>
@@ -213,8 +209,8 @@ export default function PromotionList() {
             "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {
               outline: "none",
             },
-            '& .MuiDataGrid-cell:hover': {
-              color: 'green'
+            "& .MuiDataGrid-cell:hover": {
+              color: "green",
             },
           }}
           loading={loading}

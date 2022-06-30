@@ -45,11 +45,11 @@ export default function SizeList() {
   const triggerReload = useSelector((state) => state.triggerReload);
   // const [keySearch, setKeySearch] = useState("");
   const dispatch = useDispatch();
-  const [searchText, setSearchText] = useState("");
+  const [keySearch, setSearchText] = useState("");
 
   useEffect(() => {
-    dispatch(listSize(searchText));
-  }, [dispatch, page, searchText, triggerReload]);
+    dispatch(listSize({keySearch}));
+  }, [dispatch, page, keySearch, triggerReload]);
 
   let inputSearchHandler = (e) => {
     let lowerCase = e.target.value.toLowerCase();
@@ -66,7 +66,7 @@ export default function SizeList() {
     );
   }
 
-  const handleClickSearch = (searchText) => {};
+  const handleClickSearch = (keySearch) => {};
 
   function handleRowClick(rowData) {
     // console.log(rowData);
@@ -162,7 +162,7 @@ export default function SizeList() {
         <InputLabel htmlFor="outlined-adornment">Tìm kiếm kích cỡ</InputLabel>
         <OutlinedInput
           id="outlined-adornment"
-          value={searchText}
+          value={keySearch}
           onChange={inputSearchHandler}
           endAdornment={
             <InputAdornment position="end">

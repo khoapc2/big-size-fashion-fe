@@ -81,7 +81,6 @@ export default function NewProduct() {
     dispatch(listSize({ status }));
     dispatch(listColor({ status }));
     dispatch(listCategory());
-    console.log("Render");
   }, [dispatch, triggerReload]);
 
   const onSubmit = (e) => {
@@ -298,6 +297,7 @@ export default function NewProduct() {
                                               gap: 2,
                                             }}
                                           >
+                                            /* Creating a checkbox for each size. */
                                             <Field name={`colourWithSize[${index}].size`}>
                                               {({ field }) => {
                                                 return size.map((sizeItem, sizeIndex) => {

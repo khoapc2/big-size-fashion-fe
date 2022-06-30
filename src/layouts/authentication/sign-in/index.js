@@ -126,7 +126,7 @@ function Basic() {
                       variant="gradient"
                       color="info"
                       fullWidth
-                      disabled={props.error && props.isSubmitting}
+                      disabled={props.errors && props.isSubmitting}
                       type="submit"
                     >
                       Nhập
