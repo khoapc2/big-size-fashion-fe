@@ -2,6 +2,7 @@ import {
   CATEGORY_LIST_REQUEST,
   CATEGORY_LIST_SUCCESS,
   CATEGORY_LIST_FAIL,
+  CATEGORY_LIST_ALL_SUCCESS,
 } from "../../service/Validations/VarConstant";
 
 function resultArr(payload) {
@@ -25,6 +26,12 @@ export const listCategoryReducer = (state = { loading: true, category: [], error
         ...state,
         loading: false,
         category: [...resultArr(action.payload)],
+      };
+    case CATEGORY_LIST_ALL_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        category: action.payload,
       };
     case CATEGORY_LIST_FAIL:
       return { ...state, loading: false, error: action.payload };

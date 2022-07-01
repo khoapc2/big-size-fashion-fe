@@ -9,6 +9,7 @@ import { listCategoryReducer } from "redux/reducers/categoryReducer";
 import { listPromotionReducer } from "redux/reducers/promotionReducer";
 import { listManagerReducer } from "redux/reducers/managerReducer";
 import { listStaffReducer } from "redux/reducers/staffReducer";
+import { listCustomerReducer } from "redux/reducers/customerReducer";
 
 const initialState = {
   userLogin: {
@@ -27,6 +28,7 @@ const reducer = combineReducers({
   promotionList: listPromotionReducer,
   managerList: listManagerReducer,
   staffList: listStaffReducer,
+  customerList: listCustomerReducer,
   createStore: createEmployeeReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

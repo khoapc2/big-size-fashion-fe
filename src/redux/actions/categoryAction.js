@@ -3,15 +3,33 @@ import {
   CATEGORY_LIST_REQUEST,
   CATEGORY_LIST_SUCCESS,
   CATEGORY_LIST_FAIL,
+  CATEGORY_LIST_ALL_SUCCESS,
 } from "../../service/Validations/VarConstant";
 
 export const listCategory =
-  ({ keySearch }) =>
+  ({ keySearch, status }) =>
   async (dispatch) => {
     dispatch({ type: CATEGORY_LIST_REQUEST });
+    console.log(keySearch);
     try {
-      if (!keySearch) {
-        const data = await categoryApi.getListCategory();
+      if (!status) {
+        if (!keySearch) {
+          const data = await categoryApi.getListCategory();
+          dispatch({ type: CATEGORY_LIST_ALL_SUCCESS, payload: data.content });
+          dispatch({ type: CATEGORY_LIST_FAIL, payload: "" });
+        } else {
+          const searchParams = {
+            Category: keySearch,
+          };
+          const data = await categoryApi.getSearchListCategory(searchParams);
+          dispatch({ type: CATEGORY_LIST_ALL_SUCCESS, payload: data.content });
+          dispatch({ type: CATEGORY_LIST_FAIL, payload: "" });
+        }
+      } else {
+        const params = {
+          Status: status,
+        };
+        const data = await categoryApi.getListCategory(params);
         dispatch({ type: CATEGORY_LIST_SUCCESS, payload: data.content });
         dispatch({ type: CATEGORY_LIST_FAIL, payload: "" });
       }
