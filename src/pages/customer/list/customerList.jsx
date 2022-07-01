@@ -21,12 +21,12 @@ import {
   GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
 
-import "./categoryList.css";
+import "./customerList.css";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import { listCategory } from "../../../redux/actions/categoryAction";
+import { listCustomer } from "../../../redux/actions/customerAction";
 
-// import categoryApi from "../../api/categoryApi";
+// import customerApi from "../../api/customerApi";
 import Notification from "pages/components/dialog/Notification";
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
 
@@ -35,21 +35,21 @@ styleLink.rel = "stylesheet";
 styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
 document.head.appendChild(styleLink);
 
-export default function CategoryList() {
+export default function CustomerList() {
   const [notify, setNotify] = useState({ isOpen: false, message: "", type: "" });
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
   // const [paging, setPaging] = useState({});
   //Test
-  const { category, error, loading } = useSelector((state) => state.categoryList);
+  const { data, error, loading } = useSelector((state) => state.customerList);
   const [page, setPage] = useState(1);
   const triggerReload = useSelector((state) => state.triggerReload);
   // const [keySearch, setKeySearch] = useState("");
   const dispatch = useDispatch();
-  const [keySearch, setSearchText] = useState("");
-  
+  const [searchText, setSearchText] = useState("");
+  console.log(data);
   useEffect(() => {
-    dispatch(listCategory({keySearch}));
-  }, [dispatch, page, keySearch, triggerReload]);
+    dispatch(listCustomer(searchText));
+  }, [dispatch, page, searchText, triggerReload]);
 
   let inputSearchHandler = (e) => {
     let lowerCase = e.target.value.toLowerCase();
@@ -66,16 +66,16 @@ export default function CategoryList() {
     );
   }
 
-  const handleClickSearch = (keySearch) => {};
+  const handleClickSearch = (searchText) => {};
 
   function handleRowClick(rowData) {
     // console.log(rowData);
     // <div>
-    //   <Route path={`/category/:${rowData}`}>
+    //   <Route path={`/customer/:${rowData}`}>
     //     <Product />
     //   </Route>
     // </div>
-    // <Link to={`/category/:${rowData.category_id}`}></Link>;
+    // <Link to={`/customer/:${rowData.customer_id}`}></Link>;
   }
 
   const handleDelete = (id) => {
@@ -93,7 +93,7 @@ export default function CategoryList() {
   function NoRowsOverlay() {
     return (
       <Stack height="100%" alignItems="center" justifyContent="center">
-        Không tìm thấy thể loại nào
+        Không tìm thấy khách hàng nào
       </Stack>
     );
   }
@@ -101,49 +101,62 @@ export default function CategoryList() {
   function NoResultsOverlay() {
     return (
       <Stack height="100%" alignItems="center" justifyContent="center">
-        Không tìm thấy thể loại nào
+        Không tìm thấy khách hàng nào
       </Stack>
     );
   }
 
   const columns = [
-    { field: "category_id", headerName: "ID", width: 90 },
+    { field: "uid", headerName: "Mã", width: 150 },
     {
-      field: "category_name",
-      headerName: "Category",
-      width: 200,
-      renderCell: (params) => <div className="categoryListItem">{params.row.category_name}</div>,
+      field: "fullname",
+      headerName: "Họ tên",
+      width: 400,
+      renderCell: (params) => <div className="customerListItem">{params.row.fullname}</div>,
+    },
+    {
+      field: "username",
+      headerName: "Tài khoản",
+      width: 160,
+      renderCell: (params) => <div>{params.row.username}</div>,
+    },
+    {
+      field: "create_at",
+      headerName: "Ngày tạo",
+      width: 160,
+      renderCell: (params) => <div>{params.row.create_at}</div>,
     },
     {
       field: "status",
-      headerName: "Status",
+      headerName: "Tình trạng",
       width: 120,
+      renderCell: (params) => <div>{params.row.status === "Active" ? "Hoạt động" : "Đóng cửa"}</div>,
     },
     {
       field: "action",
-      headerName: "Action",
+      headerName: "Thao tác",
       width: 250,
       renderCell: (params) => (
         <>
-          <Link to={`/category/:${params.row.category_id}`}>
-            <button type="submit" className="categoryListEdit">
+          <Link to={`/customer/:${params.row.uid}`}>
+            <button type="submit" className="customerListEdit">
               Edit
             </button>
-            <Link to={`/category/:${params.row.category_id}`}>
-              <button type="submit" className="categoryListEdit">
+            <Link to={`/customer/:${params.row.uid}`}>
+              <button type="submit" className="customerListEdit">
                 View
               </button>
             </Link>
           </Link>
           <Button
-            className="categoryListDelete"
+            className="customerListDelete"
             onClick={() =>
               setConfirmDialog({
                 isOpen: true,
                 title: "Are you sure to delete this record?",
                 subTitle: "Delete",
                 onConfirm: () => {
-                  handleDelete(params.row.id);
+                  handleDelete(params.row.uid);
                 },
               })
             }
@@ -159,10 +172,10 @@ export default function CategoryList() {
     <DashboardLayout>
       <DashboardNavbar />
       <FormControl sx={{ m: 1, width: "35ch" }} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment">Tìm kiếm thể loại</InputLabel>
+        <InputLabel htmlFor="outlined-adornment">Tìm kiếm khách hàng</InputLabel>
         <OutlinedInput
           id="outlined-adornment"
-          value={keySearch}
+          value={searchText}
           onChange={inputSearchHandler}
           endAdornment={
             <InputAdornment position="end">
@@ -175,16 +188,10 @@ export default function CategoryList() {
               </IconButton>
             </InputAdornment>
           }
-          label="Tìm kiếm khuyến mãi"
+          label="Tìm kiếm khách hàng"
         />
       </FormControl>
-      <Link to="/newcategory">
-        <button type="button" className="categoryAddButton">
-          Tạo thể loại mới
-        </button>
-      </Link>
-
-      <div className="categoryList">
+      <div className="customerList">
         <DataGrid
           sx={{
             "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {
@@ -195,8 +202,8 @@ export default function CategoryList() {
             },
           }}
           loading={loading}
-          getRowId={(r) => r.category_id}
-          rows={category}
+          getRowId={(r) => r.uid}
+          rows={data}
           disableSelectionOnClick
           columns={columns}
           pageSize={8}
@@ -207,7 +214,7 @@ export default function CategoryList() {
           }
           onRowClick={(param) => (
             <>
-              <Link to={`/category/:${param.row.category_id}`}></Link>
+              <Link to={`/customer/:${param.row.customer_id}`}></Link>
             </>
           )}
           components={{

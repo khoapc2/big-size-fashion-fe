@@ -205,7 +205,7 @@ export default function ColorList() {
           rows={colour}
           disableSelectionOnClick
           columns={columns}
-          pageColor={8}
+          pageSize={8}
           data={(query) =>
             new Promise(() => {
               console.log(query);

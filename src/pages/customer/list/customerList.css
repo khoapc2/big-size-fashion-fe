@@ -1,4 +1,4 @@
-.categoryList {
+.customerList {
   flex: 4;
   /* min-height: 600px; */
   height: 600px;
@@ -6,12 +6,12 @@
   /* width: 1350px; */
 }
 
-.categoryListItem {
+.customerListItem {
   display: flex;
   align-items: center;
 }
 
-.categoryListImg {
+.customerListImg {
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -19,7 +19,7 @@
   margin-right: 10px;
 }
 
-.categoryListEdit {
+.customerListEdit {
   border: none;
   border-radius: 10px;
   padding: 5px 10px;
@@ -29,7 +29,7 @@
   margin-right: 20px;
 }
 
-.categoryListDelete {
+.customerListDelete {
   color: red;
   cursor: pointer;
 }
@@ -48,7 +48,7 @@
   align-content: stretch;
 }
 
-.categoryAddButton {
+.customerAddButton {
   width: fit-content;
   border: none;
   padding: 10px;

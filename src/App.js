@@ -59,6 +59,7 @@ import Categories from "pages/category/list/categoryList";
 // import Employees from "pages/components/createForm/Employees";
 import Staffs from "pages/staff/list/staffList";
 import Managers from "pages/manager/list/managerList";
+import Customers from "pages/customer/list/customerList";
 // import Employees from "pages/components/createForm/Employees";
 import Store from "pages/stores/createStore/Store";
 import StoreDetail from "pages/stores/storeDetail/StoreDetail";
@@ -242,6 +243,7 @@ export default function App() {
         <Route path="*" element={<Navigate to="/sign-in" />} />
         <Route path="/staffs" element={<Staffs />} />
         <Route path="/managers" element={<Managers />} />
+        <Route path="/customers" element={<Customers />} />
         {/* <Route path="/product/:productId">
           <Product />
         </Route> */}
