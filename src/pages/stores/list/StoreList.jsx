@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Button } from "semantic-ui-react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 import IconButton from "@mui/material/IconButton";
 import FormControl from "@mui/material/FormControl";
@@ -24,7 +25,7 @@ import {
 import "./storeList.css";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import { listStore } from "../../../redux/actions/storeAction";
+import { listStore, deleteStore } from "../../../redux/actions/storeAction";
 
 // import storeApi from "../../api/storeApi";
 import Notification from "pages/components/dialog/Notification";
@@ -41,15 +42,17 @@ export default function SizeList() {
   // const [paging, setPaging] = useState({});
   //Test
   const { data, error, loading } = useSelector((state) => state.storeList);
+  const { success: deleteSuccess } = useSelector((state) => state.deleteStoreState);
+
+  console.log(deleteSuccess);
   const [page, setPage] = useState(1);
   const triggerReload = useSelector((state) => state.triggerReload);
   // const [keySearch, setKeySearch] = useState("");
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
-  console.log(data);
   useEffect(() => {
     dispatch(listStore(searchText));
-  }, [dispatch, page, searchText, triggerReload]);
+  }, [dispatch, page, searchText, triggerReload, deleteSuccess]);
 
   let inputSearchHandler = (e) => {
     let lowerCase = e.target.value.toLowerCase();
@@ -79,14 +82,18 @@ export default function SizeList() {
   }
 
   const handleDelete = (id) => {
+    dispatch(deleteStore(id)).then(() => {
+      if (deleteSuccess.is_success) {
+        toast.success("Xóa cửa hàng thành công");
+        dispatch({ type: DELETE_STORE_SUCCESS, payload: false });
+        dispatch(triggerReload({}));
+      } else {
+        toast.error("Xóa cửa hàng thất bại");
+      }
+    });
     setConfirmDialog({
       ...confirmDialog,
       isOpen: false,
-    });
-    setNotify({
-      isOpen: true,
-      message: "Deleted Successfully",
-      type: "success",
     });
   };
 
@@ -124,7 +131,9 @@ export default function SizeList() {
       field: "manager_name",
       headerName: "Quản lý",
       width: 160,
-      renderCell: (params) => <div>{params.row.manager_name ? params.row.manager_name : "Không có"}</div>,
+      renderCell: (params) => (
+        <div>{params.row.manager_name ? params.row.manager_name : "Không có"}</div>
+      ),
     },
     {
       field: "status",
@@ -153,10 +162,10 @@ export default function SizeList() {
             onClick={() =>
               setConfirmDialog({
                 isOpen: true,
-                title: "Are you sure to delete this record?",
-                subTitle: "Delete",
+                title: "Bạn có muốn xóa cửa hàng này ra khỏi chuỗi Big size không?",
+                subTitle: "Xóa cửa hàng",
                 onConfirm: () => {
-                  handleDelete(params.row.id);
+                  handleDelete(params.row.store_id);
                 },
               })
             }

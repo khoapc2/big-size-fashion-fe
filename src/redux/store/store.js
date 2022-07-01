@@ -30,8 +30,8 @@ const reducer = combineReducers({
   colorList: listColorReducer,
   categoryList: listCategoryReducer,
   promotionList: listPromotionReducer,
-  createStore: createStoreReducer,
-  deleteStore: deleteStoreReducer,
+  createStoreState: createStoreReducer,
+  deleteStoreState: deleteStoreReducer,
   managerList: listManagerReducer,
   staffList: listStaffReducer,
 });

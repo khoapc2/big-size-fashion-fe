@@ -1,4 +1,4 @@
-/* eslint-disable */ 
+/* eslint-disable */
 import React from "react";
 import {
   Dialog,
@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import { Button } from "semantic-ui-react";
 import NotListedLocationIcon from "@material-ui/icons/NotListedLocation";
-import HelpOutlineTwoToneIcon from '@mui/icons-material/HelpOutlineTwoTone';
+import HelpOutlineTwoToneIcon from "@mui/icons-material/HelpOutlineTwoTone";
 
 const useStyles = makeStyles((theme) => ({
   dialog: {
@@ -57,12 +57,11 @@ export default function ConfirmDialog(props) {
         <Typography variant="subtitle2">{confirmDialog.subTitle}</Typography>
       </DialogContent>
       <DialogActions className={classes.dialogAction}>
-        <Button color="blue"
-                onClick={() => setConfirmDialog({ ...confirmDialog, isOpen: false })}>
-            No
+        <Button color="blue" onClick={() => setConfirmDialog({ ...confirmDialog, isOpen: false })}>
+          Hủy
         </Button>
         <Button color="red" onClick={confirmDialog.onConfirm}>
-          Yes
+          Xác nhận
         </Button>
       </DialogActions>
     </Dialog>

@@ -40,7 +40,7 @@ export const createStore = (storeModels) => async (dispatch) => {
   console.log(storeModels);
   dispatch({
     type: CREATE_STORE_REQUEST,
-    // payload: { storeModels },
+    payload: { storeModels },
   });
   try {
     if (storeModels) {
@@ -62,6 +62,8 @@ export const createStore = (storeModels) => async (dispatch) => {
 };
 
 export const deleteStore = (storeId) => async (dispatch) => {
+  // console.log("DeleteStore");
+  // console.log(storeId);
   dispatch({
     type: DELETE_STORE_REQUEST,
     payload: { storeId },

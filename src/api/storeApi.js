@@ -19,8 +19,8 @@ const storeApi = {
   },
 
   deleteStoreService: (params) => {
-    const url = `${URL_ENTITY}`;
-    return axios.delete(url, params);
+    const url = `${URL_ENTITY}/${params}`;
+    return axios.delete(url);
   },
 };
 
