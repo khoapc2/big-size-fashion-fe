@@ -6,6 +6,7 @@ import {
   listStoreReducer,
   createStoreReducer,
   deleteStoreReducer,
+  viewDetailStoreReducer,
 } from "redux/reducers/storeReducer";
 
 import { listSizeReducer } from "redux/reducers/sizeReducer";
@@ -34,6 +35,7 @@ const reducer = combineReducers({
   deleteStoreState: deleteStoreReducer,
   managerList: listManagerReducer,
   staffList: listStaffReducer,
+  viewStore: viewDetailStoreReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

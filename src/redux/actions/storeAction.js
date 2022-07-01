@@ -9,6 +9,9 @@ import {
   DELETE_STORE_REQUEST,
   DELETE_STORE_SUCCESS,
   DELETE_STORE_FAIL,
+  VIEW_DETAIL_STORE_REQUEST,
+  VIEW_DETAIL_STORE_SUCCESS,
+  VIEW_DETAIL_STORE_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listStore = (keySearch, page) => async (dispatch) => {
@@ -71,10 +74,27 @@ export const deleteStore = (storeId) => async (dispatch) => {
   try {
     const data = await storeApi.deleteStoreService(storeId);
     dispatch({ type: DELETE_STORE_SUCCESS, payload: data });
-    console.log(data);
   } catch (error) {
     dispatch({
       type: DELETE_STORE_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const viewDetail = (storeId) => async (dispatch) => {
+  dispatch({
+    type: VIEW_DETAIL_STORE_REQUEST,
+    payload: { storeId },
+  });
+  try {
+    const data = await storeApi.getStoreDetailById(storeId);
+    console.log(data);
+    dispatch({ type: VIEW_DETAIL_STORE_SUCCESS, payload: data.content });
+  } catch (error) {
+    dispatch({
+      type: VIEW_DETAIL_STORE_FAIL,
       payload:
         error.response && error.response.data.message ? error.response.data.message : error.message,
     });

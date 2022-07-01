@@ -12,6 +12,7 @@ export default function Input(props) {
     onChange,
     multiline,
     fullWidth,
+    disable,
   } = props;
   return (
     <TextField
@@ -24,6 +25,7 @@ export default function Input(props) {
       endAdornment={endadornment}
       multiline={multiline}
       fullWidth={fullWidth}
+      disabled={disable}
       {...(error && { error: true, helperText: error })}
     />
   );

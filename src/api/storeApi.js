@@ -22,6 +22,11 @@ const storeApi = {
     const url = `${URL_ENTITY}/${params}`;
     return axios.delete(url);
   },
+
+  getStoreDetailById: (params) => {
+    const url = `${URL_ENTITY}/${params}`;
+    return axios.get(url);
+  },
 };
 
 export default storeApi;
