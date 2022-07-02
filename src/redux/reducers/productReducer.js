@@ -2,9 +2,9 @@ import {
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
   PRODUCT_LIST_FAIL,
-  CREATE_STORE_REQUEST,
-  CREATE_STORE_SUCCESS,
-  CREATE_STORE_FAIL,
+  CREATE_PRODUCT_REQUEST,
+  CREATE_PRODUCT_SUCCESS,
+  CREATE_PRODUCT_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listProductReducer = (state = { loading: true, data: [], error: "" }, action) => {
@@ -24,13 +24,13 @@ export const listProductReducer = (state = { loading: true, data: [], error: "" 
   }
 };
 
-export const createStoreReducer = (state = {}, action) => {
+export const createProductReducer = (state = {}, action) => {
   switch (action.type) {
-    case CREATE_STORE_REQUEST:
+    case CREATE_PRODUCT_REQUEST:
       return { ...state, loading: true };
-    case CREATE_STORE_SUCCESS:
+    case CREATE_PRODUCT_SUCCESS:
       return { ...state, loading: false, success: action.payload };
-    case CREATE_STORE_FAIL:
+    case CREATE_PRODUCT_FAIL:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;

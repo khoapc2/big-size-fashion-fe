@@ -12,6 +12,11 @@ const productApi = {
     const url = `${URL_ENTITY}`;
     return axios.get(url, { params });
   },
+
+  createNewProduct: (params) => {
+    const url = `${URL_ENTITY}`;
+    return axios.post(url, params);
+  },
 };
 
 export default productApi;

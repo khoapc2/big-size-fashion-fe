@@ -1,7 +1,7 @@
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import thunk from "redux-thunk";
 import { userLoginReducer, reloadReducer } from "redux/reducers/userReducer";
-import { listProductReducer } from "redux/reducers/productReducer";
+import { listProductReducer, createProductReducer } from "redux/reducers/productReducer";
 import {
   listStoreReducer,
   createStoreReducer,
@@ -28,6 +28,7 @@ const reducer = combineReducers({
   userLogin: userLoginReducer,
   triggerReload: reloadReducer,
   productList: listProductReducer,
+  createProductState: createProductReducer,
   storeList: listStoreReducer,
   sizeList: listSizeReducer,
   colorList: listColorReducer,

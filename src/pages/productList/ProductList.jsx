@@ -162,11 +162,12 @@ export default function ProductList() {
             <button type="submit" className="productListEdit">
               Edit
             </button>
-            <Link to={`/product/:${params.row.product_id}`}>
-              <button type="submit" className="productListEdit">
-                View
-              </button>
-            </Link>
+          </Link>
+
+          <Link to={`/product/:${params.row.product_id}`}>
+            <button type="submit" className="productListEdit">
+              View
+            </button>
           </Link>
           <Button
             className="productListDelete"

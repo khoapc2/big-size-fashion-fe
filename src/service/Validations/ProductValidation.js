@@ -9,16 +9,16 @@ export const SchemaErrorCreateProduct = Yup.object().shape({
   category: Yup.string().required("Thể loại không được bỏ trống"),
   description: Yup.string().max(500, "Miêu tả sản phẩm không được quá 500 ký tự"),
   price: Yup.number().required("Giá không được bỏ trống"),
-  colourWithSize: Yup.array()
-    .of(
-      Yup.object()
-        .shape({
-          id: Yup.number().required(),
-          colour: Yup.string().strict().required("Màu sắc không được bỏ trống"),
-          size: Yup.array().strict().required("Kích thước không được bỏ trống"),
-        })
-        .strict()
-        .required("Không được bỏ trống")
-    )
-    .required("Không được bỏ trống"),
+  // colourWithSize: Yup.array()
+  //   .of(
+  //     Yup.object()
+  //       .shape({
+  //         id: Yup.number().required(),
+  //         colour: Yup.string().strict().required("Màu sắc không được bỏ trống"),
+  //         size: Yup.array().strict().required("Kích thước không được bỏ trống"),
+  //       })
+  //       .strict()
+  //       .required("Không được bỏ trống")
+  //   )
+  //   .required("Không được bỏ trống"),
 });

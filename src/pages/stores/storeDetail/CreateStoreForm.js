@@ -47,12 +47,10 @@ export default function StoreForm() {
     <div>
       {loading ? (
         <div>
-          {console.log("render true")}
           <Loading />
         </div>
       ) : (
         <div>
-          {console.log("render fail")}
           <Formik
             initialValues={{
               storeAddress: data.store_address,
