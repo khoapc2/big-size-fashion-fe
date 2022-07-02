@@ -6,13 +6,14 @@ export default function Input(props) {
     name,
     label,
     value,
-    error = null,
     type,
     endadornment,
     onChange,
     multiline,
     fullWidth,
     disable,
+    error,
+    helperText,
   } = props;
   return (
     <TextField
@@ -26,7 +27,8 @@ export default function Input(props) {
       multiline={multiline}
       fullWidth={fullWidth}
       disabled={disable}
-      {...(error && { error: true, helperText: error })}
+      error={error}
+      helperText={helperText}
     />
   );
 }

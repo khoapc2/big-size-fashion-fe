@@ -11,6 +11,9 @@ import {
   VIEW_DETAIL_STORE_REQUEST,
   VIEW_DETAIL_STORE_SUCCESS,
   VIEW_DETAIL_STORE_FAIL,
+  UPDATE_STORE_REQUEST,
+  UPDATE_STORE_SUCCESS,
+  UPDATE_STORE_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listStoreReducer = (state = { loading: true, data: [], error: "" }, action) => {
@@ -30,6 +33,19 @@ export const listStoreReducer = (state = { loading: true, data: [], error: "" },
   }
 };
 
+export const viewDetailStoreReducer = (state = { loading: true, data: [], error: "" }, action) => {
+  switch (action.type) {
+    case VIEW_DETAIL_STORE_REQUEST:
+      return { ...state, loading: true };
+    case VIEW_DETAIL_STORE_SUCCESS:
+      return { ...state, loading: false, data: action.payload };
+    case VIEW_DETAIL_STORE_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
 export const createStoreReducer = (state = {}, action) => {
   switch (action.type) {
     case CREATE_STORE_REQUEST:
@@ -43,6 +59,19 @@ export const createStoreReducer = (state = {}, action) => {
   }
 };
 
+export const updateStoreReducer = (state = { loading: true }, action) => {
+  switch (action.type) {
+    case UPDATE_STORE_REQUEST:
+      return { ...state, loading: true };
+    case UPDATE_STORE_SUCCESS:
+      return { ...state, loading: false, success: action.payload };
+    case UPDATE_STORE_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
 export const deleteStoreReducer = (state = {}, action) => {
   switch (action.type) {
     case DELETE_STORE_REQUEST:
@@ -50,18 +79,6 @@ export const deleteStoreReducer = (state = {}, action) => {
     case DELETE_STORE_SUCCESS:
       return { ...state, loading: false, success: action.payload };
     case DELETE_STORE_FAIL:
-      return { ...state, loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
-export const viewDetailStoreReducer = (state = { loading: true, data: [], error: "" }, action) => {
-  switch (action.type) {
-    case VIEW_DETAIL_STORE_REQUEST:
-      return { ...state, loading: true };
-    case VIEW_DETAIL_STORE_SUCCESS:
-      return { ...state, loading: false, data: action.payload };
-    case VIEW_DETAIL_STORE_FAIL:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;

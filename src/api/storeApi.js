@@ -27,6 +27,11 @@ const storeApi = {
     const url = `${URL_ENTITY}/${params}`;
     return axios.get(url);
   },
+
+  updateStoreService: (params, id) => {
+    const url = `${URL_ENTITY}/${id}`;
+    return axios.put(url, params);
+  },
 };
 
 export default storeApi;

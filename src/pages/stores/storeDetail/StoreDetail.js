@@ -14,6 +14,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function StoreDetail() {
+  // const { loading } = useSelector((state) => state.viewStore);
+
   const classes = useStyles();
   return (
     <DashboardLayout>

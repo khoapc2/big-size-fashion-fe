@@ -12,6 +12,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import InputLabel from "@mui/material/InputLabel";
 import Stack from "@mui/material/Stack";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import StoreDetail from "../storeDetail/StoreDetail";
 
 import {
@@ -45,7 +46,7 @@ export default function SizeList() {
   const { data, error, loading } = useSelector((state) => state.storeList);
   const { success: deleteSuccess } = useSelector((state) => state.deleteStoreState);
 
-  console.log(deleteSuccess);
+  console.log(data);
   const [page, setPage] = useState(1);
   const triggerReload = useSelector((state) => state.triggerReload);
   // const [keySearch, setKeySearch] = useState("");
@@ -80,7 +81,7 @@ export default function SizeList() {
 
   const handleDelete = (id) => {
     dispatch(deleteStore(id)).then((value) => {
-      console.log(value);
+      // console.log(value);
       if (deleteSuccess.is_success) {
         toast.success("Xóa cửa hàng thành công");
         dispatch({ type: DELETE_STORE_SUCCESS, payload: false });
@@ -145,17 +146,22 @@ export default function SizeList() {
       width: 250,
       renderCell: (params) => (
         <>
-          <Link to={`/store/:${params.row.store_id}`}>
+          <button
+            type="submit"
+            className="storeListEdit"
+            onClick={() => navigate(`/store/${param.row.store_id}`)}
+          >
+            <VisibilityIcon />
+          </button>
+          <Link to={`/update-store/${params.row.store_id}`}>
             <button type="submit" className="storeListEdit">
               Edit
             </button>
           </Link>
 
-          {/* <Link to={`/store/:${params.row.store_id}`}>
-            <button type="submit" className="storeListEdit">
-              View
-            </button>
-          </Link> */}
+          {/* <Link to={`/store/:${params.row.store_id}`}> */}
+
+          {/* </Link> */}
           <Button
             className="storeListDelete"
             onClick={() =>
@@ -218,7 +224,7 @@ export default function SizeList() {
           loading={loading}
           getRowId={(r) => r.store_id}
           rows={data}
-          disableSelectionOnClick
+          // disableSelectionOnClick
           columns={columns}
           pageSize={8}
           data={(query) =>
@@ -226,11 +232,11 @@ export default function SizeList() {
               console.log(query);
             })
           }
-          onRowClick={(param) => {
-            console.log(param);
-            navigate(`/store/${param.id}`);
-            // <StoreDetail type="view" id={param.id} />;
-          }}
+          // onRowClick={(param) => {
+          //   // console.log(param);
+          // ;
+          //   // <StoreDetail type="view" id={param.id} />;
+          // }}
           components={{
             Toolbar: CustomToolbar,
             NoRowsOverlay,
