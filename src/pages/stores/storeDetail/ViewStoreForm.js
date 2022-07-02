@@ -69,14 +69,14 @@ export default function StoreForm() {
                   <Grid container>
                     <Grid item xs={6}>
                       <Controls.Input
+                        type="text"
                         name="storeAddress"
                         label="Địa chỉ cửa hàng"
                         value={props.values.storeAddress}
                         onChange={props.handleChange}
-                        disable
                         fullWidth
                         multiline
-                        InputProps={{
+                        inputProps={{
                           readOnly: true,
                         }}
                       />
@@ -88,7 +88,9 @@ export default function StoreForm() {
                         label="Số điện thoại"
                         value={props.values.phone}
                         onChange={props.handleChange}
-                        disable
+                        inputProps={{
+                          readOnly: true,
+                        }}
                       />
                       {/* <div>
                 <Controls.Button

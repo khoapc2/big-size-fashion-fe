@@ -7,13 +7,14 @@ export default function Input(props) {
     label,
     value,
     type,
-    endadornment,
     onChange,
     multiline,
     fullWidth,
     disable,
     error,
     helperText,
+    required,
+    inputProps,
   } = props;
   return (
     <TextField
@@ -23,12 +24,13 @@ export default function Input(props) {
       value={value}
       onChange={onChange}
       type={type}
-      endAdornment={endadornment}
       multiline={multiline}
       fullWidth={fullWidth}
-      disabled={disable}
-      error={error}
       helperText={helperText}
+      required={required}
+      error={error}
+      disabled={disable}
+      inputProps={inputProps}
     />
   );
 }

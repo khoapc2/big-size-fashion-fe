@@ -13,7 +13,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import InputLabel from "@mui/material/InputLabel";
 import Stack from "@mui/material/Stack";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import StoreDetail from "../storeDetail/StoreDetail";
+import StoreDetail from "../storeDetail/ViewStore";
 
 import {
   DataGrid,
@@ -149,7 +149,7 @@ export default function SizeList() {
           <button
             type="submit"
             className="storeListEdit"
-            onClick={() => navigate(`/store/${param.row.store_id}`)}
+            onClick={() => navigate(`/store/${params.row.store_id}`)}
           >
             <VisibilityIcon />
           </button>

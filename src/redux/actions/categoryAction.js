@@ -4,6 +4,9 @@ import {
   CATEGORY_LIST_SUCCESS,
   CATEGORY_LIST_FAIL,
   CATEGORY_LIST_ALL_SUCCESS,
+  CREATE_CATEGORY_REQUEST,
+  CREATE_CATEGORY_SUCCESS,
+  CREATE_CATEGORY_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listCategory =
@@ -42,3 +45,26 @@ export const listCategory =
       dispatch({ type: CATEGORY_LIST_FAIL, payload: message });
     }
   };
+
+export const createCategory = (categoryModels) => async (dispatch) => {
+  dispatch({
+    type: CREATE_CATEGORY_REQUEST,
+    payload: { categoryModels },
+  });
+  try {
+    if (categoryModels) {
+      const param = {
+        category: categoryModels.category,
+      };
+      const data = await categoryApi.createNewCategory(param);
+      console.log(`data create category in action: ${data.content}`);
+      dispatch({ type: CREATE_CATEGORY_SUCCESS, payload: data.content });
+    }
+  } catch (error) {
+    dispatch({
+      type: CREATE_CATEGORY_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};

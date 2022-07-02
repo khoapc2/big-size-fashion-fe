@@ -1,9 +1,9 @@
 import React from "react";
-import StoreIcon from "@mui/icons-material/Store";
+import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 import { Paper, makeStyles } from "@material-ui/core";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import UpdateStoreForm from "./UpdateStoreForm";
+import StoreForm from "./CreateStoreForm";
 import PageHeader from "../../components/createForm/PageHeader";
 
 const useStyles = makeStyles((theme) => ({
@@ -13,18 +13,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UpdateStore() {
+export default function CreateStore() {
   const classes = useStyles();
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <PageHeader
-        title="Chỉnh sửa thông tin cửa hàng"
-        subTitle="Thông tin"
-        icon={<StoreIcon fontSize="large" />}
+        title="Thêm thông tin cửa hàng mới"
+        subTitle="Sử dụng cho cửa hàng mới"
+        icon={<AddBusinessIcon fontSize="large" />}
       />
       <Paper className={classes.pageContent}>
-        <UpdateStoreForm />
+        <StoreForm />
       </Paper>
     </DashboardLayout>
   );

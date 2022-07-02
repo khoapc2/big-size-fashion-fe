@@ -61,8 +61,10 @@ import Staffs from "pages/staff/list/staffList";
 import Managers from "pages/manager/list/managerList";
 import Customers from "pages/customer/list/customerList";
 // import Employees from "pages/components/createForm/Employees";
-import Store from "pages/stores/createStore/Store";
-import StoreDetail from "pages/stores/storeDetail/StoreDetail";
+import Category from "pages/category/detail/Category";
+import Users from "pages/user/userTab";
+import CreateStore from "pages/stores/createStore/CreateStore";
+import StoreDetail from "pages/stores/storeDetail/ViewStore";
 import UpdateStore from "pages/stores/storeUpdate/UpdateStore";
 
 // import Fader from "pages/components/Fader";
@@ -234,7 +236,7 @@ export default function App() {
         <Route path="product/:productId" element={<Product />} />
         <Route path="newproduct" element={<NewProduct />} />
         <Route path="/stores" element={<Stores />} />
-        <Route path="newstore" element={<Store />} />
+        <Route path="newstore" element={<CreateStore />} />
         <Route path="store/:storeId" element={<StoreDetail />} />
         <Route path="update-store/:storeId" element={<UpdateStore />} />
         <Route path="/promotions" element={<Promotions />} />
@@ -246,6 +248,8 @@ export default function App() {
         <Route path="/staffs" element={<Staffs />} />
         <Route path="/managers" element={<Managers />} />
         <Route path="/customers" element={<Customers />} />
+        <Route path="/users" element={<Users />} />
+        <Route path="newCategory" element={<Category />} />
         {/* <Route path="/product/:productId">
           <Product />
         </Route> */}

@@ -169,8 +169,7 @@ export default function ManagerList() {
   ];
 
   return (
-    <DashboardLayout>
-      <DashboardNavbar />
+    <div className="managerTab">
       <FormControl sx={{ m: 1, width: "35ch" }} variant="outlined">
         <InputLabel htmlFor="outlined-adornment">Tìm kiếm quản lý</InputLabel>
         <OutlinedInput
@@ -232,6 +231,6 @@ export default function ManagerList() {
       </div>
       <Notification notify={notify} setNotify={setNotify} />
       <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />
-    </DashboardLayout>
+    </div>
   );
 }

@@ -109,11 +109,11 @@ export default function ProductList() {
   }
 
   const columns = [
-    { field: "product_id", headerName: "ID", width: 90 },
+    { field: "product_id", headerName: "ID", width: 30 },
     {
       field: "product_name",
       headerName: "Sản phẩm",
-      width: 200,
+      width: 350,
       renderCell: (params) => (
         <div className="productListItem">
           <img
@@ -125,24 +125,24 @@ export default function ProductList() {
         </div>
       ),
     },
-    {
-      field: "status",
-      headerName: "Tình trạng",
-      width: 120,
-      // renderCell: (params) => (
+    // {
+    //   field: "status",
+    //   headerName: "Tình trạng",
+    //   width: 120,
+    //   // renderCell: (params) => (
 
-      // )
-    },
+    //   // )
+    // },
     {
       field: "price",
       headerName: "Giá bán (VNĐ)",
-      width: 160,
+      width: 150,
       renderCell: (params) => <div>{params.row.price.toLocaleString("vi-VN")} </div>,
     },
     {
       field: "promotion_price",
       headerName: "Giá áp dụng khuyến mãi (VNĐ)",
-      width: 250,
+      width: 200,
       renderCell: (params) => (
         <div>
           {params.promotion_price
@@ -155,7 +155,7 @@ export default function ProductList() {
     {
       field: "action",
       headerName: "Thao tác",
-      width: 250,
+      width: 200,
       renderCell: (params) => (
         <>
           <Link to={`/product/:${params.row.product_id}`}>

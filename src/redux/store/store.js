@@ -12,7 +12,7 @@ import {
 
 import { listSizeReducer } from "redux/reducers/sizeReducer";
 import { listColorReducer } from "redux/reducers/colorReducer";
-import { listCategoryReducer } from "redux/reducers/categoryReducer";
+import { listCategoryReducer, createCategoryReducer } from "redux/reducers/categoryReducer";
 import { listPromotionReducer } from "redux/reducers/promotionReducer";
 import { listManagerReducer } from "redux/reducers/managerReducer";
 import { listStaffReducer } from "redux/reducers/staffReducer";
@@ -41,6 +41,7 @@ const reducer = combineReducers({
   managerList: listManagerReducer,
   staffList: listStaffReducer,
   customerList: listCustomerReducer,
+  createCategoryState: createCategoryReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

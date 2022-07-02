@@ -169,8 +169,7 @@ export default function StaffList() {
   ];
 
   return (
-    <DashboardLayout>
-      <DashboardNavbar />
+    <div className="staffTab">
       <FormControl sx={{ m: 1, width: "35ch" }} variant="outlined">
         <InputLabel htmlFor="outlined-adornment">Tìm kiếm nhân viên</InputLabel>
         <OutlinedInput
@@ -232,6 +231,6 @@ export default function StaffList() {
       </div>
       <Notification notify={notify} setNotify={setNotify} />
       <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />
-    </DashboardLayout>
+    </div>
   );
 }

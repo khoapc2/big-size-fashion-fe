@@ -178,7 +178,7 @@ export default function CategoryList() {
           label="Tìm kiếm khuyến mãi"
         />
       </FormControl>
-      <Link to="/newcategory">
+      <Link to="/newCategory">
         <button type="button" className="categoryAddButton">
           Tạo thể loại mới
         </button>
