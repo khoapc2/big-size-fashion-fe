@@ -2,17 +2,8 @@ import React from "react";
 import { TextField } from "@material-ui/core";
 
 export default function Input(props) {
-  const {
-    name,
-    label,
-    value,
-    error = null,
-    type,
-    endadornment,
-    onChange,
-    multiline,
-    fullWidth,
-  } = props;
+  const { name, label, value, error, type, onChange, multiline, fullWidth, helperText, required } =
+    props;
   return (
     <TextField
       variant="outlined"
@@ -21,10 +12,11 @@ export default function Input(props) {
       value={value}
       onChange={onChange}
       type={type}
-      endAdornment={endadornment}
       multiline={multiline}
       fullWidth={fullWidth}
-      {...(error && { error: true, helperText: error })}
+      helperText={helperText}
+      required={required}
+      error={error}
     />
   );
 }

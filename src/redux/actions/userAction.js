@@ -14,10 +14,6 @@ export const guestLogin = (username, password) => async (dispatch) => {
     console.log(username, password);
     console.log(await userApi.login({ username, password }));
     const { content } = await userApi.login({ username, password });
-    // const { data } = await Axios.post("https://20.211.17.194/api/v1/accounts/login", {
-    //   username,
-    //   password,
-    // });
     dispatch({ type: USER_LOGIN_SUCCESS, payload: content });
     localStorage.setItem("user", JSON.stringify(content));
   } catch (error) {

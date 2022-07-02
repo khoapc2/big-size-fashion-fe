@@ -44,9 +44,7 @@ import Promotions from "pages/promotion/list/promotionList";
 import Sizes from "pages/size/list/sizeList";
 import Colors from "pages/color/list/colorList";
 import Categories from "pages/category/list/categoryList";
-import Staffs from "pages/staff/list/staffList";
-import Managers from "pages/manager/list/managerList";
-import Customers from "pages/customer/list/customerList";
+import Users from "pages/user/userTab";
 
 // import RTL from "layouts/rtl";
 import Notifications from "layouts/notifications";
@@ -85,27 +83,11 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Customer",
-    key: "customer",
+    name: "Người dùng",
+    key: "user",
     icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/customers",
-    component: <Customers />,
-  },
-  {
-    type: "collapse",
-    name: "Staff",
-    key: "staff",
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/staffs",
-    component: <Staffs />,
-  },
-  {
-    type: "collapse",
-    name: "Manager",
-    key: "manager",
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/managers",
-    component: <Managers />,
+    route: "/users",
+    component: <Users />,
   },
   {
     type: "collapse",

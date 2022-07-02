@@ -11,6 +11,10 @@ const categoryApi = {
     const url = `${URL_ENTITY}`;
     return axios.get(url, { params });
   },
+  createNewCategory: (params) => {
+    const url = `${URL_ENTITY}`;
+    return axios.post(url, params);
+  },
 };
 
 export default categoryApi;

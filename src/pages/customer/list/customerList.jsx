@@ -130,7 +130,9 @@ export default function CustomerList() {
       field: "status",
       headerName: "Tình trạng",
       width: 120,
-      renderCell: (params) => <div>{params.row.status === "Active" ? "Hoạt động" : "Đóng cửa"}</div>,
+      renderCell: (params) => (
+        <div>{params.row.status === "Active" ? "Hoạt động" : "Đóng cửa"}</div>
+      ),
     },
     {
       field: "action",
@@ -169,8 +171,7 @@ export default function CustomerList() {
   ];
 
   return (
-    <DashboardLayout>
-      <DashboardNavbar />
+    <div className="customerTab">
       <FormControl sx={{ m: 1, width: "35ch" }} variant="outlined">
         <InputLabel htmlFor="outlined-adornment">Tìm kiếm khách hàng</InputLabel>
         <OutlinedInput
@@ -226,6 +227,6 @@ export default function CustomerList() {
       </div>
       <Notification notify={notify} setNotify={setNotify} />
       <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />
-    </DashboardLayout>
+    </div>
   );
 }
