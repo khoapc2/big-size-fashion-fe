@@ -9,6 +9,12 @@ import {
   DELETE_STORE_REQUEST,
   DELETE_STORE_SUCCESS,
   DELETE_STORE_FAIL,
+  VIEW_DETAIL_STORE_REQUEST,
+  VIEW_DETAIL_STORE_SUCCESS,
+  VIEW_DETAIL_STORE_FAIL,
+  UPDATE_STORE_REQUEST,
+  UPDATE_STORE_SUCCESS,
+  UPDATE_STORE_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listStore = (keySearch, page) => async (dispatch) => {
@@ -22,7 +28,6 @@ export const listStore = (keySearch, page) => async (dispatch) => {
       dispatch({ type: STORE_LIST_SUCCESS, payload: data.content });
       dispatch({ type: STORE_LIST_FAIL, payload: "" });
     } else {
-      console.log("data  colour in Search Action");
       const data = await storeApi.getSearchListStore(params);
       dispatch({ type: STORE_LIST_SUCCESS, payload: data.content });
       dispatch({ type: STORE_LIST_FAIL, payload: "" });
@@ -37,7 +42,6 @@ export const listStore = (keySearch, page) => async (dispatch) => {
 };
 
 export const createStore = (storeModels) => async (dispatch) => {
-  console.log(storeModels);
   dispatch({
     type: CREATE_STORE_REQUEST,
     payload: { storeModels },
@@ -48,8 +52,7 @@ export const createStore = (storeModels) => async (dispatch) => {
         store_address: storeModels.storeAddress,
         store_phone: storeModels.phone,
       };
-      const { data } = await storeApi.createNewStore(param);
-      console.log(data);
+      const data = await storeApi.createNewStore(param);
       dispatch({ type: CREATE_STORE_SUCCESS, payload: data });
     }
   } catch (error) {
@@ -71,10 +74,49 @@ export const deleteStore = (storeId) => async (dispatch) => {
   try {
     const data = await storeApi.deleteStoreService(storeId);
     dispatch({ type: DELETE_STORE_SUCCESS, payload: data });
-    console.log(data);
   } catch (error) {
     dispatch({
       type: DELETE_STORE_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const viewDetail = (storeId) => async (dispatch) => {
+  dispatch({
+    type: VIEW_DETAIL_STORE_REQUEST,
+    payload: { storeId },
+  });
+  try {
+    const data = await storeApi.getStoreDetailById(storeId);
+    dispatch({ type: VIEW_DETAIL_STORE_SUCCESS, payload: data.content });
+  } catch (error) {
+    dispatch({
+      type: VIEW_DETAIL_STORE_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const updateStore = (storeModels, id) => async (dispatch) => {
+  dispatch({
+    type: UPDATE_STORE_REQUEST,
+    payload: { storeModels },
+  });
+  try {
+    if (storeModels) {
+      const param = {
+        store_address: storeModels.storeAddress,
+        store_phone: storeModels.phone,
+      };
+      const data = await storeApi.updateStoreService(param, id);
+      dispatch({ type: UPDATE_STORE_SUCCESS, payload: data });
+    }
+  } catch (error) {
+    dispatch({
+      type: UPDATE_STORE_FAIL,
       payload:
         error.response && error.response.data.message ? error.response.data.message : error.message,
     });

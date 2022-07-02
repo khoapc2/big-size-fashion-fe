@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Button } from "semantic-ui-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +12,8 @@ import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import InputLabel from "@mui/material/InputLabel";
 import Stack from "@mui/material/Stack";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import StoreDetail from "../storeDetail/ViewStore";
 
 import {
   DataGrid,
@@ -44,11 +46,12 @@ export default function SizeList() {
   const { data, error, loading } = useSelector((state) => state.storeList);
   const { success: deleteSuccess } = useSelector((state) => state.deleteStoreState);
 
-  console.log(deleteSuccess);
+  console.log(data);
   const [page, setPage] = useState(1);
   const triggerReload = useSelector((state) => state.triggerReload);
   // const [keySearch, setKeySearch] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
   useEffect(() => {
     dispatch(listStore(searchText));
@@ -71,18 +74,14 @@ export default function SizeList() {
 
   const handleClickSearch = (searchText) => {};
 
-  function handleRowClick(rowData) {
-    // console.log(rowData);
-    // <div>
-    //   <Route path={`/store/:${rowData}`}>
-    //     <Product />
-    //   </Route>
-    // </div>
-    // <Link to={`/store/:${rowData.store_id}`}></Link>;
-  }
+  // function handleRowClick(rowData) {
+  //   console.log(rowData);
+  //   navigate(`/store/${rowData.id}`);
+  // }
 
   const handleDelete = (id) => {
-    dispatch(deleteStore(id)).then(() => {
+    dispatch(deleteStore(id)).then((value) => {
+      // console.log(value);
       if (deleteSuccess.is_success) {
         toast.success("Xóa cửa hàng thành công");
         dispatch({ type: DELETE_STORE_SUCCESS, payload: false });
@@ -147,16 +146,22 @@ export default function SizeList() {
       width: 250,
       renderCell: (params) => (
         <>
-          <Link to={`/store/:${params.row.store_id}`}>
+          <button
+            type="submit"
+            className="storeListEdit"
+            onClick={() => navigate(`/store/${params.row.store_id}`)}
+          >
+            <VisibilityIcon />
+          </button>
+          <Link to={`/update-store/${params.row.store_id}`}>
             <button type="submit" className="storeListEdit">
               Edit
             </button>
-            <Link to={`/store/:${params.row.store_id}`}>
-              <button type="submit" className="storeListEdit">
-                View
-              </button>
-            </Link>
           </Link>
+
+          {/* <Link to={`/store/:${params.row.store_id}`}> */}
+
+          {/* </Link> */}
           <Button
             className="storeListDelete"
             onClick={() =>
@@ -186,7 +191,7 @@ export default function SizeList() {
           id="outlined-adornment"
           value={searchText}
           onChange={inputSearchHandler}
-          endAdornment={
+          endadornment={
             <InputAdornment position="end">
               <IconButton
                 aria-label="toggle password visibility"
@@ -219,7 +224,7 @@ export default function SizeList() {
           loading={loading}
           getRowId={(r) => r.store_id}
           rows={data}
-          disableSelectionOnClick
+          // disableSelectionOnClick
           columns={columns}
           pageSize={8}
           data={(query) =>
@@ -227,11 +232,11 @@ export default function SizeList() {
               console.log(query);
             })
           }
-          onRowClick={(param) => (
-            <>
-              <Link to={`/store/:${param.row.store_id}`}></Link>
-            </>
-          )}
+          // onRowClick={(param) => {
+          //   // console.log(param);
+          // ;
+          //   // <StoreDetail type="view" id={param.id} />;
+          // }}
           components={{
             Toolbar: CustomToolbar,
             NoRowsOverlay,

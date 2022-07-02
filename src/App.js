@@ -61,9 +61,11 @@ import Staffs from "pages/staff/list/staffList";
 import Managers from "pages/manager/list/managerList";
 import Customers from "pages/customer/list/customerList";
 // import Employees from "pages/components/createForm/Employees";
-import Store from "pages/stores/detail/Store";
 import Category from "pages/category/detail/Category";
 import Users from "pages/user/userTab";
+import CreateStore from "pages/stores/createStore/CreateStore";
+import StoreDetail from "pages/stores/storeDetail/ViewStore";
+import UpdateStore from "pages/stores/storeUpdate/UpdateStore";
 
 // import Fader from "pages/components/Fader";
 // import { onMessageListener } from "./firebase/firebase";
@@ -234,11 +236,13 @@ export default function App() {
         <Route path="product/:productId" element={<Product />} />
         <Route path="newproduct" element={<NewProduct />} />
         <Route path="/stores" element={<Stores />} />
+        <Route path="newstore" element={<CreateStore />} />
+        <Route path="store/:storeId" element={<StoreDetail />} />
+        <Route path="update-store/:storeId" element={<UpdateStore />} />
         <Route path="/promotions" element={<Promotions />} />
         <Route path="/sizes" element={<Sizes />} />
         <Route path="/colors" element={<Colors />} />
         <Route path="/categories" element={<Categories />} />
-        <Route path="newstore" element={<Store />} />
         {/* <Route path="/sizes" element={<Sizes />} /> */}
         <Route path="*" element={<Navigate to="/sign-in" />} />
         <Route path="/staffs" element={<Staffs />} />

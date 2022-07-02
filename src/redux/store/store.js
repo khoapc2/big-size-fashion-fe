@@ -6,6 +6,8 @@ import {
   listStoreReducer,
   createStoreReducer,
   deleteStoreReducer,
+  viewDetailStoreReducer,
+  updateStoreReducer,
 } from "redux/reducers/storeReducer";
 
 import { listSizeReducer } from "redux/reducers/sizeReducer";
@@ -33,6 +35,8 @@ const reducer = combineReducers({
   promotionList: listPromotionReducer,
   createStoreState: createStoreReducer,
   deleteStoreState: deleteStoreReducer,
+  updateStoreState: updateStoreReducer,
+  viewStore: viewDetailStoreReducer,
   managerList: listManagerReducer,
   staffList: listStaffReducer,
   customerList: listCustomerReducer,
