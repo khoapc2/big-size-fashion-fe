@@ -36,7 +36,6 @@ export default function CategoryForm() {
   const classes = useStyles();
   const response = useSelector((state) => state.createCategoryState);
   const { success, loading, error } = response;
-  console.log(`create_category:${success}`);
   useEffect(() => {
     if (success) {
       toast.success("Tạo thể loại thành công");

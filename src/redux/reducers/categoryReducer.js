@@ -14,7 +14,7 @@ function resultArr(payload) {
   result = newArray.map(({ category_id, category_name, status }) => ({
     key: category_id.toString(),
     text: category_name,
-    value: category_id.toString(),
+    value: category_id,
     status,
   }));
   return result;

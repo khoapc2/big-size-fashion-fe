@@ -12,6 +12,8 @@ import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
 import { Form, Label } from "semantic-ui-react";
+import { toast } from "react-toastify";
+
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Stack } from "@mui/material";
 import { Formik } from "formik";
@@ -20,6 +22,12 @@ import { listSize } from "../../../redux/actions/sizeAction";
 import { listColor } from "../../../redux/actions/colorAction";
 import { listCategory } from "../../../redux/actions/categoryAction";
 import { createProduct } from "../../../redux/actions/productAction";
+import { triggerReload } from "../../../redux/actions/userAction";
+import {
+  CREATE_PRODUCT_FAIL,
+  CREATE_PRODUCT_SUCCESS,
+} from "../../../service/Validations/VarConstant";
+
 const Input = styled("input")({
   display: "none",
 });
@@ -39,16 +47,19 @@ export default function NewProduct() {
   // const { size } = useSelector((state) => state.sizeList);
   // const { colour } = useSelector((state) => state.colorList);
   const { category } = useSelector((state) => state.categoryList);
-  const triggerReload = useSelector((state) => state.triggerReload);
+  const response = useSelector((state) => state.createProductState);
 
-  // console.log(typeof colour);
-  // console.log(colour);
-  // console.log(typeof size);
-  // console.log(size);
-  // console.log(typeof category);
-  // console.log(category);
-  // console.log(typeof options);
-  // console.log(options);
+  const { success, error } = response;
+  useEffect(() => {
+    if (success) {
+      toast.success("Tạo sản phẩm thành công");
+      dispatch({ type: CREATE_PRODUCT_SUCCESS, payload: false });
+    }
+    if (error) {
+      toast.error("Tạo sản phẩm thất bại, vui lòng thử lại");
+      dispatch({ type: CREATE_PRODUCT_FAIL, payload: false });
+    }
+  }, [success, error, triggerReload]);
 
   useEffect(() => {
     const status = true;
