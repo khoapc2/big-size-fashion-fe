@@ -3,6 +3,9 @@ import {
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
   PRODUCT_LIST_FAIL,
+  CREATE_PRODUCT_REQUEST,
+  CREATE_PRODUCT_SUCCESS,
+  CREATE_PRODUCT_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listProduct = (keySearch, page) => async (dispatch) => {
@@ -30,20 +33,29 @@ export const listProduct = (keySearch, page) => async (dispatch) => {
   }
 };
 
-export const a = (keySearch, page) => async (dispatch) => {
-  // console.log(keySearch, page);
-  dispatch({ type: PRODUCT_LIST_REQUEST });
+export const createProduct = (productModels) => async (dispatch) => {
+  dispatch({
+    type: CREATE_PRODUCT_REQUEST,
+    payload: { productModels },
+  });
   try {
-    if (keySearch) {
-      const data = await productApi.getListProduct(page);
-      dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
-      dispatch({ type: PRODUCT_LIST_FAIL, payload: "" });
-    } else {
-      const { data } = await productApi.getListProduct({ page, keySearch });
-      dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
+    if (productModels) {
+      const param = {
+        product_name: productModels.productName,
+        price: productModels.price,
+        category_id: productModels.category,
+        description: productModels.description,
+        gender: productModels.sex,
+        brand: productModels.brandName,
+      };
+      const data = await productApi.createNewProduct(param);
+      dispatch({ type: CREATE_PRODUCT_SUCCESS, payload: data });
     }
   } catch (error) {
-    const message = error.response.data;
-    dispatch({ type: PRODUCT_LIST_FAIL, payload: message });
+    dispatch({
+      type: CREATE_PRODUCT_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
   }
 };

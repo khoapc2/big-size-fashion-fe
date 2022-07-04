@@ -16,7 +16,7 @@ import {
 } from "../../service/Validations/VarConstant";
 
 export const listCategory =
-  ({ keySearch, status }) =>
+  ({ keySearch = "", status }) =>
   async (dispatch) => {
     dispatch({ type: CATEGORY_LIST_REQUEST });
     console.log(keySearch);
@@ -27,6 +27,7 @@ export const listCategory =
           dispatch({ type: CATEGORY_LIST_ALL_SUCCESS, payload: data.content });
           dispatch({ type: CATEGORY_LIST_FAIL, payload: "" });
         } else {
+          console.log("??");
           const searchParams = {
             Category: keySearch,
           };

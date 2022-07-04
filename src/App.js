@@ -44,7 +44,7 @@ import Products from "pages/productList/ProductList";
 
 import Billing from "layouts/billing";
 import Product from "pages/product/Product";
-import NewProduct from "pages/newProduct/NewProduct";
+import NewProduct from "pages/product/newProduct/NewProduct";
 
 import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
