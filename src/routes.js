@@ -30,7 +30,8 @@ import Sizes from "pages/size/list/sizeList";
 import Colors from "pages/color/list/colorList";
 import Categories from "pages/category/list/categoryList";
 import Users from "pages/user/userTab";
-
+import DeliveryNote from "pages/deliveryNote/deliveryTab";
+import Order from "pages/order/orderTab";
 // import RTL from "layouts/rtl";
 import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
@@ -44,7 +45,7 @@ import Icon from "@mui/material/Icon";
 const routes = [
   {
     type: "collapse",
-    name: "Dashboard",
+    name: "Bảng điều khiển",
     key: "dashboard",
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/dashboard",
@@ -60,7 +61,7 @@ const routes = [
   // },
   {
     type: "collapse",
-    name: "Product",
+    name: "Sản phẩm",
     key: "product",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/products",
@@ -76,7 +77,23 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Category",
+    name: "Danh sách giao / nhập hàng",
+    key: "delivery-note",
+    icon: <Icon fontSize="small">import_export</Icon>,
+    route: "/delivery-note",
+    component: <DeliveryNote />,
+  },
+  {
+    type: "collapse",
+    name: "Đơn hàng",
+    key: "order",
+    icon: <Icon fontSize="small">import_export</Icon>,
+    route: "/order",
+    component: <Order />,
+  },
+  {
+    type: "collapse",
+    name: "Thể loại",
     key: "category",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/categories",
@@ -84,7 +101,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Size",
+    name: "Kích cở",
     key: "size",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/sizes",
@@ -92,7 +109,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Color",
+    name: "Màu",
     key: "color",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/colors",
@@ -100,7 +117,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Promotion",
+    name: "Khuyến mãi",
     key: "promotion",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/promotions",
@@ -108,7 +125,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Store",
+    name: "Cửa hàng",
     key: "store",
     icon: <Icon fontSize="small">receipt_long</Icon>,
     route: "/stores",

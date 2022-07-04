@@ -64,6 +64,8 @@ import Customers from "pages/customer/list/customerList";
 // import Employees from "pages/components/createForm/Employees";
 import CreateCategory from "pages/category/detail/CreateCategory";
 import Users from "pages/user/userTab";
+import DeliveryNote from "pages/deliveryNote/deliveryTab";
+import Order from "pages/order/orderTab";
 import CreateStore from "pages/stores/createStore/CreateStore";
 import StoreDetail from "pages/stores/storeDetail/ViewStore";
 import UpdateStore from "pages/stores/storeUpdate/UpdateStore";
@@ -264,6 +266,8 @@ export default function App() {
         <Route path="promotion/:promotionId" element={<ViewPromotion />} />
         <Route path="newSize" element={<CreateSize />} />
         <Route path="update-size/:sizeId" element={<UpdateSize />} />
+        <Route path="delivery-note" element={<DeliveryNote />} />
+        <Route path="order" element={<Order />} />
         {/* <Route path="/product/:productId">
           <Product />
         </Route> */}
