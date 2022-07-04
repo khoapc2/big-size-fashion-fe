@@ -10,10 +10,26 @@ import {
   updateStoreReducer,
 } from "redux/reducers/storeReducer";
 
-import { listSizeReducer } from "redux/reducers/sizeReducer";
+import {
+  listSizeReducer,
+  createSizeReducer,
+  updateSizeReducer,
+  viewDetailSizeReducer,
+} from "redux/reducers/sizeReducer";
 import { listColorReducer } from "redux/reducers/colorReducer";
-import { listCategoryReducer, createCategoryReducer } from "redux/reducers/categoryReducer";
-import { listPromotionReducer } from "redux/reducers/promotionReducer";
+import {
+  listCategoryReducer,
+  createCategoryReducer,
+  updateCategoryReducer,
+  viewDetailCategoryReducer,
+} from "redux/reducers/categoryReducer";
+import {
+  listPromotionReducer,
+  createPromotionReducer,
+  deletePromotionReducer,
+  viewDetailPromotionReducer,
+  updatePromotionReducer,
+} from "redux/reducers/promotionReducer";
 import { listManagerReducer } from "redux/reducers/managerReducer";
 import { listStaffReducer } from "redux/reducers/staffReducer";
 import { listCustomerReducer } from "redux/reducers/customerReducer";
@@ -41,6 +57,15 @@ const reducer = combineReducers({
   staffList: listStaffReducer,
   customerList: listCustomerReducer,
   createCategoryState: createCategoryReducer,
+  updateCategoryState: updateCategoryReducer,
+  viewCategory: viewDetailCategoryReducer,
+  createPromotionState: createPromotionReducer,
+  updatePromotionState: updatePromotionReducer,
+  viewPromotion: viewDetailPromotionReducer,
+  deletePromotionState: deletePromotionReducer,
+  createSizeState: createSizeReducer,
+  updateSizeState: updateSizeReducer,
+  viewSize: viewDetailSizeReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

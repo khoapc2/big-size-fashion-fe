@@ -8,14 +8,11 @@ import { useNavigate } from "react-router-dom";
 import Loading from "components/Loading";
 import Controls from "../../components/createForm/controls/Controls";
 // import { Form } from "./useForm";
-import { createCategory } from "../../../redux/actions/categoryAction";
+import { createSize } from "../../../redux/actions/sizeAction";
 import { triggerReload } from "../../../redux/actions/userAction";
 
-import { SchemaErrorMessageCreateCategory } from "../../../service/Validations/CategoryValidation";
-import {
-  CREATE_CATEGORY_FAIL,
-  CREATE_CATEGORY_SUCCESS,
-} from "../../../service/Validations/VarConstant";
+import { SchemaErrorMessageCreateSize } from "../../../service/Validations/SizeValidation";
+import { CREATE_SIZE_FAIL, CREATE_SIZE_SUCCESS } from "../../../service/Validations/VarConstant";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,40 +24,40 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const initialValues = {
-  category: "",
+  size: "",
 };
 
-export default function CategoryForm() {
+export default function SizeForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const classes = useStyles();
-  const response = useSelector((state) => state.createCategoryState);
+  const response = useSelector((state) => state.createSizeState);
   const { success, loading, error } = response;
   useEffect(() => {
     if (success) {
-      toast.success("Tạo thể loại thành công");
-      dispatch({ type: CREATE_CATEGORY_SUCCESS, payload: false });
+      toast.success("Tạo kích cỡ thành công");
+      dispatch({ type: CREATE_SIZE_SUCCESS, payload: false });
     } else {
       // console.log(`create:${success}`);
     }
     if (error) {
       // console.log(error);
-      toast.error("Tạo thể loại thất bại, vui lòng thử lại");
-      dispatch({ type: CREATE_CATEGORY_FAIL, payload: false });
+      toast.error("Tạo kích cỡ thất bại, vui lòng thử lại");
+      dispatch({ type: CREATE_SIZE_FAIL, payload: false });
     }
   }, [navigate, success, error, triggerReload]);
 
   const handleReset = () => {};
 
   const handleSubmit = (data, onSubmitProps) => {
-    dispatch(createCategory(data));
+    dispatch(createSize(data));
     onSubmitProps.resetForm();
   };
 
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={SchemaErrorMessageCreateCategory}
+      validationSchema={SchemaErrorMessageCreateSize}
       validateOnBlur
       validateOnChange
       onSubmit={handleSubmit}
@@ -73,13 +70,13 @@ export default function CategoryForm() {
               <div>
                 <Controls.Input
                   type="text"
-                  name="category"
+                  name="size"
                   label="Thể loại"
                   required
-                  value={props.values.category}
+                  value={props.values.size}
                   onChange={props.handleChange}
-                  error={!!props.errors.category}
-                  helperText={props.errors.category}
+                  error={!!props.errors.size}
+                  helperText={props.errors.size}
                   fullWidth
                   multiline
                 />

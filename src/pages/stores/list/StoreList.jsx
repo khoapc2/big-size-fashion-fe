@@ -32,6 +32,7 @@ import { listStore, deleteStore } from "../../../redux/actions/storeAction";
 // import storeApi from "../../api/storeApi";
 import Notification from "pages/components/dialog/Notification";
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
+import { DELETE_STORE_FAIL, DELETE_STORE_SUCCESS } from "../../../service/Validations/VarConstant";
 
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
@@ -44,18 +45,28 @@ export default function SizeList() {
   // const [paging, setPaging] = useState({});
   //Test
   const { data, error, loading } = useSelector((state) => state.storeList);
-  const { success: deleteSuccess } = useSelector((state) => state.deleteStoreState);
+  const { success, loadingDelete, errorDelete } = useSelector((state) => state.deleteStoreState);
 
   console.log(data);
   const [page, setPage] = useState(1);
   const triggerReload = useSelector((state) => state.triggerReload);
-  // const [keySearch, setKeySearch] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
   useEffect(() => {
     dispatch(listStore(searchText));
-  }, [dispatch, page, searchText, triggerReload, deleteSuccess]);
+    if (success) {
+      toast.success("Đóng cửa hàng thành công");
+      dispatch({ type: DELETE_STORE_SUCCESS, payload: false });
+    } else {
+      // console.log(`create:${success}`);
+    }
+    if (errorDelete) {
+      // console.log(error);
+      toast.error("Đóng cửa hàng thất bại, vui lòng thử lại");
+      dispatch({ type: DELETE_STORE_FAIL, payload: false });
+    }
+  }, [page, searchText, triggerReload, success, errorDelete]);
 
   let inputSearchHandler = (e) => {
     let lowerCase = e.target.value.toLowerCase();
@@ -80,16 +91,7 @@ export default function SizeList() {
   // }
 
   const handleDelete = (id) => {
-    dispatch(deleteStore(id)).then((value) => {
-      // console.log(value);
-      if (deleteSuccess.is_success) {
-        toast.success("Xóa cửa hàng thành công");
-        dispatch({ type: DELETE_STORE_SUCCESS, payload: false });
-        dispatch(triggerReload({}));
-      } else {
-        toast.error("Xóa cửa hàng thất bại");
-      }
-    });
+    dispatch(deleteStore(id));
     setConfirmDialog({
       ...confirmDialog,
       isOpen: false,
@@ -113,7 +115,13 @@ export default function SizeList() {
   }
 
   const columns = [
-    { field: "store_id", headerName: "Mã cửa hàng", width: 150 },
+    { field: "store_id", headerName: "Mã", width: 100 },
+    {
+      field: "store_name",
+      headerName: "Tên cửa hàng",
+      width: 150,
+      renderCell: (params) => <div className="storeListItem">{params.row.store_name}</div>,
+    },
     {
       field: "store_address",
       headerName: "Địa chỉ",
@@ -146,13 +154,14 @@ export default function SizeList() {
       width: 250,
       renderCell: (params) => (
         <>
-          <button
+          <IconButton
             type="submit"
-            className="storeListEdit"
+            size="large"
+            color="secondary"
             onClick={() => navigate(`/store/${params.row.store_id}`)}
           >
             <VisibilityIcon />
-          </button>
+          </IconButton>
           <Link to={`/update-store/${params.row.store_id}`}>
             <button type="submit" className="storeListEdit">
               Edit
@@ -161,22 +170,25 @@ export default function SizeList() {
 
           {/* <Link to={`/store/:${params.row.store_id}`}> */}
 
-          {/* </Link> */}
-          <Button
-            className="storeListDelete"
-            onClick={() =>
-              setConfirmDialog({
-                isOpen: true,
-                title: "Bạn có muốn xóa cửa hàng này ra khỏi chuỗi Big size không?",
-                subTitle: "Xóa cửa hàng",
-                onConfirm: () => {
-                  handleDelete(params.row.store_id);
-                },
-              })
-            }
-            color="red"
-            icon="trash alternate"
-          />
+          {params.row.status ? (
+            <Button
+              className="storeListDelete"
+              onClick={() =>
+                setConfirmDialog({
+                  isOpen: true,
+                  title: "Bạn có muốn xóa cửa hàng này ra khỏi chuỗi Big size không?",
+                  subTitle: "Xóa cửa hàng",
+                  onConfirm: () => {
+                    handleDelete(params.row.store_id);
+                  },
+                })
+              }
+              color="red"
+              icon="trash alternate"
+            />
+          ) : (
+            <></>
+          )}
         </>
       ),
     },
@@ -191,17 +203,6 @@ export default function SizeList() {
           id="outlined-adornment"
           value={searchText}
           onChange={inputSearchHandler}
-          endadornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickSearch}
-                edge="end"
-              >
-                <SearchIcon />
-              </IconButton>
-            </InputAdornment>
-          }
           label="Tìm kiếm địa chỉ"
         />
       </FormControl>
