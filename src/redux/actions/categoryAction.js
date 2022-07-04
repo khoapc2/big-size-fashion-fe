@@ -13,7 +13,6 @@ export const listCategory =
   ({ keySearch = "", status }) =>
   async (dispatch) => {
     dispatch({ type: CATEGORY_LIST_REQUEST });
-    console.log(keySearch);
     try {
       if (!status) {
         if (!keySearch) {

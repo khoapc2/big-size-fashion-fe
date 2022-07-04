@@ -44,7 +44,6 @@ export const listCategoryReducer = (state = { loading: true, category: [], error
 };
 
 export const createCategoryReducer = (state = {}, action) => {
-  console.log(state, action);
   switch (action.type) {
     case CREATE_CATEGORY_REQUEST:
       return { ...state, loading: true };

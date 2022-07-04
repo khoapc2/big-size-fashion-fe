@@ -48,7 +48,7 @@ export default function ColorList() {
   const [keySearch, setSearchText] = useState("");
 
   useEffect(() => {
-    dispatch(listColor({keySearch}));
+    dispatch(listColor({ keySearch }));
   }, [dispatch, page, keySearch, triggerReload]);
 
   let inputSearchHandler = (e) => {
@@ -135,11 +135,12 @@ export default function ColorList() {
             <button type="submit" className="colorListEdit">
               Edit
             </button>
-            <Link to={`/color/:${params.row.colour_id}`}>
-              <button type="submit" className="colorListEdit">
-                View
-              </button>
-            </Link>
+          </Link>
+
+          <Link to={`/color/:${params.row.colour_id}`}>
+            <button type="submit" className="colorListEdit">
+              View
+            </button>
           </Link>
           <Button
             className="colorListDelete"

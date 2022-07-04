@@ -10,7 +10,6 @@ export const listColor =
   ({ keySearch, status }) =>
   async (dispatch) => {
     dispatch({ type: COLOR_LIST_REQUEST });
-    console.log(keySearch);
     try {
       if (!status) {
         if (!keySearch) {

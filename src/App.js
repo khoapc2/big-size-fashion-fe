@@ -45,6 +45,7 @@ import Products from "pages/productList/ProductList";
 import Billing from "layouts/billing";
 import Product from "pages/product/Product";
 import NewProduct from "pages/product/newProduct/NewProduct";
+import UpdateProduct from "pages/product/updateProduct/UpdateProduct";
 
 import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
@@ -233,6 +234,7 @@ export default function App() {
         <Route path="sign-in" element={<SignIn />} />
         <Route path="sign-up" element={<SignUp />} />
         <Route path="products" element={<Products />} />
+        <Route path="update-product/:productId" element={<UpdateProduct />} />
         <Route path="product/:productId" element={<Product />} />
         <Route path="newproduct" element={<NewProduct />} />
         <Route path="/stores" element={<Stores />} />
