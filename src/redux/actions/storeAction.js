@@ -49,6 +49,7 @@ export const createStore = (storeModels) => async (dispatch) => {
   try {
     if (storeModels) {
       const param = {
+        store_name: storeModels.storeName,
         store_address: storeModels.storeAddress,
         store_phone: storeModels.phone,
       };
@@ -108,6 +109,7 @@ export const updateStore = (storeModels, id) => async (dispatch) => {
   try {
     if (storeModels) {
       const param = {
+        store_name: storeModels.storeName,
         store_address: storeModels.storeAddress,
         store_phone: storeModels.phone,
       };

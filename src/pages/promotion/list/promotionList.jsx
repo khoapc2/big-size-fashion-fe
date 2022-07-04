@@ -1,8 +1,9 @@
 /* eslint-disable */
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Button } from "semantic-ui-react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 import IconButton from "@mui/material/IconButton";
 import FormControl from "@mui/material/FormControl";
@@ -11,6 +12,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import InputLabel from "@mui/material/InputLabel";
 import Stack from "@mui/material/Stack";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 import {
   DataGrid,
@@ -24,11 +26,15 @@ import {
 import "./promotionList.css";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import { listPromotion } from "../../../redux/actions/promotionAction";
+import { deletePromotion, listPromotion } from "../../../redux/actions/promotionAction";
 
 // import promotionApi from "../../api/promotionApi";
 import Notification from "pages/components/dialog/Notification";
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
+import {
+  DELETE_PROMOTION_FAIL,
+  DELETE_PROMOTION_SUCCESS,
+} from "../../../service/Validations/VarConstant";
 
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
@@ -41,15 +47,28 @@ export default function PromotionList() {
   // const [paging, setPaging] = useState({});
   //Test
   const { data, error, loading } = useSelector((state) => state.promotionList);
+  const { success, loadingDelete, errorDelete } = useSelector(
+    (state) => state.deletePromotionState
+  );
   const [page, setPage] = useState(1);
   const triggerReload = useSelector((state) => state.triggerReload);
-  // const [keySearch, setKeySearch] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
-  // console.log(data);
   useEffect(() => {
     dispatch(listPromotion(searchText));
-  }, [dispatch, page, searchText, triggerReload]);
+    if (success) {
+      toast.success("Vô hiệu hóa khuyến mại thành công");
+      dispatch({ type: DELETE_PROMOTION_SUCCESS, payload: false });
+    } else {
+      // console.log(`create:${success}`);
+    }
+    if (errorDelete) {
+      // console.log(error);
+      toast.error("Vô hiệu hóa khuyến mại thất bại, vui lòng thử lại");
+      dispatch({ type: DELETE_PROMOTION_FAIL, payload: false });
+    }
+  }, [page, searchText, triggerReload, success, errorDelete]);
 
   let inputSearchHandler = (e) => {
     let lowerCase = e.target.value.toLowerCase();
@@ -79,6 +98,7 @@ export default function PromotionList() {
   }
 
   const handleDelete = (id) => {
+    dispatch(deletePromotion(id));
     setConfirmDialog({
       ...confirmDialog,
       isOpen: false,
@@ -111,7 +131,7 @@ export default function PromotionList() {
     {
       field: "promotion_name",
       headerName: "Tên mã khuyến mãi",
-      width: 250,
+      width: 350,
       renderCell: (params) => <div className="promotionListItem">{params.row.promotion_name}</div>,
     },
     {
@@ -144,31 +164,38 @@ export default function PromotionList() {
       width: 250,
       renderCell: (params) => (
         <>
-          <Link to={`/promotion/:${params.row.promotion_id}`}>
+          <IconButton
+            size="large"
+            color="secondary"
+            type="submit"
+            onClick={() => navigate(`/promotion/${params.row.promotion_id}`)}
+          >
+            <VisibilityIcon />
+          </IconButton>
+          <Link to={`/update-promotion/${params.row.promotion_id}`}>
             <button type="submit" className="promotionListEdit">
               Edit
             </button>
-            <Link to={`/promotion/:${params.row.promotion_id}`}>
-              <button type="submit" className="promotionListEdit">
-                View
-              </button>
-            </Link>
           </Link>
-          <Button
-            className="promotionListDelete"
-            onClick={() =>
-              setConfirmDialog({
-                isOpen: true,
-                title: "Are you sure to delete this record?",
-                subTitle: "Delete",
-                onConfirm: () => {
-                  handleDelete(params.row.id);
-                },
-              })
-            }
-            color="red"
-            icon="trash alternate"
-          />
+          {params.row.status ? (
+            <Button
+              className="promotionListDelete"
+              onClick={() =>
+                setConfirmDialog({
+                  isOpen: true,
+                  title: "Bạn có muốn vô hiệu hóa khuyến mại này Big size không?",
+                  subTitle: "Chắc chưa? Suy nghĩ cho kỹ",
+                  onConfirm: () => {
+                    handleDelete(params.row.promotion_id);
+                  },
+                })
+              }
+              color="red"
+              icon="trash alternate"
+            />
+          ) : (
+            <></>
+          )}
         </>
       ),
     },
@@ -183,21 +210,10 @@ export default function PromotionList() {
           id="outlined-adornment"
           value={searchText}
           onChange={inputSearchHandler}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickSearch}
-                edge="end"
-              >
-                <SearchIcon />
-              </IconButton>
-            </InputAdornment>
-          }
           label="Tìm kiếm khuyến mãi"
         />
       </FormControl>
-      <Link to="/newpromotion">
+      <Link to="/newPromotion">
         <button type="button" className="promotionAddButton">
           Tạo khuyến mãi mới
         </button>
@@ -224,11 +240,6 @@ export default function PromotionList() {
               console.log(query);
             })
           }
-          onRowClick={(param) => (
-            <>
-              <Link to={`/promotion/:${param.row.promotion_id}`}></Link>
-            </>
-          )}
           components={{
             Toolbar: CustomToolbar,
             NoRowsOverlay,

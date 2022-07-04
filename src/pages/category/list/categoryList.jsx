@@ -125,15 +125,10 @@ export default function CategoryList() {
       width: 250,
       renderCell: (params) => (
         <>
-          <Link to={`/category/:${params.row.category_id}`}>
+          <Link to={`/update-category/${params.row.category_id}`}>
             <button type="submit" className="categoryListEdit">
               Edit
             </button>
-            <Link to={`/category/:${params.row.category_id}`}>
-              <button type="submit" className="categoryListEdit">
-                View
-              </button>
-            </Link>
           </Link>
           <Button
             className="categoryListDelete"
@@ -205,11 +200,6 @@ export default function CategoryList() {
               console.log(query);
             })
           }
-          onRowClick={(param) => (
-            <>
-              <Link to={`/category/:${param.row.category_id}`}></Link>
-            </>
-          )}
           components={{
             Toolbar: CustomToolbar,
             NoRowsOverlay,

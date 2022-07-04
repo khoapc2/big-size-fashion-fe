@@ -15,6 +15,14 @@ const categoryApi = {
     const url = `${URL_ENTITY}`;
     return axios.post(url, params);
   },
+  updateCategoryService: (params, id) => {
+    const url = `${URL_ENTITY}/${id}`;
+    return axios.put(url, params);
+  },
+  getCategoryDetailById: (params) => {
+    const url = `${URL_ENTITY}/${params}`;
+    return axios.get(url);
+  },
 };
 
 export default categoryApi;

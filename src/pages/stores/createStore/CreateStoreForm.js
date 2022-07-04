@@ -1,12 +1,16 @@
 import { Grid, makeStyles } from "@material-ui/core";
 // import { useState } from "react";
 import { Formik, Form } from "formik";
-import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import Controls from "../../components/createForm/controls/Controls";
+import { triggerReload } from "../../../redux/actions/userAction";
 // import { Form } from "./useForm";
 import { createStore } from "../../../redux/actions/storeAction";
-
+import Loading from "../../../components/Loading";
 import { SchemaErrorMessageCreateStore } from "../../../service/Validations/StoreValidation";
+import { CREATE_STORE_FAIL, CREATE_STORE_SUCCESS } from "../../../service/Validations/VarConstant";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,9 +27,26 @@ export default function StoreForm() {
 
   const handleReset = () => {};
 
+  const response = useSelector((state) => state.createStoreState);
+  const { success, loading, error } = response;
+
   const handleSubmit = (data) => {
     dispatch(createStore(data));
   };
+
+  useEffect(() => {
+    if (success) {
+      toast.success("Tạo cửa hàng thành công");
+      dispatch({ type: CREATE_STORE_SUCCESS, payload: false });
+    } else {
+      // console.log(`create:${success}`);
+    }
+    if (error) {
+      // console.log(error);
+      toast.error("Tạo cửa hàng thất bại, vui lòng thử lại");
+      dispatch({ type: CREATE_STORE_FAIL, payload: false });
+    }
+  }, [success, error, triggerReload]);
 
   return (
     <Formik
@@ -54,7 +75,6 @@ export default function StoreForm() {
                 multiline
               />
             </Grid>
-            {console.log(props)}
             <Grid item xs={6}>
               <Controls.Input
                 name="phone"
@@ -64,13 +84,11 @@ export default function StoreForm() {
                 error={props.errors.phone}
                 helperText={props.errors.phone}
               />
-              <div>
-                <Controls.Button
-                  type="submit"
-                  text="Submit"
-                  disabled={props.errors && props.isSubmitting}
-                />
-              </div>
+              {loading ? (
+                <Loading />
+              ) : (
+                <Controls.Button type="submit" text="Xác nhận" disabled={loading} />
+              )}
             </Grid>
           </Grid>
         </Form>

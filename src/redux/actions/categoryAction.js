@@ -7,6 +7,12 @@ import {
   CREATE_CATEGORY_REQUEST,
   CREATE_CATEGORY_SUCCESS,
   CREATE_CATEGORY_FAIL,
+  UPDATE_CATEGORY_REQUEST,
+  UPDATE_CATEGORY_SUCCESS,
+  UPDATE_CATEGORY_FAIL,
+  VIEW_DETAIL_CATEGORY_REQUEST,
+  VIEW_DETAIL_CATEGORY_SUCCESS,
+  VIEW_DETAIL_CATEGORY_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listCategory =
@@ -62,6 +68,45 @@ export const createCategory = (categoryModels) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: CREATE_CATEGORY_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const updateCategory = (categoryModels, id) => async (dispatch) => {
+  dispatch({
+    type: UPDATE_CATEGORY_REQUEST,
+    payload: { categoryModels },
+  });
+  try {
+    if (categoryModels) {
+      const param = {
+        category: categoryModels.category,
+      };
+      const data = await categoryApi.updateCategoryService(param, id);
+      dispatch({ type: UPDATE_CATEGORY_SUCCESS, payload: data });
+    }
+  } catch (error) {
+    dispatch({
+      type: UPDATE_CATEGORY_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const viewDetail = (categoryId) => async (dispatch) => {
+  dispatch({
+    type: VIEW_DETAIL_CATEGORY_REQUEST,
+    payload: { categoryId },
+  });
+  try {
+    const data = await categoryApi.getCategoryDetailById(categoryId);
+    dispatch({ type: VIEW_DETAIL_CATEGORY_SUCCESS, payload: data.content });
+  } catch (error) {
+    dispatch({
+      type: VIEW_DETAIL_CATEGORY_FAIL,
       payload:
         error.response && error.response.data.message ? error.response.data.message : error.message,
     });

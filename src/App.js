@@ -62,11 +62,17 @@ import Staffs from "pages/staff/list/staffList";
 import Managers from "pages/manager/list/managerList";
 import Customers from "pages/customer/list/customerList";
 // import Employees from "pages/components/createForm/Employees";
-import Category from "pages/category/detail/Category";
+import CreateCategory from "pages/category/detail/CreateCategory";
 import Users from "pages/user/userTab";
 import CreateStore from "pages/stores/createStore/CreateStore";
 import StoreDetail from "pages/stores/storeDetail/ViewStore";
 import UpdateStore from "pages/stores/storeUpdate/UpdateStore";
+import UpdateCategory from "pages/category/update/UpdateCategory";
+import CreatePromotion from "pages/promotion/detail/CreatePromotion";
+import ViewPromotion from "pages/promotion/view/ViewPromotion";
+import UpdatePromotion from "pages/promotion/update/UpdatePromotion";
+import UpdateSize from "pages/size/update/UpdateSize";
+import CreateSize from "pages/size/detail/CreateSize";
 
 // import Fader from "pages/components/Fader";
 // import { onMessageListener } from "./firebase/firebase";
@@ -251,7 +257,13 @@ export default function App() {
         <Route path="/managers" element={<Managers />} />
         <Route path="/customers" element={<Customers />} />
         <Route path="/users" element={<Users />} />
-        <Route path="newCategory" element={<Category />} />
+        <Route path="newCategory" element={<CreateCategory />} />
+        <Route path="update-category/:categoryId" element={<UpdateCategory />} />
+        <Route path="newPromotion" element={<CreatePromotion />} />
+        <Route path="update-promotion/:promotionId" element={<UpdatePromotion />} />
+        <Route path="promotion/:promotionId" element={<ViewPromotion />} />
+        <Route path="newSize" element={<CreateSize />} />
+        <Route path="update-size/:sizeId" element={<UpdateSize />} />
         {/* <Route path="/product/:productId">
           <Product />
         </Route> */}

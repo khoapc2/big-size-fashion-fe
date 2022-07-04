@@ -3,7 +3,7 @@ import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 import { Paper, makeStyles } from "@material-ui/core";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import CategoryForm from "./CategoryForm";
+import UpdatePromotionForm from "./UpdatePromotionForm";
 import PageHeader from "../../components/createForm/PageHeader";
 
 const useStyles = makeStyles((theme) => ({
@@ -13,19 +13,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Category() {
+export default function CreatePromotion() {
   const classes = useStyles();
 
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <PageHeader
-        title="Thêm thông tin cửa hàng mới"
+        title="Chỉnh sửa thông tin khuyến mại"
         subTitle="Sử dụng cho cửa hàng mới"
         icon={<AddBusinessIcon fontSize="large" />}
       />
       <Paper className={classes.pageContent}>
-        <CategoryForm />
+        <UpdatePromotionForm />
       </Paper>
     </DashboardLayout>
   );

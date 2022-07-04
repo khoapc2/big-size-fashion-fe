@@ -125,15 +125,10 @@ export default function SizeList() {
       width: 250,
       renderCell: (params) => (
         <>
-          <Link to={`/size/:${params.row.size_id}`}>
+          <Link to={`/update-size/${params.row.size_id}`}>
             <button type="submit" className="sizeListEdit">
               Edit
             </button>
-            <Link to={`/size/:${params.row.size_id}`}>
-              <button type="submit" className="sizeListEdit">
-                View
-              </button>
-            </Link>
           </Link>
           <Button
             className="sizeListDelete"
@@ -164,21 +159,10 @@ export default function SizeList() {
           id="outlined-adornment"
           value={keySearch}
           onChange={inputSearchHandler}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickSearch}
-                edge="end"
-              >
-                <SearchIcon />
-              </IconButton>
-            </InputAdornment>
-          }
           label="Tìm kiếm kích cỡ"
         />
       </FormControl>
-      <Link to="/newsize">
+      <Link to="/newSize">
         <button type="button" className="sizeAddButton">
           Tạo kích cỡ mới
         </button>

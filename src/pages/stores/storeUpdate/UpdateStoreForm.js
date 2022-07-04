@@ -6,12 +6,11 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-
 import Controls from "../../components/createForm/controls/Controls";
 import { viewDetail, updateStore } from "../../../redux/actions/storeAction";
 import { SchemaErrorMessageCreateStore } from "../../../service/Validations/StoreValidation";
 import Loading from "../../../components/Loading";
-import { UPDATE_STORE_FAIL } from "../../../service/Validations/VarConstant";
+import { UPDATE_STORE_FAIL, UPDATE_STORE_SUCCESS } from "../../../service/Validations/VarConstant";
 
 // import { Form } from "./useForm";
 
@@ -30,27 +29,24 @@ export default function StoreUpdateForm() {
   const { data, loading } = useSelector((state) => state.viewStore);
   const triggerReload = useSelector((state) => state.triggerReload);
   const updateStatus = useSelector((state) => state.updateStoreState);
-
-  console.log(updateStatus);
+  const { success, loadingUpdate, error } = updateStatus;
   const classes = useStyles();
 
+  // const handleReset = () => {};
   useEffect(() => {
     dispatch(viewDetail(storeId));
-  }, [dispatch, triggerReload]);
-
-  // const handleReset = () => {};
-
-  useEffect(() => {
-    if (updateStatus.success) {
-      toast.success("Ahihi");
-      dispatch({ type: UPDATE_STORE_FAIL, payload: false });
+    if (success) {
+      toast.success("Cập nhật cửa hàng thành công");
+      dispatch({ type: UPDATE_STORE_SUCCESS, payload: false });
+    } else {
+      // console.log(`create:${success}`);
     }
-    if (updateStatus.error) {
+    if (error) {
       // console.log(error);
-      toast.error("Lỗi dồi");
+      toast.error("Cập nhật cửa hàng thất bại, vui lòng thử lại");
       dispatch({ type: UPDATE_STORE_FAIL, payload: false });
     }
-  }, [triggerReload, updateStatus]);
+  }, [success, error, triggerReload]);
 
   const handleSubmit = (submitData) => {
     dispatch(updateStore(submitData, storeId));
@@ -64,6 +60,7 @@ export default function StoreUpdateForm() {
         <div>
           <Formik
             initialValues={{
+              storeName: data.store_name,
               storeAddress: data.store_address,
               phone: data.store_phone,
             }}
@@ -80,6 +77,16 @@ export default function StoreUpdateForm() {
                 <Form className={classes.root}>
                   <Grid container>
                     <Grid item xs={6}>
+                      <Controls.Input
+                        name="storeName"
+                        label="Tên cửa hàng"
+                        value={props.values.storeName}
+                        onChange={props.handleChange}
+                        error={props.errors.storeName}
+                        helperText={props.errors.storeName}
+                        fullWidth
+                        multiline
+                      />
                       <Controls.Input
                         name="storeAddress"
                         label="Địa chỉ cửa hàng"
@@ -100,13 +107,11 @@ export default function StoreUpdateForm() {
                         error={props.errors.phone}
                         helperText={props.errors.phone}
                       />
-                      <div>
-                        <Controls.Button
-                          type="submit"
-                          text="Cập nhật"
-                          disabled={props.errors && props.isSubmitting}
-                        />
-                      </div>
+                      {loadingUpdate ? (
+                        <Loading />
+                      ) : (
+                        <Controls.Button type="submit" text="Xác nhận" disabled={loadingUpdate} />
+                      )}
                     </Grid>
                   </Grid>
                 </Form>
