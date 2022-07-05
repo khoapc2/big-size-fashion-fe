@@ -6,6 +6,9 @@ import {
   OFFLINE_ORDER_LIST_REQUEST,
   OFFLINE_ORDER_LIST_SUCCESS,
   OFFLINE_ORDER_LIST_FAIL,
+  VIEW_DETAIL_OFFLINE_ORDER_LIST_REQUEST,
+  VIEW_DETAIL_OFFLINE_ORDER_LIST_SUCCESS,
+  VIEW_DETAIL_OFFLINE_ORDER_LIST_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listOrder = (status) => async (dispatch) => {
@@ -19,11 +22,11 @@ export const listOrder = (status) => async (dispatch) => {
   }
   try {
     if (status) {
-      const data = await orderApi.getListOnlineOrder(params);
+      const data = await orderApi.getListOrder(params);
       dispatch({ type: ONLINE_ORDER_LIST_SUCCESS, payload: data.content });
       dispatch({ type: ONLINE_ORDER_LIST_FAIL, payload: "" });
     } else {
-      const data = await orderApi.getListOnlineOrder(params);
+      const data = await orderApi.getListOrder(params);
       dispatch({ type: OFFLINE_ORDER_LIST_SUCCESS, payload: data.content });
       dispatch({ type: OFFLINE_ORDER_LIST_FAIL, payload: "" });
     }
@@ -41,6 +44,23 @@ export const listOrder = (status) => async (dispatch) => {
           : error.message;
       dispatch({ type: OFFLINE_ORDER_LIST_FAIL, payload: message });
     }
+  }
+};
+
+export const viewDetailOfflineOrder = (orderId) => async (dispatch) => {
+  dispatch({
+    type: VIEW_DETAIL_OFFLINE_ORDER_LIST_REQUEST,
+    payload: { orderId },
+  });
+  try {
+    const data = await orderApi.getOrderDetailById(orderId);
+    dispatch({ type: VIEW_DETAIL_OFFLINE_ORDER_LIST_SUCCESS, payload: data.content });
+  } catch (error) {
+    dispatch({
+      type: VIEW_DETAIL_OFFLINE_ORDER_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
   }
 };
 
@@ -81,23 +101,6 @@ export const listOrder = (status) => async (dispatch) => {
 //   } catch (error) {
 //     dispatch({
 //       type: DELETE_STORE_FAIL,
-//       payload:
-//         error.response && error.response.data.message ? error.response.data.message : error.message,
-//     });
-//   }
-// };
-
-// export const viewDetail = (storeId) => async (dispatch) => {
-//   dispatch({
-//     type: VIEW_DETAIL_STORE_REQUEST,
-//     payload: { storeId },
-//   });
-//   try {
-//     const data = await storeApi.getStoreDetailById(storeId);
-//     dispatch({ type: VIEW_DETAIL_STORE_SUCCESS, payload: data.content });
-//   } catch (error) {
-//     dispatch({
-//       type: VIEW_DETAIL_STORE_FAIL,
 //       payload:
 //         error.response && error.response.data.message ? error.response.data.message : error.message,
 //     });

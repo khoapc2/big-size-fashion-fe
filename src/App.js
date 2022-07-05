@@ -75,6 +75,7 @@ import ViewPromotion from "pages/promotion/view/ViewPromotion";
 import UpdatePromotion from "pages/promotion/update/UpdatePromotion";
 import UpdateSize from "pages/size/update/UpdateSize";
 import CreateSize from "pages/size/detail/CreateSize";
+import OfflineOrder from "pages/order/offlineOrderDetail/ViewOfflineOrder";
 
 // import Fader from "pages/components/Fader";
 // import { onMessageListener } from "./firebase/firebase";
@@ -268,6 +269,7 @@ export default function App() {
         <Route path="update-size/:sizeId" element={<UpdateSize />} />
         <Route path="delivery-note" element={<DeliveryNote />} />
         <Route path="order" element={<Order />} />
+        <Route path="offline-order-detail/:offlineOrderId" element={<OfflineOrder />} />
         {/* <Route path="/product/:productId">
           <Product />
         </Route> */}

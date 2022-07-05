@@ -5,6 +5,9 @@ import {
   OFFLINE_ORDER_LIST_REQUEST,
   OFFLINE_ORDER_LIST_SUCCESS,
   OFFLINE_ORDER_LIST_FAIL,
+  VIEW_DETAIL_OFFLINE_ORDER_LIST_REQUEST,
+  VIEW_DETAIL_OFFLINE_ORDER_LIST_SUCCESS,
+  VIEW_DETAIL_OFFLINE_ORDER_LIST_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listOnlineOrderReducer = (state = { loading: true, data: [], error: "" }, action) => {
@@ -41,18 +44,21 @@ export const listOfflineOrderReducer = (state = { loading: true, data: [], error
   }
 };
 
-// export const viewDetailStoreReducer = (state = { loading: true, data: [], error: "" }, action) => {
-//   switch (action.type) {
-//     case VIEW_DETAIL_STORE_REQUEST:
-//       return { ...state, loading: true };
-//     case VIEW_DETAIL_STORE_SUCCESS:
-//       return { ...state, loading: false, data: action.payload };
-//     case VIEW_DETAIL_STORE_FAIL:
-//       return { ...state, loading: false, error: action.payload };
-//     default:
-//       return state;
-//   }
-// };
+export const viewDetailOfflineOrderReducer = (
+  state = { loading: true, data: [], error: "" },
+  action
+) => {
+  switch (action.type) {
+    case VIEW_DETAIL_OFFLINE_ORDER_LIST_REQUEST:
+      return { ...state, loading: true };
+    case VIEW_DETAIL_OFFLINE_ORDER_LIST_SUCCESS:
+      return { ...state, loading: false, data: action.payload };
+    case VIEW_DETAIL_OFFLINE_ORDER_LIST_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
 
 // export const createStoreReducer = (state = {}, action) => {
 //   switch (action.type) {

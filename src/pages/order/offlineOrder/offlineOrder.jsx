@@ -131,26 +131,11 @@ export default function StaffList() {
       width: 250,
       renderCell: (params) => (
         <>
-          <Link to={`/staff/:${params.row.uid}`}>
+          <Link to={`/offline-order-detail/${params.row.order_id}`}>
             <button type="submit" className="offlineOrderEdit">
               Xem chi tiết
             </button>
           </Link>
-          {/* <Button
-            className="offlineOrderDelete"
-            onClick={() =>
-              setConfirmDialog({
-                isOpen: true,
-                title: "Are you sure to delete this record?",
-                subTitle: "Delete",
-                onConfirm: () => {
-                  handleDelete(params.row.id);
-                },
-              })
-            }
-            color="red"
-            icon="trash alternate"
-          /> */}
         </>
       ),
     },
