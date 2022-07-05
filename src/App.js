@@ -72,6 +72,10 @@ import ViewPromotion from "pages/promotion/view/ViewPromotion";
 import UpdatePromotion from "pages/promotion/update/UpdatePromotion";
 import UpdateSize from "pages/size/update/UpdateSize";
 import CreateSize from "pages/size/detail/CreateSize";
+import CreateColor from "pages/color/detail/CreateColor";
+import UpdateColor from "pages/color/update/UpdateColor";
+import ViewCustomer from "pages/customer/detail/ViewCustomer";
+import CreateAccount from "pages/manager/new/NewAccount";
 
 // import Fader from "pages/components/Fader";
 // import { onMessageListener } from "./firebase/firebase";
@@ -262,6 +266,10 @@ export default function App() {
         <Route path="promotion/:promotionId" element={<ViewPromotion />} />
         <Route path="newSize" element={<CreateSize />} />
         <Route path="update-size/:sizeId" element={<UpdateSize />} />
+        <Route path="newColor" element={<CreateColor />} />
+        <Route path="update-color/:colorId" element={<UpdateColor />} />
+        <Route path="customer/:customerId" element={<ViewCustomer />} />
+        <Route path="newAccount" element={<CreateAccount />} />
         {/* <Route path="/product/:productId">
           <Product />
         </Route> */}

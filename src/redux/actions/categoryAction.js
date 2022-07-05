@@ -1,7 +1,6 @@
 import categoryApi from "../../api/categoryApi";
 import {
   CATEGORY_LIST_REQUEST,
-  CATEGORY_LIST_SUCCESS,
   CATEGORY_LIST_FAIL,
   CATEGORY_LIST_ALL_SUCCESS,
   CREATE_CATEGORY_REQUEST,
@@ -13,21 +12,22 @@ import {
   VIEW_DETAIL_CATEGORY_REQUEST,
   VIEW_DETAIL_CATEGORY_SUCCESS,
   VIEW_DETAIL_CATEGORY_FAIL,
+  CATEGORY_LIST_DROPDOWN_REQUEST,
+  CATEGORY_LIST_DROPDOWN_SUCCESS,
+  CATEGORY_LIST_DROPDOWN_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listCategory =
-  ({ keySearch = "", status }) =>
+  ({ keySearch, status }) =>
   async (dispatch) => {
-    dispatch({ type: CATEGORY_LIST_REQUEST });
-    console.log(keySearch);
     try {
       if (!status) {
+        dispatch({ type: CATEGORY_LIST_REQUEST });
         if (!keySearch) {
           const data = await categoryApi.getListCategory();
           dispatch({ type: CATEGORY_LIST_ALL_SUCCESS, payload: data.content });
           dispatch({ type: CATEGORY_LIST_FAIL, payload: "" });
         } else {
-          console.log("??");
           const searchParams = {
             Category: keySearch,
           };
@@ -36,12 +36,13 @@ export const listCategory =
           dispatch({ type: CATEGORY_LIST_FAIL, payload: "" });
         }
       } else {
+        dispatch({ type: CATEGORY_LIST_DROPDOWN_REQUEST });
         const params = {
           Status: status,
         };
         const data = await categoryApi.getListCategory(params);
-        dispatch({ type: CATEGORY_LIST_SUCCESS, payload: data.content });
-        dispatch({ type: CATEGORY_LIST_FAIL, payload: "" });
+        dispatch({ type: CATEGORY_LIST_DROPDOWN_SUCCESS, payload: data.content });
+        dispatch({ type: CATEGORY_LIST_DROPDOWN_FAIL, payload: "" });
       }
     } catch (error) {
       const message =

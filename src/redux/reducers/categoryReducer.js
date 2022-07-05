@@ -1,6 +1,5 @@
 import {
   CATEGORY_LIST_REQUEST,
-  CATEGORY_LIST_SUCCESS,
   CATEGORY_LIST_FAIL,
   CATEGORY_LIST_ALL_SUCCESS,
   CREATE_CATEGORY_REQUEST,
@@ -12,6 +11,9 @@ import {
   VIEW_DETAIL_CATEGORY_REQUEST,
   VIEW_DETAIL_CATEGORY_SUCCESS,
   VIEW_DETAIL_CATEGORY_FAIL,
+  CATEGORY_LIST_DROPDOWN_REQUEST,
+  CATEGORY_LIST_DROPDOWN_SUCCESS,
+  CATEGORY_LIST_DROPDOWN_FAIL,
 } from "../../service/Validations/VarConstant";
 
 function resultArr(payload) {
@@ -30,12 +32,6 @@ export const listCategoryReducer = (state = { loading: true, category: [], error
   switch (action.type) {
     case CATEGORY_LIST_REQUEST:
       return { ...state, loading: true };
-    case CATEGORY_LIST_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        category: [...resultArr(action.payload)],
-      };
     case CATEGORY_LIST_ALL_SUCCESS:
       return {
         ...state,
@@ -50,7 +46,6 @@ export const listCategoryReducer = (state = { loading: true, category: [], error
 };
 
 export const createCategoryReducer = (state = {}, action) => {
-  console.log(state, action);
   switch (action.type) {
     case CREATE_CATEGORY_REQUEST:
       return { ...state, loading: true };
@@ -86,6 +81,27 @@ export const viewDetailCategoryReducer = (
     case VIEW_DETAIL_CATEGORY_SUCCESS:
       return { ...state, loading: false, data: action.payload };
     case VIEW_DETAIL_CATEGORY_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const listCategoryDropdownReducer = (
+  state = { loading: true, category: [], error: "" },
+  action
+) => {
+  console.log(state);
+  switch (action.type) {
+    case CATEGORY_LIST_DROPDOWN_REQUEST:
+      return { ...state, loading: true };
+    case CATEGORY_LIST_DROPDOWN_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        category: [...resultArr(action.payload)],
+      };
+    case CATEGORY_LIST_DROPDOWN_FAIL:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;

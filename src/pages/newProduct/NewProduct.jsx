@@ -49,17 +49,17 @@ export default function NewProduct() {
   const [price, setPrice] = useState(0);
   const { size } = useSelector((state) => state.sizeList);
   const { colour } = useSelector((state) => state.colorList);
-  const { category } = useSelector((state) => state.categoryList);
+  const  category  = useSelector((state) => state.getListCategoryDropdown);
   const triggerReload = useSelector((state) => state.triggerReload);
 
-  console.log(typeof colour);
-  console.log(colour);
+  // console.log(typeof colour);
+  // console.log(colour);
   // console.log(typeof size);
   // console.log(size);
   console.log(typeof category);
-  console.log(category);
-  console.log(typeof options);
-  console.log(options);
+  console.log("category: " , category);
+  // console.log(typeof options);
+  // console.log(options);
 
   // const newColorArray = color.map((item) => {
   //   return {
@@ -80,7 +80,7 @@ export default function NewProduct() {
     const status = true;
     dispatch(listSize({ status }));
     dispatch(listColor({ status }));
-    dispatch(listCategory());
+    dispatch(listCategory({ status }));
   }, [dispatch, triggerReload]);
 
   const onSubmit = (e) => {

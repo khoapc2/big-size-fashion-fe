@@ -60,7 +60,7 @@ const routes = [
   // },
   {
     type: "collapse",
-    name: "Product",
+    name: "Sản phẩm",
     key: "product",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/products",
@@ -76,7 +76,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Category",
+    name: "Thể loại",
     key: "category",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/categories",
@@ -84,7 +84,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Size",
+    name: "Kích cỡ",
     key: "size",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/sizes",
@@ -92,7 +92,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Color",
+    name: "Màu sắc",
     key: "color",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/colors",
@@ -100,7 +100,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Promotion",
+    name: "Khuyến mại",
     key: "promotion",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/promotions",
@@ -108,7 +108,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Store",
+    name: "Cửa hàng",
     key: "store",
     icon: <Icon fontSize="small">receipt_long</Icon>,
     route: "/stores",

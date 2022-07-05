@@ -14,7 +14,22 @@ import {
   UPDATE_STORE_REQUEST,
   UPDATE_STORE_SUCCESS,
   UPDATE_STORE_FAIL,
+  STORE_LIST_DROPDOWN_REQUEST,
+  STORE_LIST_DROPDOWN_SUCCESS,
+  STORE_LIST_DROPDOWN_FAIL,
 } from "../../service/Validations/VarConstant";
+
+function resultArr(payload) {
+  let result = [];
+  const newArray = [...payload];
+  result = newArray.map(({ store_id, store_name, status }) => ({
+    key: store_id.toString(),
+    text: store_name,
+    value: store_id,
+    status,
+  }));
+  return result;
+}
 
 export const listStoreReducer = (state = { loading: true, data: [], error: "" }, action) => {
   switch (action.type) {
@@ -79,6 +94,26 @@ export const deleteStoreReducer = (state = {}, action) => {
     case DELETE_STORE_SUCCESS:
       return { ...state, loading: false, success: action.payload };
     case DELETE_STORE_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const listStoreDropdownReducer = (
+  state = { loading: true, store: [], error: "" },
+  action
+) => {
+  switch (action.type) {
+    case STORE_LIST_DROPDOWN_REQUEST:
+      return { ...state, loading: true };
+    case STORE_LIST_DROPDOWN_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        store: [...resultArr(action.payload)],
+      };
+    case STORE_LIST_DROPDOWN_FAIL:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;

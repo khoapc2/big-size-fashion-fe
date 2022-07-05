@@ -3,7 +3,7 @@ import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 import { Paper, makeStyles } from "@material-ui/core";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import ViewPromotionForm from "./ViewPromotionForm";
+import ColorForm from "./ColorForm";
 import PageHeader from "../../components/createForm/PageHeader";
 
 const useStyles = makeStyles((theme) => ({
@@ -13,19 +13,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ViewPromotion() {
+export default function CreateColor() {
   const classes = useStyles();
 
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <PageHeader
-        title="Xem thông tin khuyến mại mới"
+        title="Thêm màu sắc mới"
         subTitle="Sử dụng cho cửa hàng mới"
-        icon={<AddBusinessIcon fontSize="large" />}
+        icon={<AddBusinessIcon fontColor="large" />}
       />
       <Paper className={classes.pageContent}>
-        <ViewPromotionForm />
+        <ColorForm />
       </Paper>
     </DashboardLayout>
   );

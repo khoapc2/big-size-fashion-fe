@@ -15,31 +15,48 @@ import {
   UPDATE_STORE_REQUEST,
   UPDATE_STORE_SUCCESS,
   UPDATE_STORE_FAIL,
+  STORE_LIST_DROPDOWN_REQUEST,
+  STORE_LIST_DROPDOWN_SUCCESS,
+  STORE_LIST_DROPDOWN_FAIL,
 } from "../../service/Validations/VarConstant";
 
-export const listStore = (keySearch, page) => async (dispatch) => {
-  const params = {
-    StoreAddress: keySearch,
-  };
-  dispatch({ type: STORE_LIST_REQUEST });
-  try {
-    if (!keySearch) {
-      const data = await storeApi.getListStore(page);
-      dispatch({ type: STORE_LIST_SUCCESS, payload: data.content });
-      dispatch({ type: STORE_LIST_FAIL, payload: "" });
-    } else {
-      const data = await storeApi.getSearchListStore(params);
-      dispatch({ type: STORE_LIST_SUCCESS, payload: data.content });
-      dispatch({ type: STORE_LIST_FAIL, payload: "" });
+export const listStore =
+  ({ keySearch, status }) =>
+  async (dispatch) => {
+    try {
+      if (!status) {
+        dispatch({ type: STORE_LIST_REQUEST });
+        if (!keySearch) {
+          const data = await storeApi.getListStore();
+          dispatch({ type: STORE_LIST_SUCCESS, payload: data.content });
+          dispatch({ type: STORE_LIST_FAIL, payload: "" });
+        } else {
+          const searchParams = {
+            StoreAddress: keySearch,
+          };
+          const data = await storeApi.getSearchListStore(searchParams);
+          dispatch({ type: STORE_LIST_SUCCESS, payload: data.content });
+          dispatch({ type: STORE_LIST_FAIL, payload: "" });
+        }
+      } else {
+        dispatch({ type: STORE_LIST_DROPDOWN_REQUEST });
+        const params = {
+          Status: status,
+        };
+        console.log(params);
+        const data = await storeApi.getListStore(params);
+        console.log(data);
+        dispatch({ type: STORE_LIST_DROPDOWN_SUCCESS, payload: data.content });
+        dispatch({ type: STORE_LIST_DROPDOWN_FAIL, payload: "" });
+      }
+    } catch (error) {
+      const message =
+        error.respone && error.respone.content.message
+          ? error.respone.content.message
+          : error.message;
+      dispatch({ type: STORE_LIST_FAIL, payload: message });
     }
-  } catch (error) {
-    const message =
-      error.respone && error.respone.content.message
-        ? error.respone.content.message
-        : error.message;
-    dispatch({ type: STORE_LIST_FAIL, payload: message });
-  }
-};
+  };
 
 export const createStore = (storeModels) => async (dispatch) => {
   dispatch({
