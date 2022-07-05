@@ -131,15 +131,9 @@ export default function ColorList() {
       width: 250,
       renderCell: (params) => (
         <>
-          <Link to={`/color/:${params.row.colour_id}`}>
+          <Link to={`/update-color/${params.row.colour_id}`}>
             <button type="submit" className="colorListEdit">
               Edit
-            </button>
-          </Link>
-
-          <Link to={`/color/:${params.row.colour_id}`}>
-            <button type="submit" className="colorListEdit">
-              View
             </button>
           </Link>
           <Button
@@ -150,7 +144,7 @@ export default function ColorList() {
                 title: "Are you sure to delete this record?",
                 subTitle: "Delete",
                 onConfirm: () => {
-                  handleDelete(params.row.id);
+                  handleDelete(params.row.colour_id);
                 },
               })
             }
@@ -185,7 +179,7 @@ export default function ColorList() {
           label="Tìm kiếm màu sắc"
         />
       </FormControl>
-      <Link to="/newcolor">
+      <Link to="/newColor">
         <button type="button" className="colorAddButton">
           Tạo màu mới
         </button>
@@ -212,11 +206,6 @@ export default function ColorList() {
               console.log(query);
             })
           }
-          onRowClick={(param) => (
-            <>
-              <Link to={`/color/:${param.row.colour_id}`}></Link>
-            </>
-          )}
           components={{
             Toolbar: CustomToolbar,
             NoRowsOverlay,

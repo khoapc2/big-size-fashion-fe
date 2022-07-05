@@ -12,6 +12,6 @@ export const SchemaErrorMessageCreateStore = Yup.object().shape({
     .max(200, "Địa chỉ phải dưới 200 ký tự")
     .required("Địa chỉ không được bỏ trống"),
   phone: Yup.string()
-    .matches(phoneReg, "Số điện thoại không phù hợp")
+    .matches(phoneReg, "Số điện thoại gồm 10 số, bắt đầu 0 hoặc 84")
     .required("Số điện thoại không được bỏ trống!"),
 });

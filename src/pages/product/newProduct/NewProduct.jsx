@@ -46,8 +46,8 @@ export default function NewProduct() {
 
   // const [price, setPrice] = useState(0);
   // const { size } = useSelector((state) => state.sizeList);
-  // const { colour } = useSelector((state) => state.colorList);
-  const { category } = useSelector((state) => state.categoryList);
+  // const { colour } = useSelector((state) => state.getListColorDropdown);
+  const { category } = useSelector((state) => state.getListCategoryDropdown);
   const response = useSelector((state) => state.createProductState);
 
   const { success, error } = response;

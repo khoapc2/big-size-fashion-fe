@@ -8,12 +8,9 @@ import { toast } from "react-toastify";
 import IconButton from "@mui/material/IconButton";
 import FormControl from "@mui/material/FormControl";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import InputAdornment from "@mui/material/InputAdornment";
-import SearchIcon from "@mui/icons-material/Search";
 import InputLabel from "@mui/material/InputLabel";
 import Stack from "@mui/material/Stack";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import StoreDetail from "../storeDetail/ViewStore";
 
 import {
   DataGrid,
@@ -30,7 +27,6 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import { listStore, deleteStore } from "../../../redux/actions/storeAction";
 
 // import storeApi from "../../api/storeApi";
-import Notification from "pages/components/dialog/Notification";
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
 import { DELETE_STORE_FAIL, DELETE_STORE_SUCCESS } from "../../../service/Validations/VarConstant";
 
@@ -40,7 +36,6 @@ styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css
 document.head.appendChild(styleLink);
 
 export default function SizeList() {
-  const [notify, setNotify] = useState({ isOpen: false, message: "", type: "" });
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
   // const [paging, setPaging] = useState({});
   //Test
@@ -52,25 +47,25 @@ export default function SizeList() {
   const triggerReload = useSelector((state) => state.triggerReload);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [searchText, setSearchText] = useState("");
+  const [keySearch, setKeySearch] = useState("");
   useEffect(() => {
-    dispatch(listStore(searchText));
+    dispatch(listStore({keySearch}));
     if (success) {
-      toast.success("Đóng cửa hàng thành công");
+      toast.success("Thao tác thành công");
       dispatch({ type: DELETE_STORE_SUCCESS, payload: false });
     } else {
       // console.log(`create:${success}`);
     }
     if (errorDelete) {
       // console.log(error);
-      toast.error("Đóng cửa hàng thất bại, vui lòng thử lại");
+      toast.error("Thao tác thất bại, vui lòng thử lại");
       dispatch({ type: DELETE_STORE_FAIL, payload: false });
     }
-  }, [page, searchText, triggerReload, success, errorDelete]);
+  }, [page, keySearch, triggerReload, success, errorDelete]);
 
   let inputSearchHandler = (e) => {
     let lowerCase = e.target.value.toLowerCase();
-    setSearchText(lowerCase);
+    setKeySearch(lowerCase);
   };
 
   function CustomToolbar() {
@@ -187,7 +182,21 @@ export default function SizeList() {
               icon="trash alternate"
             />
           ) : (
-            <></>
+            <Button
+              className="storeListDelete"
+              onClick={() =>
+                setConfirmDialog({
+                  isOpen: true,
+                  title: "Bạn có khôi phục cửa hàng này?",
+                  subTitle: "Khôi phục cửa hàng",
+                  onConfirm: () => {
+                    handleDelete(params.row.store_id);
+                  },
+                })
+              }
+              color="green"
+              icon="undo"
+            />
           )}
         </>
       ),
@@ -201,7 +210,7 @@ export default function SizeList() {
         <InputLabel htmlFor="outlined-adornment">Tìm kiếm địa chỉ</InputLabel>
         <OutlinedInput
           id="outlined-adornment"
-          value={searchText}
+          value={keySearch}
           onChange={inputSearchHandler}
           label="Tìm kiếm địa chỉ"
         />
@@ -245,7 +254,6 @@ export default function SizeList() {
           }}
         />
       </div>
-      <Notification notify={notify} setNotify={setNotify} />
       <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />
     </DashboardLayout>
   );

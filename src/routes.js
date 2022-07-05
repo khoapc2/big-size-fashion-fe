@@ -101,7 +101,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Kích cở",
+    name: "Kích cỡ",
     key: "size",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/sizes",
@@ -109,7 +109,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Màu",
+    name: "Màu sắc",
     key: "color",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/colors",
@@ -117,7 +117,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Khuyến mãi",
+    name: "Khuyến mại",
     key: "promotion",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/promotions",

@@ -193,7 +193,7 @@ export default function ManagerList() {
           label="Tìm kiếm quản lý"
         />
       </FormControl>
-      <Link to="/newmanager">
+      <Link to="/newAccount">
         <button type="button" className="managerAddButton">
           Tạo quản lý mới
         </button>

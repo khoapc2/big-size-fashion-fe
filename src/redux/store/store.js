@@ -12,6 +12,7 @@ import {
   deleteStoreReducer,
   viewDetailStoreReducer,
   updateStoreReducer,
+  listStoreDropdownReducer,
 } from "redux/reducers/storeReducer";
 
 import {
@@ -20,12 +21,19 @@ import {
   updateSizeReducer,
   viewDetailSizeReducer,
 } from "redux/reducers/sizeReducer";
-import { listColorReducer } from "redux/reducers/colorReducer";
+import {
+  listColorReducer,
+  createColorReducer,
+  viewDetailColorReducer,
+  updateColorReducer,
+  listColorDropdownReducer,
+} from "redux/reducers/colorReducer";
 import {
   listCategoryReducer,
   createCategoryReducer,
   updateCategoryReducer,
   viewDetailCategoryReducer,
+  listCategoryDropdownReducer,
 } from "redux/reducers/categoryReducer";
 import {
   listPromotionReducer,
@@ -42,6 +50,13 @@ import {
   listOfflineOrderReducer,
   viewDetailOfflineOrderReducer,
 } from "redux/reducers/orderReducer";
+import {
+  listCustomerReducer,
+  deleteAccountReducer,
+  viewDetailAccountReducer,
+  createAccountReducer,
+} from "redux/reducers/customerReducer";
+import { listOnlineOrderReducer, listOfflineOrderReducer } from "redux/reducers/orderReducer";
 
 const initialState = {
   userLogin: {
@@ -77,6 +92,15 @@ const reducer = combineReducers({
   createSizeState: createSizeReducer,
   updateSizeState: updateSizeReducer,
   viewSize: viewDetailSizeReducer,
+  createColorState: createColorReducer,
+  updateColorState: updateColorReducer,
+  viewColor: viewDetailColorReducer,
+  deleteAccountState: deleteAccountReducer,
+  viewAccount: viewDetailAccountReducer,
+  getListColorDropdown: listColorDropdownReducer,
+  getListCategoryDropdown: listCategoryDropdownReducer,
+  getListStoreDropdown: listStoreDropdownReducer,
+  createAccountState: createAccountReducer,
   viewOnlineOrder: listOnlineOrderReducer,
   viewOfflineOrder: listOfflineOrderReducer,
   viewDetailOfflineOrder: viewDetailOfflineOrderReducer,
