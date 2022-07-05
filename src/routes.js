@@ -30,7 +30,8 @@ import Sizes from "pages/size/list/sizeList";
 import Colors from "pages/color/list/colorList";
 import Categories from "pages/category/list/categoryList";
 import Users from "pages/user/userTab";
-
+import DeliveryNote from "pages/deliveryNote/deliveryTab";
+import Order from "pages/order/orderTab";
 // import RTL from "layouts/rtl";
 import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
@@ -44,7 +45,7 @@ import Icon from "@mui/material/Icon";
 const routes = [
   {
     type: "collapse",
-    name: "Dashboard",
+    name: "Bảng điều khiển",
     key: "dashboard",
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/dashboard",
@@ -73,6 +74,22 @@ const routes = [
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/users",
     component: <Users />,
+  },
+  {
+    type: "collapse",
+    name: "Danh sách giao / nhập hàng",
+    key: "delivery-note",
+    icon: <Icon fontSize="small">import_export</Icon>,
+    route: "/delivery-note",
+    component: <DeliveryNote />,
+  },
+  {
+    type: "collapse",
+    name: "Đơn hàng",
+    key: "order",
+    icon: <Icon fontSize="small">import_export</Icon>,
+    route: "/order",
+    component: <Order />,
   },
   {
     type: "collapse",

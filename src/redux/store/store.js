@@ -1,7 +1,11 @@
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import thunk from "redux-thunk";
 import { userLoginReducer, reloadReducer } from "redux/reducers/userReducer";
-import { listProductReducer, createProductReducer } from "redux/reducers/productReducer";
+import {
+  listProductReducer,
+  createProductReducer,
+  viewDetailProductReducer,
+} from "redux/reducers/productReducer";
 import {
   listStoreReducer,
   createStoreReducer,
@@ -46,6 +50,7 @@ import {
   viewDetailAccountReducer,
   createAccountReducer,
 } from "redux/reducers/customerReducer";
+import { listOnlineOrderReducer, listOfflineOrderReducer } from "redux/reducers/orderReducer";
 
 const initialState = {
   userLogin: {
@@ -58,6 +63,7 @@ const reducer = combineReducers({
   triggerReload: reloadReducer,
   productList: listProductReducer,
   createProductState: createProductReducer,
+  viewProduct: viewDetailProductReducer,
   storeList: listStoreReducer,
   sizeList: listSizeReducer,
   colorList: listColorReducer,
@@ -89,6 +95,8 @@ const reducer = combineReducers({
   getListCategoryDropdown: listCategoryDropdownReducer,
   getListStoreDropdown: listStoreDropdownReducer,
   createAccountState: createAccountReducer,
+  viewOnlineOrder: listOnlineOrderReducer,
+  viewOfflineOrder: listOfflineOrderReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

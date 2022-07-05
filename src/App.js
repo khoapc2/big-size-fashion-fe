@@ -45,6 +45,7 @@ import Products from "pages/productList/ProductList";
 import Billing from "layouts/billing";
 import Product from "pages/product/Product";
 import NewProduct from "pages/product/newProduct/NewProduct";
+import UpdateProduct from "pages/product/updateProduct/UpdateProduct";
 
 import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
@@ -63,6 +64,8 @@ import Customers from "pages/customer/list/customerList";
 // import Employees from "pages/components/createForm/Employees";
 import CreateCategory from "pages/category/detail/CreateCategory";
 import Users from "pages/user/userTab";
+import DeliveryNote from "pages/deliveryNote/deliveryTab";
+import Order from "pages/order/orderTab";
 import CreateStore from "pages/stores/createStore/CreateStore";
 import StoreDetail from "pages/stores/storeDetail/ViewStore";
 import UpdateStore from "pages/stores/storeUpdate/UpdateStore";
@@ -243,6 +246,7 @@ export default function App() {
         <Route path="sign-in" element={<SignIn />} />
         <Route path="sign-up" element={<SignUp />} />
         <Route path="products" element={<Products />} />
+        <Route path="update-product/:productId" element={<UpdateProduct />} />
         <Route path="product/:productId" element={<Product />} />
         <Route path="newproduct" element={<NewProduct />} />
         <Route path="/stores" element={<Stores />} />
@@ -270,6 +274,8 @@ export default function App() {
         <Route path="update-color/:colorId" element={<UpdateColor />} />
         <Route path="customer/:customerId" element={<ViewCustomer />} />
         <Route path="newAccount" element={<CreateAccount />} />
+        <Route path="delivery-note" element={<DeliveryNote />} />
+        <Route path="order" element={<Order />} />
         {/* <Route path="/product/:productId">
           <Product />
         </Route> */}

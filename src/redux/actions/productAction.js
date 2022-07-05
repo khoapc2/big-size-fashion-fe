@@ -1,4 +1,6 @@
+import axios from "axios";
 import productApi from "../../api/productApi";
+
 import {
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
@@ -6,6 +8,9 @@ import {
   CREATE_PRODUCT_REQUEST,
   CREATE_PRODUCT_SUCCESS,
   CREATE_PRODUCT_FAIL,
+  VIEW_DETAIL_PRODUCT_REQUEST,
+  VIEW_DETAIL_PRODUCT_SUCCESS,
+  VIEW_DETAIL_PRODUCT_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listProduct = (keySearch, page) => async (dispatch) => {
@@ -33,7 +38,7 @@ export const listProduct = (keySearch, page) => async (dispatch) => {
   }
 };
 
-export const createProduct = (productModels) => async (dispatch) => {
+export const createProduct = (productModels, files) => async (dispatch) => {
   dispatch({
     type: CREATE_PRODUCT_REQUEST,
     payload: { productModels },
@@ -48,12 +53,48 @@ export const createProduct = (productModels) => async (dispatch) => {
         gender: productModels.sex,
         brand: productModels.brandName,
       };
-      const data = await productApi.createNewProduct(param);
-      dispatch({ type: CREATE_PRODUCT_SUCCESS, payload: data });
+      let data = [];
+      Promise.all([
+        (data = await productApi.createNewProduct(param)),
+        await axios({
+          method: "post",
+          url: `https://20.211.17.194/api/product-images/add-image/${data.content.product_id}`,
+          data: files,
+          headers: { "Content-Type": "multipart/form-data" },
+        }),
+        // await productApi.addImgToProduct(data.content.product_id, files),
+      ])
+        .then(dispatch({ type: CREATE_PRODUCT_SUCCESS, payload: data }))
+        .catch((error) =>
+          dispatch({
+            type: CREATE_PRODUCT_FAIL,
+            payload:
+              error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message,
+          })
+        );
     }
   } catch (error) {
     dispatch({
       type: CREATE_PRODUCT_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const viewDetailProduct = (productId) => async (dispatch) => {
+  dispatch({
+    type: VIEW_DETAIL_PRODUCT_REQUEST,
+    payload: { productId },
+  });
+  try {
+    const data = await productApi.getProductDetailById(productId);
+    dispatch({ type: VIEW_DETAIL_PRODUCT_SUCCESS, payload: data.content });
+  } catch (error) {
+    dispatch({
+      type: VIEW_DETAIL_PRODUCT_FAIL,
       payload:
         error.response && error.response.data.message ? error.response.data.message : error.message,
     });

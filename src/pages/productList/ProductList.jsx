@@ -31,6 +31,7 @@ import Notification from "pages/components/dialog/Notification";
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
 import ExportToExcel from "pages/helper/exportData";
 import Product from "pages/product/Product";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
@@ -125,14 +126,7 @@ export default function ProductList() {
         </div>
       ),
     },
-    // {
-    //   field: "status",
-    //   headerName: "Tình trạng",
-    //   width: 120,
-    //   // renderCell: (params) => (
 
-    //   // )
-    // },
     {
       field: "price",
       headerName: "Giá bán (VNĐ)",
@@ -145,30 +139,49 @@ export default function ProductList() {
       width: 200,
       renderCell: (params) => (
         <div>
-          {params.promotion_price
+          {params.row.promotion_price
             ? `${params.row.price.toLocaleString("vi-VN")}`
             : "Hiện chưa áp dụng"}
         </div>
       ),
     },
-    { field: "promotion_value", headerName: "Giá trị khuyến mãi (%)", width: 200 },
+    {
+      field: "promotion_value",
+      headerName: "Giá trị khuyến mãi (%)",
+      width: 200,
+      renderCell: (params) => (
+        <div>{params.row.promotion_value ? `${params.row.promotion_value}` : "Chưa áp dụng"}</div>
+      ),
+    },
+
+    {
+      field: "status",
+      headerName: "Tình trạng",
+      width: 120,
+      renderCell: (params) => <div>{params.row.status ? "Đang bán" : "Nghĩ bán"}</div>,
+    },
+
     {
       field: "action",
       headerName: "Thao tác",
       width: 200,
       renderCell: (params) => (
         <>
-          <Link to={`/product/:${params.row.product_id}`}>
+          <button
+            type="submit"
+            className="storeListEdit"
+            //   onClick={
+            //     () => navigate(`/store/${params.row.store_id}`)
+            // }
+          >
+            <VisibilityIcon />
+          </button>
+          <Link to={`/update-product/${params.row.product_id}`}>
             <button type="submit" className="productListEdit">
               Edit
             </button>
           </Link>
 
-          <Link to={`/product/:${params.row.product_id}`}>
-            <button type="submit" className="productListEdit">
-              View
-            </button>
-          </Link>
           <Button
             className="productListDelete"
             onClick={() =>
@@ -239,11 +252,6 @@ export default function ProductList() {
               console.log(query);
             })
           }
-          onRowClick={(param) => (
-            <>
-              <Link to={`/product/:${param.row.product_id}`}></Link>
-            </>
-          )}
           components={{
             Toolbar: CustomToolbar,
             NoRowsOverlay,

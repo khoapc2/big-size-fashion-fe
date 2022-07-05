@@ -41,6 +41,7 @@ export default function NewProduct() {
   const dispatch = useDispatch();
 
   const [selectedImgs, setSelectedImgs] = useState([]);
+  const [fileImg, setFileImg] = useState();
   // const [addToggle, setAddToggle] = useState(false);
 
   // const [price, setPrice] = useState(0);
@@ -69,13 +70,25 @@ export default function NewProduct() {
   }, [dispatch, triggerReload]);
 
   const onSubmit = (data) => {
-    console.log(data);
-    dispatch(createProduct(data));
+    const formData = new FormData();
+    Object.values(fileImg).forEach(function (img, index) {
+      console.log(img);
+      formData.append(img.name, img, img.name);
+    });
+    // console.log(fileImg);
+    // console.log(formData);
+    dispatch(createProduct(data, formData));
   };
 
   const selectedImg = (e) => {
     let selectedFiles = e.target.files;
+    console.log(selectedFiles);
+    // console.log(selectedFiles);
+    setFileImg(selectedFiles);
+
     const selectedFilesArray = Array.from(selectedFiles);
+    // console.log(selectedFilesArray);
+
     const getFileArray = selectedFilesArray.slice(0, 10);
     const imgsArray = getFileArray.map((file) => URL.createObjectURL(file));
 
@@ -106,7 +119,7 @@ export default function NewProduct() {
           validateOnChange
         >
           {(formik) => {
-            console.log(formik);
+            // console.log(formik);
             return (
               <div className="product">
                 <Form onSubmit={formik.handleSubmit}>
@@ -158,7 +171,7 @@ export default function NewProduct() {
                         />
                         <Form.Select
                           fluid
-                          label="Giới tính"
+                          label="Sản phẩm dành cho"
                           options={options}
                           placeholder="Giới tính"
                           onChange={(e, v) => formik.setFieldValue("sex", v.value)}
