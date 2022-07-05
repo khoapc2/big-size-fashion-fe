@@ -144,11 +144,12 @@ export default function CustomerList() {
             <button type="submit" className="customerListEdit">
               Edit
             </button>
-            <Link to={`/customer/:${params.row.uid}`}>
-              <button type="submit" className="customerListEdit">
-                View
-              </button>
-            </Link>
+          </Link>
+
+          <Link to={`/customer/:${params.row.uid}`}>
+            <button type="submit" className="customerListEdit">
+              View
+            </button>
           </Link>
           <Button
             className="customerListDelete"

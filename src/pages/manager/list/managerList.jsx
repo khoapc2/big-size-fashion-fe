@@ -107,7 +107,7 @@ export default function ManagerList() {
   }
 
   const columns = [
-    { field: "uid", headerName: "Mã", width: 150 },
+    { field: "uid", headerName: "Mã NV", width: 150 },
     {
       field: "fullname",
       headerName: "Họ tên",
@@ -130,7 +130,9 @@ export default function ManagerList() {
       field: "status",
       headerName: "Tình trạng",
       width: 120,
-      renderCell: (params) => <div>{params.row.status === "Active" ? "Hoạt động" : "Đóng cửa"}</div>,
+      renderCell: (params) => (
+        <div>{params.row.status === "Active" ? "Hoạt động" : "Đóng cửa"}</div>
+      ),
     },
     {
       field: "action",
@@ -142,11 +144,12 @@ export default function ManagerList() {
             <button type="submit" className="managerListEdit">
               Edit
             </button>
-            <Link to={`/manager/:${params.row.uid}`}>
-              <button type="submit" className="managerListEdit">
-                View
-              </button>
-            </Link>
+          </Link>
+
+          <Link to={`/manager/:${params.row.uid}`}>
+            <button type="submit" className="managerListEdit">
+              View
+            </button>
           </Link>
           <Button
             className="managerListDelete"

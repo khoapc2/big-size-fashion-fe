@@ -37,6 +37,7 @@ import {
 import { listManagerReducer } from "redux/reducers/managerReducer";
 import { listStaffReducer } from "redux/reducers/staffReducer";
 import { listCustomerReducer } from "redux/reducers/customerReducer";
+import { listOnlineOrderReducer, listOfflineOrderReducer } from "redux/reducers/orderReducer";
 
 const initialState = {
   userLogin: {
@@ -72,6 +73,8 @@ const reducer = combineReducers({
   createSizeState: createSizeReducer,
   updateSizeState: updateSizeReducer,
   viewSize: viewDetailSizeReducer,
+  viewOnlineOrder: listOnlineOrderReducer,
+  viewOfflineOrder: listOfflineOrderReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

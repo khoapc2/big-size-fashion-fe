@@ -1,15 +1,14 @@
 /* eslint-disable */
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Button } from "semantic-ui-react";
 import { useDispatch, useSelector } from "react-redux";
 
-import IconButton from "@mui/material/IconButton";
-import FormControl from "@mui/material/FormControl";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputAdornment from "@mui/material/InputAdornment";
-import SearchIcon from "@mui/icons-material/Search";
-import InputLabel from "@mui/material/InputLabel";
+// import IconButton from "@mui/material/IconButton";
+// import FormControl from "@mui/material/FormControl";
+// import OutlinedInput from "@mui/material/OutlinedInput";
+// import InputAdornment from "@mui/material/InputAdornment";
+// import SearchIcon from "@mui/icons-material/Search";
+// import InputLabel from "@mui/material/InputLabel";
 import Stack from "@mui/material/Stack";
 
 import {
@@ -17,18 +16,17 @@ import {
   GridToolbarContainer,
   GridToolbarColumnsButton,
   GridToolbarFilterButton,
-  GridToolbarExport,
+  // GridToolbarExport,
   GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
 
-import "./staffList.css";
-import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import { listStaff } from "../../../redux/actions/staffAction";
+import "./onlineOrder.css";
+
+import { listOrder } from "../../../redux/actions/orderAction";
 
 // import staffApi from "../../api/staffApi";
-import Notification from "pages/components/dialog/Notification";
-import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
+// import Notification from "pages/components/dialog/Notification";
+// import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
 
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
@@ -40,21 +38,21 @@ export default function StaffList() {
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
   // const [paging, setPaging] = useState({});
   //Test
-  const { data, error, loading } = useSelector((state) => state.staffList);
+  const { data, error, loading } = useSelector((state) => state.viewOnlineOrder);
   const [page, setPage] = useState(1);
   const triggerReload = useSelector((state) => state.triggerReload);
   // const [keySearch, setKeySearch] = useState("");
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
-  console.log(data);
+  // console.log(data);
   useEffect(() => {
-    dispatch(listStaff(searchText));
+    dispatch(listOrder(true));
   }, [dispatch, page, searchText, triggerReload]);
 
-  let inputSearchHandler = (e) => {
-    let lowerCase = e.target.value.toLowerCase();
-    setSearchText(lowerCase);
-  };
+  // let inputSearchHandler = (e) => {
+  //   let lowerCase = e.target.value.toLowerCase();
+  //   setSearchText(lowerCase);
+  // };
 
   function CustomToolbar() {
     return (
@@ -66,34 +64,24 @@ export default function StaffList() {
     );
   }
 
-  const handleClickSearch = (searchText) => {};
+  // const handleClickSearch = (searchText) => {};
 
-  function handleRowClick(rowData) {
-    // console.log(rowData);
-    // <div>
-    //   <Route path={`/staff/:${rowData}`}>
-    //     <Product />
-    //   </Route>
-    // </div>
-    // <Link to={`/staff/:${rowData.staff_id}`}></Link>;
-  }
-
-  const handleDelete = (id) => {
-    setConfirmDialog({
-      ...confirmDialog,
-      isOpen: false,
-    });
-    setNotify({
-      isOpen: true,
-      message: "Deleted Successfully",
-      type: "success",
-    });
-  };
+  // const handleDelete = (id) => {
+  //   setConfirmDialog({
+  //     ...confirmDialog,
+  //     isOpen: false,
+  //   });
+  //   setNotify({
+  //     isOpen: true,
+  //     message: "Deleted Successfully",
+  //     type: "success",
+  //   });
+  // };
 
   function NoRowsOverlay() {
     return (
       <Stack height="100%" alignItems="center" justifyContent="center">
-        Không tìm thấy nhân viên nào
+        Không tìm thấy đơn hàng nào
       </Stack>
     );
   }
@@ -101,39 +89,40 @@ export default function StaffList() {
   function NoResultsOverlay() {
     return (
       <Stack height="100%" alignItems="center" justifyContent="center">
-        Không tìm thấy nhân viên nào
+        Không tìm thấy đơn hàng nào
       </Stack>
     );
   }
 
   const columns = [
-    { field: "uid", headerName: "Mã", width: 150 },
+    { field: "order_id", headerName: "Mã đơn hàng", width: 150 },
     {
-      field: "fullname",
-      headerName: "Họ tên",
-      width: 400,
-      renderCell: (params) => <div className="staffListItem">{params.row.fullname}</div>,
+      field: "total_price",
+      headerName: "Tổng giá trị (VNĐ)",
+      width: 150,
+      renderCell: (params) => (
+        <div className="onlineOrderItem">{`${params.row.total_price.toLocaleString("vi-VN")}`}</div>
+      ),
     },
     {
-      field: "username",
-      headerName: "Tài khoản",
-      width: 160,
-      renderCell: (params) => <div>{params.row.username}</div>,
-    },
-    {
-      field: "create_at",
-      headerName: "Ngày tạo",
-      width: 160,
-      renderCell: (params) => <div>{params.row.create_at}</div>,
+      field: "total_price_after_discount (VNĐ)",
+      headerName: "Tổng giá trị sau khi giảm giá",
+      width: 250,
+      renderCell: (params) => (
+        <div>
+          {params.row.total_price_after_discount
+            ? `${params.row.total_price_after_discount.toLocaleString("vi-VN")}`
+            : "Không có"}
+        </div>
+      ),
     },
     {
       field: "status",
-      headerName: "Tình trạng",
-      width: 120,
-      renderCell: (params) => (
-        <div>{params.row.status === "Active" ? "Hoạt động" : "Đóng cửa"}</div>
-      ),
+      headerName: "Tình trạng đơn hàng",
+      width: 160,
+      renderCell: (params) => <div>{params.row.status}</div>,
     },
+
     {
       field: "action",
       headerName: "Thao tác",
@@ -141,18 +130,12 @@ export default function StaffList() {
       renderCell: (params) => (
         <>
           <Link to={`/staff/:${params.row.uid}`}>
-            <button type="submit" className="staffListEdit">
-              Edit
+            <button type="submit" className="onlineOrderEdit">
+              Xem chi tiết
             </button>
           </Link>
-
-          <Link to={`/staff/:${params.row.uid}`}>
-            <button type="submit" className="staffListEdit">
-              View
-            </button>
-          </Link>
-          <Button
-            className="staffListDelete"
+          {/* <Button
+            className="onlineOrderDelete"
             onClick={() =>
               setConfirmDialog({
                 isOpen: true,
@@ -165,15 +148,15 @@ export default function StaffList() {
             }
             color="red"
             icon="trash alternate"
-          />
+          /> */}
         </>
       ),
     },
   ];
 
   return (
-    <div className="staffTab">
-      <FormControl sx={{ m: 1, width: "35ch" }} variant="outlined">
+    <div className="onlineOrderTab">
+      {/* <FormControl sx={{ m: 1, width: "35ch" }} variant="outlined">
         <InputLabel htmlFor="outlined-adornment">Tìm kiếm nhân viên</InputLabel>
         <OutlinedInput
           id="outlined-adornment"
@@ -192,14 +175,9 @@ export default function StaffList() {
           }
           label="Tìm kiếm nhân viên"
         />
-      </FormControl>
-      <Link to="/newstaff">
-        <button type="button" className="staffAddButton">
-          Tạo nhân viên mới
-        </button>
-      </Link>
+      </FormControl> */}
 
-      <div className="staffList">
+      <div className="onlineOrder">
         <DataGrid
           sx={{
             "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {
@@ -210,7 +188,7 @@ export default function StaffList() {
             },
           }}
           loading={loading}
-          getRowId={(r) => r.uid}
+          getRowId={(r) => r.order_id}
           rows={data}
           disableSelectionOnClick
           columns={columns}
@@ -220,11 +198,11 @@ export default function StaffList() {
               console.log(query);
             })
           }
-          onRowClick={(param) => (
-            <>
-              <Link to={`/staff/:${param.row.uid}`}></Link>
-            </>
-          )}
+          // onRowClick={(param) => (
+          //   <>
+          //     <Link to={`/staff/:${param.row.uid}`}></Link>
+          //   </>
+          // )}
           components={{
             Toolbar: CustomToolbar,
             NoRowsOverlay,
@@ -232,8 +210,8 @@ export default function StaffList() {
           }}
         />
       </div>
-      <Notification notify={notify} setNotify={setNotify} />
-      <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />
+      {/* <Notification notify={notify} setNotify={setNotify} /> */}
+      {/* <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} /> */}
     </div>
   );
 }
