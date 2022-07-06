@@ -1,5 +1,5 @@
 // import { useState } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Grid } from "@material-ui/core";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -9,20 +9,26 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { DataGrid } from "@mui/x-data-grid";
 
-import { viewDetailOfflineOrder } from "../../../redux/actions/orderAction";
+import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
+import {
+  viewDetailOfflineOrder,
+  // approveOfflineOrderAction,
+} from "../../../redux/actions/orderAction";
 import { triggerReload } from "../../../redux/actions/userAction";
-
 import Loading from "../../../components/Loading";
 import "./viewOfflineOrder.css";
 
 export default function OfflineOrderForm() {
+  const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
+
   const { offlineOrderId } = useParams();
   const dispatch = useDispatch();
   const { data, loading } = useSelector((state) => state.viewDetailOfflineOrder);
+  const approveOfflineOrder = useSelector((state) => state.approveOfflineOrder);
   const { product_list, store, order_id, create_date } = data;
 
   console.log(data);
-  console.log(product_list);
+  console.log(approveOfflineOrder);
 
   useEffect(() => {
     dispatch(viewDetailOfflineOrder(offlineOrderId));
@@ -33,6 +39,22 @@ export default function OfflineOrderForm() {
   // const handleSubmit = (data) => {
   //   dispatch(createStore(data));
   // };
+  const handleCancel = () => {
+    // dispatch(deletePromotion(id));
+    setConfirmDialog({
+      ...confirmDialog,
+      isOpen: false,
+    });
+  };
+
+  const handleAccept = (id) => {
+    console.log(id);
+    // dispatch(approveOfflineOrderAction(id));
+    setConfirmDialog({
+      ...confirmDialog,
+      isOpen: false,
+    });
+  };
 
   const columns = [
     {
@@ -135,15 +157,42 @@ export default function OfflineOrderForm() {
             }
           />
           <Stack className="bottom-button" direction="row" spacing={2}>
-            <Button className="deny" variant="outlined">
-              Từ chối
+            <Button
+              className="deny"
+              variant="outlined"
+              onClick={() =>
+                setConfirmDialog({
+                  isOpen: true,
+                  title: "Bạn có muốn hủy đơn hàng này?",
+                  subTitle: "Xác nhận",
+                  onConfirm: () => {
+                    handleCancel();
+                  },
+                })
+              }
+            >
+              Hủy
             </Button>
-            <Button className="approve" variant="outlined">
-              Đồng ý
+            <Button
+              className="approve"
+              variant="outlined"
+              onClick={() =>
+                setConfirmDialog({
+                  isOpen: true,
+                  title: "Bạn có muốn xác nhận đơn hàng này?",
+                  subTitle: "Xác nhận",
+                  onConfirm: () => {
+                    handleAccept(order_id);
+                  },
+                })
+              }
+            >
+              Xác nhận
             </Button>
           </Stack>
         </div>
       )}
+      <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />
     </div>
   );
 }

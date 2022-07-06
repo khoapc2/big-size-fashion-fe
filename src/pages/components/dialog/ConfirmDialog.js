@@ -10,8 +10,9 @@ import {
   IconButton,
 } from "@material-ui/core";
 import { Button } from "semantic-ui-react";
-import NotListedLocationIcon from "@material-ui/icons/NotListedLocation";
-import HelpOutlineTwoToneIcon from "@mui/icons-material/HelpOutlineTwoTone";
+// import NotListedLocationIcon from "@material-ui/icons/NotListedLocation";
+// import HelpOutlineTwoToneIcon from "@mui/icons-material/HelpOutlineTwoTone";
+import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
 
 const useStyles = makeStyles((theme) => ({
   dialog: {
@@ -49,7 +50,7 @@ export default function ConfirmDialog(props) {
     <Dialog open={confirmDialog.isOpen} classes={{ paper: classes.dialog }}>
       <DialogTitle className={classes.dialogTitle}>
         <IconButton disableRipple className={classes.titleIcon}>
-          <HelpOutlineTwoToneIcon />
+          <HelpRoundedIcon />
         </IconButton>
       </DialogTitle>
       <DialogContent className={classes.dialogContent}>

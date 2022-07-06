@@ -9,6 +9,12 @@ import {
   VIEW_DETAIL_OFFLINE_ORDER_LIST_REQUEST,
   VIEW_DETAIL_OFFLINE_ORDER_LIST_SUCCESS,
   VIEW_DETAIL_OFFLINE_ORDER_LIST_FAIL,
+  APPROVE_OFFLINE_ORDER_REQUEST,
+  APPROVE_OFFLINE_ORDER_SUCCESS,
+  APPROVE_OFFLINE_ORDER_FAIL,
+  CANCEL_OFFLINE_ORDER_REQUEST,
+  CANCEL_OFFLINE_ORDER_SUCCESS,
+  CANCEL_OFFLINE_ORDER_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listOrder = (status) => async (dispatch) => {
@@ -64,6 +70,44 @@ export const viewDetailOfflineOrder = (orderId) => async (dispatch) => {
   }
 };
 
+export const approveOfflineOrderAction = (id) => async (dispatch) => {
+  dispatch({
+    type: APPROVE_OFFLINE_ORDER_REQUEST,
+    payload: { id },
+  });
+  try {
+    if (id) {
+      const data = await orderApi.approveOfflineOrder(id);
+      dispatch({ type: APPROVE_OFFLINE_ORDER_SUCCESS, payload: data });
+    }
+  } catch (error) {
+    dispatch({
+      type: APPROVE_OFFLINE_ORDER_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const cancelOfflineOrderAction = (id) => async (dispatch) => {
+  dispatch({
+    type: CANCEL_OFFLINE_ORDER_REQUEST,
+    payload: { id },
+  });
+  try {
+    if (id) {
+      const data = await orderApi.rejectOrder(id);
+      dispatch({ type: CANCEL_OFFLINE_ORDER_SUCCESS, payload: data });
+    }
+  } catch (error) {
+    dispatch({
+      type: CANCEL_OFFLINE_ORDER_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
 // export const createStore = (storeModels) => async (dispatch) => {
 //   dispatch({
 //     type: CREATE_STORE_REQUEST,
@@ -101,30 +145,6 @@ export const viewDetailOfflineOrder = (orderId) => async (dispatch) => {
 //   } catch (error) {
 //     dispatch({
 //       type: DELETE_STORE_FAIL,
-//       payload:
-//         error.response && error.response.data.message ? error.response.data.message : error.message,
-//     });
-//   }
-// };
-
-// export const updateStore = (storeModels, id) => async (dispatch) => {
-//   dispatch({
-//     type: UPDATE_STORE_REQUEST,
-//     payload: { storeModels },
-//   });
-//   try {
-//     if (storeModels) {
-//       const param = {
-//         store_name: storeModels.storeName,
-//         store_address: storeModels.storeAddress,
-//         store_phone: storeModels.phone,
-//       };
-//       const data = await storeApi.updateStoreService(param, id);
-//       dispatch({ type: UPDATE_STORE_SUCCESS, payload: data });
-//     }
-//   } catch (error) {
-//     dispatch({
-//       type: UPDATE_STORE_FAIL,
 //       payload:
 //         error.response && error.response.data.message ? error.response.data.message : error.message,
 //     });

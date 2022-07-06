@@ -46,9 +46,9 @@ export default function CategoryList() {
   // const [keySearch, setKeySearch] = useState("");
   const dispatch = useDispatch();
   const [keySearch, setSearchText] = useState("");
-  
+
   useEffect(() => {
-    dispatch(listCategory({keySearch}));
+    dispatch(listCategory({ keySearch }));
   }, [dispatch, page, keySearch, triggerReload]);
 
   let inputSearchHandler = (e) => {
@@ -68,15 +68,15 @@ export default function CategoryList() {
 
   const handleClickSearch = (keySearch) => {};
 
-  function handleRowClick(rowData) {
-    // console.log(rowData);
-    // <div>
-    //   <Route path={`/category/:${rowData}`}>
-    //     <Product />
-    //   </Route>
-    // </div>
-    // <Link to={`/category/:${rowData.category_id}`}></Link>;
-  }
+  // function handleRowClick(rowData) {
+  //   // console.log(rowData);
+  //   // <div>
+  //   //   <Route path={`/category/:${rowData}`}>
+  //   //     <Product />
+  //   //   </Route>
+  //   // </div>
+  //   // <Link to={`/category/:${rowData.category_id}`}></Link>;
+  // }
 
   const handleDelete = (id) => {
     setConfirmDialog({
@@ -170,7 +170,7 @@ export default function CategoryList() {
               </IconButton>
             </InputAdornment>
           }
-          label="Tìm kiếm khuyến mãi"
+          label="Tìm kiếm thể loại"
         />
       </FormControl>
       <Link to="/newCategory">

@@ -73,9 +73,12 @@ export default function NewProduct() {
     const formData = new FormData();
     Object.values(fileImg).forEach(function (img, index) {
       console.log(img);
-      formData.append(img.name, img, img.name);
+      formData.append("files", img);
     });
     // console.log(fileImg);
+    for (var pair of formData.entries()) {
+      console.log(pair[0] + " : " + pair[1]);
+    }
     // console.log(formData);
     dispatch(createProduct(data, formData));
   };
