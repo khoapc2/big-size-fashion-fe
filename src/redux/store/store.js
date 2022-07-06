@@ -44,7 +44,6 @@ import {
 } from "redux/reducers/promotionReducer";
 import { listManagerReducer } from "redux/reducers/managerReducer";
 import { listStaffReducer } from "redux/reducers/staffReducer";
-import { listCustomerReducer } from "redux/reducers/customerReducer";
 import {
   listOnlineOrderReducer,
   listOfflineOrderReducer,
@@ -56,7 +55,6 @@ import {
   viewDetailAccountReducer,
   createAccountReducer,
 } from "redux/reducers/customerReducer";
-import { listOnlineOrderReducer, listOfflineOrderReducer } from "redux/reducers/orderReducer";
 
 const initialState = {
   userLogin: {
