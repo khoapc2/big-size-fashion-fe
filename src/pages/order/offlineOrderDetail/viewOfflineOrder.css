@@ -23,7 +23,6 @@
   box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
 } */
 .MuiButton-outlined {
-  
   width: 150px;
   font-size: small !important;
 }
@@ -38,4 +37,8 @@
 .bottom-button {
   align-items: center;
   justify-items: center;
+}
+
+.makeStyles-pageContent-1 {
+  height: 800px;
 }

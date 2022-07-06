@@ -6,12 +6,28 @@ import {
   PRODUCT_LIST_SUCCESS,
   PRODUCT_LIST_FAIL,
   CREATE_PRODUCT_REQUEST,
-  CREATE_PRODUCT_SUCCESS,
+  // CREATE_PRODUCT_SUCCESS,
   CREATE_PRODUCT_FAIL,
   VIEW_DETAIL_PRODUCT_REQUEST,
   VIEW_DETAIL_PRODUCT_SUCCESS,
   VIEW_DETAIL_PRODUCT_FAIL,
 } from "../../service/Validations/VarConstant";
+
+const axiosConfig = {
+  headers: {
+    "Content-Type":
+      "multipart/form-data; boundary=AaB03x" +
+      "--AaB03x" +
+      "Content-Disposition: file" +
+      "Content-Type: png" +
+      "Content-Transfer-Encoding: binary" +
+      "...data... " +
+      "--AaB03x--",
+    Accept: "application/json",
+    type: "formData",
+    //  'authorization': 'Bearer ' + accessToken
+  },
+};
 
 export const listProduct = (keySearch, page) => async (dispatch) => {
   const params = {
@@ -53,27 +69,24 @@ export const createProduct = (productModels, files) => async (dispatch) => {
         gender: productModels.sex,
         brand: productModels.brandName,
       };
-      let data = [];
-      Promise.all([
-        (data = await productApi.createNewProduct(param)),
-        await axios({
-          method: "post",
-          url: `https://20.211.17.194/api/product-images/add-image/${data.content.product_id}`,
-          data: files,
-          headers: { "Content-Type": "multipart/form-data" },
-        }),
-        // await productApi.addImgToProduct(data.content.product_id, files),
-      ])
-        .then(dispatch({ type: CREATE_PRODUCT_SUCCESS, payload: data }))
-        .catch((error) =>
-          dispatch({
-            type: CREATE_PRODUCT_FAIL,
-            payload:
-              error.response && error.response.data.message
-                ? error.response.data.message
-                : error.message,
-          })
-        );
+      const data = await productApi.createNewProduct(param);
+      console.log(data);
+
+      await axios
+        .post(
+          `https://20.211.17.194/api/product-images/add-image/${data.content.product_id}`,
+          files,
+          axiosConfig
+        )
+        .then((res) => console.log(res));
+
+      // await axios({
+      //   method: "post",
+      //   url: `https://20.211.17.194/api/product-images/add-image/${data.content.product_id}`,
+      //   data: files,
+      //   headers: axiosConfig.headers,
+      // });
+      // await productApi.addImgToProduct(data.content.product_id, files),
     }
   } catch (error) {
     dispatch({
