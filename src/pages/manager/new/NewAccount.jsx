@@ -7,7 +7,7 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import { styled } from "@mui/material/styles";
 import { useState, useEffect } from "react";
 import IconButton from "@mui/material/IconButton";
-import { Form, Label } from "semantic-ui-react";
+import { Form } from "semantic-ui-react";
 import { toast } from "react-toastify";
 
 import { Formik } from "formik";

@@ -63,7 +63,7 @@ const routes = [
     type: "collapse",
     name: "Sản phẩm",
     key: "product",
-    icon: <Icon fontSize="small">table_view</Icon>,
+    icon: <Icon fontSize="small">styler</Icon>,
     route: "/products",
     component: <Products />,
   },

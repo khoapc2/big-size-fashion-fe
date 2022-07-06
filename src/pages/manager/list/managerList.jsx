@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Button } from "semantic-ui-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -46,6 +46,7 @@ export default function ManagerList() {
   const [page, setPage] = useState(1);
   const triggerReload = useSelector((state) => state.triggerReload);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
   console.log(data);
   useEffect(() => {
@@ -57,7 +58,6 @@ export default function ManagerList() {
       // console.log(`create:${success}`);
     }
     if (errorDelete) {
-      // console.log(error);
       toast.error("Thao tác thất bại, vui lòng thử lại");
       dispatch({ type: DISABLE_ACCOUNT_FAIL, payload: false });
     }
@@ -150,21 +150,16 @@ export default function ManagerList() {
             size="large"
             color="secondary"
             type="submit"
-            onClick={() => navigate(`/manager/${params.row.uid}`)}
+            onClick={() => navigate(`/employee/${params.row.uid}`)}
           >
             <VisibilityIcon />
           </IconButton>
-          <Link to={`/manager/:${params.row.uid}`}>
-            <button type="submit" className="managerListEdit">
-              Edit
-            </button>
-          </Link>
           {params.row.status === "Active" ? (
             <Button
               onClick={() =>
                 setConfirmDialog({
                   isOpen: true,
-                  title: "Bạn muốn khóa tài khoản khách hàng này?",
+                  title: "Bạn muốn khóa tài khoản quản lý này?",
                   subTitle: "Đảm bảo không có sự nhầm lẫn nào",
                   onConfirm: () => {
                     handleDelete(params.row.uid);
@@ -179,7 +174,7 @@ export default function ManagerList() {
               onClick={() =>
                 setConfirmDialog({
                   isOpen: true,
-                  title: "Bạn muốn khôi phục tài khoản khách hàng này?",
+                  title: "Bạn muốn khôi phục tài khoản quản lý này?",
                   subTitle: "Đảm bảo không có sự nhầm lẫn nào",
                   onConfirm: () => {
                     handleDelete(params.row.uid);

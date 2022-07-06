@@ -130,21 +130,6 @@ export default function SizeList() {
               Edit
             </button>
           </Link>
-          <Button
-            className="sizeListDelete"
-            onClick={() =>
-              setConfirmDialog({
-                isOpen: true,
-                title: "Are you sure to delete this record?",
-                subTitle: "Delete",
-                onConfirm: () => {
-                  handleDelete(params.row.id);
-                },
-              })
-            }
-            color="red"
-            icon="trash alternate"
-          />
         </>
       ),
     },
