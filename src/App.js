@@ -80,6 +80,7 @@ import CreateColor from "pages/color/detail/CreateColor";
 import UpdateColor from "pages/color/update/UpdateColor";
 import ViewCustomer from "pages/customer/detail/ViewCustomer";
 import CreateAccount from "pages/manager/new/NewAccount";
+import CreateStaff from "pages/staff/new/NewAccount";
 
 // import Fader from "pages/components/Fader";
 // import { onMessageListener } from "./firebase/firebase";
@@ -275,6 +276,7 @@ export default function App() {
         <Route path="update-color/:colorId" element={<UpdateColor />} />
         <Route path="customer/:customerId" element={<ViewCustomer />} />
         <Route path="newAccount" element={<CreateAccount />} />
+        <Route path="newStaff" element={<CreateStaff />} />
         <Route path="delivery-note" element={<DeliveryNote />} />
         <Route path="order" element={<Order />} />
         <Route path="offline-order-detail/:offlineOrderId" element={<OfflineOrder />} />
