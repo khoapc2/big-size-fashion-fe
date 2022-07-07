@@ -1,0 +1,48 @@
+.onlineOrder {
+  flex: 4;
+  height: 600px;
+  margin-left: 10px;
+}
+.container-title {
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.container-title > .title {
+  font-weight: bold;
+  font-size: medium;
+  width: fit-content;
+}
+
+.container-title > .content {
+  font-size: medium;
+}
+
+/* .orderBottom {
+  text-align: center;
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+} */
+.MuiButton-outlined {
+  width: 150px;
+  font-size: small !important;
+}
+
+.deny {
+  background: red !important;
+}
+
+.approve {
+  background: green !important;
+}
+.bottom-button {
+  margin-top: 3rem;
+  align-items: center;
+  justify-items: center;
+}
+
+.MuiDataGrid-root {
+  margin-top: 10px;
+  height: 600px !important;
+}

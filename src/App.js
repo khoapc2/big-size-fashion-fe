@@ -76,6 +76,7 @@ import UpdatePromotion from "pages/promotion/update/UpdatePromotion";
 import UpdateSize from "pages/size/update/UpdateSize";
 import CreateSize from "pages/size/detail/CreateSize";
 import OfflineOrder from "pages/order/offlineOrderDetail/ViewOfflineOrder";
+import OnlineOrder from "pages/order/onlineOrderDetail/ViewOnlineOrder";
 import CreateColor from "pages/color/detail/CreateColor";
 import UpdateColor from "pages/color/update/UpdateColor";
 import ViewCustomer from "pages/customer/detail/ViewCustomer";
@@ -278,6 +279,7 @@ export default function App() {
         <Route path="delivery-note" element={<DeliveryNote />} />
         <Route path="order" element={<Order />} />
         <Route path="offline-order-detail/:offlineOrderId" element={<OfflineOrder />} />
+        <Route path="online-order-detail/:onlineOrderId" element={<OnlineOrder />} />
         {/* <Route path="/product/:productId">
           <Product />
         </Route> */}

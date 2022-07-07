@@ -49,6 +49,7 @@ import {
   listOfflineOrderReducer,
   viewDetailOfflineOrderReducer,
   approveOfflineOrderReducer,
+  rejectOfflineOrderReducer,
 } from "redux/reducers/orderReducer";
 import {
   listCustomerReducer,
@@ -104,6 +105,7 @@ const reducer = combineReducers({
   viewOfflineOrder: listOfflineOrderReducer,
   viewDetailOfflineOrder: viewDetailOfflineOrderReducer,
   approveOfflineOrder: approveOfflineOrderReducer,
+  rejectOfflineOrder: rejectOfflineOrderReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

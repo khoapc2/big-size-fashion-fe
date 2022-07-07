@@ -1,6 +1,7 @@
 // import { useState } from "react";
 import { useEffect, useState } from "react";
 import { Grid } from "@material-ui/core";
+import { toast } from "react-toastify";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -12,11 +13,18 @@ import { DataGrid } from "@mui/x-data-grid";
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
 import {
   viewDetailOfflineOrder,
-  // approveOfflineOrderAction,
+  approveOfflineOrderAction,
+  cancelOfflineOrderAction,
 } from "../../../redux/actions/orderAction";
 import { triggerReload } from "../../../redux/actions/userAction";
 import Loading from "../../../components/Loading";
 import "./viewOfflineOrder.css";
+import {
+  APPROVE_OFFLINE_ORDER_SUCCESS,
+  APPROVE_OFFLINE_ORDER_FAIL,
+  CANCEL_OFFLINE_ORDER_SUCCESS,
+  CANCEL_OFFLINE_ORDER_FAIL,
+} from "../../../service/Validations/VarConstant";
 
 export default function OfflineOrderForm() {
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
@@ -24,23 +32,41 @@ export default function OfflineOrderForm() {
   const { offlineOrderId } = useParams();
   const dispatch = useDispatch();
   const { data, loading } = useSelector((state) => state.viewDetailOfflineOrder);
-  const approveOfflineOrder = useSelector((state) => state.approveOfflineOrder);
-  const { product_list, store, order_id, create_date } = data;
+  const approveOffOrder = useSelector((state) => state.approveOfflineOrder);
+  const rejectOffOrder = useSelector((state) => state.rejectOfflineOrder);
+  const { product_list, store, order_id, create_date, status } = data;
 
   console.log(data);
-  console.log(approveOfflineOrder);
+  console.log(approveOffOrder);
 
   useEffect(() => {
     dispatch(viewDetailOfflineOrder(offlineOrderId));
   }, [dispatch, triggerReload]);
 
-  // const handleReset = () => {};
+  useEffect(() => {
+    if (approveOffOrder.success) {
+      toast.success("Thao tác thành công");
+      dispatch({ type: APPROVE_OFFLINE_ORDER_SUCCESS, payload: false });
+    }
+    if (approveOffOrder.error) {
+      toast.error("Thao tác thất bại, vui lòng thử lại");
+      dispatch({ type: APPROVE_OFFLINE_ORDER_FAIL, payload: false });
+    }
+  }, [triggerReload, approveOffOrder.success, approveOffOrder.error]);
 
-  // const handleSubmit = (data) => {
-  //   dispatch(createStore(data));
-  // };
-  const handleCancel = () => {
-    // dispatch(deletePromotion(id));
+  useEffect(() => {
+    if (rejectOffOrder.success) {
+      toast.success("Thao tác thành công");
+      dispatch({ type: CANCEL_OFFLINE_ORDER_SUCCESS, payload: false });
+    }
+    if (rejectOffOrder.error) {
+      toast.error("Thao tác thất bại, vui lòng thử lại");
+      dispatch({ type: CANCEL_OFFLINE_ORDER_FAIL, payload: false });
+    }
+  }, [triggerReload, rejectOffOrder.success, rejectOffOrder.error]);
+
+  const handleCancel = (id) => {
+    dispatch(cancelOfflineOrderAction(id));
     setConfirmDialog({
       ...confirmDialog,
       isOpen: false,
@@ -48,8 +74,7 @@ export default function OfflineOrderForm() {
   };
 
   const handleAccept = (id) => {
-    console.log(id);
-    // dispatch(approveOfflineOrderAction(id));
+    dispatch(approveOfflineOrderAction(id));
     setConfirmDialog({
       ...confirmDialog,
       isOpen: false,
@@ -156,40 +181,44 @@ export default function OfflineOrderForm() {
               })
             }
           />
-          <Stack className="bottom-button" direction="row" spacing={2}>
-            <Button
-              className="deny"
-              variant="outlined"
-              onClick={() =>
-                setConfirmDialog({
-                  isOpen: true,
-                  title: "Bạn có muốn hủy đơn hàng này?",
-                  subTitle: "Xác nhận",
-                  onConfirm: () => {
-                    handleCancel();
-                  },
-                })
-              }
-            >
-              Hủy
-            </Button>
-            <Button
-              className="approve"
-              variant="outlined"
-              onClick={() =>
-                setConfirmDialog({
-                  isOpen: true,
-                  title: "Bạn có muốn xác nhận đơn hàng này?",
-                  subTitle: "Xác nhận",
-                  onConfirm: () => {
-                    handleAccept(order_id);
-                  },
-                })
-              }
-            >
-              Xác nhận
-            </Button>
-          </Stack>
+          {status === "Chờ xác nhận" ? (
+            <Stack className="bottom-button" direction="row" spacing={2}>
+              <Button
+                className="deny"
+                variant="outlined"
+                onClick={() =>
+                  setConfirmDialog({
+                    isOpen: true,
+                    title: "Bạn có muốn hủy đơn hàng này?",
+                    subTitle: "Xác nhận",
+                    onConfirm: () => {
+                      handleCancel(order_id);
+                    },
+                  })
+                }
+              >
+                Hủy
+              </Button>
+              <Button
+                className="approve"
+                variant="outlined"
+                onClick={() =>
+                  setConfirmDialog({
+                    isOpen: true,
+                    title: "Bạn có muốn xác nhận đơn hàng này?",
+                    subTitle: "Xác nhận",
+                    onConfirm: () => {
+                      handleAccept(order_id);
+                    },
+                  })
+                }
+              >
+                Xác nhận
+              </Button>
+            </Stack>
+          ) : (
+            <div />
+          )}
         </div>
       )}
       <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />

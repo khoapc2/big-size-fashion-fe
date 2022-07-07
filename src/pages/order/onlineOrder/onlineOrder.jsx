@@ -129,7 +129,7 @@ export default function StaffList() {
       width: 250,
       renderCell: (params) => (
         <>
-          <Link to={`/staff/:${params.row.uid}`}>
+          <Link to={`/online-order-detail/${params.row.order_id}`}>
             <button type="submit" className="onlineOrderEdit">
               Xem chi tiết
             </button>

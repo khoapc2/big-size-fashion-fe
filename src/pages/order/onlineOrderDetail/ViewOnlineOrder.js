@@ -3,7 +3,7 @@ import StoreIcon from "@mui/icons-material/Store";
 import { Paper, makeStyles } from "@material-ui/core";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import OfflineOrderForm from "./ViewOfflineOrderForm";
+import OfflineOrderForm from "./ViewOnlineOrderForm";
 import PageHeader from "../../components/createForm/PageHeader";
 
 const useStyles = makeStyles((theme) => ({
@@ -13,9 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function OfflineOrderDetail() {
-  // const { loading } = useSelector((state) => state.viewStore);
-
+export default function OnlineOrderDetail() {
   const classes = useStyles();
   return (
     <DashboardLayout>
