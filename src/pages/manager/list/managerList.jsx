@@ -1,8 +1,9 @@
 /* eslint-disable */
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Button } from "semantic-ui-react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 import IconButton from "@mui/material/IconButton";
 import FormControl from "@mui/material/FormControl";
@@ -22,13 +23,16 @@ import {
 } from "@mui/x-data-grid";
 
 import "./managerList.css";
-import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import { listManager } from "../../../redux/actions/managerAction";
+import { deleteAccount } from "../../../redux/actions/customerAction";
 
 // import managerApi from "../../api/managerApi";
-import Notification from "pages/components/dialog/Notification";
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import {
+  DISABLE_ACCOUNT_FAIL,
+  DISABLE_ACCOUNT_SUCCESS,
+} from "../../../service/Validations/VarConstant";
 
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
@@ -36,20 +40,28 @@ styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css
 document.head.appendChild(styleLink);
 
 export default function ManagerList() {
-  const [notify, setNotify] = useState({ isOpen: false, message: "", type: "" });
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
-  // const [paging, setPaging] = useState({});
-  //Test
   const { data, error, loading } = useSelector((state) => state.managerList);
+  const { success, loadingDelete, errorDelete } = useSelector((state) => state.deleteAccountState);
   const [page, setPage] = useState(1);
   const triggerReload = useSelector((state) => state.triggerReload);
-  // const [keySearch, setKeySearch] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
   console.log(data);
   useEffect(() => {
     dispatch(listManager(searchText));
-  }, [dispatch, page, searchText, triggerReload]);
+    if (success) {
+      toast.success("Thao tác thành công");
+      dispatch({ type: DISABLE_ACCOUNT_SUCCESS, payload: false });
+    } else {
+      // console.log(`create:${success}`);
+    }
+    if (errorDelete) {
+      toast.error("Thao tác thất bại, vui lòng thử lại");
+      dispatch({ type: DISABLE_ACCOUNT_FAIL, payload: false });
+    }
+  }, [dispatch, page, searchText, triggerReload, success, errorDelete]);
 
   let inputSearchHandler = (e) => {
     let lowerCase = e.target.value.toLowerCase();
@@ -79,14 +91,10 @@ export default function ManagerList() {
   }
 
   const handleDelete = (id) => {
+    dispatch(deleteAccount(id));
     setConfirmDialog({
       ...confirmDialog,
       isOpen: false,
-    });
-    setNotify({
-      isOpen: true,
-      message: "Deleted Successfully",
-      type: "success",
     });
   };
 
@@ -107,7 +115,7 @@ export default function ManagerList() {
   }
 
   const columns = [
-    { field: "uid", headerName: "Mã NV", width: 150 },
+    { field: "uid", headerName: "Mã NV", width: 100 },
     {
       field: "fullname",
       headerName: "Họ tên",
@@ -130,9 +138,7 @@ export default function ManagerList() {
       field: "status",
       headerName: "Tình trạng",
       width: 120,
-      renderCell: (params) => (
-        <div>{params.row.status === "Active" ? "Hoạt động" : "Đóng cửa"}</div>
-      ),
+      renderCell: (params) => <div>{params.row.status === "Active" ? "Hoạt động" : "Đã khóa"}</div>,
     },
     {
       field: "action",
@@ -140,32 +146,45 @@ export default function ManagerList() {
       width: 250,
       renderCell: (params) => (
         <>
-          <Link to={`/manager/:${params.row.uid}`}>
-            <button type="submit" className="managerListEdit">
-              Edit
-            </button>
-          </Link>
-
-          <Link to={`/manager/:${params.row.uid}`}>
-            <button type="submit" className="managerListEdit">
-              View
-            </button>
-          </Link>
-          <Button
-            className="managerListDelete"
-            onClick={() =>
-              setConfirmDialog({
-                isOpen: true,
-                title: "Are you sure to delete this record?",
-                subTitle: "Delete",
-                onConfirm: () => {
-                  handleDelete(params.row.uid);
-                },
-              })
-            }
-            color="red"
-            icon="trash alternate"
-          />
+          <IconButton
+            size="large"
+            color="secondary"
+            type="submit"
+            onClick={() => navigate(`/employee/${params.row.uid}`)}
+          >
+            <VisibilityIcon />
+          </IconButton>
+          {params.row.status === "Active" ? (
+            <Button
+              onClick={() =>
+                setConfirmDialog({
+                  isOpen: true,
+                  title: "Bạn muốn khóa tài khoản quản lý này?",
+                  subTitle: "Đảm bảo không có sự nhầm lẫn nào",
+                  onConfirm: () => {
+                    handleDelete(params.row.uid);
+                  },
+                })
+              }
+              color="red"
+              icon="trash alternate"
+            />
+          ) : (
+            <Button
+              onClick={() =>
+                setConfirmDialog({
+                  isOpen: true,
+                  title: "Bạn muốn khôi phục tài khoản quản lý này?",
+                  subTitle: "Đảm bảo không có sự nhầm lẫn nào",
+                  onConfirm: () => {
+                    handleDelete(params.row.uid);
+                  },
+                })
+              }
+              color="green"
+              icon="undo"
+            />
+          )}
         </>
       ),
     },
@@ -232,7 +251,6 @@ export default function ManagerList() {
           }}
         />
       </div>
-      <Notification notify={notify} setNotify={setNotify} />
       <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />
     </div>
   );

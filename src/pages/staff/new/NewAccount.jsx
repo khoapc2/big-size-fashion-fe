@@ -7,7 +7,7 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import { styled } from "@mui/material/styles";
 import { useState, useEffect } from "react";
 import IconButton from "@mui/material/IconButton";
-import { Form } from "semantic-ui-react";
+import { Form, Label } from "semantic-ui-react";
 import { toast } from "react-toastify";
 
 import { Formik } from "formik";
@@ -31,11 +31,11 @@ export default function NewAccount() {
     const status = true;
     dispatch(listStore({ status }));
     if (success) {
-      toast.success("Tạo tài khoản quản lý thành công");
+      toast.success("Tạo tài khoản nhân viên thành công");
       dispatch({ type: CREATE_ACCOUNT_SUCCESS, payload: false });
     }
     if (error) {
-      toast.error("Tạo tài khoản quản lý thất bại, vui lòng thử lại");
+      toast.error("Tạo tài khoản nhân viên thất bại, vui lòng thử lại");
       dispatch({ type: CREATE_ACCOUNT_FAIL, payload: false });
     }
   }, [success, error, triggerReload, dispatch]);
@@ -59,7 +59,7 @@ export default function NewAccount() {
             fullname: "",
             phone_number: "",
             store_id: "",
-            role_account: "Manager",
+            role_account: "Staff",
           }}
           onSubmit={onSubmit}
           validationSchema={SchemaErrorCreateAccount}

@@ -71,7 +71,7 @@ export default function SizeForm() {
                 <Controls.Input
                   type="text"
                   name="size"
-                  label="Thể loại"
+                  label="Kích cỡ"
                   required
                   value={props.values.size}
                   onChange={props.handleChange}

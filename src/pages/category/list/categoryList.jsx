@@ -130,21 +130,6 @@ export default function CategoryList() {
               Edit
             </button>
           </Link>
-          <Button
-            className="categoryListDelete"
-            onClick={() =>
-              setConfirmDialog({
-                isOpen: true,
-                title: "Are you sure to delete this record?",
-                subTitle: "Delete",
-                onConfirm: () => {
-                  handleDelete(params.row.id);
-                },
-              })
-            }
-            color="red"
-            icon="trash alternate"
-          />
         </>
       ),
     },

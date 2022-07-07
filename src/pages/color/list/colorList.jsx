@@ -136,21 +136,6 @@ export default function ColorList() {
               Edit
             </button>
           </Link>
-          <Button
-            className="colorListDelete"
-            onClick={() =>
-              setConfirmDialog({
-                isOpen: true,
-                title: "Are you sure to delete this record?",
-                subTitle: "Delete",
-                onConfirm: () => {
-                  handleDelete(params.row.colour_id);
-                },
-              })
-            }
-            color="red"
-            icon="trash alternate"
-          />
         </>
       ),
     },
