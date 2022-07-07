@@ -12,6 +12,9 @@ import {
   CREATE_ACCOUNT_REQUEST,
   CREATE_ACCOUNT_SUCCESS,
   CREATE_ACCOUNT_FAIL,
+  RESET_PASSWORD_ACCOUNT_REQUEST,
+  RESET_PASSWORD_ACCOUNT_SUCCESS,
+  RESET_PASSWORD_ACCOUNT_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listCustomer = (keySearch) => async (dispatch) => {
@@ -106,6 +109,28 @@ export const createAccount = (accountModels) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: CREATE_ACCOUNT_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const resetPassword = (accountModels, id) => async (dispatch) => {
+  dispatch({
+    type: RESET_PASSWORD_ACCOUNT_REQUEST,
+    payload: { accountModels },
+  });
+  try {
+    if (accountModels) {
+      const param = {
+        new_password: accountModels.password,
+      };
+      const data = await accountApi.resetPasswordEmployee(param, id);
+      dispatch({ type: RESET_PASSWORD_ACCOUNT_SUCCESS, payload: data });
+    }
+  } catch (error) {
+    dispatch({
+      type: RESET_PASSWORD_ACCOUNT_FAIL,
       payload:
         error.response && error.response.data.message ? error.response.data.message : error.message,
     });

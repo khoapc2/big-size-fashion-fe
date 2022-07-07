@@ -83,6 +83,7 @@ import ViewCustomer from "pages/customer/detail/ViewCustomer";
 import CreateAccount from "pages/manager/new/NewAccount";
 import CreateStaff from "pages/staff/new/NewAccount";
 import ViewEmployee from "pages/manager/view/ViewEmployee";
+import ResetPassword from "pages/manager/resetPassword/ResetPassword";
 
 // import Fader from "pages/components/Fader";
 // import { onMessageListener } from "./firebase/firebase";
@@ -284,6 +285,7 @@ export default function App() {
         <Route path="offline-order-detail/:offlineOrderId" element={<OfflineOrder />} />
         <Route path="online-order-detail/:onlineOrderId" element={<OnlineOrder />} />
         <Route path="employee/:employeeId" element={<ViewEmployee />} />
+        <Route path="reset-password/:employeeId" element={<ResetPassword />} />
         {/* <Route path="/product/:productId">
           <Product />
         </Route> */}
