@@ -3,6 +3,8 @@ import axios from "./axios";
 const URL_ENTITY = "/v1/orders";
 
 const OFFLINE_URL = "offline-approve/";
+const ONLINE_URL = "online-approve/";
+const ASSIGN_ORDER = "assign-order";
 const REJECT_URL = "reject/";
 
 const orderApi = {
@@ -24,6 +26,17 @@ const orderApi = {
   rejectOrder: (params) => {
     const url = `${URL_ENTITY}/${REJECT_URL}${params}`;
     return axios.put(url);
+  },
+
+  approveOnlineOrder: (params) => {
+    const url = `${URL_ENTITY}/${ONLINE_URL}${params}`;
+    return axios.put(url);
+  },
+
+  assignOnlineOrderToStaff: (params) => {
+    console.log(params);
+    const url = `${URL_ENTITY}/${ASSIGN_ORDER}`;
+    return axios.put(url, params);
   },
 };
 export default orderApi;

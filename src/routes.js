@@ -41,6 +41,8 @@ import Profile from "layouts/profile";
 // @mui icons
 import Icon from "@mui/material/Icon";
 // import Product from "./pages/product/Product";
+// const currentUser = JSON.parse(localStorage.getItem("user"));
+// const { role } = currentUser;
 
 const routes = [
   {

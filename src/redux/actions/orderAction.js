@@ -15,6 +15,12 @@ import {
   CANCEL_OFFLINE_ORDER_REQUEST,
   CANCEL_OFFLINE_ORDER_SUCCESS,
   CANCEL_OFFLINE_ORDER_FAIL,
+  APPROVE_ONLINE_ORDER_REQUEST,
+  APPROVE_ONLINE_ORDER_SUCCESS,
+  APPROVE_ONLINE_ORDER_FAIL,
+  CANCEL_ONLINE_ORDER_REQUEST,
+  CANCEL_ONLINE_ORDER_SUCCESS,
+  CANCEL_ONLINE_ORDER_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listOrder = (status) => async (dispatch) => {
@@ -108,6 +114,47 @@ export const cancelOfflineOrderAction = (id) => async (dispatch) => {
   }
 };
 
+export const approveOnlineOrderAction = (id, staffId) => async (dispatch) => {
+  dispatch({
+    type: APPROVE_ONLINE_ORDER_REQUEST,
+    payload: { id },
+  });
+  try {
+    const order_id = id;
+    const { staff: staff_id } = staffId;
+    console.log(staff_id);
+    if (order_id && staff_id) {
+      const data = await orderApi.approveOnlineOrder(order_id);
+      await orderApi.assignOnlineOrderToStaff({ staff_id, order_id });
+      dispatch({ type: APPROVE_ONLINE_ORDER_SUCCESS, payload: data });
+    }
+  } catch (error) {
+    dispatch({
+      type: APPROVE_ONLINE_ORDER_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const cancelOnlineOrderAction = (id) => async (dispatch) => {
+  dispatch({
+    type: CANCEL_ONLINE_ORDER_REQUEST,
+    payload: { id },
+  });
+  try {
+    if (id) {
+      const data = await orderApi.rejectOrder(id);
+      dispatch({ type: CANCEL_ONLINE_ORDER_SUCCESS, payload: data });
+    }
+  } catch (error) {
+    dispatch({
+      type: CANCEL_ONLINE_ORDER_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
 // export const createStore = (storeModels) => async (dispatch) => {
 //   dispatch({
 //     type: CREATE_STORE_REQUEST,
