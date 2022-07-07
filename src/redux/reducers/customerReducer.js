@@ -11,6 +11,9 @@ import {
   CREATE_ACCOUNT_REQUEST,
   CREATE_ACCOUNT_SUCCESS,
   CREATE_ACCOUNT_FAIL,
+  RESET_PASSWORD_ACCOUNT_REQUEST,
+  RESET_PASSWORD_ACCOUNT_SUCCESS,
+  RESET_PASSWORD_ACCOUNT_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listCustomerReducer = (state = { loading: true, data: [], error: "" }, action) => {
@@ -66,6 +69,19 @@ export const createAccountReducer = (state = {}, action) => {
     case CREATE_ACCOUNT_SUCCESS:
       return { ...state, loading: false, success: action.payload };
     case CREATE_ACCOUNT_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const resetPasswordReducer = (state = {}, action) => {
+  switch (action.type) {
+    case RESET_PASSWORD_ACCOUNT_REQUEST:
+      return { ...state, loading: true };
+    case RESET_PASSWORD_ACCOUNT_SUCCESS:
+      return { ...state, loading: false, success: action.payload };
+    case RESET_PASSWORD_ACCOUNT_FAIL:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;

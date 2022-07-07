@@ -10,6 +10,8 @@ const URL_CREATE_ACCOUNT = "/v1/accounts/create-staff-account";
 
 const URL_LIST_STAFF_IN_STORE = "/v1/staffs/all-staff-of-store";
 
+const URL_RESET_PASSWORD = "/v1/accounts/reset-password";
+
 const accountApi = {
   getListAccount: (params) => {
     const url = `${URL_ENTITY}`;
@@ -39,6 +41,11 @@ const accountApi = {
   getListStaffInStore: () => {
     const url = URL_LIST_STAFF_IN_STORE;
     return axios.get(url);
+  },
+
+  resetPasswordEmployee: (params, id) => {
+    const url = `${URL_RESET_PASSWORD}/${id}`;
+    return axios.put(url, params);
   },
 };
 

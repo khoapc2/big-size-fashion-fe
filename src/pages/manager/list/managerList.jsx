@@ -154,6 +154,11 @@ export default function ManagerList() {
           >
             <VisibilityIcon />
           </IconButton>
+          <Link to={`/reset-password/${params.row.uid}`}>
+            <button type="submit" className="managerListEdit">
+              Cập nhật mật khẩu 
+            </button>
+          </Link>
           {params.row.status === "Active" ? (
             <Button
               onClick={() =>

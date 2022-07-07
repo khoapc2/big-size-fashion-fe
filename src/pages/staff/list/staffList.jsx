@@ -158,6 +158,11 @@ export default function StaffList() {
           >
             <VisibilityIcon />
           </IconButton>
+          <Link to={`/reset-password/${params.row.uid}`}>
+            <button type="submit" className="staffListEdit">
+              Cập nhật mật khẩu 
+            </button>
+          </Link>
           {params.row.status === "Active" ? (
             <Button
               onClick={() =>

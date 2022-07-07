@@ -58,6 +58,7 @@ import {
   deleteAccountReducer,
   viewDetailAccountReducer,
   createAccountReducer,
+  resetPasswordReducer,
 } from "redux/reducers/customerReducer";
 
 const initialState = {
@@ -111,6 +112,7 @@ const reducer = combineReducers({
   getListStaffDropDown: listStaffInStoreReducer,
   approveOnlineOrder: approveOnlineOrderReducer,
   rejectOnlineOrder: rejectOnlineOrderReducer,
+  resetPasswordState: resetPasswordReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
