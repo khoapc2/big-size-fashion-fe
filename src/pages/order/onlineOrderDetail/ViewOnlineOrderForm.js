@@ -15,9 +15,12 @@ import { DataGrid } from "@mui/x-data-grid";
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
 import {
   viewDetailOfflineOrder,
-  approveOfflineOrderAction,
+  // approveOfflineOrderAction,
   cancelOfflineOrderAction,
 } from "../../../redux/actions/orderAction";
+import { SchemaErrorMessageOnlineOrderAssign } from "../../../service/Validations/OrderAssignValidation";
+
+import { listStaffInStoreAction } from "../../../redux/actions/staffAction";
 import { triggerReload } from "../../../redux/actions/userAction";
 import Loading from "../../../components/Loading";
 import "./viewOnlineOrder.css";
@@ -36,13 +39,15 @@ export default function OfflineOrderForm() {
   const { data, loading } = useSelector((state) => state.viewDetailOfflineOrder);
   const approveOffOrder = useSelector((state) => state.approveOfflineOrder);
   const rejectOffOrder = useSelector((state) => state.rejectOfflineOrder);
+  const staffDropdown = useSelector((state) => state.getListStaffDropDown);
   const { product_list, store, order_id, create_date, status } = data;
 
   console.log(data);
-  console.log(approveOffOrder);
+  console.log(staffDropdown);
 
   useEffect(() => {
     dispatch(viewDetailOfflineOrder(onlineOrderId));
+    dispatch(listStaffInStoreAction());
   }, [dispatch, triggerReload]);
 
   useEffect(() => {
@@ -67,6 +72,10 @@ export default function OfflineOrderForm() {
     }
   }, [triggerReload, rejectOffOrder.success, rejectOffOrder.error]);
 
+  const onSubmit = (result) => {
+    console.log(result);
+  };
+
   const handleCancel = (id) => {
     dispatch(cancelOfflineOrderAction(id));
     setConfirmDialog({
@@ -75,13 +84,14 @@ export default function OfflineOrderForm() {
     });
   };
 
-  const handleAccept = (id) => {
-    dispatch(approveOfflineOrderAction(id));
-    setConfirmDialog({
-      ...confirmDialog,
-      isOpen: false,
-    });
-  };
+  // const handleAccept = (id) => {
+  //   // dispatch(approveOfflineOrderAction(id));
+  //   console.log(id);
+  //   setConfirmDialog({
+  //     ...confirmDialog,
+  //     isOpen: false,
+  //   });
+  // };
 
   const columns = [
     {
@@ -140,8 +150,10 @@ export default function OfflineOrderForm() {
         <div className="onlineOrder">
           <Formik
             initialValues={{
-              staffName: "",
+              staff: "",
             }}
+            onSubmit={onSubmit}
+            validationSchema={SchemaErrorMessageOnlineOrderAssign}
             validateOnBlur
             validateOnChange
           >
@@ -149,7 +161,7 @@ export default function OfflineOrderForm() {
               console.log(formik);
               return (
                 <div>
-                  <Form>
+                  <Form onSubmit={formik.handleSubmit}>
                     <Grid container>
                       <Grid item xs={6}>
                         <div className="container-title">
@@ -163,17 +175,21 @@ export default function OfflineOrderForm() {
                         <div className="container-title">
                           <div className="title">Nhân viên phụ trách:&emsp;</div>
                           <div className="content">
-                            <Form.Select
-                              fluid
-                              options={[]}
-                              placeholder="Nhân viên"
-                              onChange={(e, v) => {
-                                formik.setFieldValue("category", v.value);
-                              }}
-                              name="category"
-                              value={formik.values.category}
-                              error={formik.errors.category}
-                            />
+                            {staffDropdown.loading ? (
+                              <Loading />
+                            ) : (
+                              <Form.Select
+                                fluid
+                                options={staffDropdown.data || []}
+                                placeholder="Nhân viên"
+                                onChange={(e, v) => {
+                                  formik.setFieldValue("category", v.value);
+                                }}
+                                name="staff"
+                                value={formik.values.staff}
+                                error={formik.errors.staff}
+                              />
+                            )}
                           </div>
                         </div>
                       </Grid>
@@ -232,16 +248,17 @@ export default function OfflineOrderForm() {
                         <Button
                           className="approve"
                           variant="outlined"
-                          onClick={() =>
-                            setConfirmDialog({
-                              isOpen: true,
-                              title: "Bạn có muốn xác nhận đơn hàng này?",
-                              subTitle: "Xác nhận",
-                              onConfirm: () => {
-                                handleAccept(order_id);
-                              },
-                            })
-                          }
+                          type="submit"
+                          // onClick={() =>
+                          //   setConfirmDialog({
+                          //     isOpen: true,
+                          //     title: "Bạn có muốn xác nhận đơn hàng này?",
+                          //     subTitle: "Xác nhận",
+                          //     onConfirm: () => {
+                          //       handleAccept(order_id, formik.errors.staff);
+                          //     },
+                          //   })
+                          // }
                         >
                           Xác nhận
                         </Button>

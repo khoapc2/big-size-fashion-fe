@@ -43,7 +43,7 @@ import {
   updatePromotionReducer,
 } from "redux/reducers/promotionReducer";
 import { listManagerReducer } from "redux/reducers/managerReducer";
-import { listStaffReducer } from "redux/reducers/staffReducer";
+import { listStaffReducer, listStaffInStoreReducer } from "redux/reducers/staffReducer";
 import {
   listOnlineOrderReducer,
   listOfflineOrderReducer,
@@ -106,6 +106,7 @@ const reducer = combineReducers({
   viewDetailOfflineOrder: viewDetailOfflineOrderReducer,
   approveOfflineOrder: approveOfflineOrderReducer,
   rejectOfflineOrder: rejectOfflineOrderReducer,
+  getListStaffDropDown: listStaffInStoreReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

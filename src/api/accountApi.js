@@ -8,6 +8,8 @@ const URL_DETAIL_ACCOUNT = "/v1/accounts/get-detail-by-uid";
 
 const URL_CREATE_ACCOUNT = "/v1/accounts/create-staff-account";
 
+const URL_LIST_STAFF_IN_STORE = "/v1/staffs/all-staff-of-store";
+
 const accountApi = {
   getListAccount: (params) => {
     const url = `${URL_ENTITY}`;
@@ -31,6 +33,11 @@ const accountApi = {
 
   getAccountDetailById: (params) => {
     const url = `${URL_DETAIL_ACCOUNT}/${params}`;
+    return axios.get(url);
+  },
+
+  getListStaffInStore: () => {
+    const url = URL_LIST_STAFF_IN_STORE;
     return axios.get(url);
   },
 };

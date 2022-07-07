@@ -91,7 +91,6 @@ export const listCategoryDropdownReducer = (
   state = { loading: true, category: [], error: "" },
   action
 ) => {
-  console.log(state);
   switch (action.type) {
     case CATEGORY_LIST_DROPDOWN_REQUEST:
       return { ...state, loading: true };
