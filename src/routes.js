@@ -41,8 +41,10 @@ import Profile from "layouts/profile";
 // @mui icons
 import Icon from "@mui/material/Icon";
 // import Product from "./pages/product/Product";
+// const currentUser = JSON.parse(localStorage.getItem("user"));
+// const { role } = currentUser;
 
-const routes = [
+export const routes = [
   {
     type: "collapse",
     name: "Bảng điều khiển",
@@ -51,14 +53,6 @@ const routes = [
     route: "/dashboard",
     component: <Dashboard />,
   },
-  // {
-  //   type: "collapse",
-  //   name: "Tables",
-  //   key: "tables",
-  //   icon: <Icon fontSize="small">table_view</Icon>,
-  //   route: "/tables",
-  //   component: <ProductList />,
-  // },
   {
     type: "collapse",
     name: "Sản phẩm",
@@ -139,14 +133,6 @@ const routes = [
     route: "/billing",
     component: <Billing />,
   },
-  // {
-  //   type: "collapse",
-  //   name: "RTL",
-  //   key: "rtl",
-  //   icon: <Icon fontSize="small">format_textdirection_r_to_l</Icon>,
-  //   route: "/rtl",
-  //   component: <RTL />,
-  // },
   {
     type: "collapse",
     name: "Notifications",
@@ -189,4 +175,136 @@ const routes = [
   // },
 ];
 
-export default routes;
+export const routesAdmin = [
+  {
+    type: "collapse",
+    name: "Bảng điều khiển",
+    key: "dashboard",
+    icon: <Icon fontSize="small">dashboard</Icon>,
+    route: "/dashboard",
+    component: <Dashboard />,
+  },
+  {
+    type: "collapse",
+    name: "Sản phẩm",
+    key: "product",
+    icon: <Icon fontSize="small">styler</Icon>,
+    route: "/products",
+    component: <Products />,
+  },
+  {
+    type: "collapse",
+    name: "Người dùng",
+    key: "user",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/users",
+    component: <Users />,
+  },
+  {
+    type: "collapse",
+    name: "Danh sách giao / nhập hàng",
+    key: "delivery-note",
+    icon: <Icon fontSize="small">import_export</Icon>,
+    route: "/delivery-note",
+    component: <DeliveryNote />,
+  },
+  {
+    type: "collapse",
+    name: "Thể loại",
+    key: "category",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/categories",
+    component: <Categories />,
+  },
+  {
+    type: "collapse",
+    name: "Kích cỡ",
+    key: "size",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/sizes",
+    component: <Sizes />,
+  },
+  {
+    type: "collapse",
+    name: "Màu sắc",
+    key: "color",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/colors",
+    component: <Colors />,
+  },
+  {
+    type: "collapse",
+    name: "Khuyến mại",
+    key: "promotion",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/promotions",
+    component: <Promotions />,
+  },
+  {
+    type: "collapse",
+    name: "Cửa hàng",
+    key: "store",
+    icon: <Icon fontSize="small">receipt_long</Icon>,
+    route: "/stores",
+    component: <Stores />,
+  },
+  {
+    type: "collapse",
+    name: "Profile",
+    key: "profile",
+    icon: <Icon fontSize="small">person</Icon>,
+    route: "/profile",
+    component: <Profile />,
+  },
+];
+
+export const routesManager = [
+  {
+    type: "collapse",
+    name: "Bảng điều khiển",
+    key: "dashboard",
+    icon: <Icon fontSize="small">dashboard</Icon>,
+    route: "/dashboard",
+    component: <Dashboard />,
+  },
+  {
+    type: "collapse",
+    name: "Sản phẩm",
+    key: "product",
+    icon: <Icon fontSize="small">styler</Icon>,
+    route: "/products",
+    component: <Products />,
+  },
+  {
+    type: "collapse",
+    name: "Danh sách giao / nhập hàng",
+    key: "delivery-note",
+    icon: <Icon fontSize="small">import_export</Icon>,
+    route: "/delivery-note",
+    component: <DeliveryNote />,
+  },
+  {
+    type: "collapse",
+    name: "Đơn hàng",
+    key: "order",
+    icon: <Icon fontSize="small">import_export</Icon>,
+    route: "/order",
+    component: <Order />,
+  },
+  // {
+  //   type: "collapse",
+  //   name: "Khuyến mại",
+  //   key: "promotion",
+  //   icon: <Icon fontSize="small">table_view</Icon>,
+  //   route: "/promotions",
+  //   component: <Promotions />,
+  // },
+  {
+    type: "collapse",
+    name: "Profile",
+    key: "profile",
+    icon: <Icon fontSize="small">person</Icon>,
+    route: "/profile",
+    component: <Profile />,
+  },
+];

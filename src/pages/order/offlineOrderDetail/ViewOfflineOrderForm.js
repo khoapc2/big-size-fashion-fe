@@ -109,7 +109,18 @@ export default function OfflineOrderForm() {
       field: "price",
       headerName: "Đơn giá",
       width: 150,
-      renderCell: (params) => <div>{params.row.price.toLocaleString("vi-VN")}</div>,
+      renderCell: (params) => (
+        <div>
+          {params.row.discount_price ? (
+            <div>
+              <del>{params.row.price.toLocaleString("vi-VN")}</del>&emsp;
+              {params.row.discount_price.toLocaleString("vi-VN")}
+            </div>
+          ) : (
+            <div>{params.row.price.toLocaleString("vi-VN")}</div>
+          )}
+        </div>
+      ),
     },
     {
       field: "quantity",
@@ -121,9 +132,17 @@ export default function OfflineOrderForm() {
       headerName: "T.Tiền",
       width: 250,
       renderCell: (params) => (
-        <div className="offlineOrderItem">{`${(
-          params.row.price * params.row.quantity
-        ).toLocaleString("vi-VN")}`}</div>
+        <div>
+          {params.row.discount_price ? (
+            <div className="offlineOrderItem">{`${(
+              params.row.discount_price * params.row.quantity
+            ).toLocaleString("vi-VN")}`}</div>
+          ) : (
+            <div className="offlineOrderItem">{`${(
+              params.row.price * params.row.quantity
+            ).toLocaleString("vi-VN")}`}</div>
+          )}
+        </div>
       ),
     },
   ];

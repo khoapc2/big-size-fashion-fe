@@ -14,6 +14,12 @@ import {
   CANCEL_OFFLINE_ORDER_REQUEST,
   CANCEL_OFFLINE_ORDER_SUCCESS,
   CANCEL_OFFLINE_ORDER_FAIL,
+  APPROVE_ONLINE_ORDER_REQUEST,
+  APPROVE_ONLINE_ORDER_SUCCESS,
+  APPROVE_ONLINE_ORDER_FAIL,
+  CANCEL_ONLINE_ORDER_REQUEST,
+  CANCEL_ONLINE_ORDER_SUCCESS,
+  CANCEL_ONLINE_ORDER_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listOnlineOrderReducer = (state = { loading: true, data: [], error: "" }, action) => {
@@ -86,6 +92,32 @@ export const rejectOfflineOrderReducer = (state = { loading: true }, action) => 
     case CANCEL_OFFLINE_ORDER_SUCCESS:
       return { ...state, loading: false, success: action.payload };
     case CANCEL_OFFLINE_ORDER_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const approveOnlineOrderReducer = (state = { loading: true }, action) => {
+  switch (action.type) {
+    case APPROVE_ONLINE_ORDER_REQUEST:
+      return { ...state, loading: true };
+    case APPROVE_ONLINE_ORDER_SUCCESS:
+      return { ...state, loading: false, success: action.payload };
+    case APPROVE_ONLINE_ORDER_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const rejectOnlineOrderReducer = (state = { loading: true }, action) => {
+  switch (action.type) {
+    case CANCEL_ONLINE_ORDER_REQUEST:
+      return { ...state, loading: true };
+    case CANCEL_ONLINE_ORDER_SUCCESS:
+      return { ...state, loading: false, success: action.payload };
+    case CANCEL_ONLINE_ORDER_FAIL:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;

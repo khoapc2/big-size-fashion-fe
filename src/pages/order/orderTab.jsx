@@ -20,7 +20,6 @@ export default function Layout() {
     <DashboardLayout>
       <DashboardNavbar />
       <TabContext value={selectedTab}>
-        <h1>Đăng nhập bằng role Manager để sử dụng chức năng</h1>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example" textColor="secondary">
             <Tab icon={<AccessibilityNewIcon />} label="Đơn hàng online" value="1" />

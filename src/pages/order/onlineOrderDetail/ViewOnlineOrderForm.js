@@ -15,8 +15,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
 import {
   viewDetailOfflineOrder,
-  // approveOfflineOrderAction,
-  cancelOfflineOrderAction,
+  approveOnlineOrderAction,
+  cancelOnlineOrderAction,
 } from "../../../redux/actions/orderAction";
 import { SchemaErrorMessageOnlineOrderAssign } from "../../../service/Validations/OrderAssignValidation";
 
@@ -25,10 +25,10 @@ import { triggerReload } from "../../../redux/actions/userAction";
 import Loading from "../../../components/Loading";
 import "./viewOnlineOrder.css";
 import {
-  APPROVE_OFFLINE_ORDER_SUCCESS,
-  APPROVE_OFFLINE_ORDER_FAIL,
-  CANCEL_OFFLINE_ORDER_SUCCESS,
-  CANCEL_OFFLINE_ORDER_FAIL,
+  APPROVE_ONLINE_ORDER_SUCCESS,
+  APPROVE_ONLINE_ORDER_FAIL,
+  CANCEL_ONLINE_ORDER_SUCCESS,
+  CANCEL_ONLINE_ORDER_FAIL,
 } from "../../../service/Validations/VarConstant";
 
 export default function OfflineOrderForm() {
@@ -37,13 +37,13 @@ export default function OfflineOrderForm() {
   const { onlineOrderId } = useParams();
   const dispatch = useDispatch();
   const { data, loading } = useSelector((state) => state.viewDetailOfflineOrder);
-  const approveOffOrder = useSelector((state) => state.approveOfflineOrder);
-  const rejectOffOrder = useSelector((state) => state.rejectOfflineOrder);
+  const approveOnOrder = useSelector((state) => state.approveOnlineOrder);
+  const rejectOnOrder = useSelector((state) => state.rejectOnlineOrder);
   const staffDropdown = useSelector((state) => state.getListStaffDropDown);
   const { product_list, store, order_id, create_date, status } = data;
 
   console.log(data);
-  console.log(staffDropdown);
+  console.log(approveOnOrder);
 
   useEffect(() => {
     dispatch(viewDetailOfflineOrder(onlineOrderId));
@@ -51,33 +51,34 @@ export default function OfflineOrderForm() {
   }, [dispatch, triggerReload]);
 
   useEffect(() => {
-    if (approveOffOrder.success) {
+    if (approveOnOrder.success) {
       toast.success("Thao tác thành công");
-      dispatch({ type: APPROVE_OFFLINE_ORDER_SUCCESS, payload: false });
+      dispatch({ type: APPROVE_ONLINE_ORDER_SUCCESS, payload: false });
     }
-    if (approveOffOrder.error) {
+    if (approveOnOrder.error) {
       toast.error("Thao tác thất bại, vui lòng thử lại");
-      dispatch({ type: APPROVE_OFFLINE_ORDER_FAIL, payload: false });
+      dispatch({ type: APPROVE_ONLINE_ORDER_FAIL, payload: false });
     }
-  }, [triggerReload, approveOffOrder.success, approveOffOrder.error]);
+  }, [triggerReload, approveOnOrder.success, approveOnOrder.error]);
 
   useEffect(() => {
-    if (rejectOffOrder.success) {
+    if (rejectOnOrder.success) {
       toast.success("Thao tác thành công");
-      dispatch({ type: CANCEL_OFFLINE_ORDER_SUCCESS, payload: false });
+      dispatch({ type: CANCEL_ONLINE_ORDER_SUCCESS, payload: false });
     }
-    if (rejectOffOrder.error) {
+    if (rejectOnOrder.error) {
       toast.error("Thao tác thất bại, vui lòng thử lại");
-      dispatch({ type: CANCEL_OFFLINE_ORDER_FAIL, payload: false });
+      dispatch({ type: CANCEL_ONLINE_ORDER_FAIL, payload: false });
     }
-  }, [triggerReload, rejectOffOrder.success, rejectOffOrder.error]);
+  }, [triggerReload, rejectOnOrder.success, rejectOnOrder.error]);
 
   const onSubmit = (result) => {
-    console.log(result);
+    // console.log(result);
+    dispatch(approveOnlineOrderAction(order_id, result));
   };
 
   const handleCancel = (id) => {
-    dispatch(cancelOfflineOrderAction(id));
+    dispatch(cancelOnlineOrderAction(id));
     setConfirmDialog({
       ...confirmDialog,
       isOpen: false,
@@ -178,17 +179,34 @@ export default function OfflineOrderForm() {
                             {staffDropdown.loading ? (
                               <Loading />
                             ) : (
-                              <Form.Select
-                                fluid
-                                options={staffDropdown.data || []}
-                                placeholder="Nhân viên"
-                                onChange={(e, v) => {
-                                  formik.setFieldValue("category", v.value);
-                                }}
-                                name="staff"
-                                value={formik.values.staff}
-                                error={formik.errors.staff}
-                              />
+                              <div>
+                                {data.staff_name ? (
+                                  <Form.Select
+                                    fluid
+                                    // options={staffDropdown.data || []}
+                                    placeholder="Nhân viên"
+                                    onChange={(e, v) => {
+                                      formik.setFieldValue("staff", v.value);
+                                    }}
+                                    name="staff"
+                                    value={formik.values.staff}
+                                    error={formik.errors.staff}
+                                    text={data.staff_name}
+                                  />
+                                ) : (
+                                  <Form.Select
+                                    fluid
+                                    options={staffDropdown.data || []}
+                                    placeholder="Nhân viên"
+                                    onChange={(e, v) => {
+                                      formik.setFieldValue("staff", v.value);
+                                    }}
+                                    name="staff"
+                                    value={formik.values.staff}
+                                    error={formik.errors.staff}
+                                  />
+                                )}
+                              </div>
                             )}
                           </div>
                         </div>
@@ -229,39 +247,43 @@ export default function OfflineOrderForm() {
                     />
                     {status === "Chờ xác nhận" ? (
                       <Stack className="bottom-button" direction="row" spacing={2}>
-                        <Button
-                          className="deny"
-                          variant="outlined"
-                          onClick={() =>
-                            setConfirmDialog({
-                              isOpen: true,
-                              title: "Bạn có muốn hủy đơn hàng này?",
-                              subTitle: "Xác nhận",
-                              onConfirm: () => {
-                                handleCancel(order_id);
-                              },
-                            })
-                          }
-                        >
-                          Hủy
-                        </Button>
-                        <Button
-                          className="approve"
-                          variant="outlined"
-                          type="submit"
-                          // onClick={() =>
-                          //   setConfirmDialog({
-                          //     isOpen: true,
-                          //     title: "Bạn có muốn xác nhận đơn hàng này?",
-                          //     subTitle: "Xác nhận",
-                          //     onConfirm: () => {
-                          //       handleAccept(order_id, formik.errors.staff);
-                          //     },
-                          //   })
-                          // }
-                        >
-                          Xác nhận
-                        </Button>
+                        <div>
+                          <Button
+                            className="deny"
+                            variant="outlined"
+                            disabled={formik.isSubmitting}
+                            onClick={() =>
+                              setConfirmDialog({
+                                isOpen: true,
+                                title: "Bạn có muốn hủy đơn hàng này?",
+                                subTitle: "Xác nhận",
+                                onConfirm: () => {
+                                  handleCancel(order_id);
+                                },
+                              })
+                            }
+                          >
+                            Hủy
+                          </Button>
+                          <Button
+                            className="approve"
+                            variant="outlined"
+                            type="submit"
+                            disabled={formik.isSubmitting}
+                            // onClick={() =>
+                            //   setConfirmDialog({
+                            //     isOpen: true,
+                            //     title: "Bạn có muốn xác nhận đơn hàng này?",
+                            //     subTitle: "Xác nhận",
+                            //     onConfirm: () => {
+                            //       handleAccept(order_id, formik.errors.staff);
+                            //     },
+                            //   })
+                            // }
+                          >
+                            Xác nhận
+                          </Button>
+                        </div>
                       </Stack>
                     ) : (
                       <div />

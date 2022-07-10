@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useEffect } from "react";
 
 // react-router-dom components
@@ -99,7 +84,8 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     // NoCollapse ${noCollapse}, collapseName: ${collapseName}, route: ${route}`);
 
     // console.log(`Returnvalue ${returnValue}`);
-
+    // const currentUser = JSON.parse(localStorage.getItem("user"));
+    // const { role } = currentUser;
     if (type === "collapse") {
       returnValue = href ? (
         <Link

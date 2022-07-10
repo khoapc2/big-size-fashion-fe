@@ -29,7 +29,7 @@ import themeDark from "assets/theme-dark";
 // import createCache from "@emotion/cache";
 
 // Material Dashboard 2 React routes
-import routes from "routes";
+import { routes, routesManager, routesAdmin } from "routes";
 
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setMiniSidenav } from "context";
@@ -201,6 +201,51 @@ export default function App() {
   //   </MDBox>
   // );
 
+  const renderSideBar = () => {
+    const currentUser = JSON.parse(localStorage.getItem("user"));
+    let role = "";
+    if (currentUser) {
+      role = currentUser.role;
+    }
+    switch (role) {
+      case "Admin":
+        return (
+          <Sidenav
+            color={sidenavColor}
+            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+            brandName="BigSize Management"
+            routes={routesAdmin}
+            onMouseEnter={handleOnMouseEnter}
+            onMouseLeave={handleOnMouseLeave}
+          />
+        );
+      case "Manager":
+        return (
+          <Sidenav
+            color={sidenavColor}
+            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+            brandName="BigSize Management"
+            routes={routesManager}
+            onMouseEnter={handleOnMouseEnter}
+            onMouseLeave={handleOnMouseLeave}
+          />
+        );
+      case "Owner":
+        return (
+          <Sidenav
+            color={sidenavColor}
+            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+            brandName="BigSize Management"
+            routes={routes}
+            onMouseEnter={handleOnMouseEnter}
+            onMouseLeave={handleOnMouseLeave}
+          />
+        );
+      default:
+        return <h1>No project match</h1>;
+    }
+  };
+
   return (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <ToastContainer
@@ -225,20 +270,7 @@ export default function App() {
       )}
       <FirebaseNotifications />
       <Fader text="Hello React" /> */}
-      {layout === "dashboard" && (
-        <>
-          <Sidenav
-            color={sidenavColor}
-            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-            brandName="BigSize Management"
-            routes={routes}
-            onMouseEnter={handleOnMouseEnter}
-            onMouseLeave={handleOnMouseLeave}
-          />
-          {/* <Configurator /> */}
-          {/* {configsButton} */}
-        </>
-      )}
+      {layout === "dashboard" && <>{renderSideBar()}</>}
       {layout === "vr"}
       <Routes>
         {/* {getRoutes(routes)} */}

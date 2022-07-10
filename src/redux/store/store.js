@@ -51,7 +51,9 @@ import {
   listOfflineOrderReducer,
   viewDetailOfflineOrderReducer,
   approveOfflineOrderReducer,
+  approveOnlineOrderReducer,
   rejectOfflineOrderReducer,
+  rejectOnlineOrderReducer,
 } from "redux/reducers/orderReducer";
 import {
   listCustomerReducer,
@@ -60,6 +62,7 @@ import {
   createAccountReducer,
   resetPasswordReducer,
 } from "redux/reducers/customerReducer";
+import { listImportDeliverReducer, listExportDeliverReducer } from "redux/reducers/deliverReducer";
 
 const initialState = {
   userLogin: {
@@ -110,9 +113,13 @@ const reducer = combineReducers({
   approveOfflineOrder: approveOfflineOrderReducer,
   rejectOfflineOrder: rejectOfflineOrderReducer,
   getListStaffDropDown: listStaffInStoreReducer,
+  approveOnlineOrder: approveOnlineOrderReducer,
+  rejectOnlineOrder: rejectOnlineOrderReducer,
   resetPasswordState: resetPasswordReducer,
   getListSizeDropdown: listSizeDropdownReducer,
   getListPromotionDropdown: listPromotionDropdownReducer,
+  viewImportDeliver: listImportDeliverReducer,
+  viewExportDeliver: listExportDeliverReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
