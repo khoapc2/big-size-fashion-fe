@@ -6,7 +6,7 @@ import {
   PRODUCT_LIST_SUCCESS,
   PRODUCT_LIST_FAIL,
   CREATE_PRODUCT_REQUEST,
-  // CREATE_PRODUCT_SUCCESS,
+  CREATE_PRODUCT_SUCCESS,
   CREATE_PRODUCT_FAIL,
   VIEW_DETAIL_PRODUCT_REQUEST,
   VIEW_DETAIL_PRODUCT_SUCCESS,
@@ -55,6 +55,7 @@ export const listProduct = (keySearch, page) => async (dispatch) => {
 };
 
 export const createProduct = (productModels, files) => async (dispatch) => {
+  console.log(productModels);
   dispatch({
     type: CREATE_PRODUCT_REQUEST,
     payload: { productModels },
@@ -70,7 +71,6 @@ export const createProduct = (productModels, files) => async (dispatch) => {
         brand: productModels.brandName,
       };
       const data = await productApi.createNewProduct(param);
-      console.log(data);
 
       await axios
         .post(
@@ -80,6 +80,24 @@ export const createProduct = (productModels, files) => async (dispatch) => {
         )
         .then((res) => console.log(res));
 
+      let productDetail = {};
+      let dataDetail;
+      productModels.colourWithSize.map(async (item) => {
+        productDetail = {
+          product_id: data.content.product_id,
+          colour_id: item.colour,
+          size_id_list: item.size,
+        };
+        dataDetail = await productApi.createDetailProduct(productDetail);
+        return dataDetail;
+      });
+
+      const paramPromotion = {
+        promotion_id: productModels.promotion,
+        list_product_id: [data.content.product_id],
+      };
+      await productApi.addPromotionProduct(paramPromotion);
+      dispatch({ type: CREATE_PRODUCT_SUCCESS, payload: data });
       // await axios({
       //   method: "post",
       //   url: `https://20.211.17.194/api/product-images/add-image/${data.content.product_id}`,

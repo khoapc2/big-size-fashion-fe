@@ -20,6 +20,7 @@ import {
   createSizeReducer,
   updateSizeReducer,
   viewDetailSizeReducer,
+  listSizeDropdownReducer,
 } from "redux/reducers/sizeReducer";
 import {
   listColorReducer,
@@ -41,6 +42,7 @@ import {
   deletePromotionReducer,
   viewDetailPromotionReducer,
   updatePromotionReducer,
+  listPromotionDropdownReducer,
 } from "redux/reducers/promotionReducer";
 import { listManagerReducer } from "redux/reducers/managerReducer";
 import { listStaffReducer, listStaffInStoreReducer } from "redux/reducers/staffReducer";
@@ -109,6 +111,8 @@ const reducer = combineReducers({
   rejectOfflineOrder: rejectOfflineOrderReducer,
   getListStaffDropDown: listStaffInStoreReducer,
   resetPasswordState: resetPasswordReducer,
+  getListSizeDropdown: listSizeDropdownReducer,
+  getListPromotionDropdown: listPromotionDropdownReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

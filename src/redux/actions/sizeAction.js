@@ -15,14 +15,17 @@ import {
   UPDATE_SIZE_REQUEST,
   UPDATE_SIZE_SUCCESS,
   UPDATE_SIZE_FAIL,
+  SIZE_LIST_DROPDOWN_REQUEST,
+  SIZE_LIST_DROPDOWN_SUCCESS,
+  SIZE_LIST_DROPDOWN_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listSize =
   ({ keySearch, status }) =>
   async (dispatch) => {
-    dispatch({ type: SIZE_LIST_REQUEST });
     try {
       if (!status) {
+        dispatch({ type: SIZE_LIST_REQUEST });
         if (!keySearch) {
           const data = await sizeApi.getListSize();
           dispatch({ type: SIZE_LIST_SUCCESS, payload: data.content });
@@ -36,12 +39,13 @@ export const listSize =
           dispatch({ type: SIZE_LIST_FAIL, payload: "" });
         }
       } else {
+        dispatch({ type: SIZE_LIST_DROPDOWN_REQUEST });
         const params = {
           Status: status,
         };
         const data = await sizeApi.getListSize(params);
-        dispatch({ type: SIZE_LIST_SUCCESS, payload: data.content });
-        dispatch({ type: SIZE_LIST_FAIL, payload: "" });
+        dispatch({ type: SIZE_LIST_DROPDOWN_SUCCESS, payload: data.content });
+        dispatch({ type: SIZE_LIST_DROPDOWN_FAIL, payload: "" });
       }
 
       // else {

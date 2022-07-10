@@ -5,7 +5,7 @@ import "./newProduct.css";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import { styled } from "@mui/material/styles";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { Publish } from "@material-ui/icons";
 import IconButton from "@mui/material/IconButton";
 import ImageList from "@mui/material/ImageList";
@@ -16,12 +16,13 @@ import { toast } from "react-toastify";
 
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Stack } from "@mui/material";
-import { Formik } from "formik";
+import { FieldArray, Formik, ErrorMessage } from "formik";
 import { SchemaErrorCreateProduct } from "../../../service/Validations/ProductValidation";
 import { listSize } from "../../../redux/actions/sizeAction";
 import { listColor } from "../../../redux/actions/colorAction";
 import { listCategory } from "../../../redux/actions/categoryAction";
 import { createProduct } from "../../../redux/actions/productAction";
+import { listPromotion } from "../../../redux/actions/promotionAction";
 import { triggerReload } from "../../../redux/actions/userAction";
 import {
   CREATE_PRODUCT_FAIL,
@@ -45,14 +46,15 @@ export default function NewProduct() {
   // const [addToggle, setAddToggle] = useState(false);
 
   // const [price, setPrice] = useState(0);
-  // const { size } = useSelector((state) => state.sizeList);
-  // const { colour } = useSelector((state) => state.getListColorDropdown);
+  const { size } = useSelector((state) => state.getListSizeDropdown);
+  const { promotion } = useSelector((state) => state.getListPromotionDropdown);
+  const { colour } = useSelector((state) => state.getListColorDropdown);
   const { category } = useSelector((state) => state.getListCategoryDropdown);
   const response = useSelector((state) => state.createProductState);
-
   const { success, error } = response;
   useEffect(() => {
     if (success) {
+      console.log(success);
       toast.success("Tạo sản phẩm thành công");
       dispatch({ type: CREATE_PRODUCT_SUCCESS, payload: false });
     }
@@ -67,20 +69,20 @@ export default function NewProduct() {
     dispatch(listSize({ status }));
     dispatch(listColor({ status }));
     dispatch(listCategory({ status }));
+    dispatch(listPromotion({ status }));
   }, [dispatch, triggerReload]);
 
+  console.log(promotion);
   const onSubmit = (data) => {
     const formData = new FormData();
     Object.values(fileImg).forEach(function (img, index) {
       console.log(img);
       formData.append("files", img);
     });
-    // console.log(fileImg);
     for (var pair of formData.entries()) {
       console.log(pair[0] + " : " + pair[1]);
     }
-    // console.log(formData);
-    dispatch(createProduct(data, formData));
+    dispatch(createProduct(data));
   };
 
   const selectedImg = (e) => {
@@ -113,8 +115,10 @@ export default function NewProduct() {
             brandName: "",
             category: "",
             sex: "",
+            promotion: "",
             description: "",
-            price: 0,
+            price: 1000,
+            colourWithSize: [{ colour: "", size: [] }],
           }}
           onSubmit={onSubmit}
           validationSchema={SchemaErrorCreateProduct}
@@ -122,7 +126,7 @@ export default function NewProduct() {
           validateOnChange
         >
           {(formik) => {
-            // console.log(formik);
+            console.log(formik);
             return (
               <div className="product">
                 <Form onSubmit={formik.handleSubmit}>
@@ -174,13 +178,25 @@ export default function NewProduct() {
                         />
                         <Form.Select
                           fluid
-                          label="Sản phẩm dành cho"
+                          label="Dành cho"
                           options={options}
                           placeholder="Giới tính"
                           onChange={(e, v) => formik.setFieldValue("sex", v.value)}
                           name="sex"
                           value={formik.values.sex}
                           error={formik.errors.sex}
+                        />
+                        <Form.Select
+                          key={promotion.value}
+                          fluid
+                          label="Khuyến mại"
+                          options={promotion || []}
+                          placeholder="Khuyến mại"
+                          onChange={(e, v) => {
+                            formik.setFieldValue("promotion", v.value);
+                          }}
+                          name="promotion"
+                          value={formik.values.promotion}
                         />
                       </Form.Group>
                       <Form.TextArea
@@ -191,6 +207,71 @@ export default function NewProduct() {
                         value={formik.values.description}
                         error={formik.errors.description}
                       />
+                      <FieldArray name="colourWithSize">
+                        {({ remove, push }) => (
+                          <Fragment>
+                            {formik.values.colourWithSize.map((node, index) => (
+                              <Form.Group widths="equal" key={index}>
+                                <div className="field">
+                                  <Form.Select
+                                    className="form-control"
+                                    name={`colourWithSize[${index}].colour`}
+                                    fluid
+                                    label="Màu sắc"
+                                    options={colour || []}
+                                    onChange={(e, v) =>
+                                      formik.setFieldValue(
+                                        `colourWithSize[${index}].colour`,
+                                        v.value
+                                      )
+                                    }
+                                    placeholder="Màu sắc"
+                                  />
+                                  <div className="text-danger">
+                                    <ErrorMessage
+                                      color="red"
+                                      name={`colourWithSize[${index}].colour`}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="field">
+                                  <Form.Select
+                                    name={`colourWithSize[${index}].size`}
+                                    multiple
+                                    fluid
+                                    label="Kích cỡ"
+                                    options={size || []}
+                                    onChange={(e, v) =>
+                                      formik.setFieldValue(`colourWithSize[${index}].size`, v.value)
+                                    }
+                                    placeholder="Kích cỡ"
+                                  />
+                                  <div className="text-danger">
+                                    <ErrorMessage
+                                      color="red"
+                                      name={`colourWithSize[${index}].size`}
+                                    />
+                                  </div>
+                                </div>
+                                <Form.Button
+                                  label="."
+                                  disabled={formik.values.colourWithSize.length == 1}
+                                  color="red"
+                                  onClick={() => remove(index)}
+                                >
+                                  Xóa
+                                </Form.Button>
+                              </Form.Group>
+                            ))}
+                            <Form.Button
+                              color="green"
+                              onClick={() => push({ colour: "", size: [] })}
+                            >
+                              Thêm màu, cỡ
+                            </Form.Button>
+                          </Fragment>
+                        )}
+                      </FieldArray>
                     </div>
                     <div className="productTopRight">
                       <div style={{ margin: 10 }}>

@@ -193,3 +193,7 @@ section {
   margin: 0;
   border-radius: 5px;
 }
+
+.form-group {
+  width: max-content;
+}

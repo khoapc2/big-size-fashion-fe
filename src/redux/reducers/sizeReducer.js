@@ -14,7 +14,22 @@ import {
   UPDATE_SIZE_REQUEST,
   UPDATE_SIZE_SUCCESS,
   UPDATE_SIZE_FAIL,
+  SIZE_LIST_DROPDOWN_REQUEST,
+  SIZE_LIST_DROPDOWN_SUCCESS,
+  SIZE_LIST_DROPDOWN_FAIL,
 } from "../../service/Validations/VarConstant";
+
+function resultArr(payload) {
+  let result = [];
+  const newArray = [...payload];
+  result = newArray.map(({ size_id, size_name, status }) => ({
+    key: size_id.toString(),
+    text: size_name,
+    value: size_id,
+    status,
+  }));
+  return result;
+}
 
 export const listSizeReducer = (state = { loading: true, size: [], error: "" }, action) => {
   switch (action.type) {
@@ -79,6 +94,26 @@ export const deleteSizeReducer = (state = {}, action) => {
     case DELETE_SIZE_SUCCESS:
       return { ...state, loading: false, success: action.payload };
     case DELETE_SIZE_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const listSizeDropdownReducer = (
+  state = { loading: true, category: [], error: "" },
+  action
+) => {
+  switch (action.type) {
+    case SIZE_LIST_DROPDOWN_REQUEST:
+      return { ...state, loading: true };
+    case SIZE_LIST_DROPDOWN_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        size: [...resultArr(action.payload)],
+      };
+    case SIZE_LIST_DROPDOWN_FAIL:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;
