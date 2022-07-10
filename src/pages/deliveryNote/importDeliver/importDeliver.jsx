@@ -20,9 +20,9 @@ import {
   GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
 
-import "./offlineOrder.css";
+import "./importDeliver.css";
 
-import { listOrder } from "../../../redux/actions/orderAction";
+import { listImportDeliver } from "../../../redux/actions/deliverAction";
 
 // import staffApi from "../../api/staffApi";
 // import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
@@ -37,15 +37,15 @@ export default function StaffList() {
   // const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
   // // const [paging, setPaging] = useState({});
   //Test
-  const { data, error, loading } = useSelector((state) => state.viewOfflineOrder);
+  const { data, error, loading } = useSelector((state) => state.viewImportDeliver);
   const [page, setPage] = useState(1);
   const triggerReload = useSelector((state) => state.triggerReload);
   // const [keySearch, setKeySearch] = useState("");
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
-  // console.log(data);
+  console.log(data);
   useEffect(() => {
-    dispatch(listOrder(false));
+    dispatch(listImportDeliver());
   }, [dispatch, page, searchText, triggerReload]);
 
   // let inputSearchHandler = (e) => {
@@ -100,7 +100,7 @@ export default function StaffList() {
       headerName: "Tổng giá trị (VNĐ)",
       width: 150,
       renderCell: (params) => (
-        <div className="offlineOrderItem">{`${params.row.total_price.toLocaleString(
+        <div className="importDeliverItem">{`${params.row.total_price.toLocaleString(
           "vi-VN"
         )}`}</div>
       ),
@@ -131,7 +131,7 @@ export default function StaffList() {
       renderCell: (params) => (
         <>
           <Link to={`/offline-order-detail/${params.row.order_id}`}>
-            <button type="submit" className="offlineOrderEdit">
+            <button type="submit" className="importDeliverEdit">
               Xem chi tiết
             </button>
           </Link>
@@ -141,7 +141,7 @@ export default function StaffList() {
   ];
 
   return (
-    <div className="offlineOrderTab">
+    <div className="importDeliverTab">
       {/* <FormControl sx={{ m: 1, width: "35ch" }} variant="outlined">
         <InputLabel htmlFor="outlined-adornment">Tìm kiếm nhân viên</InputLabel>
         <OutlinedInput
@@ -163,7 +163,7 @@ export default function StaffList() {
         />
       </FormControl> */}
 
-      <div className="offlineOrder">
+      <div className="importDeliver">
         <DataGrid
           sx={{
             "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {

@@ -4,8 +4,9 @@ import { TabList, TabContext, TabPanel } from "@mui/lab";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 // import { Link } from "react-router-dom";
-import Customers from "pages/customer/list/customerList";
-import Managers from "pages/manager/list/managerList";
+import ImportDeliver from "pages/deliveryNote/importDeliver/importDeliver";
+import ExportDeliver from "pages/deliveryNote/exportDeliver/exportDeliver";
+
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 // import BadgeIcon from "@mui/icons-material/Badge";
 import AddBusinessIcon from "@mui/icons-material/AddBusiness";
@@ -20,7 +21,6 @@ export default function Layout() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <h1>CRUD đăng nhập vào tài khoản manager để thao tác</h1>
       <TabContext value={selectedTab}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example" textColor="secondary">
@@ -29,10 +29,10 @@ export default function Layout() {
           </TabList>
         </Box>
         <TabPanel value="1">
-          <Customers />
+          <ImportDeliver />
         </TabPanel>
         <TabPanel value="2">
-          <Managers />
+          <ExportDeliver />
         </TabPanel>
       </TabContext>
     </DashboardLayout>

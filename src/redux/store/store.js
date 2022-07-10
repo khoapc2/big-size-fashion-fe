@@ -60,6 +60,7 @@ import {
   createAccountReducer,
   resetPasswordReducer,
 } from "redux/reducers/customerReducer";
+import { listImportDeliverReducer, listExportDeliverReducer } from "redux/reducers/deliverReducer";
 
 const initialState = {
   userLogin: {
@@ -113,6 +114,8 @@ const reducer = combineReducers({
   approveOnlineOrder: approveOnlineOrderReducer,
   rejectOnlineOrder: rejectOnlineOrderReducer,
   resetPasswordState: resetPasswordReducer,
+  viewImportDeliver: listImportDeliverReducer,
+  viewExportDeliver: listExportDeliverReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

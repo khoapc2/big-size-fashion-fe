@@ -209,8 +209,6 @@ export default function App() {
     }
     switch (role) {
       case "Admin":
-        console.log("hihi1");
-        console.log(role);
         return (
           <Sidenav
             color={sidenavColor}
@@ -222,7 +220,6 @@ export default function App() {
           />
         );
       case "Manager":
-        console.log("hihi");
         return (
           <Sidenav
             color={sidenavColor}
