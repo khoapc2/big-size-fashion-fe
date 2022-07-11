@@ -92,11 +92,13 @@ export const createProduct = (productModels, files) => async (dispatch) => {
         return dataDetail;
       });
 
-      const paramPromotion = {
-        promotion_id: productModels.promotion,
-        list_product_id: [data.content.product_id],
-      };
-      await productApi.addPromotionProduct(paramPromotion);
+      if (productModels.promotion) {
+        const paramPromotion = {
+          promotion_id: productModels.promotion,
+          list_product_id: [data.content.product_id],
+        };
+        await productApi.addPromotionProduct(paramPromotion);
+      }
       dispatch({ type: CREATE_PRODUCT_SUCCESS, payload: data });
       // await axios({
       //   method: "post",

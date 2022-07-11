@@ -197,3 +197,10 @@ section {
 .form-group {
   width: max-content;
 }
+
+.detailProduct {
+  border: 2px solid;
+  border-radius: 8px;
+  padding: 5px;
+  margin: 5px;
+}

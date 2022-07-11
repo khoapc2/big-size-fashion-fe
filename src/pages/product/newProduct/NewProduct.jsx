@@ -207,61 +207,67 @@ export default function NewProduct() {
                         value={formik.values.description}
                         error={formik.errors.description}
                       />
+
                       <FieldArray name="colourWithSize">
                         {({ remove, push }) => (
                           <Fragment>
                             {formik.values.colourWithSize.map((node, index) => (
-                              <Form.Group widths="equal" key={index}>
-                                <div className="field">
-                                  <Form.Select
-                                    className="form-control"
-                                    name={`colourWithSize[${index}].colour`}
-                                    fluid
-                                    label="Màu sắc"
-                                    options={colour || []}
-                                    onChange={(e, v) =>
-                                      formik.setFieldValue(
-                                        `colourWithSize[${index}].colour`,
-                                        v.value
-                                      )
-                                    }
-                                    placeholder="Màu sắc"
-                                  />
-                                  <div className="text-danger">
-                                    <ErrorMessage
-                                      color="red"
+                              <div className="detailProduct">
+                                <Form.Group widths="equal" key={index}>
+                                  <div className="field">
+                                    <Form.Select
+                                      className="form-control"
                                       name={`colourWithSize[${index}].colour`}
+                                      fluid
+                                      label="Màu sắc"
+                                      options={colour || []}
+                                      onChange={(e, v) =>
+                                        formik.setFieldValue(
+                                          `colourWithSize[${index}].colour`,
+                                          v.value
+                                        )
+                                      }
+                                      placeholder="Màu sắc"
                                     />
+                                    <div className="text-danger">
+                                      <ErrorMessage
+                                        color="red"
+                                        name={`colourWithSize[${index}].colour`}
+                                      />
+                                    </div>
                                   </div>
-                                </div>
-                                <div className="field">
-                                  <Form.Select
-                                    name={`colourWithSize[${index}].size`}
-                                    multiple
-                                    fluid
-                                    label="Kích cỡ"
-                                    options={size || []}
-                                    onChange={(e, v) =>
-                                      formik.setFieldValue(`colourWithSize[${index}].size`, v.value)
-                                    }
-                                    placeholder="Kích cỡ"
-                                  />
-                                  <div className="text-danger">
-                                    <ErrorMessage
-                                      color="red"
+                                  <div className="field">
+                                    <Form.Select
                                       name={`colourWithSize[${index}].size`}
+                                      multiple
+                                      fluid
+                                      label="Kích cỡ"
+                                      options={size || []}
+                                      onChange={(e, v) =>
+                                        formik.setFieldValue(
+                                          `colourWithSize[${index}].size`,
+                                          v.value
+                                        )
+                                      }
+                                      placeholder="Kích cỡ"
                                     />
+                                    <div className="text-danger">
+                                      <ErrorMessage
+                                        color="red"
+                                        name={`colourWithSize[${index}].size`}
+                                      />
+                                    </div>
                                   </div>
-                                </div>
-                                <Form.Button
-                                  label="."
-                                  disabled={formik.values.colourWithSize.length == 1}
-                                  color="red"
-                                  onClick={() => remove(index)}
-                                >
-                                  Xóa
-                                </Form.Button>
-                              </Form.Group>
+                                  <Form.Button
+                                    label="."
+                                    disabled={formik.values.colourWithSize.length == 1}
+                                    color="red"
+                                    onClick={() => remove(index)}
+                                  >
+                                    Xóa
+                                  </Form.Button>
+                                </Form.Group>
+                              </div>
                             ))}
                             <Form.Button
                               color="green"
