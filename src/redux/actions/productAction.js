@@ -1,6 +1,5 @@
 import axios from "axios";
 import productApi from "../../api/productApi";
-
 import {
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
