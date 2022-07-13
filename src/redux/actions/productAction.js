@@ -30,18 +30,36 @@ const axiosConfig = {
 };
 
 export const listProduct = (keySearch, page) => async (dispatch) => {
-  const params = {
-    ProductName: keySearch,
-    PageNumber: page,
-  };
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+  const { role } = currentUser;
+  let searchParams;
+  if (role === "Admin") {
+    searchParams = {
+      ProductName: keySearch,
+      PageNumber: page,
+    };
+  } else if (role === "Manager") {
+    searchParams = {
+      ProductName: keySearch,
+      PageNumber: page,
+      Status: true,
+    };
+  }
+
   dispatch({ type: PRODUCT_LIST_REQUEST });
   try {
     if (!keySearch) {
-      const data = await productApi.getListProduct(page);
+      let param;
+      if (role === "Manager") {
+        param = {
+          Status: true,
+        };
+      }
+      const data = await productApi.getListProduct(param);
       dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data.content });
       dispatch({ type: PRODUCT_LIST_FAIL, payload: "" });
     } else {
-      const data = await productApi.getSearchListProduct(params);
+      const data = await productApi.getSearchListProduct(searchParams);
       dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data.content });
       dispatch({ type: PRODUCT_LIST_FAIL, payload: "" });
     }
@@ -124,6 +142,16 @@ export const viewDetailProduct = (productId) => async (dispatch) => {
   });
   try {
     const data = await productApi.getProductDetailById(productId);
+    data.content.product_detail_list.map(async (item) => {
+      const params = {
+        ProductId: data.content.product_id,
+        ColourId: item.colour.colour_id,
+        SizeId: item.size.size_id,
+      };
+      const dataQuantity = await productApi.getQuantityProduct(params);
+      item.quantity = dataQuantity.content.quantity;
+    });
+    console.log(data.content.product_detail_list);
     dispatch({ type: VIEW_DETAIL_PRODUCT_SUCCESS, payload: data.content });
   } catch (error) {
     dispatch({

@@ -166,6 +166,7 @@ export default function NewProduct() {
                         <Form.Select
                           key={category.value}
                           fluid
+                          search
                           label="Thể Loại"
                           options={category || []}
                           placeholder="Thể loại"
@@ -178,6 +179,7 @@ export default function NewProduct() {
                         />
                         <Form.Select
                           fluid
+                          search
                           label="Dành cho"
                           options={options}
                           placeholder="Giới tính"
@@ -189,6 +191,7 @@ export default function NewProduct() {
                         <Form.Select
                           key={promotion.value}
                           fluid
+                          search
                           label="Khuyến mại"
                           options={promotion || []}
                           placeholder="Khuyến mại"

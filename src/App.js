@@ -43,7 +43,6 @@ import Dashboard from "layouts/dashboard";
 import Products from "pages/productList/ProductList";
 
 import Billing from "layouts/billing";
-import Product from "pages/product/Product";
 import NewProduct from "pages/product/newProduct/NewProduct";
 import UpdateProduct from "pages/product/updateProduct/UpdateProduct";
 
@@ -84,6 +83,7 @@ import CreateAccount from "pages/manager/new/NewAccount";
 import CreateStaff from "pages/staff/new/NewAccount";
 import ViewEmployee from "pages/manager/view/ViewEmployee";
 import ResetPassword from "pages/manager/resetPassword/ResetPassword";
+import ViewProduct from "pages/product/view/viewProduct";
 
 // import Fader from "pages/components/Fader";
 // import { onMessageListener } from "./firebase/firebase";
@@ -284,7 +284,7 @@ export default function App() {
         <Route path="sign-up" element={<SignUp />} />
         <Route path="products" element={<Products />} />
         <Route path="update-product/:productId" element={<UpdateProduct />} />
-        <Route path="product/:productId" element={<Product />} />
+        <Route path="product/:productId" element={<ViewProduct />} />
         <Route path="newproduct" element={<NewProduct />} />
         <Route path="/stores" element={<Stores />} />
         <Route path="newstore" element={<CreateStore />} />

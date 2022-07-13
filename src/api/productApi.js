@@ -4,11 +4,12 @@ const URL_ENTITY = "/v1/products";
 // const URL_ADD_IMG = "/product-images/add-image";
 const URL_CREATE_DETAIL = "https://20.211.17.194/api/v1/product-details";
 const ADD_PROMOTION_PRODUCT = "https://20.211.17.194/api/v1/promotion-details";
+const GET_QUANTITY_PRODUCT = "https://20.211.17.194/api/v1/products/quantity-of-store";
 
 const productApi = {
   getListProduct: (params) => {
     const url = `${URL_ENTITY}`;
-    return axios.get(url, params);
+    return axios.get(url, { params });
   },
 
   getSearchListProduct: (params) => {
@@ -34,6 +35,11 @@ const productApi = {
   addPromotionProduct: (params) => {
     const url = `${ADD_PROMOTION_PRODUCT}`;
     return axios.post(url, params);
+  },
+
+  getQuantityProduct: (params) => {
+    const url = `${GET_QUANTITY_PRODUCT}`;
+    return axios.get(url, { params });
   },
 
   // addImgToProduct: (id, params) => {
