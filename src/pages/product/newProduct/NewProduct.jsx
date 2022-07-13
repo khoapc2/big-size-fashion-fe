@@ -76,9 +76,9 @@ export default function NewProduct() {
       formData.append("files", img);
     });
     // console.log(fileImg);
-    for (var pair of formData.entries()) {
-      console.log(pair[0] + " : " + pair[1]);
-    }
+    // for (var pair of formData.entries()) {
+    //   console.log(pair[0] + " : " + pair[1]);
+    // }
     // console.log(formData);
     dispatch(createProduct(data, formData));
   };

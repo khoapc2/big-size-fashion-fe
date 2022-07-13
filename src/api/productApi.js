@@ -2,6 +2,7 @@ import axios from "./axios";
 
 const URL_ENTITY = "/v1/products";
 // const URL_ADD_IMG = "/product-images/add-image";
+const IMPORT_PRODUCT = "/all-product-to-import";
 
 const productApi = {
   getListProduct: (params) => {
@@ -24,6 +25,10 @@ const productApi = {
     return axios.get(url);
   },
 
+  getProductToImport: () => {
+    const url = `${URL_ENTITY.concat(IMPORT_PRODUCT)}`;
+    return axios.get(url);
+  },
   // addImgToProduct: (id, params) => {
   //   console.log(id);
   //   console.log(params);

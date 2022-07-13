@@ -5,6 +5,7 @@ import {
   listProductReducer,
   createProductReducer,
   viewDetailProductReducer,
+  productImportInvoiceReducer,
 } from "redux/reducers/productReducer";
 import {
   listStoreReducer,
@@ -60,7 +61,11 @@ import {
   createAccountReducer,
   resetPasswordReducer,
 } from "redux/reducers/customerReducer";
-import { listImportDeliverReducer, listExportDeliverReducer } from "redux/reducers/deliverReducer";
+import {
+  listImportDeliverReducer,
+  listExportDeliverReducer,
+  createImportDeliverReducer,
+} from "redux/reducers/deliverReducer";
 
 const initialState = {
   userLogin: {
@@ -116,6 +121,8 @@ const reducer = combineReducers({
   resetPasswordState: resetPasswordReducer,
   viewImportDeliver: listImportDeliverReducer,
   viewExportDeliver: listExportDeliverReducer,
+  listImportProduct: productImportInvoiceReducer,
+  createImportDeliver: createImportDeliverReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

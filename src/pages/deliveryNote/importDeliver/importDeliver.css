@@ -60,3 +60,8 @@
   cursor: pointer;
   float: right;
 }
+
+.importDeliverTab {
+  display: flex;
+  flex-direction: column;
+}

@@ -170,9 +170,6 @@ export default function ProductList() {
           <button
             type="submit"
             className="storeListEdit"
-            //   onClick={
-            //     () => navigate(`/store/${params.row.store_id}`)
-            // }
           >
             <VisibilityIcon />
           </button>

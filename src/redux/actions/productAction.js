@@ -11,6 +11,9 @@ import {
   VIEW_DETAIL_PRODUCT_REQUEST,
   VIEW_DETAIL_PRODUCT_SUCCESS,
   VIEW_DETAIL_PRODUCT_FAIL,
+  IMPORT_PRODUCT_LIST_REQUEST,
+  IMPORT_PRODUCT_LIST_SUCCESS,
+  IMPORT_PRODUCT_LIST_FAIL,
 } from "../../service/Validations/VarConstant";
 
 const axiosConfig = {
@@ -108,6 +111,22 @@ export const viewDetailProduct = (productId) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: VIEW_DETAIL_PRODUCT_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+export const getProductToImportAction = () => async (dispatch) => {
+  dispatch({
+    type: IMPORT_PRODUCT_LIST_REQUEST,
+  });
+  try {
+    const data = await productApi.getProductToImport();
+    console.log(data);
+    dispatch({ type: IMPORT_PRODUCT_LIST_SUCCESS, payload: data.content });
+  } catch (error) {
+    dispatch({
+      type: IMPORT_PRODUCT_LIST_FAIL,
       payload:
         error.response && error.response.data.message ? error.response.data.message : error.message,
     });

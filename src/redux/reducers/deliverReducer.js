@@ -5,6 +5,9 @@ import {
   EXPORT_DELIVER_LIST_REQUEST,
   EXPORT_DELIVER_LIST_SUCCESS,
   EXPORT_DELIVER_LIST_FAIL,
+  CREATE_IMPORT_PRODUCT_LIST_REQUEST,
+  CREATE_IMPORT_PRODUCT_LIST_SUCCESS,
+  CREATE_IMPORT_PRODUCT_LIST_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listImportDeliverReducer = (
@@ -41,6 +44,26 @@ export const listExportDeliverReducer = (
         data: action.payload,
       };
     case EXPORT_DELIVER_LIST_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const createImportDeliverReducer = (
+  state = { loading: true, data: [], error: "" },
+  action
+) => {
+  switch (action.type) {
+    case CREATE_IMPORT_PRODUCT_LIST_REQUEST:
+      return { ...state, loading: true };
+    case CREATE_IMPORT_PRODUCT_LIST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        success: action.payload,
+      };
+    case CREATE_IMPORT_PRODUCT_LIST_FAIL:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;
