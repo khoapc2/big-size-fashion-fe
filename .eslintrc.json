@@ -48,6 +48,7 @@
         "custom": "ignore"
       }
     ],
+    "no-console": "off",
     "react/jsx-curly-spacing": [2, "never"]
   },
   "settings": { "import/resolver": { "node": { "paths": ["src"] } } }

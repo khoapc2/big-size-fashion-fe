@@ -6,7 +6,7 @@ const URL_ENTITY = "/v1/promotions";
 const promotionApi = {
   getListPromotion: (params) => {
     const url = `${URL_ENTITY}`;
-    return axios.get(url, params);
+    return axios.get(url, { params });
   },
 
   getSearchListPromotion: (params) => {

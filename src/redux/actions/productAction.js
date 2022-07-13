@@ -6,7 +6,7 @@ import {
   PRODUCT_LIST_SUCCESS,
   PRODUCT_LIST_FAIL,
   CREATE_PRODUCT_REQUEST,
-  // CREATE_PRODUCT_SUCCESS,
+  CREATE_PRODUCT_SUCCESS,
   CREATE_PRODUCT_FAIL,
   VIEW_DETAIL_PRODUCT_REQUEST,
   VIEW_DETAIL_PRODUCT_SUCCESS,
@@ -33,18 +33,36 @@ const axiosConfig = {
 };
 
 export const listProduct = (keySearch, page) => async (dispatch) => {
-  const params = {
-    ProductName: keySearch,
-    PageNumber: page,
-  };
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+  const { role } = currentUser;
+  let searchParams;
+  if (role === "Admin") {
+    searchParams = {
+      ProductName: keySearch,
+      PageNumber: page,
+    };
+  } else if (role === "Manager") {
+    searchParams = {
+      ProductName: keySearch,
+      PageNumber: page,
+      Status: true,
+    };
+  }
+
   dispatch({ type: PRODUCT_LIST_REQUEST });
   try {
     if (!keySearch) {
-      const data = await productApi.getListProduct(page);
+      let param;
+      if (role === "Manager") {
+        param = {
+          Status: true,
+        };
+      }
+      const data = await productApi.getListProduct(param);
       dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data.content });
       dispatch({ type: PRODUCT_LIST_FAIL, payload: "" });
     } else {
-      const data = await productApi.getSearchListProduct(params);
+      const data = await productApi.getSearchListProduct(searchParams);
       dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data.content });
       dispatch({ type: PRODUCT_LIST_FAIL, payload: "" });
     }
@@ -58,6 +76,7 @@ export const listProduct = (keySearch, page) => async (dispatch) => {
 };
 
 export const createProduct = (productModels, files) => async (dispatch) => {
+  console.log(productModels);
   dispatch({
     type: CREATE_PRODUCT_REQUEST,
     payload: { productModels },
@@ -73,7 +92,6 @@ export const createProduct = (productModels, files) => async (dispatch) => {
         brand: productModels.brandName,
       };
       const data = await productApi.createNewProduct(param);
-      console.log(data);
 
       await axios
         .post(
@@ -83,6 +101,26 @@ export const createProduct = (productModels, files) => async (dispatch) => {
         )
         .then((res) => console.log(res));
 
+      let productDetail = {};
+      let dataDetail;
+      productModels.colourWithSize.map(async (item) => {
+        productDetail = {
+          product_id: data.content.product_id,
+          colour_id: item.colour,
+          size_id_list: item.size,
+        };
+        dataDetail = await productApi.createDetailProduct(productDetail);
+        return dataDetail;
+      });
+
+      if (productModels.promotion) {
+        const paramPromotion = {
+          promotion_id: productModels.promotion,
+          list_product_id: [data.content.product_id],
+        };
+        await productApi.addPromotionProduct(paramPromotion);
+      }
+      dispatch({ type: CREATE_PRODUCT_SUCCESS, payload: data });
       // await axios({
       //   method: "post",
       //   url: `https://20.211.17.194/api/product-images/add-image/${data.content.product_id}`,
@@ -107,6 +145,16 @@ export const viewDetailProduct = (productId) => async (dispatch) => {
   });
   try {
     const data = await productApi.getProductDetailById(productId);
+    data.content.product_detail_list.map(async (item) => {
+      const params = {
+        ProductId: data.content.product_id,
+        ColourId: item.colour.colour_id,
+        SizeId: item.size.size_id,
+      };
+      const dataQuantity = await productApi.getQuantityProduct(params);
+      item.quantity = dataQuantity.content.quantity;
+    });
+    console.log(data.content.product_detail_list);
     dispatch({ type: VIEW_DETAIL_PRODUCT_SUCCESS, payload: data.content });
   } catch (error) {
     dispatch({

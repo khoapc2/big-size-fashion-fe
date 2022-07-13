@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Button } from "semantic-ui-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -48,6 +48,7 @@ export default function ProductList() {
   const triggerReload = useSelector((state) => state.triggerReload);
   // const [keySearch, setKeySearch] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
@@ -167,12 +168,14 @@ export default function ProductList() {
       width: 200,
       renderCell: (params) => (
         <>
-          <button
+          <IconButton
+            size="large"
+            color="secondary"
             type="submit"
-            className="storeListEdit"
+            onClick={() => navigate(`/product/${params.row.product_id}`)}
           >
             <VisibilityIcon />
-          </button>
+          </IconButton>
           <Link to={`/update-product/${params.row.product_id}`}>
             <button type="submit" className="productListEdit">
               Edit

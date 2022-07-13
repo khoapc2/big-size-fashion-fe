@@ -50,9 +50,9 @@ export default function PromotionList() {
   const triggerReload = useSelector((state) => state.triggerReload);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [searchText, setSearchText] = useState("");
+  const [keySearch, setSearchText] = useState("");
   useEffect(() => {
-    dispatch(listPromotion(searchText));
+    dispatch(listPromotion({ keySearch }));
     if (success) {
       toast.success("Thao tác thành công");
       dispatch({ type: DELETE_PROMOTION_SUCCESS, payload: false });
@@ -64,7 +64,7 @@ export default function PromotionList() {
       toast.error("Thao tác thất bại, vui lòng thử lại");
       dispatch({ type: DELETE_PROMOTION_FAIL, payload: false });
     }
-  }, [page, searchText, triggerReload, success, errorDelete]);
+  }, [page, keySearch, triggerReload, success, errorDelete]);
 
   let inputSearchHandler = (e) => {
     let lowerCase = e.target.value.toLowerCase();
@@ -213,7 +213,7 @@ export default function PromotionList() {
         <InputLabel htmlFor="outlined-adornment">Tìm kiếm khuyến mãi</InputLabel>
         <OutlinedInput
           id="outlined-adornment"
-          value={searchText}
+          value={keySearch}
           onChange={inputSearchHandler}
           label="Tìm kiếm khuyến mãi"
         />
