@@ -6,6 +6,7 @@ const OFFLINE_URL = "offline-approve/";
 const ONLINE_URL = "online-approve/";
 const ASSIGN_ORDER = "assign-order";
 const REJECT_URL = "reject/";
+const EXPORT_ORDER = "export-bill/";
 
 const orderApi = {
   getListOrder: (params) => {
@@ -37,6 +38,11 @@ const orderApi = {
     console.log(params);
     const url = `${URL_ENTITY}/${ASSIGN_ORDER}`;
     return axios.put(url, params);
+  },
+
+  exportOrderToExcel: (params) => {
+    const url = `${URL_ENTITY}/${EXPORT_ORDER}${params}`;
+    return axios.get(url, { responseType: "blob" });
   },
 };
 export default orderApi;

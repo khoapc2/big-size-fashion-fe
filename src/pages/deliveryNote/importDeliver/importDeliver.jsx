@@ -94,7 +94,7 @@ export default function StaffList() {
   }
 
   const columns = [
-    { field: "order_id", headerName: "Mã đơn hàng", width: 150 },
+    { field: "delivery_note_id", headerName: "Mã đơn hàng", width: 150 },
     {
       field: "total_price",
       headerName: "Tổng giá trị (VNĐ)",
@@ -106,16 +106,10 @@ export default function StaffList() {
       ),
     },
     {
-      field: "total_price_after_discount (VNĐ)",
-      headerName: "Tổng giá trị sau khi giảm giá",
+      field: "create_date",
+      headerName: "Ngày tạo",
       width: 250,
-      renderCell: (params) => (
-        <div>
-          {params.row.total_price_after_discount
-            ? `${params.row.total_price_after_discount.toLocaleString("vi-VN")}`
-            : "Không có"}
-        </div>
-      ),
+      renderCell: (params) => <div>{params.row.create_date}</div>,
     },
     {
       field: "status",
@@ -123,7 +117,6 @@ export default function StaffList() {
       width: 160,
       renderCell: (params) => <div>{params.row.status}</div>,
     },
-
     {
       field: "action",
       headerName: "Thao tác",
@@ -142,26 +135,11 @@ export default function StaffList() {
 
   return (
     <div className="importDeliverTab">
-      {/* <FormControl sx={{ m: 1, width: "35ch" }} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment">Tìm kiếm nhân viên</InputLabel>
-        <OutlinedInput
-          id="outlined-adornment"
-          value={searchText}
-          onChange={inputSearchHandler}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickSearch}
-                edge="end"
-              >
-                <SearchIcon />
-              </IconButton>
-            </InputAdornment>
-          }
-          label="Tìm kiếm nhân viên"
-        />
-      </FormControl> */}
+      <Link to="/create-import-invoice">
+        <button type="button" className="staffAddButton">
+          Tạo đơn nhập hàng mới
+        </button>
+      </Link>
 
       <div className="importDeliver">
         <DataGrid
@@ -174,7 +152,7 @@ export default function StaffList() {
             },
           }}
           loading={loading}
-          getRowId={(r) => r.order_id}
+          getRowId={(r) => r.delivery_note_id}
           rows={data}
           disableSelectionOnClick
           columns={columns}

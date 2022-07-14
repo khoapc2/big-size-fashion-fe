@@ -14,7 +14,7 @@ import { DataGrid } from "@mui/x-data-grid";
 
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
 import {
-  viewDetailOfflineOrder,
+  viewDetailOfflineOrderAction,
   approveOnlineOrderAction,
   cancelOnlineOrderAction,
 } from "../../../redux/actions/orderAction";
@@ -36,17 +36,17 @@ export default function OfflineOrderForm() {
 
   const { onlineOrderId } = useParams();
   const dispatch = useDispatch();
-  const { data, loading } = useSelector((state) => state.viewDetailOfflineOrder);
+  const { data, loading, totalProduct } = useSelector((state) => state.viewDetailOfflineOrder);
   const approveOnOrder = useSelector((state) => state.approveOnlineOrder);
   const rejectOnOrder = useSelector((state) => state.rejectOnlineOrder);
   const staffDropdown = useSelector((state) => state.getListStaffDropDown);
   const { product_list, store, order_id, create_date, status } = data;
 
   console.log(data);
-  console.log(approveOnOrder);
+  console.log(product_list);
 
   useEffect(() => {
-    dispatch(viewDetailOfflineOrder(onlineOrderId));
+    dispatch(viewDetailOfflineOrderAction(onlineOrderId));
     dispatch(listStaffInStoreAction());
   }, [dispatch, triggerReload]);
 
@@ -98,19 +98,28 @@ export default function OfflineOrderForm() {
     {
       field: "product_detail_id",
       headerName: "Mã sản phẩm",
-      width: 100,
+      width: 50,
+      renderCell: (params) => (
+        <div className="productListItem">
+          {params.row.total_quantity_price ? "" : params.row.product_detail_id}
+        </div>
+      ),
     },
     {
       field: "product_name",
       headerName: "Sản phẩm",
-      width: 350,
+      width: 500,
       renderCell: (params) => (
         <div className="productListItem">
-          <img
-            className="productListImg"
-            src={params.row.product_image_url}
-            alt={params.row.product_name}
-          />
+          {params.row.total_quantity_price ? (
+            ""
+          ) : (
+            <img
+              className="productListImg"
+              src={params.row.product_image_url}
+              alt={params.row.product_name}
+            />
+          )}
           {params.row.product_name}&emsp;&emsp;
           {params.row.category}&emsp;&emsp;
           {params.row.colour}&emsp;&emsp;
@@ -122,21 +131,43 @@ export default function OfflineOrderForm() {
       field: "price",
       headerName: "Đơn giá",
       width: 150,
-      renderCell: (params) => <div>{params.row.price.toLocaleString("vi-VN")}</div>,
+      renderCell: (params) => (
+        <div>
+          {params.row.discount_price ? (
+            <div>
+              <del>{params.row.price.toLocaleString("vi-VN")}</del>&emsp;
+              {params.row.discount_price.toLocaleString("vi-VN")}
+            </div>
+          ) : (
+            <div>{params.row.price.toLocaleString("vi-VN")}</div>
+          )}
+        </div>
+      ),
     },
     {
       field: "quantity",
       headerName: "Số lượng",
-      width: 250,
+      width: 200,
     },
     {
       field: "total_quantity_price",
-      headerName: "T.Tiền",
+      headerName: "Thành Tiền",
       width: 250,
       renderCell: (params) => (
-        <div className="onlineOrderItem">{`${(
-          params.row.price * params.row.quantity
-        ).toLocaleString("vi-VN")}`}</div>
+        <div>
+          {params.row.total_quantity_price ? (
+            <b>{params.row.total_quantity_price.toLocaleString("vi-VN")}</b>
+          ) : (
+            ""
+          )}
+          {params.row.discount_price ? (
+            <div className="onlineOrderItem">{`${params.row.discount_price.toLocaleString(
+              "vi-VN"
+            )}`}</div>
+          ) : (
+            <div className="onlineOrderItem">{`${params.row.price.toLocaleString("vi-VN")}`}</div>
+          )}
+        </div>
       ),
     },
   ];
@@ -148,7 +179,7 @@ export default function OfflineOrderForm() {
           <Loading />
         </div>
       ) : (
-        <div className="onlineOrder">
+        <div className="onlineOrderTop">
           <Formik
             initialValues={{
               staff: "",
@@ -235,7 +266,7 @@ export default function OfflineOrderForm() {
                       }}
                       getRowId={(r) => r.product_detail_id}
                       loading={loading}
-                      rows={product_list}
+                      rows={totalProduct}
                       disableSelectionOnClick
                       columns={columns}
                       pageSize={8}
@@ -270,16 +301,6 @@ export default function OfflineOrderForm() {
                             variant="outlined"
                             type="submit"
                             disabled={formik.isSubmitting}
-                            // onClick={() =>
-                            //   setConfirmDialog({
-                            //     isOpen: true,
-                            //     title: "Bạn có muốn xác nhận đơn hàng này?",
-                            //     subTitle: "Xác nhận",
-                            //     onConfirm: () => {
-                            //       handleAccept(order_id, formik.errors.staff);
-                            //     },
-                            //   })
-                            // }
                           >
                             Xác nhận
                           </Button>

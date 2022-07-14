@@ -83,6 +83,7 @@ import CreateAccount from "pages/manager/new/NewAccount";
 import CreateStaff from "pages/staff/new/NewAccount";
 import ViewEmployee from "pages/manager/view/ViewEmployee";
 import ResetPassword from "pages/manager/resetPassword/ResetPassword";
+import CreateImport from "pages/deliveryNote/importDeliver/newImport/newImport";
 import ViewProduct from "pages/product/view/viewProduct";
 
 // import Fader from "pages/components/Fader";
@@ -318,6 +319,7 @@ export default function App() {
         <Route path="online-order-detail/:onlineOrderId" element={<OnlineOrder />} />
         <Route path="employee/:employeeId" element={<ViewEmployee />} />
         <Route path="reset-password/:employeeId" element={<ResetPassword />} />
+        <Route path="create-import-invoice" element={<CreateImport />} />
         {/* <Route path="/product/:productId">
           <Product />
         </Route> */}

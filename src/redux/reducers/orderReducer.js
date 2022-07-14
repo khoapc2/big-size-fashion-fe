@@ -22,6 +22,32 @@ import {
   CANCEL_ONLINE_ORDER_FAIL,
 } from "../../service/Validations/VarConstant";
 
+const calculateTotalPrice = ({ product_list }) => {
+  let totalPrice = 0;
+  product_list.forEach(({ price, discount_price }) => {
+    if (discount_price) {
+      totalPrice += discount_price;
+    } else {
+      totalPrice += price;
+    }
+  });
+  return {
+    product_detail_id: 1.1,
+    total_quantity_price: totalPrice,
+    category: "",
+    colour: "",
+    quantity: "",
+    discount_price: "",
+    discount_price_per_one: "",
+    price: "",
+    price_per_one: "",
+    product_id: "",
+    product_image_url: "",
+    product_name: "",
+    size: "",
+  };
+};
+
 export const listOnlineOrderReducer = (state = { loading: true, data: [], error: "" }, action) => {
   switch (action.type) {
     case ONLINE_ORDER_LIST_REQUEST:
@@ -56,15 +82,40 @@ export const listOfflineOrderReducer = (state = { loading: true, data: [], error
   }
 };
 
+// export const viewDetailOfflineOrderReducer = (
+//   state = { loading: true, data: [], error: "" },
+//   action
+// ) => {
+//   switch (action.type) {
+//     case VIEW_DETAIL_OFFLINE_ORDER_LIST_REQUEST:
+//       return { ...state, loading: true };
+//     case VIEW_DETAIL_OFFLINE_ORDER_LIST_SUCCESS:
+//       return {
+//         ...state,
+//         loading: false,
+//         data: action.payload,
+//       };
+//     case VIEW_DETAIL_OFFLINE_ORDER_LIST_FAIL:
+//       return { ...state, loading: false, error: action.payload };
+//     default:
+//       return state;
+//   }
+// };
+
 export const viewDetailOfflineOrderReducer = (
-  state = { loading: true, data: [], error: "" },
+  state = { loading: true, data: [], error: "", totalProduct: [] },
   action
 ) => {
   switch (action.type) {
     case VIEW_DETAIL_OFFLINE_ORDER_LIST_REQUEST:
       return { ...state, loading: true };
     case VIEW_DETAIL_OFFLINE_ORDER_LIST_SUCCESS:
-      return { ...state, loading: false, data: action.payload };
+      return {
+        ...state,
+        loading: false,
+        data: action.payload,
+        totalProduct: [...action.payload.product_list, calculateTotalPrice(action.payload)],
+      };
     case VIEW_DETAIL_OFFLINE_ORDER_LIST_FAIL:
       return { ...state, loading: false, error: action.payload };
     default:

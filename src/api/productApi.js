@@ -2,9 +2,10 @@ import axios from "./axios";
 
 const URL_ENTITY = "/v1/products";
 // const URL_ADD_IMG = "/product-images/add-image";
-const URL_CREATE_DETAIL = "https://20.211.17.194/api/v1/product-details";
-const ADD_PROMOTION_PRODUCT = "https://20.211.17.194/api/v1/promotion-details";
-const GET_QUANTITY_PRODUCT = "https://20.211.17.194/api/v1/products/quantity-of-store";
+const IMPORT_PRODUCT = "/all-product-to-import";
+const URL_CREATE_DETAIL = "/v1/product-details";
+const ADD_PROMOTION_PRODUCT = "/v1/promotion-details";
+const GET_QUANTITY_PRODUCT = "/v1/products/quantity-of-store";
 
 const productApi = {
   getListProduct: (params) => {
@@ -37,6 +38,10 @@ const productApi = {
     return axios.get(url);
   },
 
+  getProductToImport: () => {
+    const url = `${URL_ENTITY.concat(IMPORT_PRODUCT)}`;
+    return axios.get(url);
+  },
   addPromotionProduct: (params) => {
     const url = `${ADD_PROMOTION_PRODUCT}`;
     return axios.post(url, params);

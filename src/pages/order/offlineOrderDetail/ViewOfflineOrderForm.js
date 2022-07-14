@@ -1,3 +1,4 @@
+/* eslint-disable */
 // import { useState } from "react";
 import { useEffect, useState } from "react";
 import { Grid } from "@material-ui/core";
@@ -12,9 +13,10 @@ import { DataGrid } from "@mui/x-data-grid";
 
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
 import {
-  viewDetailOfflineOrder,
+  viewDetailOfflineOrderAction,
   approveOfflineOrderAction,
   cancelOfflineOrderAction,
+  exportExcelAction,
 } from "../../../redux/actions/orderAction";
 import { triggerReload } from "../../../redux/actions/userAction";
 import Loading from "../../../components/Loading";
@@ -26,21 +28,40 @@ import {
   CANCEL_OFFLINE_ORDER_FAIL,
 } from "../../../service/Validations/VarConstant";
 
+// const createRow = (productList) => {
+//   let totalPrice = 0;
+//   productList.forEach(({ discount_price_per_one, quantity, price_per_one }) => {
+//     if (discount_price_per_one) {
+//       totalPrice += discount_price_per_one * quantity;
+//     } else {
+//       totalPrice += price_per_one * quantity;
+//     }
+//   });
+//   return { total_quantity_price: totalPrice };
+// };
+
 export default function OfflineOrderForm() {
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
 
   const { offlineOrderId } = useParams();
   const dispatch = useDispatch();
-  const { data, loading } = useSelector((state) => state.viewDetailOfflineOrder);
+  const { data, loading, totalProduct } = useSelector((state) => state.viewDetailOfflineOrder);
+  const zaloPay = useSelector((state) => state.getZaloLink);
   const approveOffOrder = useSelector((state) => state.approveOfflineOrder);
   const rejectOffOrder = useSelector((state) => state.rejectOfflineOrder);
-  const { product_list, store, order_id, create_date, status } = data;
+  const { store, order_id, create_date, status, payment_method, customer_name, staff_name } = data;
+
+  // console.log(setRow(...product_list, createRow(row)));
+
+  // const row = [...product_list, totalPrice];
+  // console.log(row);
 
   console.log(data);
-  console.log(approveOffOrder);
+  console.log(totalProduct);
+  console.log(zaloPay);
 
   useEffect(() => {
-    dispatch(viewDetailOfflineOrder(offlineOrderId));
+    dispatch(viewDetailOfflineOrderAction(offlineOrderId));
   }, [dispatch, triggerReload]);
 
   useEffect(() => {
@@ -80,24 +101,36 @@ export default function OfflineOrderForm() {
       isOpen: false,
     });
   };
+  const handleExportOrder = (id) => {
+    dispatch(exportExcelAction(id));
+  };
 
   const columns = [
     {
       field: "product_detail_id",
       headerName: "Mã sản phẩm",
       width: 100,
+      renderCell: (params) => (
+        <div className="productListItem">
+          {params.row.total_quantity_price ? "" : params.row.product_detail_id}
+        </div>
+      ),
     },
     {
       field: "product_name",
       headerName: "Sản phẩm",
-      width: 350,
+      width: 500,
       renderCell: (params) => (
         <div className="productListItem">
-          <img
-            className="productListImg"
-            src={params.row.product_image_url}
-            alt={params.row.product_name}
-          />
+          {params.row.total_quantity_price ? (
+            ""
+          ) : (
+            <img
+              className="productListImg"
+              src={params.row.product_image_url}
+              alt={params.row.product_name}
+            />
+          )}
           {params.row.product_name}&emsp;&emsp;
           {params.row.category}&emsp;&emsp;
           {params.row.colour}&emsp;&emsp;
@@ -125,22 +158,25 @@ export default function OfflineOrderForm() {
     {
       field: "quantity",
       headerName: "Số lượng",
-      width: 250,
+      width: 200,
     },
     {
       field: "total_quantity_price",
-      headerName: "T.Tiền",
+      headerName: "Thành Tiền",
       width: 250,
       renderCell: (params) => (
         <div>
-          {params.row.discount_price ? (
-            <div className="offlineOrderItem">{`${(
-              params.row.discount_price * params.row.quantity
-            ).toLocaleString("vi-VN")}`}</div>
+          {params.row.total_quantity_price ? (
+            <b>{params.row.total_quantity_price.toLocaleString("vi-VN")}</b>
           ) : (
-            <div className="offlineOrderItem">{`${(
-              params.row.price * params.row.quantity
-            ).toLocaleString("vi-VN")}`}</div>
+            ""
+          )}
+          {params.row.discount_price ? (
+            <div className="offlineOrderItem">{`${params.row.discount_price.toLocaleString(
+              "vi-VN"
+            )}`}</div>
+          ) : (
+            <div className="offlineOrderItem">{`${params.row.price.toLocaleString("vi-VN")}`}</div>
           )}
         </div>
       ),
@@ -154,7 +190,7 @@ export default function OfflineOrderForm() {
           <Loading />
         </div>
       ) : (
-        <div className="offlineOrder">
+        <div className="offlineOrderTop">
           <Grid container>
             <Grid item xs={6}>
               <div className="container-title">
@@ -165,8 +201,24 @@ export default function OfflineOrderForm() {
                 <div className="title">Hóa đơn:</div>
                 <div className="content">&emsp;{order_id}</div>
               </div>
+              <div className="container-title">
+                <div className="title">Tên Khách hàng:</div>
+                <div className="content">&emsp;{customer_name}</div>
+              </div>
+              <div className="container-title">
+                <div className="title">Phương thức thanh toán:</div>
+                {zaloPay.data.order_url ? (
+                  <a href={zaloPay.data.order_url}>&emsp;{payment_method}</a>
+                ) : (
+                  <div className="content">&emsp;{payment_method}</div>
+                )}
+              </div>
             </Grid>
             <Grid item xs={6}>
+              <div className="container-title">
+                <div className="title">Tên Nhân viên:</div>
+                <div className="content">&emsp;{staff_name}</div>
+              </div>
               <div className="container-title">
                 <div className="title">Cửa hàng:</div>
                 <div className="content">
@@ -179,27 +231,29 @@ export default function OfflineOrderForm() {
               </div>
             </Grid>
           </Grid>
-          <DataGrid
-            sx={{
-              "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {
-                outline: "none",
-              },
-              "& .MuiDataGrid-cell:hover": {
-                color: "green",
-              },
-            }}
-            getRowId={(r) => r.product_detail_id}
-            loading={loading}
-            rows={product_list}
-            disableSelectionOnClick
-            columns={columns}
-            pageSize={8}
-            data={(query) =>
-              new Promise(() => {
-                console.log(query);
-              })
-            }
-          />
+          <div className="offlineOrderTopLeft">
+            <DataGrid
+              sx={{
+                "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {
+                  outline: "none",
+                },
+                "& .MuiDataGrid-cell:hover": {
+                  color: "green",
+                },
+              }}
+              getRowId={(r) => r.product_detail_id}
+              loading={loading}
+              rows={totalProduct}
+              disableSelectionOnClick
+              columns={columns}
+              pageSize={8}
+              data={(query) =>
+                new Promise(() => {
+                  console.log(query);
+                })
+              }
+            />
+          </div>
           {status === "Chờ xác nhận" ? (
             <Stack className="bottom-button" direction="row" spacing={2}>
               <Button
@@ -236,7 +290,15 @@ export default function OfflineOrderForm() {
               </Button>
             </Stack>
           ) : (
-            <div />
+            <div>
+              <Button
+                className="approve"
+                variant="outlined"
+                onClick={() => handleExportOrder(order_id)}
+              >
+                Xuất hóa đơn
+              </Button>
+            </div>
           )}
         </div>
       )}

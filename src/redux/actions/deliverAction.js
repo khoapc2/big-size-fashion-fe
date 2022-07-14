@@ -1,4 +1,5 @@
 import deliveryApi from "../../api/deliveryApi";
+import storeApi from "../../api/storeApi";
 import {
   IMPORT_DELIVER_LIST_REQUEST,
   IMPORT_DELIVER_LIST_SUCCESS,
@@ -6,6 +7,9 @@ import {
   EXPORT_DELIVER_LIST_REQUEST,
   EXPORT_DELIVER_LIST_SUCCESS,
   EXPORT_DELIVER_LIST_FAIL,
+  CREATE_IMPORT_PRODUCT_LIST_REQUEST,
+  CREATE_IMPORT_PRODUCT_LIST_SUCCESS,
+  CREATE_IMPORT_PRODUCT_LIST_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listImportDeliver = () => async (dispatch) => {
@@ -34,6 +38,52 @@ export const listExportDeliver = () => async (dispatch) => {
         ? error.respone.content.message
         : error.message;
     dispatch({ type: EXPORT_DELIVER_LIST_FAIL, payload: message });
+  }
+};
+
+export const deliveryImportToMainWareHouseAction = (para, deliveryName) => async (dispatch) => {
+  const listProduct = Array.from(para.values());
+  const listProductHandleParse = [];
+  const listProductSendToBE = [];
+  listProduct.forEach((product) => {
+    const inforIdProduct = product.product_id.split("+");
+    const parseProduct = {
+      ...product,
+      product_id: parseInt(inforIdProduct[1], 10),
+      colour_id: parseInt(inforIdProduct[0], 10),
+      size_id: parseInt(inforIdProduct[2], 10),
+    };
+    console.log(parseProduct);
+    listProductHandleParse.push(parseProduct);
+  });
+  listProductHandleParse.forEach((product) => {
+    if (product) {
+      const { id, product_name, ...rest } = product;
+      listProductSendToBE.push(rest);
+    }
+  });
+  dispatch({
+    type: CREATE_IMPORT_PRODUCT_LIST_REQUEST,
+  });
+  try {
+    const params = {
+      IsMainWarehouse: true,
+      Status: true,
+    };
+    const { content } = await storeApi.getListStore(params);
+    const paramsForApiImport = {
+      delivery_note_name: deliveryName,
+      from_store_id: content[0].store_id,
+      list_products: listProductSendToBE,
+    };
+    const data = await deliveryApi.createDeliveryNote(paramsForApiImport);
+    dispatch({ type: CREATE_IMPORT_PRODUCT_LIST_SUCCESS, payload: data.content });
+  } catch (error) {
+    dispatch({
+      type: CREATE_IMPORT_PRODUCT_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
   }
 };
 
@@ -86,29 +136,6 @@ export const listExportDeliver = () => async (dispatch) => {
 //   } catch (error) {
 //     dispatch({
 //       type: CANCEL_OFFLINE_ORDER_FAIL,
-//       payload:
-//         error.response && error.response.data.message ? error.response.data.message : error.message,
-//     });
-//   }
-// };
-
-// export const approveOnlineOrderAction = (id, staffId) => async (dispatch) => {
-//   dispatch({
-//     type: APPROVE_ONLINE_ORDER_REQUEST,
-//     payload: { id },
-//   });
-//   try {
-//     const order_id = id;
-//     const { staff: staff_id } = staffId;
-//     console.log(staff_id);
-//     if (order_id && staff_id) {
-//       const data = await orderApi.approveOnlineOrder(order_id);
-//       await orderApi.assignOnlineOrderToStaff({ staff_id, order_id });
-//       dispatch({ type: APPROVE_ONLINE_ORDER_SUCCESS, payload: data });
-//     }
-//   } catch (error) {
-//     dispatch({
-//       type: APPROVE_ONLINE_ORDER_FAIL,
 //       payload:
 //         error.response && error.response.data.message ? error.response.data.message : error.message,
 //     });

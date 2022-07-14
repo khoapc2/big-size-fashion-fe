@@ -6,6 +6,7 @@ import {
   createProductReducer,
   viewDetailProductReducer,
   updateProductReducer,
+  productImportInvoiceReducer,
 } from "redux/reducers/productReducer";
 import {
   listStoreReducer,
@@ -63,7 +64,12 @@ import {
   createAccountReducer,
   resetPasswordReducer,
 } from "redux/reducers/customerReducer";
-import { listImportDeliverReducer, listExportDeliverReducer } from "redux/reducers/deliverReducer";
+import {
+  listImportDeliverReducer,
+  listExportDeliverReducer,
+  createImportDeliverReducer,
+} from "redux/reducers/deliverReducer";
+import { zaloLinkReducer } from "redux/reducers/zaloReducer";
 
 const initialState = {
   userLogin: {
@@ -122,6 +128,9 @@ const reducer = combineReducers({
   viewImportDeliver: listImportDeliverReducer,
   viewExportDeliver: listExportDeliverReducer,
   updateProduct: updateProductReducer,
+  listImportProduct: productImportInvoiceReducer,
+  createImportDeliver: createImportDeliverReducer,
+  getZaloLink: zaloLinkReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

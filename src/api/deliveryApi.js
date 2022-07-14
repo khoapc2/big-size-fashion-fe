@@ -11,10 +11,14 @@ const deliverApi = {
     console.log(url);
     return axios.get(url);
   },
-
   getExportList: () => {
     const url = `${URL_ENTITY.concat(EXPORT_LIST)}`;
     return axios.get(url);
+  },
+
+  createDeliveryNote: (params) => {
+    const url = `${URL_ENTITY}`;
+    return axios.post(url, params);
   },
 };
 export default deliverApi;

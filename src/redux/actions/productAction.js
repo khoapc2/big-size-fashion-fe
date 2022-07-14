@@ -1,6 +1,5 @@
 import axios from "axios";
 import productApi from "../../api/productApi";
-
 import {
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
@@ -14,6 +13,9 @@ import {
   UPDATE_PRODUCT_REQUEST,
   UPDATE_PRODUCT_FAIL,
   UPDATE_PRODUCT_SUCCESS,
+  IMPORT_PRODUCT_LIST_REQUEST,
+  IMPORT_PRODUCT_LIST_SUCCESS,
+  IMPORT_PRODUCT_LIST_FAIL,
 } from "../../service/Validations/VarConstant";
 
 const currentUser = JSON.parse(localStorage.getItem("user"));
@@ -218,6 +220,23 @@ export const updateProduct = (productModels, id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: UPDATE_PRODUCT_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const getProductToImportAction = () => async (dispatch) => {
+  dispatch({
+    type: IMPORT_PRODUCT_LIST_REQUEST,
+  });
+  try {
+    const data = await productApi.getProductToImport();
+    console.log(data);
+    dispatch({ type: IMPORT_PRODUCT_LIST_SUCCESS, payload: data.content });
+  } catch (error) {
+    dispatch({
+      type: IMPORT_PRODUCT_LIST_FAIL,
       payload:
         error.response && error.response.data.message ? error.response.data.message : error.message,
     });
