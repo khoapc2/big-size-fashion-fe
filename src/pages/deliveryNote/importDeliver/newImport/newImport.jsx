@@ -173,7 +173,6 @@ export default function CreateImportDeliver() {
       <DashboardNavbar />
       <div className="newImport">
         <h1 className="createImportTitle">Tạo đơn nhập hàng tới kho tổng</h1>
-
         <div className="account">
           <div className="accountTop">
             <div className="account-top">

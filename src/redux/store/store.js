@@ -68,6 +68,7 @@ import {
   listExportDeliverReducer,
   createImportDeliverReducer,
 } from "redux/reducers/deliverReducer";
+import { zaloLinkReducer } from "redux/reducers/zaloReducer";
 
 const initialState = {
   userLogin: {
@@ -127,6 +128,7 @@ const reducer = combineReducers({
   viewExportDeliver: listExportDeliverReducer,
   listImportProduct: productImportInvoiceReducer,
   createImportDeliver: createImportDeliverReducer,
+  getZaloLink: zaloLinkReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

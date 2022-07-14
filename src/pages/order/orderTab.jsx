@@ -22,15 +22,15 @@ export default function Layout() {
       <TabContext value={selectedTab}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example" textColor="secondary">
-            <Tab icon={<AccessibilityNewIcon />} label="Đơn hàng online" value="1" />
-            <Tab icon={<ManageAccountsIcon />} label="Đơn hàng offline" value="2" />
+            <Tab icon={<ManageAccountsIcon />} label="Đơn hàng offline" value="1" />
+            <Tab icon={<AccessibilityNewIcon />} label="Đơn hàng online" value="2" />
           </TabList>
         </Box>
         <TabPanel value="1">
-          <OnlineOrder />
+          <OfflineOrder />
         </TabPanel>
         <TabPanel value="2">
-          <OfflineOrder />
+          <OnlineOrder />
         </TabPanel>
       </TabContext>
     </DashboardLayout>

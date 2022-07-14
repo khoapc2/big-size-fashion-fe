@@ -1,4 +1,5 @@
 import orderApi from "../../api/orderApi";
+import zaloApi from "../../api/zaloApi";
 import {
   ONLINE_ORDER_LIST_REQUEST,
   ONLINE_ORDER_LIST_SUCCESS,
@@ -21,6 +22,8 @@ import {
   CANCEL_ONLINE_ORDER_REQUEST,
   CANCEL_ONLINE_ORDER_SUCCESS,
   CANCEL_ONLINE_ORDER_FAIL,
+  GET_ZALO_LINK_SUCCESS,
+  GET_ZALO_LINK_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listOrder = (status) => async (dispatch) => {
@@ -59,13 +62,33 @@ export const listOrder = (status) => async (dispatch) => {
   }
 };
 
-export const viewDetailOfflineOrder = (orderId) => async (dispatch) => {
+export const viewDetailOfflineOrderAction = (orderId) => async (dispatch) => {
   dispatch({
     type: VIEW_DETAIL_OFFLINE_ORDER_LIST_REQUEST,
     payload: { orderId },
   });
   try {
     const data = await orderApi.getOrderDetailById(orderId);
+    console.log(data);
+    if (
+      data.content.payment_method === "Zalopay" &&
+      data.content.order_type === "Offline" &&
+      data.content.status === "Chờ xác nhận"
+    ) {
+      try {
+        const respone = await zaloApi.payWithZaloLink(orderId);
+        dispatch({ type: GET_ZALO_LINK_SUCCESS, payload: respone.content });
+      } catch (error) {
+        dispatch({
+          type: GET_ZALO_LINK_FAIL,
+          payload:
+            error.response && error.response.data.message
+              ? error.response.data.message
+              : error.message,
+        });
+      }
+    }
+    console.log(data);
     dispatch({ type: VIEW_DETAIL_OFFLINE_ORDER_LIST_SUCCESS, payload: data.content });
   } catch (error) {
     dispatch({
@@ -155,6 +178,22 @@ export const cancelOnlineOrderAction = (id) => async (dispatch) => {
     });
   }
 };
+
+export const exportExcelAction = (orderId) => async () => {
+  try {
+    const data = await orderApi.exportOrderToExcel(orderId);
+    const url = window.URL.createObjectURL(new Blob([data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `bill_of_order_#${orderId}.xlsx`);
+    document.body.appendChild(link);
+    link.click();
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // export const createStore = (storeModels) => async (dispatch) => {
 //   dispatch({
 //     type: CREATE_STORE_REQUEST,
