@@ -5,6 +5,7 @@ import {
   listProductReducer,
   createProductReducer,
   viewDetailProductReducer,
+  updateProductReducer,
   productImportInvoiceReducer,
 } from "redux/reducers/productReducer";
 import {
@@ -126,6 +127,7 @@ const reducer = combineReducers({
   getListPromotionDropdown: listPromotionDropdownReducer,
   viewImportDeliver: listImportDeliverReducer,
   viewExportDeliver: listExportDeliverReducer,
+  updateProduct: updateProductReducer,
   listImportProduct: productImportInvoiceReducer,
   createImportDeliver: createImportDeliverReducer,
   getZaloLink: zaloLinkReducer,

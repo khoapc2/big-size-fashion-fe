@@ -10,11 +10,17 @@ import {
   VIEW_DETAIL_PRODUCT_REQUEST,
   VIEW_DETAIL_PRODUCT_SUCCESS,
   VIEW_DETAIL_PRODUCT_FAIL,
+  UPDATE_PRODUCT_REQUEST,
+  UPDATE_PRODUCT_FAIL,
+  UPDATE_PRODUCT_SUCCESS,
   IMPORT_PRODUCT_LIST_REQUEST,
   IMPORT_PRODUCT_LIST_SUCCESS,
   IMPORT_PRODUCT_LIST_FAIL,
 } from "../../service/Validations/VarConstant";
 
+const currentUser = JSON.parse(localStorage.getItem("user"));
+const { role } = currentUser;
+const { token } = currentUser;
 const axiosConfig = {
   headers: {
     "Content-Type":
@@ -27,13 +33,11 @@ const axiosConfig = {
       "--AaB03x--",
     Accept: "application/json",
     type: "formData",
-    //  'authorization': 'Bearer ' + accessToken
+    authorization: `Bearer ${token}`,
   },
 };
 
 export const listProduct = (keySearch, page) => async (dispatch) => {
-  const currentUser = JSON.parse(localStorage.getItem("user"));
-  const { role } = currentUser;
   let searchParams;
   if (role === "Admin") {
     searchParams = {
@@ -163,6 +167,65 @@ export const viewDetailProduct = (productId) => async (dispatch) => {
     });
   }
 };
+
+export const updateProduct = (productModels, id) => async (dispatch) => {
+  dispatch({
+    type: UPDATE_PRODUCT_REQUEST,
+    payload: { productModels },
+  });
+  try {
+    if (productModels) {
+      const param = {
+        product_name: productModels.productName,
+        price: productModels.price,
+        category_id: productModels.category,
+        description: productModels.description,
+        gender: productModels.sex,
+        brand: productModels.brandName,
+      };
+      const data = await productApi.updateProduct(param, id);
+
+      // if (productModels.promotion !== null) {
+      //   if (productModels.promotion === 0 && productModels.promotion_backup !== null) {
+      //     console.log("delete promotion");
+      //     const paramRemovePromotionFromProduct = {
+      //       product_id: productModels.productId,
+      //       promotion_id: productModels.promotion_backup,
+      //     };
+      //     const dat = await productApi.deletePromotionProduct(paramRemovePromotionFromProduct);
+      //     console.log(dat);
+      //   } else if (productModels.promotion !== 0) {
+      //     console.log("update promotion");
+      //     if (productModels.promotion_backup) {
+      //       console.log("delete before add promotion");
+      //       const paramRemovePromotionFromProduct = {
+      //         product_id: productModels.productId,
+      //         promotion_id: productModels.promotion_backup,
+      //       };
+      //       console.log(paramRemovePromotionFromProduct);
+      //       await productApi.deletePromotionProduct(paramRemovePromotionFromProduct);
+      //     }
+
+      //     const paramAddPromotionToProduct = {
+      //       promotion_id: productModels.promotion,
+      //       list_product_id: [productModels.productId],
+      //     };
+      //     console.log(paramAddPromotionToProduct);
+      //     await productApi.addPromotionProduct(paramAddPromotionToProduct);
+      //   }
+      // }
+      console.log(data);
+      dispatch({ type: UPDATE_PRODUCT_SUCCESS, payload: data });
+    }
+  } catch (error) {
+    dispatch({
+      type: UPDATE_PRODUCT_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
 export const getProductToImportAction = () => async (dispatch) => {
   dispatch({
     type: IMPORT_PRODUCT_LIST_REQUEST,

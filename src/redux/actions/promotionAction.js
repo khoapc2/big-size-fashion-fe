@@ -24,7 +24,6 @@ export const listPromotion =
   ({ keySearch, status }) =>
   async (dispatch) => {
     try {
-      console.log("ccc", status);
       if (!status) {
         dispatch({ type: PROMOTION_LIST_REQUEST });
         if (!keySearch) {
@@ -140,31 +139,37 @@ export const updatePromotion = (promotionModels, id) => async (dispatch) => {
   });
   try {
     if (promotionModels) {
+      console.log(promotionModels);
       let param = {};
+      let applyDate;
+      let expiredDate;
+
       if (promotionModels.apply_date.toString().includes("/")) {
-        param = {
-          promotion_name: promotionModels.promotion_name,
-          promotion_value: promotionModels.promotion_value,
-          apply_date: promotionModels.apply_date.split("/").reverse().join("/"),
-          expired_date: promotionModels.expired_date.split("/").reverse().join("/"),
-        };
+        applyDate = promotionModels.apply_date.split("/").reverse().join("/");
       } else {
-        param = {
-          promotion_name: promotionModels.promotion_name,
-          promotion_value: promotionModels.promotion_value,
-          apply_date: promotionModels.apply_date.toLocaleDateString("vi-VN", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-          }),
-          expired_date: promotionModels.expired_date.toLocaleDateString("vi-VN", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-          }),
-        };
+        applyDate = promotionModels.apply_date.toLocaleDateString("vi-VN", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        });
       }
 
+      if (promotionModels.expired_date.toString().includes("/")) {
+        expiredDate = promotionModels.expired_date.split("/").reverse().join("/");
+      } else {
+        expiredDate = promotionModels.expired_date.toLocaleDateString("vi-VN", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        });
+      }
+
+      param = {
+        promotion_name: promotionModels.promotion_name,
+        promotion_value: promotionModels.promotion_value,
+        apply_date: applyDate,
+        expired_date: expiredDate,
+      };
       const data = await promotionApi.updatePromotionService(param, id);
       console.log(data);
       dispatch({ type: UPDATE_PROMOTION_SUCCESS, payload: data });

@@ -24,6 +24,7 @@ import { listCategory } from "../../../redux/actions/categoryAction";
 import { createProduct } from "../../../redux/actions/productAction";
 import { listPromotion } from "../../../redux/actions/promotionAction";
 import { triggerReload } from "../../../redux/actions/userAction";
+import Loading from "../../../components/Loading";
 import {
   CREATE_PRODUCT_FAIL,
   CREATE_PRODUCT_SUCCESS,
@@ -51,7 +52,7 @@ export default function NewProduct() {
   const { colour } = useSelector((state) => state.getListColorDropdown);
   const { category } = useSelector((state) => state.getListCategoryDropdown);
   const response = useSelector((state) => state.createProductState);
-  const { success, error } = response;
+  const { success, error, loading } = response;
   useEffect(() => {
     if (success) {
       console.log(success);
@@ -79,11 +80,9 @@ export default function NewProduct() {
       console.log(img);
       formData.append("files", img);
     });
-    // console.log(fileImg);
-    // for (var pair of formData.entries()) {
-    //   console.log(pair[0] + " : " + pair[1]);
-    // }
-    // console.log(formData);
+    for (var pair of formData.entries()) {
+      console.log(pair[0] + " : " + pair[1]);
+    }
     dispatch(createProduct(data, formData));
   };
 
@@ -168,12 +167,13 @@ export default function NewProduct() {
                         <Form.Select
                           key={category.value}
                           fluid
-                          search
                           label="Thể Loại"
                           options={category || []}
                           placeholder="Thể loại"
                           onChange={(e, v) => {
                             formik.setFieldValue("category", v.value);
+                            console.log(v);
+                            console.log(v.value);
                           }}
                           name="category"
                           value={formik.values.category}
@@ -199,6 +199,7 @@ export default function NewProduct() {
                           placeholder="Khuyến mại"
                           onChange={(e, v) => {
                             formik.setFieldValue("promotion", v.value);
+                            console.log(v);
                           }}
                           name="promotion"
                           value={formik.values.promotion}
@@ -395,9 +396,13 @@ export default function NewProduct() {
                     </div>
                   </div>
                   <div className="productBottom">
-                    <Form.Button type="submit" color="green">
-                      Xác nhận
-                    </Form.Button>
+                    {loading ? (
+                      <Loading />
+                    ) : (
+                      <Form.Button type="submit" color="green" disabled={loading}>
+                        Xác nhận
+                      </Form.Button>
+                    )}
                   </div>
                 </Form>
               </div>

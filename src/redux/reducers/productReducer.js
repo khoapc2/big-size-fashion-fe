@@ -8,6 +8,9 @@ import {
   VIEW_DETAIL_PRODUCT_REQUEST,
   VIEW_DETAIL_PRODUCT_SUCCESS,
   VIEW_DETAIL_PRODUCT_FAIL,
+  UPDATE_PRODUCT_REQUEST,
+  UPDATE_PRODUCT_FAIL,
+  UPDATE_PRODUCT_SUCCESS,
   IMPORT_PRODUCT_LIST_REQUEST,
   IMPORT_PRODUCT_LIST_SUCCESS,
   IMPORT_PRODUCT_LIST_FAIL,
@@ -66,6 +69,19 @@ export const viewDetailProductReducer = (
     case VIEW_DETAIL_PRODUCT_SUCCESS:
       return { ...state, loading: false, data: action.payload };
     case VIEW_DETAIL_PRODUCT_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const updateProductReducer = (state = { loading: true }, action) => {
+  switch (action.type) {
+    case UPDATE_PRODUCT_REQUEST:
+      return { ...state, loading: true };
+    case UPDATE_PRODUCT_SUCCESS:
+      return { ...state, loading: false, success: action.payload };
+    case UPDATE_PRODUCT_FAIL:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;

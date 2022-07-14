@@ -28,6 +28,7 @@ function resultArr(payload) {
     value: promotion_id,
     status,
   }));
+  result.push({ key: "0", text: "*Không", value: 0, status: true });
   return result;
 }
 
