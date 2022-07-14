@@ -27,7 +27,6 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import { listProduct } from "../../redux/actions/productAction";
 
 // import productApi from "../../api/productApi";
-import Notification from "pages/components/dialog/Notification";
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
 import ExportToExcel from "pages/helper/exportData";
 import Product from "pages/product/Product";
@@ -39,7 +38,8 @@ styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css
 document.head.appendChild(styleLink);
 
 export default function ProductList() {
-  const [notify, setNotify] = useState({ isOpen: false, message: "", type: "" });
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+  const { role } = currentUser;
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
   // const [paging, setPaging] = useState({});
   //Test
@@ -86,11 +86,6 @@ export default function ProductList() {
     setConfirmDialog({
       ...confirmDialog,
       isOpen: false,
-    });
-    setNotify({
-      isOpen: true,
-      message: "Deleted Successfully",
-      type: "success",
     });
   };
 
@@ -176,27 +171,33 @@ export default function ProductList() {
           >
             <VisibilityIcon />
           </IconButton>
-          <Link to={`/update-product/${params.row.product_id}`}>
-            <button type="submit" className="productListEdit">
-              Edit
-            </button>
-          </Link>
+          {role === "Admin" ? (
+            <div>
+              <Link to={`/update-product/${params.row.product_id}`}>
+                <button type="submit" className="productListEdit">
+                  Edit
+                </button>
+              </Link>
 
-          <Button
-            className="productListDelete"
-            onClick={() =>
-              setConfirmDialog({
-                isOpen: true,
-                title: "Are you sure to delete this record?",
-                subTitle: "Delete",
-                onConfirm: () => {
-                  handleDelete(params.row.id);
-                },
-              })
-            }
-            color="red"
-            icon="trash alternate"
-          />
+              <Button
+                className="productListDelete"
+                onClick={() =>
+                  setConfirmDialog({
+                    isOpen: true,
+                    title: "Are you sure to delete this record?",
+                    subTitle: "Delete",
+                    onConfirm: () => {
+                      handleDelete(params.row.id);
+                    },
+                  })
+                }
+                color="red"
+                icon="trash alternate"
+              />
+            </div>
+          ) : (
+            <></>
+          )}
         </>
       ),
     },
@@ -225,12 +226,15 @@ export default function ProductList() {
           label="Tìm kiếm tên sản phẩm"
         />
       </FormControl>
-      <Link to="/newproduct">
-        <button type="button" className="productAddButton">
-          Tạo sản phẩm
-        </button>
-      </Link>
-
+      {role === "Admin" ? (
+        <Link to="/newproduct">
+          <button type="button" className="productAddButton">
+            Tạo sản phẩm
+          </button>
+        </Link>
+      ) : (
+        <></>
+      )}
       <div className="productList">
         <DataGrid
           sx={{
@@ -262,7 +266,6 @@ export default function ProductList() {
       <div className="exportToExcel" style={{ margin: 5 }}>
         <ExportToExcel apiData={data} fileName={"product"} />
       </div>
-      <Notification notify={notify} setNotify={setNotify} />
       <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />
     </DashboardLayout>
   );

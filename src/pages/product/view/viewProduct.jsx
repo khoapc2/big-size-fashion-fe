@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import "./viewProduct.css";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import { styled } from "@mui/material/styles";
 import { useState, useEffect } from "react";
 import { Publish } from "@material-ui/icons";
 import IconButton from "@mui/material/IconButton";
@@ -13,8 +12,6 @@ import ImageListItem from "@mui/material/ImageListItem";
 import ImageListItemBar from "@mui/material/ImageListItemBar";
 import { Form, Label } from "semantic-ui-react";
 import { useParams } from "react-router-dom";
-
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Stack } from "@mui/material";
 import { Formik } from "formik";
 import { viewDetailProduct } from "../../../redux/actions/productAction";
@@ -53,6 +50,7 @@ export default function ViewProduct() {
               sex: data.gender,
               description: data.description,
               price: data.price,
+              promotion: data.promotion_name ? data.promotion_name : "Chưa có",
               image: data.images,
               productDetailList: data.product_detail_list,
             }}
@@ -94,7 +92,7 @@ export default function ViewProduct() {
                           />
                         </Form.Group>
                         <Form.Group widths="equal">
-                          {console.log(formik.values.productDetailList)}
+                          {console.log(formik.values.category)}
                           <Form.Input
                             name="category"
                             fluid
@@ -106,10 +104,17 @@ export default function ViewProduct() {
                           <Form.Input
                             fluid
                             label="Dành cho"
-                            options={options}
                             placeholder="Giới tính"
                             name="sex"
                             value={formik.values.sex}
+                            readOnly
+                          />
+                          <Form.Input
+                            fluid
+                            label="Khuyến mại"
+                            placeholder="Giới tính"
+                            name="promotion"
+                            value={formik.values.promotion}
                             readOnly
                           />
                         </Form.Group>

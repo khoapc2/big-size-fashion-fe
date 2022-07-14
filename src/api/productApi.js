@@ -22,6 +22,11 @@ const productApi = {
     return axios.post(url, params);
   },
 
+  updateProduct: (params, id) => {
+    const url = `${URL_ENTITY}/${id}`;
+    return axios.put(url, params);
+  },
+
   createDetailProduct: (params) => {
     const url = `${URL_CREATE_DETAIL}`;
     return axios.post(url, params);
@@ -35,6 +40,11 @@ const productApi = {
   addPromotionProduct: (params) => {
     const url = `${ADD_PROMOTION_PRODUCT}`;
     return axios.post(url, params);
+  },
+
+  deletePromotionProduct: (params) => {
+    const url = `${ADD_PROMOTION_PRODUCT}`;
+    return axios.delete(url, params);
   },
 
   getQuantityProduct: (params) => {

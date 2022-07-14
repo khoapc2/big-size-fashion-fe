@@ -18,16 +18,17 @@ import { useParams } from "react-router-dom";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Stack } from "@mui/material";
 import { Formik } from "formik";
-import { SchemaErrorCreateProduct } from "../../../service/Validations/ProductValidation";
+import { SchemaErrorUpdateProduct } from "../../../service/Validations/UpdateProductValidation";
 import { listSize } from "../../../redux/actions/sizeAction";
 import { listColor } from "../../../redux/actions/colorAction";
 import { listCategory } from "../../../redux/actions/categoryAction";
-import { viewDetailProduct } from "../../../redux/actions/productAction";
+import { listPromotion } from "../../../redux/actions/promotionAction";
+import { viewDetailProduct, updateProduct } from "../../../redux/actions/productAction";
 import { triggerReload } from "../../../redux/actions/userAction";
 import Loading from "../../../components/Loading";
 import {
-  CREATE_PRODUCT_FAIL,
-  CREATE_PRODUCT_SUCCESS,
+  UPDATE_PRODUCT_FAIL,
+  UPDATE_PRODUCT_SUCCESS,
 } from "../../../service/Validations/VarConstant";
 
 const Input = styled("input")({
@@ -49,36 +50,34 @@ export default function NewProduct() {
   // const [price, setPrice] = useState(0);
   // const { size } = useSelector((state) => state.sizeList);
   // const { colour } = useSelector((state) => state.colorList);
-  const { category } = useSelector((state) => state.categoryList);
-  const response = useSelector((state) => state.createProductState);
+  const { category } = useSelector((state) => state.getListCategoryDropdown);
+  const { promotion } = useSelector((state) => state.getListPromotionDropdown);
   const productDetail = useSelector((state) => state.viewProduct);
   const { loading, data } = productDetail;
-  const { success, error } = response;
+  const updateStatus = useSelector((state) => state.updateProduct);
+  const { success, error } = updateStatus;
 
   const [selectedImgs, setSelectedImgs] = useState([]);
-  console.log(productId);
-  console.log(data);
-  useEffect(() => {
-    if (success) {
-      toast.success("Cập nhật thông tin sản phẩm thành công");
-      dispatch({ type: CREATE_PRODUCT_SUCCESS, payload: false });
-    }
-    if (error) {
-      toast.error("Cập nhật thông tin sản phẩm thất bại, vui lòng thử lại");
-      dispatch({ type: CREATE_PRODUCT_FAIL, payload: false });
-    }
-  }, [success, error, triggerReload]);
-
+  console.log(productDetail);
   useEffect(() => {
     const status = true;
     dispatch(listSize({ status }));
     dispatch(listColor({ status }));
     dispatch(listCategory({ status }));
+    dispatch(listPromotion({ status }));
     dispatch(viewDetailProduct(productId));
-  }, [dispatch, triggerReload]);
+    if (success) {
+      toast.success("Cập nhật thông tin sản phẩm thành công");
+      dispatch({ type: UPDATE_PRODUCT_SUCCESS, payload: false });
+    }
+    if (error) {
+      toast.error("Cập nhật thông tin sản phẩm thất bại, vui lòng thử lại");
+      dispatch({ type: UPDATE_PRODUCT_FAIL, payload: false });
+    }
+  }, [success, error, triggerReload, dispatch]);
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = (submitData) => {
+    dispatch(updateProduct(submitData, productId));
   };
 
   const selectedImg = (e) => {
@@ -106,14 +105,21 @@ export default function NewProduct() {
             initialValues={{
               productName: data.product_name,
               brandName: data.brand,
-              category: data.category,
-              sex: data.gender,
+              category: data.category_id,
+              sex: data.gender === "Nam" ? true : false,
               description: data.description,
+              promotion: data.promotion_id,
+              promotionText: data.promotion_name ? data.promotion_name : "Chưa có",
               price: data.price,
               image: data.images,
+              categoryText: data.category,
+              sexText: data.gender,
+              promotion_backup: data.promotion_id,
+              productId: data.product_id,
+              // productDetailList: data.product_detail_list,
             }}
             onSubmit={onSubmit}
-            validationSchema={SchemaErrorCreateProduct}
+            validationSchema={SchemaErrorUpdateProduct}
             validateOnBlur
             validateOnChange
           >
@@ -155,8 +161,6 @@ export default function NewProduct() {
                           />
                         </Form.Group>
                         <Form.Group widths="equal">
-                          {console.log(formik.values.category)}
-
                           <Form.Select
                             name="category"
                             key={category.value}
@@ -166,22 +170,43 @@ export default function NewProduct() {
                             placeholder="Thể loại"
                             onChange={(e, v) => {
                               formik.setFieldValue("category", v.value);
+                              const { text } = category.find((o) => o.value === v.value);
+                              formik.setFieldValue("categoryText", text);
                             }}
                             value={formik.values.category}
                             error={formik.errors.category}
-                            text={formik.values.category}
+                            text={formik.values.categoryText}
                           />
                           <Form.Select
                             fluid
                             label="Dành cho"
                             options={options}
                             placeholder="Giới tính"
-                            onChange={(e, v) => formik.setFieldValue("sex", v.value)}
+                            onChange={(e, v) => {
+                              formik.setFieldValue("sex", v.value);
+                              const { text } = options.find((o) => o.value === v.value);
+                              formik.setFieldValue("sexText", text);
+                            }}
                             name="sex"
                             value={formik.values.sex}
                             error={formik.errors.sex}
-                            text={formik.values.sex}
+                            text={formik.values.sexText}
                           />
+                          {/* <Form.Select
+                            key={promotion.value}
+                            fluid
+                            label="Khuyến mại"
+                            options={promotion || []}
+                            placeholder="Khuyến mại"
+                            onChange={(e, v) => {
+                              formik.setFieldValue("promotion", v.value);
+                              const { text } = promotion.find((o) => o.value === v.value);
+                              formik.setFieldValue("promotionText", text);
+                            }}
+                            name="promotion"
+                            value={formik.values.promotion}
+                            text={formik.values.promotionText}
+                          /> */}
                         </Form.Group>
                         <Form.TextArea
                           label="Miêu tả"
@@ -191,6 +216,37 @@ export default function NewProduct() {
                           value={formik.values.description}
                           error={formik.errors.description}
                         />
+                        {/* {formik.values.productDetailList.map((item, index) => (
+                          <div className="detailProduct">
+                            <Form.Group widths="equal" key={index}>
+                              <Form.Input
+                                className="form-control"
+                                name={`productDetailList[${index}].colour`}
+                                fluid
+                                label="Màu sắc"
+                                placeholder="Màu sắc"
+                                value={item.colour.colour_name}
+                                readOnly
+                              />
+                              <Form.Input
+                                name={`productDetailList[${index}].size`}
+                                fluid
+                                label="Kích cỡ"
+                                placeholder="Kích cỡ"
+                                value={item.size.size_name}
+                                readOnly
+                              />
+                              <Form.Input
+                                name={`productDetailList[${index}].quantity`}
+                                fluid
+                                label="Số lượng"
+                                placeholder="Số lượng"
+                                value={item.quantity}
+                                readOnly
+                              />
+                            </Form.Group>
+                          </div>
+                        ))} */}
                       </div>
                       <div className="productTopRight">
                         <div style={{ margin: 10 }}>
@@ -260,7 +316,6 @@ export default function NewProduct() {
                               >
                                 {formik.values.image &&
                                   formik.values.image.map((item, index) => {
-                                    console.log(item);
                                     const cols = index === 0 ? 2 : 1;
                                     const rows = index === 0 ? 2 : 1;
                                     return (
@@ -302,11 +357,15 @@ export default function NewProduct() {
                         </div>
                       </div>
                     </div>
-                    <div className="productBottom">
-                      <Form.Button type="submit" color="green">
-                        Xác nhận
-                      </Form.Button>
-                    </div>
+                    {updateStatus.loading ? (
+                      <Loading />
+                    ) : (
+                      <div className="productBottom">
+                        <Form.Button type="submit" color="green" disabled={updateStatus.loading}>
+                          Xác nhận
+                        </Form.Button>
+                      </div>
+                    )}
                   </Form>
                 </div>
               );

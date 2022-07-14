@@ -5,6 +5,7 @@ import {
   listProductReducer,
   createProductReducer,
   viewDetailProductReducer,
+  updateProductReducer,
 } from "redux/reducers/productReducer";
 import {
   listStoreReducer,
@@ -120,6 +121,7 @@ const reducer = combineReducers({
   getListPromotionDropdown: listPromotionDropdownReducer,
   viewImportDeliver: listImportDeliverReducer,
   viewExportDeliver: listExportDeliverReducer,
+  updateProduct: updateProductReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
