@@ -207,7 +207,7 @@ export default function OfflineOrderForm() {
               </div>
               <div className="container-title">
                 <div className="title">Phương thức thanh toán:</div>
-                {zaloPay.data.order_url ? (
+                {zaloPay ? (
                   <a href={zaloPay.data.order_url}>&emsp;{payment_method}</a>
                 ) : (
                   <div className="content">&emsp;{payment_method}</div>
