@@ -68,10 +68,11 @@ export const viewDetailOfflineOrderAction = (orderId) => async (dispatch) => {
     payload: { orderId },
   });
   try {
+    dispatch({ type: GET_ZALO_LINK_FAIL });
     const data = await orderApi.getOrderDetailById(orderId);
     console.log(data);
     if (
-      data.content.payment_method === "Zalopay" &&
+      data.content.payment_method === "ZaloPay" &&
       data.content.order_type === "Offline" &&
       data.content.status === "Chờ xác nhận"
     ) {

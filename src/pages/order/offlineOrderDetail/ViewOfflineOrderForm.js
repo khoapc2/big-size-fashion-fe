@@ -58,7 +58,7 @@ export default function OfflineOrderForm() {
 
   console.log(data);
   console.log(totalProduct);
-  console.log(zaloPay);
+  console.log(zaloPay.data);
 
   useEffect(() => {
     dispatch(viewDetailOfflineOrderAction(offlineOrderId));
@@ -207,7 +207,7 @@ export default function OfflineOrderForm() {
               </div>
               <div className="container-title">
                 <div className="title">Phương thức thanh toán:</div>
-                {zaloPay ? (
+                {zaloPay.data ? (
                   <a href={zaloPay.data.order_url} target="_blank">
                     &emsp;{payment_method}
                   </a>
