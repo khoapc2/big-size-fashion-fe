@@ -85,6 +85,7 @@ import ViewEmployee from "pages/manager/view/ViewEmployee";
 import ResetPassword from "pages/manager/resetPassword/ResetPassword";
 import CreateImport from "pages/deliveryNote/importDeliver/newImport/newImport";
 import ViewProduct from "pages/product/view/viewProduct";
+import Inventory from "pages/warehouseInventory/storeInventory";
 
 // import Fader from "pages/components/Fader";
 // import { onMessageListener } from "./firebase/firebase";
@@ -320,6 +321,7 @@ export default function App() {
         <Route path="employee/:employeeId" element={<ViewEmployee />} />
         <Route path="reset-password/:employeeId" element={<ResetPassword />} />
         <Route path="create-import-invoice" element={<CreateImport />} />
+        <Route path="inventory" element={<Inventory />} />
         {/* <Route path="/product/:productId">
           <Product />
         </Route> */}

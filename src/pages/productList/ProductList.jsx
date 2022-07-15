@@ -72,16 +72,6 @@ export default function ProductList() {
 
   const handleClickSearch = (searchText) => {};
 
-  function handleRowClick(rowData) {
-    // console.log(rowData);
-    // <div>
-    //   <Route path={`/product/:${rowData}`}>
-    //     <Product />
-    //   </Route>
-    // </div>
-    // <Link to={`/product/:${rowData.product_id}`}></Link>;
-  }
-
   const handleDelete = (id) => {
     setConfirmDialog({
       ...confirmDialog,
