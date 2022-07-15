@@ -97,7 +97,7 @@ export default function OfflineOrderForm() {
   const columns = [
     {
       field: "product_detail_id",
-      headerName: "Mã sản phẩm",
+      headerName: "Mã",
       width: 50,
       renderCell: (params) => (
         <div className="productListItem">
@@ -193,9 +193,42 @@ export default function OfflineOrderForm() {
               console.log(formik);
               return (
                 <div>
+                  <div className="buttonApprove">
+                    {status === "Chờ xác nhận" ? (
+                      <Stack className="bottom-button" direction="row" spacing={2}>
+                        <Button
+                          className="approve"
+                          variant="outlined"
+                          type="submit"
+                          disabled={formik.isSubmitting}
+                        >
+                          Xác nhận
+                        </Button>
+                        <Button
+                          className="deny"
+                          variant="outlined"
+                          disabled={formik.isSubmitting}
+                          onClick={() =>
+                            setConfirmDialog({
+                              isOpen: true,
+                              title: "Bạn có muốn hủy đơn hàng này?",
+                              subTitle: "Xác nhận",
+                              onConfirm: () => {
+                                handleCancel(order_id);
+                              },
+                            })
+                          }
+                        >
+                          Hủy
+                        </Button>
+                      </Stack>
+                    ) : (
+                      <div />
+                    )}
+                  </div>
                   <Form onSubmit={formik.handleSubmit}>
                     <Grid container>
-                      <Grid item xs={6}>
+                      <Grid item xs={4}>
                         <div className="container-title">
                           <div className="title">Ngày bán:</div>
                           <div className="content">&emsp;{create_date}</div>
@@ -242,78 +275,50 @@ export default function OfflineOrderForm() {
                           </div>
                         </div>
                       </Grid>
-                      <Grid item xs={6}>
+                      <Grid item xs={8}>
                         <div className="container-title">
                           <div className="title">Cửa hàng:</div>
-                          <div className="content">
-                            &emsp;{store.store_name} &emsp; {store.store_phone}
-                          </div>
+                          <div className="content">&emsp;{store.store_name}</div>
+                        </div>
+                        <div className="container-title">
+                          <div className="title">SĐT cửa hàng:</div>
+                          <div className="content">&emsp; {store.store_phone}</div>
                         </div>
                         <div className="container-title">
                           <div className="title">Địa chỉ:</div>
-                          <div className="content">{store.store_address}</div>
+                          <div className="content">&emsp;{store.store_address}</div>
                         </div>
                       </Grid>
                     </Grid>
-                    <DataGrid
-                      sx={{
-                        "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {
-                          outline: "none",
-                        },
-                        "& .MuiDataGrid-cell:hover": {
-                          color: "green",
-                        },
-                      }}
-                      getRowId={(r) => r.product_detail_id}
-                      loading={loading}
-                      rows={totalProduct}
-                      disableSelectionOnClick
-                      columns={columns}
-                      pageSize={8}
-                      data={(query) =>
-                        new Promise(() => {
-                          console.log(query);
-                        })
-                      }
-                    />
-                    {status === "Chờ xác nhận" ? (
-                      <Stack className="bottom-button" direction="row" spacing={2}>
-                        <div>
-                          <Button
-                            className="deny"
-                            variant="outlined"
-                            disabled={formik.isSubmitting}
-                            onClick={() =>
-                              setConfirmDialog({
-                                isOpen: true,
-                                title: "Bạn có muốn hủy đơn hàng này?",
-                                subTitle: "Xác nhận",
-                                onConfirm: () => {
-                                  handleCancel(order_id);
-                                },
-                              })
-                            }
-                          >
-                            Hủy
-                          </Button>
-                          <Button
-                            className="approve"
-                            variant="outlined"
-                            type="submit"
-                            disabled={formik.isSubmitting}
-                          >
-                            Xác nhận
-                          </Button>
-                        </div>
-                      </Stack>
-                    ) : (
-                      <div />
-                    )}
                   </Form>
                 </div>
               );
             }}
           </Formik>
+          <div className="onlineOrderTopLeft">
+            <DataGrid
+              sx={{
+                "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {
+                  outline: "none",
+                },
+                "& .MuiDataGrid-cell:hover": {
+                  color: "green",
+                },
+              }}
+              autoHeight
+              getRowId={(r) => r.product_detail_id}
+              loading={loading}
+              rows={totalProduct}
+              disableSelectionOnClick
+              columns={columns}
+              pageSize={8}
+              data={(query) =>
+                new Promise(() => {
+                  console.log(query);
+                })
+              }
+            />
+          </div>
         </div>
       )}
       <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />

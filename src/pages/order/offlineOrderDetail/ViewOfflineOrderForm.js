@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { Formik } from "formik";
 
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
@@ -86,7 +87,9 @@ export default function OfflineOrderForm() {
     }
   }, [triggerReload, rejectOffOrder.success, rejectOffOrder.error]);
 
-  const handleCancel = (id) => {
+  const handleCancel = (id, formik) => {
+    console.log(formik);
+    formik.setSubmitting(true);
     dispatch(cancelOfflineOrderAction(id));
     setConfirmDialog({
       ...confirmDialog,
@@ -191,8 +194,70 @@ export default function OfflineOrderForm() {
         </div>
       ) : (
         <div className="offlineOrderTop">
+          <Formik validateOnBlur>
+            {(formik) => {
+              console.log(formik);
+              return (
+                <div>
+                  <div className="buttonApprove">
+                    {status === "Chờ xác nhận" ? (
+                      <Stack className="bottom-button" direction="row" spacing={2}>
+                        <Button
+                          className="approve"
+                          disabled={formik.isSubmitting}
+                          variant="outlined"
+                          onClick={() =>
+                            setConfirmDialog({
+                              isOpen: true,
+                              title: "Bạn có muốn xác nhận đơn hàng này?",
+                              subTitle: "Xác nhận",
+                              onConfirm: () => {
+                                handleAccept(order_id);
+                              },
+                            })
+                          }
+                        >
+                          Xác nhận
+                        </Button>
+                        <Button
+                          className="deny"
+                          variant="outlined"
+                          disabled={formik.isSubmitting}
+                          onClick={() =>
+                            setConfirmDialog({
+                              isOpen: true,
+                              title: "Bạn có muốn hủy đơn hàng này?",
+                              subTitle: "Xác nhận",
+                              onConfirm: () => {
+                                handleCancel(order_id, formik);
+                              },
+                            })
+                          }
+                        >
+                          Hủy
+                        </Button>
+                      </Stack>
+                    ) : (
+                      <></>
+                    )}
+                    {status === "Đã nhận hàng" ? (
+                      <Button
+                        className="approve"
+                        variant="outlined"
+                        onClick={() => handleExportOrder(order_id)}
+                      >
+                        Xuất hóa đơn
+                      </Button>
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                </div>
+              );
+            }}
+          </Formik>
           <Grid container>
-            <Grid item xs={6}>
+            <Grid item xs={4}>
               <div className="container-title">
                 <div className="title">Ngày bán:</div>
                 <div className="content">&emsp;{create_date}</div>
@@ -216,23 +281,26 @@ export default function OfflineOrderForm() {
                 )}
               </div>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={8}>
               <div className="container-title">
                 <div className="title">Tên Nhân viên:</div>
                 <div className="content">&emsp;{staff_name}</div>
               </div>
               <div className="container-title">
-                <div className="title">Cửa hàng:</div>
-                <div className="content">
-                  &emsp;{store.store_name} &emsp; {store.store_phone}
-                </div>
+                <div className="title">Cửa hàng: </div>
+                <div className="content">&emsp;{store.store_name}</div>
               </div>
               <div className="container-title">
-                <div className="title">Địa chỉ:</div>
-                <div className="content">{store.store_address}</div>
+                <div className="title">SĐT: </div>
+                <div className="content"> &emsp; {store.store_phone}</div>
+              </div>
+              <div className="container-title">
+                <div className="title">Địa chỉ: </div>
+                <div className="content">&emsp; {store.store_address}</div>
               </div>
             </Grid>
           </Grid>
+
           <div className="offlineOrderTopLeft">
             <DataGrid
               sx={{
@@ -243,6 +311,7 @@ export default function OfflineOrderForm() {
                   color: "green",
                 },
               }}
+              autoHeight
               getRowId={(r) => r.product_detail_id}
               loading={loading}
               rows={totalProduct}
@@ -256,52 +325,6 @@ export default function OfflineOrderForm() {
               }
             />
           </div>
-          {status === "Chờ xác nhận" ? (
-            <Stack className="bottom-button" direction="row" spacing={2}>
-              <Button
-                className="deny"
-                variant="outlined"
-                onClick={() =>
-                  setConfirmDialog({
-                    isOpen: true,
-                    title: "Bạn có muốn hủy đơn hàng này?",
-                    subTitle: "Xác nhận",
-                    onConfirm: () => {
-                      handleCancel(order_id);
-                    },
-                  })
-                }
-              >
-                Hủy
-              </Button>
-              <Button
-                className="approve"
-                variant="outlined"
-                onClick={() =>
-                  setConfirmDialog({
-                    isOpen: true,
-                    title: "Bạn có muốn xác nhận đơn hàng này?",
-                    subTitle: "Xác nhận",
-                    onConfirm: () => {
-                      handleAccept(order_id);
-                    },
-                  })
-                }
-              >
-                Xác nhận
-              </Button>
-            </Stack>
-          ) : (
-            <div>
-              <Button
-                className="approve"
-                variant="outlined"
-                onClick={() => handleExportOrder(order_id)}
-              >
-                Xuất hóa đơn
-              </Button>
-            </div>
-          )}
         </div>
       )}
       <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />

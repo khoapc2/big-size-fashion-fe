@@ -234,6 +234,7 @@ export default function PromotionList() {
               color: "green",
             },
           }}
+          autoHeight
           loading={loading}
           getRowId={(r) => r.promotion_id}
           rows={data}

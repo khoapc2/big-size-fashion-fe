@@ -1,15 +1,13 @@
 import React from "react";
-import StoreIcon from "@mui/icons-material/Store";
 import { Paper, makeStyles } from "@material-ui/core";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import OfflineOrderForm from "./ViewOfflineOrderForm";
-import PageHeader from "../../components/createForm/PageHeader";
 
 const useStyles = makeStyles((theme) => ({
   pageContent: {
-    margin: theme.spacing(5),
-    padding: theme.spacing(3),
+    margin: theme.spacing(3),
+    padding: theme.spacing(1),
   },
 }));
 
@@ -20,11 +18,6 @@ export default function OfflineOrderDetail() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <PageHeader
-        title="Thông tin hóa đơn"
-        subTitle="Thông tin"
-        icon={<StoreIcon fontSize="large" />}
-      />
       <Paper className={classes.pageContent}>
         <OfflineOrderForm />
       </Paper>
