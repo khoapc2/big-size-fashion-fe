@@ -34,10 +34,6 @@
 .approve {
   background: green !important;
 }
-.bottom-button {
-  align-items: center;
-  justify-items: center;
-}
 
 .makeStyles-pageContent-1 {
   height: 800px;
@@ -51,6 +47,20 @@
 }
 
 .offlineOrderTop {
-  padding: 20px;
-  margin: 20px;
+  padding: 10px;
+  margin: 10px;
+}
+
+.buttonApprove {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: flex-end;
+	align-items: stretch;
+	align-content: stretch;
+}
+
+.MuiDataGrid-root {
+  margin-top: 10px;
+  height: 500px;
 }
