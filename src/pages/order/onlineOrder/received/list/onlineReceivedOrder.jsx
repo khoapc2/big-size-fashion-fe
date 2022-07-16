@@ -22,7 +22,7 @@ import {
 
 import "./onlineOrder.css";
 
-import { listOrder } from "../../../redux/actions/orderAction";
+import { listOrder } from "../../../../../redux/actions/orderAction";
 
 // import staffApi from "../../api/staffApi";
 // import Notification from "pages/components/dialog/Notification";
@@ -46,7 +46,7 @@ export default function StaffList() {
   const [searchText, setSearchText] = useState("");
   // console.log(data);
   useEffect(() => {
-    dispatch(listOrder(true));
+    dispatch(listOrder("Received" ,true));
   }, [dispatch, page, searchText, triggerReload]);
 
   // let inputSearchHandler = (e) => {

@@ -18,16 +18,16 @@ import {
   approveOfflineOrderAction,
   cancelOfflineOrderAction,
   exportExcelAction,
-} from "../../../redux/actions/orderAction";
-import { triggerReload } from "../../../redux/actions/userAction";
-import Loading from "../../../components/Loading";
+} from "../../../../../redux/actions/orderAction";
+import { triggerReload } from "../../../../../redux/actions/userAction";
+import Loading from "../../../../../components/Loading";
 import "./viewOfflineOrder.css";
 import {
   APPROVE_OFFLINE_ORDER_SUCCESS,
   APPROVE_OFFLINE_ORDER_FAIL,
   CANCEL_OFFLINE_ORDER_SUCCESS,
   CANCEL_OFFLINE_ORDER_FAIL,
-} from "../../../service/Validations/VarConstant";
+} from "../../../../../service/Validations/VarConstant";
 
 // const createRow = (productList) => {
 //   let totalPrice = 0;

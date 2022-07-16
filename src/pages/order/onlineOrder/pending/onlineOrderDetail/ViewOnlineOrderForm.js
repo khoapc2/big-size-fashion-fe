@@ -17,19 +17,19 @@ import {
   viewDetailOfflineOrderAction,
   approveOnlineOrderAction,
   cancelOnlineOrderAction,
-} from "../../../redux/actions/orderAction";
-import { SchemaErrorMessageOnlineOrderAssign } from "../../../service/Validations/OrderAssignValidation";
+} from "../../../../../redux/actions/orderAction";
+import { SchemaErrorMessageOnlineOrderAssign } from "../../../../../service/Validations/OrderAssignValidation";
 
-import { listStaffInStoreAction } from "../../../redux/actions/staffAction";
-import { triggerReload } from "../../../redux/actions/userAction";
-import Loading from "../../../components/Loading";
+import { listStaffInStoreAction } from "../../../../../redux/actions/staffAction";
+import { triggerReload } from "../../../../../redux/actions/userAction";
+import Loading from "../../../../../components/Loading";
 import "./viewOnlineOrder.css";
 import {
   APPROVE_ONLINE_ORDER_SUCCESS,
   APPROVE_ONLINE_ORDER_FAIL,
   CANCEL_ONLINE_ORDER_SUCCESS,
   CANCEL_ONLINE_ORDER_FAIL,
-} from "../../../service/Validations/VarConstant";
+} from "../../../../../service/Validations/VarConstant";
 
 export default function OfflineOrderForm() {
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });

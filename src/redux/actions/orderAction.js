@@ -26,17 +26,18 @@ import {
   GET_ZALO_LINK_FAIL,
 } from "../../service/Validations/VarConstant";
 
-export const listOrder = (status) => async (dispatch) => {
+export const listOrder = (status, type) => async (dispatch) => {
   const params = {
-    OrderType: status,
+    OrderStatus: status,
+    OrderType: type,
   };
-  if (status) {
+  if (type) {
     dispatch({ type: ONLINE_ORDER_LIST_REQUEST });
   } else {
     dispatch({ type: OFFLINE_ORDER_LIST_REQUEST });
   }
   try {
-    if (status) {
+    if (type) {
       const data = await orderApi.getListOrder(params);
       dispatch({ type: ONLINE_ORDER_LIST_SUCCESS, payload: data.content });
       dispatch({ type: ONLINE_ORDER_LIST_FAIL, payload: "" });
