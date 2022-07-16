@@ -24,6 +24,9 @@ import {
   CANCEL_ONLINE_ORDER_FAIL,
   GET_ZALO_LINK_SUCCESS,
   GET_ZALO_LINK_FAIL,
+  REJECT_ONLINE_ORDER_REQUEST,
+  REJECT_ONLINE_ORDER_FAIL,
+  REJECT_ONLINE_ORDER_SUCCESS,
 } from "../../service/Validations/VarConstant";
 
 export const listOrder = (status, type) => async (dispatch) => {
@@ -169,12 +172,31 @@ export const cancelOnlineOrderAction = (id) => async (dispatch) => {
   });
   try {
     if (id) {
-      const data = await orderApi.rejectOrder(id);
+      const data = await orderApi.cancelOnlineOrder(id);
       dispatch({ type: CANCEL_ONLINE_ORDER_SUCCESS, payload: data });
     }
   } catch (error) {
     dispatch({
       type: CANCEL_ONLINE_ORDER_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const rejectOnlineOrderAction = (id) => async (dispatch) => {
+  dispatch({
+    type: REJECT_ONLINE_ORDER_REQUEST,
+    payload: { id },
+  });
+  try {
+    if (id) {
+      const data = await orderApi.rejectOrder(id);
+      dispatch({ type: REJECT_ONLINE_ORDER_SUCCESS, payload: data });
+    }
+  } catch (error) {
+    dispatch({
+      type: REJECT_ONLINE_ORDER_FAIL,
       payload:
         error.response && error.response.data.message ? error.response.data.message : error.message,
     });

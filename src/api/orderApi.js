@@ -7,6 +7,7 @@ const ONLINE_URL = "online-approve/";
 const ASSIGN_ORDER = "assign-order";
 const REJECT_URL = "reject/";
 const EXPORT_ORDER = "export-bill/";
+const CANCEL_URL = "cancel/";
 
 const orderApi = {
   getListOrder: (params) => {
@@ -31,6 +32,11 @@ const orderApi = {
 
   approveOnlineOrder: (params) => {
     const url = `${URL_ENTITY}/${ONLINE_URL}${params}`;
+    return axios.put(url);
+  },
+
+  cancelOnlineOrder: (params) => {
+    const url = `${URL_ENTITY}/${CANCEL_URL}${params}`;
     return axios.put(url);
   },
 

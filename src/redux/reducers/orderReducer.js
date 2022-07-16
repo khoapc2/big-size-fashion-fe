@@ -20,6 +20,9 @@ import {
   CANCEL_ONLINE_ORDER_REQUEST,
   CANCEL_ONLINE_ORDER_SUCCESS,
   CANCEL_ONLINE_ORDER_FAIL,
+  REJECT_ONLINE_ORDER_REQUEST,
+  REJECT_ONLINE_ORDER_FAIL,
+  REJECT_ONLINE_ORDER_SUCCESS,
 } from "../../service/Validations/VarConstant";
 
 const calculateTotalPrice = ({ product_list }) => {
@@ -163,6 +166,19 @@ export const approveOnlineOrderReducer = (state = { loading: true }, action) => 
 };
 
 export const rejectOnlineOrderReducer = (state = { loading: true }, action) => {
+  switch (action.type) {
+    case REJECT_ONLINE_ORDER_REQUEST:
+      return { ...state, loading: true };
+    case REJECT_ONLINE_ORDER_SUCCESS:
+      return { ...state, loading: false, success: action.payload };
+    case REJECT_ONLINE_ORDER_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const cancelOnlineOrderReducer = (state = { loading: true }, action) => {
   switch (action.type) {
     case CANCEL_ONLINE_ORDER_REQUEST:
       return { ...state, loading: true };
