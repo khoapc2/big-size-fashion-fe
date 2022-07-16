@@ -5,24 +5,24 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import { Form, Label } from "semantic-ui-react";
 import { toast } from "react-toastify";
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import ClearIcon from "@mui/icons-material/Clear";
 
 import {
-  CREATE_IMPORT_PRODUCT_LIST_FAIL,
-  CREATE_IMPORT_PRODUCT_LIST_SUCCESS,
+  QUANTITY_ADJUSTMENT_INVENTORY_SUCCESS,
+  QUANTITY_ADJUSTMENT_INVENTORY_FAIL,
+  GET_INVENTORY_PRODUCT_LIST_FAIL,
+  GET_INVENTORY_PRODUCT_LIST_SUCCESS,
 } from "../../service/Validations/VarConstant";
 import { DataGrid } from "@mui/x-data-grid";
 import { Formik } from "formik";
 import { getProductToImportAction } from "../../redux/actions/productAction";
-import { getInventoryAction } from "../../redux/actions/inventoryAction";
+import { getInventoryAction, quantityAdjusmentAction } from "../../redux/actions/inventoryAction";
 import { SchemaErrorMessageCheckInventory } from "../../service/Validations/InventoryValidation";
-import { triggerReload } from "../../redux/actions/userAction";
 import Loading from "../../components/Loading";
-import { GET_INVENTORY_PRODUCT_LIST_SUCCESS } from "../../service/Validations/VarConstant";
 let idCounter = 0;
 const createRow = ({ product_id, product_name, real_quantity }) => {
   idCounter += 1;
@@ -50,32 +50,49 @@ export default function CreateImportDeliver() {
 
   const dispatch = useDispatch();
   const listImportPro = useSelector((state) => state.listImportProduct);
-  const response = useSelector((state) => state.createImportDeliver);
-  const { data, loading, list_products } = useSelector((state) => state.listInventoryProduct);
+  const response = useSelector((state) => state.quantityAjustment);
+  let { data, loading, list_products, error } = useSelector((state) => state.listInventoryProduct);
 
   // const { list_products } = data;
 
-  console.log(data);
-  console.log(loading);
-  console.log(list_products);
+  // console.log(data);
+  // console.log(loading);
+  // console.log(list_products);
 
-  const { success, error } = response;
+  // const { success, error } = response;
 
   useEffect(() => {
     dispatch(getProductToImportAction());
     dispatch({ type: GET_INVENTORY_PRODUCT_LIST_SUCCESS, payload: "" });
-  }, [dispatch, triggerReload]);
+  }, [dispatch]);
 
   useEffect(() => {
-    if (success) {
+    if (
+      typeof error === "string" &&
+      error.includes("An item with the same key has already been added")
+    ) {
+      toast.error("Kiểm kê kho thất bại, vui lòng không chọn trùng sản phẩm");
+      dispatch({ type: GET_INVENTORY_PRODUCT_LIST_FAIL, payload: false });
+    } else if (error) {
+      toast.error("Kiểm kê kho thất bại, vui lòng thử lại");
+      dispatch({ type: GET_INVENTORY_PRODUCT_LIST_FAIL, payload: false });
+    }
+  }, [dispatch, error]);
+
+  useEffect(() => {
+    if (response.success) {
       toast.success("Điều chỉnh số lượng trong kho thành công");
-      dispatch({ type: CREATE_IMPORT_PRODUCT_LIST_SUCCESS, payload: false });
+      dispatch({ type: QUANTITY_ADJUSTMENT_INVENTORY_SUCCESS, payload: false });
+      if (apiRef.current) {
+        const data = apiRef.current.getRowModels();
+        dispatch(getInventoryAction(data, fromDate, toDate));
+      }
     }
-    if (error) {
+    if (response.error) {
       toast.error("Điều chỉnh số lượng trong kho thất bại, vui lòng thử lại");
-      dispatch({ type: CREATE_IMPORT_PRODUCT_LIST_FAIL, payload: false });
+      dispatch({ type: QUANTITY_ADJUSTMENT_INVENTORY_FAIL, payload: false });
     }
-  }, [success, error, triggerReload, dispatch]);
+  }, [response.success, response.error, dispatch]);
 
   //
 
@@ -85,8 +102,8 @@ export default function CreateImportDeliver() {
     // dispatch(createAccount(data));
     setFromdate(formatDate(data.from_date));
     setTodate(formatDate(data.to_date));
-    console.log(fromDate);
-    console.log(toDate);
+    // console.log(fromDate);
+    // console.log(toDate);
 
     setRows((prevRows) => [...prevRows, createRow(data)]);
   };
@@ -94,17 +111,23 @@ export default function CreateImportDeliver() {
   const handleClickButton = () => {
     if (apiRef.current) {
       const data = apiRef.current.getRowModels();
-      console.log(data);
-      console.log(fromDate);
-      console.log(toDate);
-      dispatch(getInventoryAction(data, fromDate, toDate));
+      if (data.size > 0) {
+        dispatch(getInventoryAction(data, fromDate, toDate));
+      } else {
+        toast.error("Vui lòng chọn sản phẩm để kiểm kê số lượng");
+      }
     } else {
       toast.error("Vui lòng chọn sản phẩm để kiểm kê số lượng");
     }
   };
 
-  const handleAddRow = () => {
-    setRows((prevRows) => [...prevRows, createRow()]);
+  const handleClickAdjusment = () => {
+    if (apiRef.current) {
+      const data = apiRef.current.getRowModels();
+      dispatch(quantityAdjusmentAction(data));
+    } else {
+      toast.error("Cập nhật số lượng sản phẩm thất bại, vui lòng thử lại sau");
+    }
   };
 
   function NoRowsOverlay() {
@@ -114,6 +137,16 @@ export default function CreateImportDeliver() {
       </Stack>
     );
   }
+
+  const handleReset = () => {
+    apiRef.current = null;
+    if (data) {
+      dispatch({ type: GET_INVENTORY_PRODUCT_LIST_SUCCESS, payload: "" });
+    }
+    if (rows) {
+      setRows([]);
+    }
+  };
 
   const columns = [
     {
@@ -126,14 +159,6 @@ export default function CreateImportDeliver() {
       type: "singleSelect",
     },
     {
-      field: "real_quantity",
-      headerName: "Số lượng",
-      flex: 0.5,
-      disableClickEventBubbling: true,
-      sortable: false,
-      disableColumnMenu: true,
-    },
-    {
       field: "beginning_quantity",
       headerName: "Số lượng đầu kì",
       flex: 0.5,
@@ -144,6 +169,14 @@ export default function CreateImportDeliver() {
     {
       field: "ending_quantity_in_system",
       headerName: "Số lượng cuối kì",
+      flex: 0.5,
+      disableClickEventBubbling: true,
+      sortable: false,
+      disableColumnMenu: true,
+    },
+    {
+      field: "real_quantity",
+      headerName: "Số lượng Thực Tế",
       flex: 0.5,
       disableClickEventBubbling: true,
       sortable: false,
@@ -175,7 +208,7 @@ export default function CreateImportDeliver() {
       sortable: false,
       renderCell: (params) => (
         <div>
-          {list_products.length > 0 ? (
+          {list_products && list_products.length > 0 ? (
             ""
           ) : (
             <button
@@ -200,38 +233,9 @@ export default function CreateImportDeliver() {
   ];
 
   const renderTable = () => {
-    switch (data.length) {
-      case 0:
-        return (
-          <DataGrid
-            sx={{
-              "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {
-                outline: "none",
-              },
-              "& .MuiDataGrid-cell:hover": {
-                color: "green",
-              },
-            }}
-            // loading={loading}
-            getRowId={(r) => r.id}
-            rows={rows}
-            disableSelectionOnClick
-            columns={columns}
-            pageSize={8}
-            data={(query) =>
-              new Promise(() => {
-                console.log(query);
-              })
-            }
-            components={{
-              NoRowsOverlay,
-            }}
-          />
-        );
-      default:
-        if (loading) {
-          return <Loading />;
-        } else {
+    if (data) {
+      switch (data.length) {
+        case 0:
           return (
             <DataGrid
               sx={{
@@ -242,9 +246,9 @@ export default function CreateImportDeliver() {
                   color: "green",
                 },
               }}
-              loading={loading}
+              // loading={loading}
               getRowId={(r) => r.id}
-              rows={list_products}
+              rows={rows}
               disableSelectionOnClick
               columns={columns}
               pageSize={8}
@@ -253,9 +257,73 @@ export default function CreateImportDeliver() {
                   console.log(query);
                 })
               }
+              autoHeight
+              components={{
+                NoRowsOverlay,
+              }}
             />
           );
-        }
+        default:
+          if (loading) {
+            return <Loading />;
+          } else {
+            return (
+              <DataGrid
+                sx={{
+                  "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {
+                    outline: "none",
+                  },
+                  "& .MuiDataGrid-cell:hover": {
+                    color: "green",
+                  },
+                }}
+                autoHeight
+                loading={loading}
+                getRowId={(r) => r.id}
+                rows={list_products}
+                disableSelectionOnClick
+                columns={columns}
+                pageSize={8}
+                data={(query) =>
+                  new Promise(() => {
+                    console.log(query);
+                  })
+                }
+                components={{
+                  NoRowsOverlay,
+                }}
+              />
+            );
+          }
+      }
+    } else {
+      return (
+        <DataGrid
+          sx={{
+            "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {
+              outline: "none",
+            },
+            "& .MuiDataGrid-cell:hover": {
+              color: "green",
+            },
+          }}
+          // loading={loading}
+          getRowId={(r) => r.id}
+          rows={rows}
+          disableSelectionOnClick
+          columns={columns}
+          pageSize={8}
+          data={(query) =>
+            new Promise(() => {
+              console.log(query);
+            })
+          }
+          autoHeight
+          components={{
+            NoRowsOverlay,
+          }}
+        />
+      );
     }
   };
 
@@ -274,15 +342,17 @@ export default function CreateImportDeliver() {
                   from_date: "",
                   to_date: "",
                 }}
+                onReset={handleReset}
                 onSubmit={onSubmit}
                 validationSchema={SchemaErrorMessageCheckInventory}
                 validateOnBlur
                 validateOnChange
+                handleReset
               >
                 {(formik) => {
                   console.log(formik);
                   return (
-                    <Form onSubmit={formik.handleSubmit}>
+                    <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
                       <Form.Group className="top-add-product" widths="equal">
                         <Form.Input
                           name="from_date"
@@ -293,6 +363,7 @@ export default function CreateImportDeliver() {
                           onChange={formik.handleChange}
                           value={formik.values.from_date}
                           error={formik.errors.from_date}
+                          disabled={data ? true : false}
                         />
                         <Form.Input
                           name="to_date"
@@ -303,6 +374,7 @@ export default function CreateImportDeliver() {
                           onChange={formik.handleChange}
                           value={formik.values.to_date}
                           error={formik.errors.to_date}
+                          disabled={data ? true : false}
                         />
                       </Form.Group>
                       <Form.Group className="top-add-product" widths="equal">
@@ -320,6 +392,7 @@ export default function CreateImportDeliver() {
                           value={formik.values.product_name}
                           error={formik.errors.product_name}
                           text={formik.values.product_name}
+                          disabled={data ? true : false}
                         />
                         <Form.Input
                           fluid
@@ -330,9 +403,28 @@ export default function CreateImportDeliver() {
                           onChange={formik.handleChange}
                           value={formik.values.real_quantity}
                           error={formik.errors.real_quantity}
+                          disabled={data ? true : false}
                         />
-                        <Form.Button className="button-add-product" type="submit" color="green">
-                          Chọn
+                        {data ? (
+                          ""
+                        ) : (
+                          <Form.Button
+                            label="."
+                            className="choose-button-add-product"
+                            type="submit"
+                            color="green"
+                          >
+                            Chọn
+                          </Form.Button>
+                        )}
+                        <Form.Button
+                          label="."
+                          className="button-add-product"
+                          type="reset"
+                          color="blue"
+                          // onClick={}
+                        >
+                          Reset
                         </Form.Button>
                       </Form.Group>
                     </Form>
@@ -346,9 +438,6 @@ export default function CreateImportDeliver() {
                   {/* <Button size="small" onClick={handleDeleteRow}>
                             Delete a row
                           </Button> */}
-                  <Button size="small" onClick={handleAddRow}>
-                    Thêm mới hàng
-                  </Button>
                 </Stack>
                 {/* <Box sx={{ height: 400, mt: 1 }}>
                           <DataGrid rows={rows} columns={columns} />
@@ -379,8 +468,8 @@ export default function CreateImportDeliver() {
             </div>
           </div>
           <div className="accountBottom">
-            {list_products.length > 0 ? (
-              <Form.Button type="submit" color="yellow" onClick={handleClickButton}>
+            {list_products && list_products.length > 0 ? (
+              <Form.Button type="submit" color="yellow" onClick={handleClickAdjusment}>
                 Điều chỉnh
               </Form.Button>
             ) : (
