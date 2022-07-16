@@ -4,10 +4,10 @@ import { TabList, TabContext, TabPanel } from "@mui/lab";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 // import { Link } from "react-router-dom";
-import OnlineOrder from "pages/order/onlineOrder/onlineOrder";
-import OfflineOrder from "pages/order/offlineOrder/offlineOrder";
-import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import OnlineOrderTab from "pages/order/onlineOrder/onlineOrderTab";
+import OfflineOrderTab from "pages/order/offlineOrder/offlineOrderTab";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 
 export default function Layout() {
   const [selectedTab, setSelectedTab] = React.useState("1");
@@ -22,15 +22,15 @@ export default function Layout() {
       <TabContext value={selectedTab}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example" textColor="secondary">
-            <Tab icon={<ManageAccountsIcon />} label="Đơn hàng offline" value="1" />
-            <Tab icon={<AccessibilityNewIcon />} label="Đơn hàng online" value="2" />
+            <Tab icon={<AddBusinessIcon />} label="Đơn hàng offline" value="1" />
+            <Tab icon={<ShoppingCartIcon />} label="Đơn hàng online" value="2" />
           </TabList>
         </Box>
         <TabPanel value="1">
-          <OfflineOrder />
+          <OfflineOrderTab />
         </TabPanel>
         <TabPanel value="2">
-          <OnlineOrder />
+          <OnlineOrderTab />
         </TabPanel>
       </TabContext>
     </DashboardLayout>

@@ -20,11 +20,12 @@ import {
   GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
 
-import "./offlineOrder.css";
+import "./onlineOrder.css";
 
-import { listOrder } from "../../../redux/actions/orderAction";
+import { listOrder } from "../../../../../redux/actions/orderAction";
 
 // import staffApi from "../../api/staffApi";
+// import Notification from "pages/components/dialog/Notification";
 // import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
 
 const styleLink = document.createElement("link");
@@ -33,11 +34,11 @@ styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css
 document.head.appendChild(styleLink);
 
 export default function StaffList() {
-  // const [notify, setNotify] = useState({ isOpen: false, message: "", type: "" });
-  // const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
-  // // const [paging, setPaging] = useState({});
+  const [notify, setNotify] = useState({ isOpen: false, message: "", type: "" });
+  const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
+  // const [paging, setPaging] = useState({});
   //Test
-  const { data, error, loading } = useSelector((state) => state.viewOfflineOrder);
+  const { data, error, loading } = useSelector((state) => state.viewOnlineOrder);
   const [page, setPage] = useState(1);
   const triggerReload = useSelector((state) => state.triggerReload);
   // const [keySearch, setKeySearch] = useState("");
@@ -45,7 +46,7 @@ export default function StaffList() {
   const [searchText, setSearchText] = useState("");
   // console.log(data);
   useEffect(() => {
-    dispatch(listOrder(false));
+    dispatch(listOrder("Delivery" ,true));
   }, [dispatch, page, searchText, triggerReload]);
 
   // let inputSearchHandler = (e) => {
@@ -100,9 +101,7 @@ export default function StaffList() {
       headerName: "Tổng giá trị (VNĐ)",
       width: 150,
       renderCell: (params) => (
-        <div className="offlineOrderItem">{`${params.row.total_price.toLocaleString(
-          "vi-VN"
-        )}`}</div>
+        <div className="onlineOrderItem">{`${params.row.total_price.toLocaleString("vi-VN")}`}</div>
       ),
     },
     {
@@ -130,18 +129,33 @@ export default function StaffList() {
       width: 250,
       renderCell: (params) => (
         <>
-          <Link to={`/offline-order-detail/${params.row.order_id}`}>
-            <button type="submit" className="offlineOrderEdit">
+          <Link to={`/online-order-detail/${params.row.order_id}`}>
+            <button type="submit" className="onlineOrderEdit">
               Xem chi tiết
             </button>
           </Link>
+          {/* <Button
+            className="onlineOrderDelete"
+            onClick={() =>
+              setConfirmDialog({
+                isOpen: true,
+                title: "Are you sure to delete this record?",
+                subTitle: "Delete",
+                onConfirm: () => {
+                  handleDelete(params.row.id);
+                },
+              })
+            }
+            color="red"
+            icon="trash alternate"
+          /> */}
         </>
       ),
     },
   ];
 
   return (
-    <div className="offlineOrderTab">
+    <div className="onlineOrderTab">
       {/* <FormControl sx={{ m: 1, width: "35ch" }} variant="outlined">
         <InputLabel htmlFor="outlined-adornment">Tìm kiếm nhân viên</InputLabel>
         <OutlinedInput
@@ -163,7 +177,7 @@ export default function StaffList() {
         />
       </FormControl> */}
 
-      <div className="offlineOrder">
+      <div className="onlineOrder">
         <DataGrid
           sx={{
             "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {

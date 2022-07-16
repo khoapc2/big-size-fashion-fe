@@ -17,19 +17,22 @@ import {
   viewDetailOfflineOrderAction,
   approveOnlineOrderAction,
   cancelOnlineOrderAction,
-} from "../../../redux/actions/orderAction";
-import { SchemaErrorMessageOnlineOrderAssign } from "../../../service/Validations/OrderAssignValidation";
+  rejectOnlineOrderAction,
+} from "../../../../../redux/actions/orderAction";
+import { SchemaErrorMessageOnlineOrderAssign } from "../../../../../service/Validations/OrderAssignValidation";
 
-import { listStaffInStoreAction } from "../../../redux/actions/staffAction";
-import { triggerReload } from "../../../redux/actions/userAction";
-import Loading from "../../../components/Loading";
+import { listStaffInStoreAction } from "../../../../../redux/actions/staffAction";
+import { triggerReload } from "../../../../../redux/actions/userAction";
+import Loading from "../../../../../components/Loading";
 import "./viewOnlineOrder.css";
 import {
   APPROVE_ONLINE_ORDER_SUCCESS,
   APPROVE_ONLINE_ORDER_FAIL,
   CANCEL_ONLINE_ORDER_SUCCESS,
   CANCEL_ONLINE_ORDER_FAIL,
-} from "../../../service/Validations/VarConstant";
+  REJECT_ONLINE_ORDER_FAIL,
+  REJECT_ONLINE_ORDER_SUCCESS,
+} from "../../../../../service/Validations/VarConstant";
 
 export default function OfflineOrderForm() {
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
@@ -39,6 +42,7 @@ export default function OfflineOrderForm() {
   const { data, loading, totalProduct } = useSelector((state) => state.viewDetailOfflineOrder);
   const approveOnOrder = useSelector((state) => state.approveOnlineOrder);
   const rejectOnOrder = useSelector((state) => state.rejectOnlineOrder);
+  const cancelOnOrder = useSelector((state) => state.cancelOnlineOrder);
   const staffDropdown = useSelector((state) => state.getListStaffDropDown);
   const { product_list, store, order_id, create_date, status } = data;
 
@@ -63,18 +67,37 @@ export default function OfflineOrderForm() {
 
   useEffect(() => {
     if (rejectOnOrder.success) {
-      toast.success("Thao tác thành công");
-      dispatch({ type: CANCEL_ONLINE_ORDER_SUCCESS, payload: false });
+      toast.success("Từ chối đơn hàng thành công");
+      dispatch({ type: REJECT_ONLINE_ORDER_SUCCESS, payload: false });
     }
     if (rejectOnOrder.error) {
-      toast.error("Thao tác thất bại, vui lòng thử lại");
-      dispatch({ type: CANCEL_ONLINE_ORDER_FAIL, payload: false });
+      toast.error("Từ chối đơn hàng thất bại, vui lòng thử lại");
+      dispatch({ type: REJECT_ONLINE_ORDER_FAIL, payload: false });
     }
   }, [triggerReload, rejectOnOrder.success, rejectOnOrder.error]);
+
+  useEffect(() => {
+    if (cancelOnOrder.success) {
+      toast.success("Hủy thành công, đơn hàng quay lại chờ xác nhận");
+      dispatch({ type: CANCEL_ONLINE_ORDER_SUCCESS, payload: false });
+    }
+    if (cancelOnOrder.error) {
+      toast.error("Từ chối đơn hàng thất bại, vui lòng thử lại");
+      dispatch({ type: CANCEL_ONLINE_ORDER_FAIL, payload: false });
+    }
+  }, [triggerReload, cancelOnOrder.success, cancelOnOrder.error]);
 
   const onSubmit = (result) => {
     // console.log(result);
     dispatch(approveOnlineOrderAction(order_id, result));
+  };
+
+  const handleReject = (id) => {
+    dispatch(rejectOnlineOrderAction(id));
+    setConfirmDialog({
+      ...confirmDialog,
+      isOpen: false,
+    });
   };
 
   const handleCancel = (id) => {
@@ -211,8 +234,31 @@ export default function OfflineOrderForm() {
                           onClick={() =>
                             setConfirmDialog({
                               isOpen: true,
-                              title: "Bạn có muốn hủy đơn hàng này?",
+                              title: "Bạn có muốn từ chối đơn hàng này?",
                               subTitle: "Xác nhận",
+                              onConfirm: () => {
+                                handleReject(order_id);
+                              },
+                            })
+                          }
+                        >
+                          Từ chối
+                        </Button>
+                      </Stack>
+                    ) : (
+                      <div />
+                    )}
+                    {status === "Đã xác nhận" || status === "Đã đóng gói" ? (
+                      <Stack className="bottom-button" direction="row" spacing={2}>
+                        <Button
+                          className="deny"
+                          variant="outlined"
+                          disabled={formik.isSubmitting}
+                          onClick={() =>
+                            setConfirmDialog({
+                              isOpen: true,
+                              title: "Bạn có muốn hủy đơn hàng này?",
+                              subTitle: "Đơn hàng quay lại chờ xác nhận",
                               onConfirm: () => {
                                 handleCancel(order_id);
                               },

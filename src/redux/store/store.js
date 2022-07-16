@@ -56,6 +56,7 @@ import {
   approveOnlineOrderReducer,
   rejectOfflineOrderReducer,
   rejectOnlineOrderReducer,
+  cancelOnlineOrderReducer,
 } from "redux/reducers/orderReducer";
 import {
   listCustomerReducer,
@@ -137,6 +138,7 @@ const reducer = combineReducers({
   getZaloLink: zaloLinkReducer,
   listInventoryProduct: getStorewarehouseReducer,
   quantityAjustment: quantityAjustmentReducer,
+  cancelOnlineOrder: cancelOnlineOrderReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
