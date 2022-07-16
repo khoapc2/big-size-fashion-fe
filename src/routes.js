@@ -32,6 +32,7 @@ import Categories from "pages/category/list/categoryList";
 import Users from "pages/user/userTab";
 import DeliveryNote from "pages/deliveryNote/deliveryTab";
 import Order from "pages/order/orderTab";
+import WarehouseInventory from "pages/warehouseInventory/storeInventory";
 // import RTL from "layouts/rtl";
 import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
@@ -291,14 +292,14 @@ export const routesManager = [
     route: "/order",
     component: <Order />,
   },
-  // {
-  //   type: "collapse",
-  //   name: "Khuyến mại",
-  //   key: "promotion",
-  //   icon: <Icon fontSize="small">table_view</Icon>,
-  //   route: "/promotions",
-  //   component: <Promotions />,
-  // },
+  {
+    type: "collapse",
+    name: "Kiểm kê",
+    key: "warehouse-inventory",
+    icon: <Icon fontSize="small">import_export</Icon>,
+    route: "/inventory",
+    component: <WarehouseInventory />,
+  },
   {
     type: "collapse",
     name: "Profile",
