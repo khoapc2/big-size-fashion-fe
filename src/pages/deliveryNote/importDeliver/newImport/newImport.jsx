@@ -5,10 +5,11 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import { Form, Label } from "semantic-ui-react";
 import { toast } from "react-toastify";
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import ClearIcon from "@mui/icons-material/Clear";
 import {
   CREATE_IMPORT_PRODUCT_LIST_FAIL,
   CREATE_IMPORT_PRODUCT_LIST_SUCCESS,
@@ -26,105 +27,14 @@ const createRow = ({ product_id, product_name, quantity }) => {
   return { id: idCounter, product_name: product_name, quantity: quantity, product_id: product_id };
 };
 
-const columns = [
-  {
-    field: "product_name",
-    headerName: "Sản phẩm",
-    flex: 1.0,
-    disableClickEventBubbling: true,
-    sortable: false,
-    disableColumnMenu: true,
-    type: "singleSelect",
-
-    // renderCell: (params) => (
-    //   <Dropdown
-    //     search
-    //     selection
-    //     options={}
-    //     // fluid
-    //     // placeholder="Giá"
-    //     // type="number"
-    //     // name="price"
-    //     // widths={50}
-    //     // width="2000px"
-    //     // onChange={formik.handleChange}
-    //     // value={formik.values.price}
-    //     // error={formik.errors.price}
-    //   />
-    // ),
-  },
-  {
-    field: "quantity",
-    headerName: "Số lượng",
-    flex: 1.0,
-    disableClickEventBubbling: true,
-    sortable: false,
-    disableColumnMenu: true,
-  },
-  // {
-  //   field: "action",
-  //   headerName: "Thao tác",
-  //   flex: 0.2,
-  //   disableClickEventBubbling: true,
-  //   disableColumnMenu: true,
-  //   sortable: false,
-  //   renderCell: (params) => (
-  //     <button
-  //       onClick={() => {
-  //         console.log(params);
-  //         console.log("ahihi");
-  //         // setRows(rows.filter((e) => e.id !== params.row.id));
-  //       }}
-  //     >
-  //       <ClearIcon />
-  //     </button>
-  //   ),
-  // },
-];
-
-function useApiRef() {
-  const apiRef = useRef(null);
-  const _columns = useMemo(
-    () =>
-      columns.concat(
-        // field: "__HIDDEN__",
-        // {
-        //   field: "action",
-        //   headerName: "Thao tác",
-        //   flex: 0.2,
-        //   disableClickEventBubbling: true,
-        //   disableColumnMenu: true,
-        //   sortable: false,
-        //   renderCell: (params) => (
-        //     <button
-        //       onClick={() => {
-        //         console.log(params);
-        //         // setRows(rows.filter((e) => e.id !== params.row.id));
-        //       }}
-        //     >
-        //       <ClearIcon />
-        //     </button>
-        //   ),
-        // },
-        {
-          field: "",
-          width: 0,
-          renderCell: (params) => {
-            apiRef.current = params.api;
-            return null;
-          },
-        }
-      ),
-    [columns]
-  );
-  return { apiRef, columns: _columns };
-}
-
 export default function CreateImportDeliver() {
   const [rows, setRows] = useState([]);
+  const [submit, setSubmit] = useState(false);
   const [deliveryName, setDeliverName] = useState("");
+  const apiRef = useRef(null);
+
   // console.log(rows);
-  const { apiRef, columns } = useApiRef();
+  // const { apiRef, columns } = useApiRef();
 
   const dispatch = useDispatch();
   const listImportPro = useSelector((state) => state.listImportProduct);
@@ -140,6 +50,7 @@ export default function CreateImportDeliver() {
   useEffect(() => {
     if (success) {
       toast.success("Tạo đơn nhập hàng thành công");
+      setSubmit(true);
       dispatch({ type: CREATE_IMPORT_PRODUCT_LIST_SUCCESS, payload: false });
     }
     if (error) {
@@ -158,16 +69,81 @@ export default function CreateImportDeliver() {
     setRows((prevRows) => [...prevRows, createRow(data)]);
   };
 
-  const handleClickButton = () => {
-    // console.log(apiRef);
+  const handleReset = () => {
+    setSubmit(false);
+    setRows([]);
+  };
 
-    const data = apiRef.current.getRowModels();
-    dispatch(deliveryImportToMainWareHouseAction(data, deliveryName));
+  const handleClickButton = () => {
+    if (apiRef.current) {
+      const data = apiRef.current.getRowModels();
+      if (data.size > 0) {
+        dispatch(deliveryImportToMainWareHouseAction(data, deliveryName));
+      } else {
+        toast.error("Bạn chưa thêm sản phẩm nào đơn nhập hàng, Vui lòng thử lại");
+      }
+    } else {
+      toast.error("Bạn chưa thêm sản phẩm nào đơn nhập hàng, Vui lòng thử lại");
+    }
   };
 
   const handleAddRow = () => {
     setRows((prevRows) => [...prevRows, createRow()]);
   };
+
+  function NoRowsOverlay() {
+    return (
+      <Stack height="100%" alignItems="center" justifyContent="center">
+        Chưa có sản phẩm nào
+      </Stack>
+    );
+  }
+
+  const columns = [
+    {
+      field: "product_name",
+      headerName: "Sản phẩm",
+      flex: 1.0,
+      disableClickEventBubbling: true,
+      sortable: false,
+      disableColumnMenu: true,
+      type: "singleSelect",
+    },
+    {
+      field: "quantity",
+      headerName: "Số lượng",
+      flex: 1.0,
+      disableClickEventBubbling: true,
+      sortable: false,
+      disableColumnMenu: true,
+    },
+    {
+      field: "action",
+      headerName: "Thao tác",
+      flex: 0.2,
+      disableClickEventBubbling: true,
+      disableColumnMenu: true,
+      sortable: false,
+      renderCell: (params) => (
+        <button
+          onClick={() => {
+            setRows(rows.filter((e) => e.id !== params.row.id));
+          }}
+        >
+          <ClearIcon />
+        </button>
+      ),
+    },
+    {
+      field: "",
+      width: 0,
+      renderCell: (params) => {
+        apiRef.current = params.api;
+        return null;
+      },
+    },
+  ];
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -187,11 +163,12 @@ export default function CreateImportDeliver() {
                 validationSchema={SchemaErrorMessageImportInvoice}
                 validateOnBlur
                 validateOnChange
+                onReset={handleReset}
               >
                 {(formik) => {
                   console.log(formik);
                   return (
-                    <Form onSubmit={formik.handleSubmit}>
+                    <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
                       <Form.Group className="top-add-product" widths="equal">
                         <Form.Input
                           label="Tên đơn đặt hàng"
@@ -201,6 +178,7 @@ export default function CreateImportDeliver() {
                           onChange={formik.handleChange}
                           value={formik.values.delivery_note_name}
                           error={formik.errors.delivery_note_name}
+                          disabled={submit}
                         />
                       </Form.Group>
                       <Form.Group className="top-add-product" widths="equal">
@@ -219,6 +197,7 @@ export default function CreateImportDeliver() {
                           value={formik.values.product_name}
                           error={formik.errors.product_name}
                           text={formik.values.product_name}
+                          disabled={submit}
                         />
                         <Form.Input
                           fluid
@@ -229,10 +208,28 @@ export default function CreateImportDeliver() {
                           onChange={formik.handleChange}
                           value={formik.values.quantity}
                           error={formik.errors.quantity}
+                          disabled={submit}
                         />
-                        <Form.Button className="button-add-product" type="submit" color="green">
-                          Thêm sản phẩm vào đơn nhập hàng
-                        </Form.Button>
+
+                        {submit ? (
+                          <Form.Button
+                            label="."
+                            className="button-add-product"
+                            type="reset"
+                            color="blue"
+                          >
+                            Tạo thêm đơn nhập hàng
+                          </Form.Button>
+                        ) : (
+                          <Form.Button
+                            label="."
+                            className="button-add-product"
+                            type="submit"
+                            color="green"
+                          >
+                            Thêm sản phẩm vào đơn nhập hàng
+                          </Form.Button>
+                        )}
                       </Form.Group>
                     </Form>
                   );
@@ -272,12 +269,16 @@ export default function CreateImportDeliver() {
                       console.log(query);
                     })
                   }
+                  autoHeight
+                  components={{
+                    NoRowsOverlay,
+                  }}
                 />
               </Box>
             </div>
           </div>
           <div className="accountBottom">
-            <Form.Button type="submit" color="green" onClick={handleClickButton}>
+            <Form.Button type="submit" color="green" onClick={handleClickButton} disabled={submit}>
               Xác nhận
             </Form.Button>
           </div>

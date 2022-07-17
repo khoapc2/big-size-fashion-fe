@@ -79,6 +79,7 @@ export const deliveryImportToMainWareHouseAction = (para, deliveryName) => async
     const data = await deliveryApi.createDeliveryNote(paramsForApiImport);
     dispatch({ type: CREATE_IMPORT_PRODUCT_LIST_SUCCESS, payload: data.content });
   } catch (error) {
+    console.log(error);
     dispatch({
       type: CREATE_IMPORT_PRODUCT_LIST_FAIL,
       payload:
