@@ -70,11 +70,11 @@ export const listProduct = (keySearch, page) => async (dispatch) => {
       console.log(param);
       const data = await productApi.getListProduct(param);
       console.log(data);
-      dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
+      dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data.content });
       dispatch({ type: PRODUCT_LIST_FAIL, payload: "" });
     } else {
       const data = await productApi.getSearchListProduct(searchParams);
-      dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
+      dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data.content });
       dispatch({ type: PRODUCT_LIST_FAIL, payload: "" });
     }
   } catch (error) {
