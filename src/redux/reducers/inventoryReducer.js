@@ -14,7 +14,7 @@ function formatArray(payload) {
     result = list_products.map((obj, index) => ({
       ...obj,
       product_name: `${obj.product_name} - ${obj.colour_name} - ${obj.size_name}`,
-      product_id: `${obj.product_id}+${obj.colour_id}+${obj.size_id}`,
+      product_id: `${obj.colour_id}+${obj.product_id}+${obj.size_id}`,
       id: index,
     }));
   }
