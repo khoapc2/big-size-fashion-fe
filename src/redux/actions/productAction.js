@@ -18,26 +18,9 @@ import {
   IMPORT_PRODUCT_LIST_FAIL,
 } from "../../service/Validations/VarConstant";
 
-const currentUser = JSON.parse(localStorage.getItem("user"));
-const { role } = currentUser;
-const { token } = currentUser;
-const axiosConfig = {
-  headers: {
-    "Content-Type":
-      "multipart/form-data; boundary=AaB03x" +
-      "--AaB03x" +
-      "Content-Disposition: file" +
-      "Content-Type: png" +
-      "Content-Transfer-Encoding: binary" +
-      "...data... " +
-      "--AaB03x--",
-    Accept: "application/json",
-    type: "formData",
-    authorization: `Bearer ${token}`,
-  },
-};
-
 export const listProduct = (keySearch, page) => async (dispatch) => {
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+  const { role } = currentUser;
   console.log(page);
   let searchParams;
   if (role === "Admin") {
@@ -87,6 +70,23 @@ export const listProduct = (keySearch, page) => async (dispatch) => {
 };
 
 export const createProduct = (productModels, files) => async (dispatch) => {
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+  const { token } = currentUser;
+  const axiosConfig = {
+    headers: {
+      "Content-Type":
+        "multipart/form-data; boundary=AaB03x" +
+        "--AaB03x" +
+        "Content-Disposition: file" +
+        "Content-Type: png" +
+        "Content-Transfer-Encoding: binary" +
+        "...data... " +
+        "--AaB03x--",
+      Accept: "application/json",
+      type: "formData",
+      authorization: `Bearer ${token}`,
+    },
+  };
   console.log(productModels);
   dispatch({
     type: CREATE_PRODUCT_REQUEST,
