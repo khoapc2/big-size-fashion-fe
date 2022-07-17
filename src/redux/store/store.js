@@ -71,7 +71,10 @@ import {
   createImportDeliverReducer,
 } from "redux/reducers/deliverReducer";
 import { zaloLinkReducer } from "redux/reducers/zaloReducer";
-import { getStorewarehouseReducer } from "redux/reducers/inventoryReducer";
+import {
+  getStorewarehouseReducer,
+  quantityAjustmentReducer,
+} from "redux/reducers/inventoryReducer";
 
 const initialState = {
   userLogin: {
@@ -134,6 +137,7 @@ const reducer = combineReducers({
   createImportDeliver: createImportDeliverReducer,
   getZaloLink: zaloLinkReducer,
   listInventoryProduct: getStorewarehouseReducer,
+  quantityAjustment: quantityAjustmentReducer,
   cancelOnlineOrder: cancelOnlineOrderReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

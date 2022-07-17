@@ -156,10 +156,10 @@ export default function OfflineOrderForm() {
       width: 150,
       renderCell: (params) => (
         <div>
-          {params.row.discount_price ? (
+          {params.row.discount_price_per_one ? (
             <div>
-              <del>{params.row.price.toLocaleString("vi-VN")}</del>&emsp;
-              {params.row.discount_price.toLocaleString("vi-VN")}
+              <del>{params.row.price_per_one.toLocaleString("vi-VN")}</del>&emsp;
+              {params.row.discount_price_per_one.toLocaleString("vi-VN")}
             </div>
           ) : (
             <div>{params.row.price.toLocaleString("vi-VN")}</div>

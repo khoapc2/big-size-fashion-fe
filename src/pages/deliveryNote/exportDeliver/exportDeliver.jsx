@@ -184,6 +184,7 @@ export default function StaffList() {
               console.log(query);
             })
           }
+          autoHeight
           // onRowClick={(param) => (
           //   <>
           //     <Link to={`/staff/:${param.row.uid}`}></Link>

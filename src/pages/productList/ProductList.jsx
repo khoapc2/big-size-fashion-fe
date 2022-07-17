@@ -28,7 +28,6 @@ import { listProduct } from "../../redux/actions/productAction";
 
 // import productApi from "../../api/productApi";
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
-import ExportToExcel from "pages/helper/exportData";
 import Product from "pages/product/Product";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
@@ -253,9 +252,7 @@ export default function ProductList() {
           }}
         />
       </div>
-      <div className="exportToExcel" style={{ margin: 5 }}>
-        <ExportToExcel apiData={data} fileName={"product"} />
-      </div>
+
       <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />
     </DashboardLayout>
   );

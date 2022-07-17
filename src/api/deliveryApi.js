@@ -4,6 +4,7 @@ const URL_ENTITY = "/v1/delivery-notes";
 
 const IMPORT_LIST = "/import-list";
 const EXPORT_LIST = "/export-list";
+const ADMIN_EXPORT_LIST = "/export-list-for-main-warehouse";
 
 const deliverApi = {
   getImportList: () => {
@@ -13,6 +14,11 @@ const deliverApi = {
   },
   getExportList: () => {
     const url = `${URL_ENTITY.concat(EXPORT_LIST)}`;
+    return axios.get(url);
+  },
+
+  adminGetExportList: () => {
+    const url = `${URL_ENTITY}${ADMIN_EXPORT_LIST}`;
     return axios.get(url);
   },
 
