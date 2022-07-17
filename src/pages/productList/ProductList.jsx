@@ -237,7 +237,7 @@ export default function ProductList() {
           }}
           loading={loading}
           getRowId={(r) => r.product_id}
-          rows={data}
+          rows={data.content}
           disableSelectionOnClick
           columns={columns}
           pageSize={8}

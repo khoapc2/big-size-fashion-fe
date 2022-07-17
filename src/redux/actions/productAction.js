@@ -38,6 +38,7 @@ const axiosConfig = {
 };
 
 export const listProduct = (keySearch, page) => async (dispatch) => {
+  console.log(page);
   let searchParams;
   if (role === "Admin") {
     searchParams = {
@@ -59,14 +60,21 @@ export const listProduct = (keySearch, page) => async (dispatch) => {
       if (role === "Manager") {
         param = {
           Status: true,
+          PageNumber: page,
+        };
+      } else {
+        param = {
+          PageNumber: page,
         };
       }
+      console.log(param);
       const data = await productApi.getListProduct(param);
-      dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data.content });
+      console.log(data);
+      dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
       dispatch({ type: PRODUCT_LIST_FAIL, payload: "" });
     } else {
       const data = await productApi.getSearchListProduct(searchParams);
-      dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data.content });
+      dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
       dispatch({ type: PRODUCT_LIST_FAIL, payload: "" });
     }
   } catch (error) {
