@@ -4,8 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "./newAccount.css";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import { styled } from "@mui/material/styles";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import IconButton from "@mui/material/IconButton";
 import { Form } from "semantic-ui-react";
 import { toast } from "react-toastify";
@@ -39,7 +38,6 @@ export default function NewAccount() {
       dispatch({ type: CREATE_ACCOUNT_FAIL, payload: false });
     }
   }, [success, error, triggerReload, dispatch]);
-
 
   const onSubmit = (data) => {
     console.log(data);

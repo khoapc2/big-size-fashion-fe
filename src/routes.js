@@ -57,7 +57,7 @@ export const routes = [
   {
     type: "collapse",
     name: "Sản phẩm",
-    key: "product",
+    key: "products",
     icon: <Icon fontSize="small">styler</Icon>,
     route: "/products",
     component: <Products />,
@@ -89,7 +89,7 @@ export const routes = [
   {
     type: "collapse",
     name: "Thể loại",
-    key: "category",
+    key: "categories",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/categories",
     component: <Categories />,
@@ -97,7 +97,7 @@ export const routes = [
   {
     type: "collapse",
     name: "Kích cỡ",
-    key: "size",
+    key: "sizes",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/sizes",
     component: <Sizes />,
@@ -105,7 +105,7 @@ export const routes = [
   {
     type: "collapse",
     name: "Màu sắc",
-    key: "color",
+    key: "colors",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/colors",
     component: <Colors />,
@@ -121,7 +121,7 @@ export const routes = [
   {
     type: "collapse",
     name: "Cửa hàng",
-    key: "store",
+    key: "stores",
     icon: <Icon fontSize="small">receipt_long</Icon>,
     route: "/stores",
     component: <Stores />,
@@ -188,7 +188,7 @@ export const routesAdmin = [
   {
     type: "collapse",
     name: "Sản phẩm",
-    key: "product",
+    key: "products",
     icon: <Icon fontSize="small">styler</Icon>,
     route: "/products",
     component: <Products />,
@@ -196,7 +196,7 @@ export const routesAdmin = [
   {
     type: "collapse",
     name: "Người dùng",
-    key: "user",
+    key: "users",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/users",
     component: <Users />,
@@ -212,7 +212,7 @@ export const routesAdmin = [
   {
     type: "collapse",
     name: "Thể loại",
-    key: "category",
+    key: "categories",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/categories",
     component: <Categories />,
@@ -220,7 +220,7 @@ export const routesAdmin = [
   {
     type: "collapse",
     name: "Kích cỡ",
-    key: "size",
+    key: "sizes",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/sizes",
     component: <Sizes />,
@@ -228,7 +228,7 @@ export const routesAdmin = [
   {
     type: "collapse",
     name: "Màu sắc",
-    key: "color",
+    key: "colors",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/colors",
     component: <Colors />,
@@ -236,7 +236,7 @@ export const routesAdmin = [
   {
     type: "collapse",
     name: "Khuyến mại",
-    key: "promotion",
+    key: "promotions",
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/promotions",
     component: <Promotions />,
@@ -244,7 +244,7 @@ export const routesAdmin = [
   {
     type: "collapse",
     name: "Cửa hàng",
-    key: "store",
+    key: "stores",
     icon: <Icon fontSize="small">receipt_long</Icon>,
     route: "/stores",
     component: <Stores />,
@@ -271,7 +271,7 @@ export const routesManager = [
   {
     type: "collapse",
     name: "Sản phẩm",
-    key: "product",
+    key: "products",
     icon: <Icon fontSize="small">styler</Icon>,
     route: "/products",
     component: <Products />,
@@ -295,7 +295,7 @@ export const routesManager = [
   {
     type: "collapse",
     name: "Kiểm kê",
-    key: "warehouse-inventory",
+    key: "inventory",
     icon: <Icon fontSize="small">import_export</Icon>,
     route: "/inventory",
     component: <WarehouseInventory />,
@@ -306,6 +306,14 @@ export const routesManager = [
     key: "profile",
     icon: <Icon fontSize="small">person</Icon>,
     route: "/profile",
+    component: <Profile />,
+  },
+  {
+    type: "collapse",
+    name: "Thống kê",
+    key: "statistic",
+    icon: <Icon fontSize="small">analytics </Icon>,
+    route: "/statistic",
     component: <Profile />,
   },
 ];

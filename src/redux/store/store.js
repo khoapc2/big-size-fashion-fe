@@ -75,6 +75,7 @@ import {
   getStorewarehouseReducer,
   quantityAjustmentReducer,
 } from "redux/reducers/inventoryReducer";
+import { viewRevenueReducer } from "redux/reducers/revenueReducer";
 
 const initialState = {
   userLogin: {
@@ -139,6 +140,7 @@ const reducer = combineReducers({
   listInventoryProduct: getStorewarehouseReducer,
   quantityAjustment: quantityAjustmentReducer,
   cancelOnlineOrder: cancelOnlineOrderReducer,
+  viewRevenue: viewRevenueReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
