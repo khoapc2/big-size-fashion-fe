@@ -16,6 +16,8 @@ export const getInventoryAction = (para, from_date, to_date) => async (dispatch)
   const listFormatProductSendToBE = [];
   listProduct.forEach((product) => {
     const inforIdProduct = product.product_id.split("+");
+    console.log(product);
+    console.log(inforIdProduct);
     const parseProduct = {
       ...product,
       product_id: parseInt(inforIdProduct[1], 10),
@@ -70,6 +72,8 @@ export const quantityAdjusmentAction = (para) => async (dispatch) => {
   listProduct.forEach((product) => {
     console.log(product);
     const inforIdProduct = product.product_id.split("+");
+    console.log(inforIdProduct);
+
     const parseProduct = {
       ...product,
       product_id: parseInt(inforIdProduct[1], 10),
