@@ -18,7 +18,7 @@ import {
   IMPORT_PRODUCT_LIST_FAIL,
 } from "../../service/Validations/VarConstant";
 
-export const listProduct = (keySearch, page) => async (dispatch) => {
+export const listProduct = (keySearch, page, size) => async (dispatch) => {
   const currentUser = JSON.parse(localStorage.getItem("user"));
   const { role } = currentUser;
   console.log(page);
@@ -27,12 +27,14 @@ export const listProduct = (keySearch, page) => async (dispatch) => {
     searchParams = {
       ProductName: keySearch,
       PageNumber: page,
+      PageSize: size,
     };
   } else if (role === "Manager") {
     searchParams = {
       ProductName: keySearch,
-      PageNumber: page,
       Status: true,
+      PageNumber: page,
+      PageSize: size,
     };
   }
 
@@ -44,20 +46,22 @@ export const listProduct = (keySearch, page) => async (dispatch) => {
         param = {
           Status: true,
           PageNumber: page,
+          PageSize: size,
         };
       } else {
         param = {
           PageNumber: page,
+          PageSize: size,
         };
       }
       console.log(param);
       const data = await productApi.getListProduct(param);
       console.log(data);
-      dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data.content });
+      dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
       dispatch({ type: PRODUCT_LIST_FAIL, payload: "" });
     } else {
       const data = await productApi.getSearchListProduct(searchParams);
-      dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data.content });
+      dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
       dispatch({ type: PRODUCT_LIST_FAIL, payload: "" });
     }
   } catch (error) {

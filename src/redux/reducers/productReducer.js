@@ -29,7 +29,11 @@ function formatArray(payload) {
   return result;
 }
 
-export const listProductReducer = (state = { loading: true, data: [], error: "" }, action) => {
+export const listProductReducer = (
+  state = { loading: true, data: [], error: "", totalCount: 0 },
+  action
+) => {
+  console.log(action.payload);
   switch (action.type) {
     case PRODUCT_LIST_REQUEST:
       return { ...state, loading: true };
@@ -37,7 +41,8 @@ export const listProductReducer = (state = { loading: true, data: [], error: "" 
       return {
         ...state,
         loading: false,
-        data: action.payload,
+        data: action.payload.content,
+        totalCount: action.payload.total_count,
       };
     case PRODUCT_LIST_FAIL:
       return { ...state, loading: false, error: action.payload };

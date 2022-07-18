@@ -37,16 +37,18 @@ export default function StaffList() {
   // const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
   // // const [paging, setPaging] = useState({});
   //Test
-  const { data, error, loading } = useSelector((state) => state.viewOfflineOrder);
-  const [page, setPage] = useState(1);
+  const { data, error, loading, totalCount } = useSelector((state) => state.viewOfflineOrder);
+  const [pageState, setPageState] = useState({
+    page: 1,
+    pageSize: 10,
+  });
   const triggerReload = useSelector((state) => state.triggerReload);
-  // const [keySearch, setKeySearch] = useState("");
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
   // console.log(data);
   useEffect(() => {
-    dispatch(listOrder("Pending", false));
-  }, [dispatch, page, searchText, triggerReload]);
+    dispatch(listOrder("Pending", false, pageState.page, pageState.pageSize));
+  }, [dispatch, pageState.page, pageState.pageSize, searchText, triggerReload]);
 
   // let inputSearchHandler = (e) => {
   //   let lowerCase = e.target.value.toLowerCase();
@@ -173,12 +175,20 @@ export default function StaffList() {
               color: "green",
             },
           }}
+          autoHeight
           loading={loading}
           getRowId={(r) => r.order_id}
           rows={data}
+          rowCount={totalCount}
+          rowsPerPageOptions={[10, 20, 50, 100]}
+          pagination
+          page={pageState.page - 1}
+          paginationMode="server"
+          onPageChange={(newPage) => setPageState((old) => ({ ...old, page: newPage + 1}))}
+          onPageSizeChange={(newPageSize) => setPageState(old => ({ ...old, pageSize: newPageSize}))}
           disableSelectionOnClick
           columns={columns}
-          pageSize={8}
+          pageSize={pageState.pageSize}
           data={(query) =>
             new Promise(() => {
               console.log(query);

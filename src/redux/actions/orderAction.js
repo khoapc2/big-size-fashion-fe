@@ -29,10 +29,12 @@ import {
   REJECT_ONLINE_ORDER_SUCCESS,
 } from "../../service/Validations/VarConstant";
 
-export const listOrder = (status, type) => async (dispatch) => {
+export const listOrder = (status, type, page, size) => async (dispatch) => {
   const params = {
     OrderStatus: status,
     OrderType: type,
+    PageNumber: page,
+    PageSize: size,
   };
   if (type) {
     dispatch({ type: ONLINE_ORDER_LIST_REQUEST });
@@ -42,11 +44,11 @@ export const listOrder = (status, type) => async (dispatch) => {
   try {
     if (type) {
       const data = await orderApi.getListOrder(params);
-      dispatch({ type: ONLINE_ORDER_LIST_SUCCESS, payload: data.content });
+      dispatch({ type: ONLINE_ORDER_LIST_SUCCESS, payload: data });
       dispatch({ type: ONLINE_ORDER_LIST_FAIL, payload: "" });
     } else {
       const data = await orderApi.getListOrder(params);
-      dispatch({ type: OFFLINE_ORDER_LIST_SUCCESS, payload: data.content });
+      dispatch({ type: OFFLINE_ORDER_LIST_SUCCESS, payload: data });
       dispatch({ type: OFFLINE_ORDER_LIST_FAIL, payload: "" });
     }
   } catch (error) {

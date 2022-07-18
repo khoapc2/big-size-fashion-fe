@@ -51,7 +51,10 @@ const calculateTotalPrice = ({ product_list }) => {
   };
 };
 
-export const listOnlineOrderReducer = (state = { loading: true, data: [], error: "" }, action) => {
+export const listOnlineOrderReducer = (
+  state = { loading: true, data: [], error: "", totalCount: 0 },
+  action
+) => {
   switch (action.type) {
     case ONLINE_ORDER_LIST_REQUEST:
       return { ...state, loading: true };
@@ -59,7 +62,8 @@ export const listOnlineOrderReducer = (state = { loading: true, data: [], error:
       return {
         ...state,
         loading: false,
-        data: action.payload,
+        data: action.payload.content,
+        totalCount: action.payload.total_count,
       };
     case ONLINE_ORDER_LIST_FAIL:
       return { ...state, loading: false, error: action.payload };
@@ -68,7 +72,10 @@ export const listOnlineOrderReducer = (state = { loading: true, data: [], error:
   }
 };
 
-export const listOfflineOrderReducer = (state = { loading: true, data: [], error: "" }, action) => {
+export const listOfflineOrderReducer = (
+  state = { loading: true, data: [], error: "", totalCount: 0 },
+  action
+) => {
   switch (action.type) {
     case OFFLINE_ORDER_LIST_REQUEST:
       return { ...state, loading: true };
@@ -76,7 +83,8 @@ export const listOfflineOrderReducer = (state = { loading: true, data: [], error
       return {
         ...state,
         loading: false,
-        data: action.payload,
+        data: action.payload.content,
+        totalCount: action.payload.total_count,
       };
     case OFFLINE_ORDER_LIST_FAIL:
       return { ...state, loading: false, error: action.payload };
