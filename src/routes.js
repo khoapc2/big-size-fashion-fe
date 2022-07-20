@@ -36,6 +36,7 @@ import WarehouseInventory from "pages/warehouseInventory/storeInventory";
 // import RTL from "layouts/rtl";
 import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
+import Statistic from "pages/revenue/";
 // import SignIn from "layouts/authentication/sign-in";
 // import SignUp from "layouts/authentication/sign-up";
 
@@ -314,6 +315,14 @@ export const routesManager = [
     key: "statistic",
     icon: <Icon fontSize="small">analytics </Icon>,
     route: "/statistic",
+    component: <Statistic />,
+  },
+  {
+    type: "collapse",
+    name: "Nhân viên",
+    key: "staff",
+    icon: <Icon fontSize="small">person </Icon>,
+    route: "/staff",
     component: <Profile />,
   },
 ];

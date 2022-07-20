@@ -71,7 +71,7 @@ function Dashboard() {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(listRevenueInMonthAction({ currentMonth, currentYear }));
+    dispatch(listRevenueInMonthAction({ month: currentMonth, year: currentYear }));
     dispatch(orderTodayAction());
   }, [dispatch, triggerReload]);
 

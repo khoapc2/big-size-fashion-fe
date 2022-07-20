@@ -26,6 +26,9 @@ import {
   STATISTIC_TODAY_ORDER_REQUEST,
   STATISTIC_TODAY_ORDER_SUCCESS,
   STATISTIC_TODAY_ORDER_FAIL,
+  STAFF_PERFORM_ORDER_REQUEST,
+  STAFF_PERFORM_ORDER_SUCCESS,
+  STAFF_PERFORM_ORDER_FAIL,
 } from "../../service/Validations/VarConstant";
 
 const calculateTotalPrice = ({ product_list }) => {
@@ -107,6 +110,26 @@ export const orderTodayReducer = (state = { loading: true, data: [], error: "" }
         data: action.payload,
       };
     case STATISTIC_TODAY_ORDER_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const staffPerformanceOrderReducer = (
+  state = { loading: true, data: [], error: "" },
+  action
+) => {
+  switch (action.type) {
+    case STAFF_PERFORM_ORDER_REQUEST:
+      return { ...state, loading: true };
+    case STAFF_PERFORM_ORDER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        data: action.payload,
+      };
+    case STAFF_PERFORM_ORDER_FAIL:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;

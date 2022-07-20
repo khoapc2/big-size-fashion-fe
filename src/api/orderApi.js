@@ -9,6 +9,7 @@ const REJECT_URL = "reject/";
 const EXPORT_ORDER = "export-bill/";
 const CANCEL_URL = "cancel/";
 const ORDER_TODAY = "/statistic-today";
+const STAFF_PERFORMANCE = "/performance-of-all-staff";
 
 const orderApi = {
   getListOrder: (params) => {
@@ -55,6 +56,11 @@ const orderApi = {
   orderToday: () => {
     const url = `${URL_ENTITY}${ORDER_TODAY}`;
     return axios.get(url);
+  },
+
+  staffPerformOnOrder: (params) => {
+    const url = `${URL_ENTITY}${STAFF_PERFORMANCE}`;
+    return axios.get(url, { params });
   },
 };
 export default orderApi;
