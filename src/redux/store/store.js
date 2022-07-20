@@ -58,6 +58,7 @@ import {
   rejectOnlineOrderReducer,
   cancelOnlineOrderReducer,
   orderTodayReducer,
+  staffPerformanceOrderReducer,
 } from "redux/reducers/orderReducer";
 import {
   listCustomerReducer,
@@ -143,6 +144,7 @@ const reducer = combineReducers({
   cancelOnlineOrder: cancelOnlineOrderReducer,
   viewRevenue: viewRevenueReducer,
   orderToday: orderTodayReducer,
+  orderStaffPerformance: staffPerformanceOrderReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

@@ -30,6 +30,9 @@ import {
   STATISTIC_TODAY_ORDER_REQUEST,
   STATISTIC_TODAY_ORDER_SUCCESS,
   STATISTIC_TODAY_ORDER_FAIL,
+  STAFF_PERFORM_ORDER_REQUEST,
+  STAFF_PERFORM_ORDER_SUCCESS,
+  STAFF_PERFORM_ORDER_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listOrder = (status, type, page, size) => async (dispatch) => {
@@ -235,29 +238,25 @@ export const orderTodayAction = () => async (dispatch) => {
   }
 };
 
-// export const createStore = (storeModels) => async (dispatch) => {
-//   dispatch({
-//     type: CREATE_STORE_REQUEST,
-//     payload: { storeModels },
-//   });
-//   try {
-//     if (storeModels) {
-//       const param = {
-//         store_name: storeModels.storeName,
-//         store_address: storeModels.storeAddress,
-//         store_phone: storeModels.phone,
-//       };
-//       const data = await storeApi.createNewStore(param);
-//       dispatch({ type: CREATE_STORE_SUCCESS, payload: data });
-//     }
-//   } catch (error) {
-//     dispatch({
-//       type: CREATE_STORE_FAIL,
-//       payload:
-//         error.response && error.response.data.message ? error.response.data.message : error.message,
-//     });
-//   }
-// };
+export const staffPerformanceAction = (params) => async (dispatch) => {
+  dispatch({
+    type: STAFF_PERFORM_ORDER_REQUEST,
+  });
+  try {
+    const param = {
+      Month: params.month,
+      Year: params.year,
+    };
+    const data = await orderApi.staffPerformOnOrder(param);
+    dispatch({ type: STAFF_PERFORM_ORDER_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: STAFF_PERFORM_ORDER_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
 
 // export const deleteStore = (storeId) => async (dispatch) => {
 //   // console.log("DeleteStore");
