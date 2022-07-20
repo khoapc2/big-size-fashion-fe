@@ -7,6 +7,7 @@ import {
 } from "../../service/Validations/VarConstant";
 
 export const listRevenueInMonthAction = (data) => async (dispatch) => {
+  console.log(data);
   dispatch({ type: REVENUE_MANAGER_REQUEST });
   try {
     const params = {
