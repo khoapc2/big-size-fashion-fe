@@ -35,17 +35,6 @@
   background: green !important;
 }
 
-.makeStyles-pageContent-1 {
-  height: 800px;
-}
-
-.offlineOrderTopLeft {
-  padding: 20px;
-  margin: 20px;
-  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
-  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
-}
-
 .offlineOrderTop {
   padding: 10px;
   margin: 10px;
@@ -62,5 +51,5 @@
 
 .MuiDataGrid-root {
   margin-top: 10px;
-  height: 500px;
+  height: 700px;
 }

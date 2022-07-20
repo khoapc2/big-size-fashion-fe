@@ -14,7 +14,7 @@ import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
 import { viewDetailDeliveryNoteAction } from "../../../../redux/actions/deliverAction";
 import { triggerReload } from "../../../../redux/actions/userAction";
 import Loading from "../../../../components/Loading";
-import "./viewOfflineOrder.css";
+import "./viewDeliveryNote.css";
 
 export default function DeliveryNoteForm() {
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
@@ -105,7 +105,7 @@ export default function DeliveryNoteForm() {
         <div className="offlineOrderTop">
           <Grid container>
             <Grid item xs={4}>
-            <div className="container-title">
+              <div className="container-title">
                 <div className="title">Tên đơn:</div>
                 <div className="content">&emsp;{data.delivery_note_name}</div>
               </div>
@@ -145,7 +145,7 @@ export default function DeliveryNoteForm() {
                 },
               }}
               autoHeight
-              getRowId={(r) => r.product_id}
+              getRowId={(r) => r.product_detail_id}
               loading={loading}
               rows={totalProduct}
               disableSelectionOnClick

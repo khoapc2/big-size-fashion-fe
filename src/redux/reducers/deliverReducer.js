@@ -16,13 +16,14 @@ import {
 const calculateTotalPrice = ({ total_price }) => {
   const totalPrice = total_price;
   return {
-    product_id: 1.5,
+    product_detail_id: 1.5,
     total_quantity_price: totalPrice,
     category: "",
     colour: "",
     quantity: "",
     price: "",
     price_per_one: "",
+    product_id: "",
     image_url: "",
     product_name: "",
     size: "",

@@ -67,11 +67,11 @@ export default function OfflineOrderForm() {
 
   useEffect(() => {
     if (approveOffOrder.success) {
-      toast.success("Thao tác thành công");
+      toast.success("Duyệt đơn hàng thành công");
       dispatch({ type: APPROVE_OFFLINE_ORDER_SUCCESS, payload: false });
     }
     if (approveOffOrder.error) {
-      toast.error("Thao tác thất bại, vui lòng thử lại");
+      toast.error("Duyệt đơn hàng thất bại, vui lòng thử lại");
       dispatch({ type: APPROVE_OFFLINE_ORDER_FAIL, payload: false });
     }
   }, [triggerReload, approveOffOrder.success, approveOffOrder.error]);
