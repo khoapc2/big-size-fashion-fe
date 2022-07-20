@@ -33,7 +33,6 @@ export const listProductReducer = (
   state = { loading: true, data: [], error: "", totalCount: 0 },
   action
 ) => {
-  console.log(action.payload);
   switch (action.type) {
     case PRODUCT_LIST_REQUEST:
       return { ...state, loading: true };

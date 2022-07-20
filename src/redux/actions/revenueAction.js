@@ -1,4 +1,5 @@
 import revenueApi from "../../api/revenueApi";
+// import orderApi from "../../api/orderApi";
 import {
   REVENUE_MANAGER_REQUEST,
   REVENUE_MANAGER_SUCCESS,
@@ -13,8 +14,11 @@ export const listRevenueInMonthAction = (data) => async (dispatch) => {
       Year: data.year,
     };
     const response = await revenueApi.getRevenueManager(params);
-    console.log(response);
-    dispatch({ type: REVENUE_MANAGER_SUCCESS, payload: response.content });
+    // const responseOrderToday = await orderApi.orderToday();
+    dispatch({
+      type: REVENUE_MANAGER_SUCCESS,
+      payload: response,
+    });
   } catch (error) {
     const message =
       error.respone && error.respone.content.message

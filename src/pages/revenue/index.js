@@ -31,6 +31,7 @@ import { SchemaErrorMessageRevenueManager } from "../../service/Validations/Reve
 // import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 import "./revenue.css";
 import { listRevenueInMonthAction } from "../../redux/actions/revenueAction";
+import { orderTodayAction } from "../../redux/actions/orderAction";
 
 function generateArrayOfYears() {
   const max = 2100;
@@ -62,17 +63,20 @@ function Dashboard() {
   // const [selectedDate, handleDateChange] = useState(new Date());
   // const [age, setAge] = useState("");
 
-  const { revenue, loading } = useSelector((state) => state.viewRevenue);
-  console.log(revenue);
+  const { revenue, loading, data } = useSelector((state) => state.viewRevenue);
+  const orderToday = useSelector((state) => state.orderToday);
+  const triggerReload = useSelector((state) => state.triggerReload);
+  const { total_orders, pending_orders, processing_orders, received_orders, canceled_orders } =
+    orderToday.data;
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(listRevenueInMonthAction());
-  }, [dispatch]);
+    dispatch(listRevenueInMonthAction({ currentMonth, currentYear }));
+    dispatch(orderTodayAction());
+  }, [dispatch, triggerReload]);
 
-  const handleSubmit = (data) => {
-    console.log(data);
-    dispatch(listRevenueInMonthAction(data));
+  const handleSubmit = (para) => {
+    dispatch(listRevenueInMonthAction(para));
   };
 
   return (
@@ -88,31 +92,31 @@ function Dashboard() {
                   <div className="container-order">
                     <div className="order">
                       <div className="order-label">Tổng số đơn</div>
-                      <div className="order-quantity">0</div>
+                      <div className="order-quantity">{total_orders}</div>
                     </div>
                   </div>
                   <div className="container-order">
                     <div className="order">
                       <div className="order-label">Đơn mới</div>
-                      <div className="order-quantity">0</div>
+                      <div className="order-quantity">{pending_orders}</div>
                     </div>
                   </div>
                   <div className="container-order">
                     <div className="order">
                       <div className="order-label">Đang xử lý</div>
-                      <div className="order-quantity">0</div>
+                      <div className="order-quantity">{processing_orders}</div>
                     </div>
                   </div>
                   <div className="container-order">
                     <div className="order">
                       <div className="order-label">Giao thành công</div>
-                      <div className="order-quantity">0</div>
+                      <div className="order-quantity">{received_orders}</div>
                     </div>
                   </div>
                   <div className="container-order" style={{ color: "red" }}>
                     <div className="order">
                       <div className="order-label">Hủy</div>
-                      <div className="order-quantity">0</div>
+                      <div className="order-quantity">{canceled_orders}</div>
                     </div>
                   </div>
                 </div>
@@ -183,31 +187,31 @@ function Dashboard() {
               <div className="container-order">
                 <div className="order">
                   <div className="order-label">Tổng số đơn</div>
-                  <div className="order-quantity">0</div>
+                  <div className="order-quantity">{data.total_orders}</div>
                 </div>
               </div>
               <div className="container-order">
                 <div className="order">
                   <div className="order-label">Đơn mới</div>
-                  <div className="order-quantity">0</div>
+                  <div className="order-quantity">{data.pending_orders}</div>
                 </div>
               </div>
               <div className="container-order">
                 <div className="order">
                   <div className="order-label">Đang xử lý</div>
-                  <div className="order-quantity">0</div>
+                  <div className="order-quantity">{data.processing_orders}</div>
                 </div>
               </div>
               <div className="container-order">
                 <div className="order">
                   <div className="order-label">Giao thành công</div>
-                  <div className="order-quantity">0</div>
+                  <div className="order-quantity">{data.received_orders}</div>
                 </div>
               </div>
               <div className="container-order" style={{ color: "red" }}>
                 <div className="order">
                   <div className="order-label">Hủy</div>
-                  <div className="order-quantity">0</div>
+                  <div className="order-quantity">{data.canceled_orders}</div>
                 </div>
               </div>
             </div>
@@ -224,7 +228,7 @@ function Dashboard() {
                     color="info"
                     title="Doanh thu cửa hàng trong 1 tháng"
                     description="Last Campaign Performance"
-                    // date="campaign sent 2 days ago"
+                    date="campaign sent 2 days ago"
                     chart={revenue}
                   />
                 )}

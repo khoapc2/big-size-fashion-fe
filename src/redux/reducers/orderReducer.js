@@ -23,6 +23,9 @@ import {
   REJECT_ONLINE_ORDER_REQUEST,
   REJECT_ONLINE_ORDER_FAIL,
   REJECT_ONLINE_ORDER_SUCCESS,
+  STATISTIC_TODAY_ORDER_REQUEST,
+  STATISTIC_TODAY_ORDER_SUCCESS,
+  STATISTIC_TODAY_ORDER_FAIL,
 } from "../../service/Validations/VarConstant";
 
 const calculateTotalPrice = ({ product_list }) => {
@@ -87,6 +90,23 @@ export const listOfflineOrderReducer = (
         totalCount: action.payload.total_count,
       };
     case OFFLINE_ORDER_LIST_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const orderTodayReducer = (state = { loading: true, data: [], error: "" }, action) => {
+  switch (action.type) {
+    case STATISTIC_TODAY_ORDER_REQUEST:
+      return { ...state, loading: true };
+    case STATISTIC_TODAY_ORDER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        data: action.payload,
+      };
+    case STATISTIC_TODAY_ORDER_FAIL:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;
