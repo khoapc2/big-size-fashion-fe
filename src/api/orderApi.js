@@ -8,6 +8,7 @@ const ASSIGN_ORDER = "assign-order";
 const REJECT_URL = "reject/";
 const EXPORT_ORDER = "export-bill/";
 const CANCEL_URL = "cancel/";
+const ORDER_TODAY = "/statistic-today";
 
 const orderApi = {
   getListOrder: (params) => {
@@ -49,6 +50,11 @@ const orderApi = {
   exportOrderToExcel: (params) => {
     const url = `${URL_ENTITY}/${EXPORT_ORDER}${params}`;
     return axios.get(url, { responseType: "blob" });
+  },
+
+  orderToday: () => {
+    const url = `${URL_ENTITY}${ORDER_TODAY}`;
+    return axios.get(url);
   },
 };
 export default orderApi;

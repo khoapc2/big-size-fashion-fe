@@ -4,14 +4,14 @@ import {
   REVENUE_MANAGER_FAIL,
 } from "../../service/Validations/VarConstant";
 
-function formatRevenue(payload) {
+function formatRevenue(content) {
   const labels = [];
   const data = [];
   let datasets = null;
   let sales = "";
-  console.log(payload);
-  if (payload) {
-    payload.forEach((obj) => {
+  const newArray = [...content.revenues];
+  if (newArray) {
+    newArray.forEach((obj) => {
       labels.push(obj.date.toString());
       data.push(obj.value);
     });
@@ -25,17 +25,14 @@ function formatRevenue(payload) {
       labels,
       datasets,
     };
-
-    console.log(sales);
   }
   return sales;
 }
 
 export const viewRevenueReducer = (
-  state = { loading: true, data: [], error: "", revenue: "" },
+  state = { loading: true, error: "", data: "", revenue: "" },
   action
 ) => {
-  console.log(action.payload);
   switch (action.type) {
     case REVENUE_MANAGER_REQUEST:
       return { ...state, loading: true };
@@ -43,8 +40,8 @@ export const viewRevenueReducer = (
       return {
         ...state,
         loading: false,
-        data: action.payload,
-        revenue: formatRevenue(action.payload),
+        data: action.payload.content.number_orders,
+        revenue: formatRevenue(action.payload.content),
       };
     case REVENUE_MANAGER_FAIL:
       return { ...state, loading: false, error: action.payload };

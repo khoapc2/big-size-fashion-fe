@@ -27,6 +27,9 @@ import {
   REJECT_ONLINE_ORDER_REQUEST,
   REJECT_ONLINE_ORDER_FAIL,
   REJECT_ONLINE_ORDER_SUCCESS,
+  STATISTIC_TODAY_ORDER_REQUEST,
+  STATISTIC_TODAY_ORDER_SUCCESS,
+  STATISTIC_TODAY_ORDER_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listOrder = (status, type, page, size) => async (dispatch) => {
@@ -76,7 +79,6 @@ export const viewDetailOfflineOrderAction = (orderId) => async (dispatch) => {
   try {
     dispatch({ type: GET_ZALO_LINK_FAIL });
     const data = await orderApi.getOrderDetailById(orderId);
-    console.log(data);
     if (
       data.content.payment_method === "ZaloPay" &&
       data.content.order_type === "Offline" &&
@@ -95,7 +97,6 @@ export const viewDetailOfflineOrderAction = (orderId) => async (dispatch) => {
         });
       }
     }
-    console.log(data);
     dispatch({ type: VIEW_DETAIL_OFFLINE_ORDER_LIST_SUCCESS, payload: data.content });
   } catch (error) {
     dispatch({
@@ -152,7 +153,6 @@ export const approveOnlineOrderAction = (id, staffId) => async (dispatch) => {
   try {
     const order_id = id;
     const { staff: staff_id } = staffId;
-    console.log(staff_id);
     if (order_id && staff_id) {
       const data = await orderApi.approveOnlineOrder(order_id);
       await orderApi.assignOnlineOrderToStaff({ staff_id, order_id });
@@ -214,9 +214,24 @@ export const exportExcelAction = (orderId) => async () => {
     link.setAttribute("download", `bill_of_order_#${orderId}.xlsx`);
     document.body.appendChild(link);
     link.click();
-    console.log(data);
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const orderTodayAction = () => async (dispatch) => {
+  dispatch({
+    type: STATISTIC_TODAY_ORDER_REQUEST,
+  });
+  try {
+    const data = await orderApi.orderToday();
+    dispatch({ type: STATISTIC_TODAY_ORDER_SUCCESS, payload: data.content });
+  } catch (error) {
+    dispatch({
+      type: STATISTIC_TODAY_ORDER_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
   }
 };
 
