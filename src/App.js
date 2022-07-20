@@ -87,6 +87,7 @@ import CreateImport from "pages/deliveryNote/importDeliver/newImport/newImport";
 import ViewProduct from "pages/product/view/viewProduct";
 import Inventory from "pages/warehouseInventory/storeInventory";
 import Statistic from "pages/revenue";
+import ImportDeliveryDetail from "pages/deliveryNote/importDeliver/detail/ViewDeliveryNote";
 // import Fader from "pages/components/Fader";
 // import { onMessageListener } from "./firebase/firebase";
 // import FirebaseNotifications from "./pages/components/FirebaseNotification/FirebaseNotifications";
@@ -323,6 +324,7 @@ export default function App() {
         <Route path="create-import-invoice" element={<CreateImport />} />
         <Route path="inventory" element={<Inventory />} />
         <Route path="statistic" element={<Statistic />} />
+        <Route path="delivery-note-detail/:deliveryId" element={<ImportDeliveryDetail />} />
       </Routes>
     </ThemeProvider>
   );

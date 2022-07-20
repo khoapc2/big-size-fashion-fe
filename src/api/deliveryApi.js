@@ -7,13 +7,12 @@ const EXPORT_LIST = "/export-list";
 const ADMIN_EXPORT_LIST = "/export-list-for-main-warehouse";
 
 const deliverApi = {
-  getImportList: () => {
-    const url = `${URL_ENTITY.concat(IMPORT_LIST)}`;
-    console.log(url);
+  getImportList: (param) => {
+    const url = `${URL_ENTITY}${IMPORT_LIST}?PageNumber=${param.PageNumber}&PageSize=${param.PageSize}`;
     return axios.get(url);
   },
-  getExportList: () => {
-    const url = `${URL_ENTITY.concat(EXPORT_LIST)}`;
+  getExportList: (param) => {
+    const url = `${URL_ENTITY}${EXPORT_LIST}?PageNumber=${param.PageNumber}&PageSize=${param.PageSize}`;
     return axios.get(url);
   },
 
@@ -25,6 +24,11 @@ const deliverApi = {
   createDeliveryNote: (params) => {
     const url = `${URL_ENTITY}`;
     return axios.post(url, params);
+  },
+
+  getDeliveryNoteDetailById: (id) => {
+    const url = `${URL_ENTITY}/${id}`;
+    return axios.get(url);
   },
 };
 export default deliverApi;

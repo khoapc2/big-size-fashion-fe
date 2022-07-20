@@ -120,6 +120,12 @@ export default function StaffList() {
       ),
     },
     {
+      field: "create_date",
+      headerName: "Ngày cập nhật",
+      width: 160,
+      renderCell: (params) => <div>{params.row.create_date}</div>,
+    },
+    {
       field: "status",
       headerName: "Tình trạng đơn hàng",
       width: 160,

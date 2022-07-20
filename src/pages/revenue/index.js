@@ -64,11 +64,11 @@ function Dashboard() {
 
   const { revenue, loading } = useSelector((state) => state.viewRevenue);
   console.log(revenue);
-
+  const triggerReload = useSelector((state) => state.triggerReload);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(listRevenueInMonthAction());
-  }, [dispatch]);
+  }, [dispatch, triggerReload]);
 
   const handleSubmit = (data) => {
     console.log(data);

@@ -69,6 +69,7 @@ import {
   listImportDeliverReducer,
   listExportDeliverReducer,
   createImportDeliverReducer,
+  viewDetailDeliveryNoteReducer,
 } from "redux/reducers/deliverReducer";
 import { zaloLinkReducer } from "redux/reducers/zaloReducer";
 import {
@@ -141,6 +142,7 @@ const reducer = combineReducers({
   quantityAjustment: quantityAjustmentReducer,
   cancelOnlineOrder: cancelOnlineOrderReducer,
   viewRevenue: viewRevenueReducer,
+  viewDetailDeliveryNote: viewDetailDeliveryNoteReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

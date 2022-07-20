@@ -50,6 +50,7 @@ export default function StaffList() {
   // console.log(data);
   useEffect(() => {
     dispatch(listOrder("Pending" ,true, pageState.page, pageState.pageSize));
+    console.log(data);
   }, [dispatch, pageState.page, pageState.pageSize, searchText, triggerReload]);
 
   // let inputSearchHandler = (e) => {
@@ -118,6 +119,12 @@ export default function StaffList() {
             : "Không có"}
         </div>
       ),
+    },
+    {
+      field: "create_date",
+      headerName: "Ngày cập nhật",
+      width: 160,
+      renderCell: (params) => <div>{params.row.create_date}</div>,
     },
     {
       field: "status",
