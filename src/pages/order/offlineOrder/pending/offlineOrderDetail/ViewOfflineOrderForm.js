@@ -110,12 +110,12 @@ export default function OfflineOrderForm() {
 
   const columns = [
     {
-      field: "product_detail_id",
+      field: "product_id",
       headerName: "Mã sản phẩm",
       width: 100,
       renderCell: (params) => (
         <div className="productListItem">
-          {params.row.total_quantity_price ? "" : params.row.product_detail_id}
+          {params.row.total_quantity_price ? "" : params.row.product_id}
         </div>
       ),
     },
@@ -317,7 +317,7 @@ export default function OfflineOrderForm() {
               rows={totalProduct}
               disableSelectionOnClick
               columns={columns}
-              pageSize={8}
+              pageSize={10}
               data={(query) =>
                 new Promise(() => {
                   console.log(query);

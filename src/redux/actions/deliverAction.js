@@ -10,13 +10,22 @@ import {
   CREATE_IMPORT_PRODUCT_LIST_REQUEST,
   CREATE_IMPORT_PRODUCT_LIST_SUCCESS,
   CREATE_IMPORT_PRODUCT_LIST_FAIL,
+  VIEW_DETAIL_DELIVERY_NOTE_REQUEST,
+  VIEW_DETAIL_DELIVERY_NOTE_FAIL,
+  VIEW_DETAIL_DELIVERY_NOTE_SUCCESS,
 } from "../../service/Validations/VarConstant";
 
-export const listImportDeliver = () => async (dispatch) => {
+export const listImportDeliver = (page, size) => async (dispatch) => {
   dispatch({ type: IMPORT_DELIVER_LIST_REQUEST });
   try {
-    const data = await deliveryApi.getImportList();
-    dispatch({ type: IMPORT_DELIVER_LIST_SUCCESS, payload: data.content });
+    const param = {
+      PageNumber: page,
+      PageSize: size,
+    };
+    console.log(param);
+    const data = await deliveryApi.getImportList(param);
+    console.log(data);
+    dispatch({ type: IMPORT_DELIVER_LIST_SUCCESS, payload: data });
     dispatch({ type: IMPORT_DELIVER_LIST_FAIL, payload: "" });
   } catch (error) {
     const message =
@@ -26,11 +35,15 @@ export const listImportDeliver = () => async (dispatch) => {
     dispatch({ type: IMPORT_DELIVER_LIST_FAIL, payload: message });
   }
 };
-export const listExportDeliver = () => async (dispatch) => {
+export const listExportDeliver = (page, size) => async (dispatch) => {
   dispatch({ type: EXPORT_DELIVER_LIST_REQUEST });
   try {
-    const data = await deliveryApi.getExportList();
-    dispatch({ type: EXPORT_DELIVER_LIST_SUCCESS, payload: data.content });
+    const param = {
+      PageNumber: page,
+      PageSize: size,
+    };
+    const data = await deliveryApi.getExportList(param);
+    dispatch({ type: EXPORT_DELIVER_LIST_SUCCESS, payload: data });
     dispatch({ type: EXPORT_DELIVER_LIST_FAIL, payload: "" });
   } catch (error) {
     const message =
@@ -38,6 +51,24 @@ export const listExportDeliver = () => async (dispatch) => {
         ? error.respone.content.message
         : error.message;
     dispatch({ type: EXPORT_DELIVER_LIST_FAIL, payload: message });
+  }
+};
+
+export const viewDetailDeliveryNoteAction = (id) => async (dispatch) => {
+  dispatch({
+    type: VIEW_DETAIL_DELIVERY_NOTE_REQUEST,
+    payload: { id },
+  });
+  try {
+    const data = await deliveryApi.getDeliveryNoteDetailById(id);
+    console.log(data);
+    dispatch({ type: VIEW_DETAIL_DELIVERY_NOTE_SUCCESS, payload: data.content });
+  } catch (error) {
+    dispatch({
+      type: VIEW_DETAIL_DELIVERY_NOTE_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
   }
 };
 

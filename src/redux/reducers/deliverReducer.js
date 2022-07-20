@@ -8,10 +8,29 @@ import {
   CREATE_IMPORT_PRODUCT_LIST_REQUEST,
   CREATE_IMPORT_PRODUCT_LIST_SUCCESS,
   CREATE_IMPORT_PRODUCT_LIST_FAIL,
+  VIEW_DETAIL_DELIVERY_NOTE_REQUEST,
+  VIEW_DETAIL_DELIVERY_NOTE_FAIL,
+  VIEW_DETAIL_DELIVERY_NOTE_SUCCESS,
 } from "../../service/Validations/VarConstant";
 
+const calculateTotalPrice = ({ total_price }) => {
+  const totalPrice = total_price;
+  return {
+    product_id: 1.5,
+    total_quantity_price: totalPrice,
+    category: "",
+    colour: "",
+    quantity: "",
+    price: "",
+    price_per_one: "",
+    image_url: "",
+    product_name: "",
+    size: "",
+  };
+};
+
 export const listImportDeliverReducer = (
-  state = { loading: true, data: [], error: "" },
+  state = { loading: true, data: [], error: "", totalCount: 0 },
   action
 ) => {
   switch (action.type) {
@@ -21,7 +40,8 @@ export const listImportDeliverReducer = (
       return {
         ...state,
         loading: false,
-        data: action.payload,
+        data: action.payload.content,
+        totalCount: action.payload.total_count,
       };
     case IMPORT_DELIVER_LIST_FAIL:
       return { ...state, loading: false, error: action.payload };
@@ -31,7 +51,7 @@ export const listImportDeliverReducer = (
 };
 
 export const listExportDeliverReducer = (
-  state = { loading: true, data: [], error: "" },
+  state = { loading: true, data: [], error: "", totalCount: 0 },
   action
 ) => {
   switch (action.type) {
@@ -41,7 +61,8 @@ export const listExportDeliverReducer = (
       return {
         ...state,
         loading: false,
-        data: action.payload,
+        data: action.payload.content,
+        totalCount: action.payload.total_count,
       };
     case EXPORT_DELIVER_LIST_FAIL:
       return { ...state, loading: false, error: action.payload };
@@ -64,6 +85,27 @@ export const createImportDeliverReducer = (
         success: action.payload,
       };
     case CREATE_IMPORT_PRODUCT_LIST_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const viewDetailDeliveryNoteReducer = (
+  state = { loading: true, data: [], error: "", totalProduct: [] },
+  action
+) => {
+  switch (action.type) {
+    case VIEW_DETAIL_DELIVERY_NOTE_REQUEST:
+      return { ...state, loading: true };
+    case VIEW_DETAIL_DELIVERY_NOTE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        data: action.payload,
+        totalProduct: [...action.payload.product_list, calculateTotalPrice(action.payload)],
+      };
+    case VIEW_DETAIL_DELIVERY_NOTE_FAIL:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;
