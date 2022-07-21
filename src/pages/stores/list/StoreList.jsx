@@ -78,13 +78,6 @@ export default function SizeList() {
     );
   }
 
-  const handleClickSearch = (searchText) => {};
-
-  // function handleRowClick(rowData) {
-  //   console.log(rowData);
-  //   navigate(`/store/${rowData.id}`);
-  // }
-
   const handleDelete = (id) => {
     dispatch(deleteStore(id));
     setConfirmDialog({

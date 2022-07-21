@@ -154,8 +154,10 @@ export default function StaffList() {
           pagination
           page={pageState.page - 1}
           paginationMode="server"
-          onPageChange={(newPage) => setPageState((old) => ({ ...old, page: newPage + 1}))}
-          onPageSizeChange={(newPageSize) => setPageState(old => ({ ...old, pageSize: newPageSize}))}
+          onPageChange={(newPage) => setPageState((old) => ({ ...old, page: newPage + 1 }))}
+          onPageSizeChange={(newPageSize) =>
+            setPageState((old) => ({ ...old, pageSize: newPageSize }))
+          }
           disableSelectionOnClick
           columns={columns}
           pageSize={pageState.pageSize}

@@ -15,6 +15,8 @@ import {
   viewDetailStoreReducer,
   updateStoreReducer,
   listStoreDropdownReducer,
+  listActiveStoreDropdownReducer,
+  getMainWareHouseReducer,
 } from "redux/reducers/storeReducer";
 
 import {
@@ -151,6 +153,8 @@ const reducer = combineReducers({
   orderStaffPerformance: staffPerformanceOrderReducer,
   approveDeliveryState: approveDeliveryReducer,
   rejectDeliveryState: rejectDeliveryReducer,
+  listActiveStoreDropdown: listActiveStoreDropdownReducer,
+  getMainWareHouse: getMainWareHouseReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

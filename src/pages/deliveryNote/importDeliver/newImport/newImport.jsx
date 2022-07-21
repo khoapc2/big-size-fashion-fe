@@ -20,6 +20,8 @@ import { getProductToImportAction } from "../../../../redux/actions/productActio
 import { deliveryImportToMainWareHouseAction } from "../../../../redux/actions/deliverAction";
 import { SchemaErrorMessageImportInvoice } from "../../../../service/Validations/ImportInvoiceValidation";
 import { triggerReload } from "../../../../redux/actions/userAction";
+import { listActiveStore, getMainWareHouseAction } from "../../../../redux/actions/storeAction";
+import Loading from "../../../../components/Loading";
 
 let idCounter = 0;
 const createRow = ({ product_id, product_name, quantity }) => {
@@ -28,23 +30,29 @@ const createRow = ({ product_id, product_name, quantity }) => {
 };
 
 export default function CreateImportDeliver() {
+  const dispatch = useDispatch();
+  const listImportPro = useSelector((state) => state.listImportProduct);
+  const response = useSelector((state) => state.createImportDeliver);
+  const activeStore = useSelector((state) => state.listActiveStoreDropdown);
+  const mainWareHouse = useSelector((state) => state.getMainWareHouse);
   const [rows, setRows] = useState([]);
   const [submit, setSubmit] = useState(false);
   const [deliveryName, setDeliverName] = useState("");
+  // const [deliveryName, setDeliverName] = useState("");
+  const [storeId, setStoreID] = useState("");
   const apiRef = useRef(null);
 
   // console.log(rows);
   // const { apiRef, columns } = useApiRef();
 
-  const dispatch = useDispatch();
-  const listImportPro = useSelector((state) => state.listImportProduct);
-  const response = useSelector((state) => state.createImportDeliver);
-
+  console.log(mainWareHouse);
   // console.log(listImportPro);
   const { success, error } = response;
 
   useEffect(() => {
     dispatch(getProductToImportAction());
+    dispatch(getMainWareHouseAction());
+    dispatch(listActiveStore({ status: true }));
   }, [dispatch, triggerReload]);
 
   useEffect(() => {
@@ -66,6 +74,7 @@ export default function CreateImportDeliver() {
     // const {product_name, product_id, quantity} = data
     // dispatch(createAccount(data));
     setDeliverName(data.delivery_note_name);
+    setStoreID(data.store_id);
     setRows((prevRows) => [...prevRows, createRow(data)]);
   };
 
@@ -78,7 +87,7 @@ export default function CreateImportDeliver() {
     if (apiRef.current) {
       const data = apiRef.current.getRowModels();
       if (data.size > 0) {
-        dispatch(deliveryImportToMainWareHouseAction(data, deliveryName));
+        dispatch(deliveryImportToMainWareHouseAction(data, deliveryName, storeId));
       } else {
         toast.error("Bạn chưa thêm sản phẩm nào đơn nhập hàng, Vui lòng thử lại");
       }
@@ -103,7 +112,7 @@ export default function CreateImportDeliver() {
     {
       field: "product_name",
       headerName: "Sản phẩm",
-      flex: 1.0,
+      flex: 1.5,
       disableClickEventBubbling: true,
       sortable: false,
       disableColumnMenu: true,
@@ -112,7 +121,7 @@ export default function CreateImportDeliver() {
     {
       field: "quantity",
       headerName: "Số lượng",
-      flex: 1.0,
+      flex: 0.5,
       disableClickEventBubbling: true,
       sortable: false,
       disableColumnMenu: true,
@@ -125,13 +134,19 @@ export default function CreateImportDeliver() {
       disableColumnMenu: true,
       sortable: false,
       renderCell: (params) => (
-        <button
-          onClick={() => {
-            setRows(rows.filter((e) => e.id !== params.row.id));
-          }}
-        >
-          <ClearIcon />
-        </button>
+        <div>
+          {submit ? (
+            ""
+          ) : (
+            <button
+              onClick={() => {
+                setRows(rows.filter((e) => e.id !== params.row.id));
+              }}
+            >
+              <ClearIcon />
+            </button>
+          )}
+        </div>
       ),
     },
     {
@@ -148,93 +163,116 @@ export default function CreateImportDeliver() {
     <DashboardLayout>
       <DashboardNavbar />
       <div className="newImport">
-        <h1 className="createImportTitle">Tạo đơn nhập hàng tới kho tổng</h1>
+        <h1 className="createImportTitle">Tạo đơn nhập hàng</h1>
         <div className="account">
           <div className="accountTop">
             <div className="account-top">
-              <Formik
-                initialValues={{
-                  product_name: "",
-                  product_id: "",
-                  quantity: "",
-                  delivery_note_name: "",
-                }}
-                onSubmit={onSubmit}
-                validationSchema={SchemaErrorMessageImportInvoice}
-                validateOnBlur
-                validateOnChange
-                onReset={handleReset}
-              >
-                {(formik) => {
-                  console.log(formik);
-                  return (
-                    <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
-                      <Form.Group className="top-add-product" widths="equal">
-                        <Form.Input
-                          label="Tên đơn đặt hàng"
-                          placeholder="Tên đơn đặt hàng"
-                          type="text"
-                          name="delivery_note_name"
-                          onChange={formik.handleChange}
-                          value={formik.values.delivery_note_name}
-                          error={formik.errors.delivery_note_name}
-                          disabled={submit}
-                        />
-                      </Form.Group>
-                      <Form.Group className="top-add-product" widths="equal">
-                        <Form.Select
-                          search
-                          fluid
-                          label="Sản phẩm"
-                          options={listImportPro.data || []}
-                          placeholder="Sản phẩm"
-                          name="product_name"
-                          onChange={(e, v) => {
-                            const { text } = listImportPro.data.find((o) => o.value === v.value);
-                            formik.setFieldValue("product_id", v.value);
-                            formik.setFieldValue("product_name", text);
-                          }}
-                          value={formik.values.product_name}
-                          error={formik.errors.product_name}
-                          text={formik.values.product_name}
-                          disabled={submit}
-                        />
-                        <Form.Input
-                          fluid
-                          label="Số lượng"
-                          placeholder="Số lượng"
-                          type="number"
-                          name="quantity"
-                          onChange={formik.handleChange}
-                          value={formik.values.quantity}
-                          error={formik.errors.quantity}
-                          disabled={submit}
-                        />
+              {mainWareHouse.loading ? (
+                <Loading />
+              ) : (
+                <Formik
+                  initialValues={{
+                    product_name: "",
+                    product_id: "",
+                    quantity: "",
+                    delivery_note_name: "",
+                    store_id: mainWareHouse.store[0].store_id,
+                    store_name: mainWareHouse.store[0].store_name,
+                  }}
+                  onSubmit={onSubmit}
+                  validationSchema={SchemaErrorMessageImportInvoice}
+                  validateOnBlur
+                  validateOnChange
+                  onReset={handleReset}
+                >
+                  {(formik) => {
+                    console.log(formik);
+                    return (
+                      <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
+                        <Form.Group className="top-add-product" widths="equal">
+                          <Form.Input
+                            label="Tên đơn đặt hàng"
+                            placeholder="Tên đơn đặt hàng"
+                            type="text"
+                            name="delivery_note_name"
+                            onChange={formik.handleChange}
+                            value={formik.values.delivery_note_name}
+                            error={formik.errors.delivery_note_name}
+                            disabled={submit}
+                          />
+                        </Form.Group>
+                        <Form.Group className="top-add-product" widths="4">
+                          <Form.Select
+                            search
+                            fluid
+                            label="Sản phẩm"
+                            options={listImportPro.data || []}
+                            placeholder="Sản phẩm"
+                            name="product_name"
+                            onChange={(e, v) => {
+                              const { text } = listImportPro.data.find((o) => o.value === v.value);
+                              formik.setFieldValue("product_id", v.value);
+                              formik.setFieldValue("product_name", text);
+                            }}
+                            value={formik.values.product_name}
+                            error={formik.errors.product_name}
+                            text={formik.values.product_name}
+                            disabled={submit}
+                          />
+                          <Form.Input
+                            fluid
+                            label="Số lượng"
+                            placeholder="Số lượng"
+                            type="number"
+                            name="quantity"
+                            onChange={formik.handleChange}
+                            value={formik.values.quantity}
+                            error={formik.errors.quantity}
+                            disabled={submit}
+                          />
+                          <Form.Select
+                            search
+                            // fluid
+                            label="Cửa hàng"
+                            options={activeStore.store || []}
+                            placeholder="Đến cửa hàng"
+                            name="store_name"
+                            onChange={(e, v) => {
+                              const { text } = activeStore.store.find((o) => o.value === v.value);
+                              formik.setFieldValue("store_id", v.value);
+                              formik.setFieldValue("store_name", text);
+                            }}
+                            value={formik.values.store_id}
+                            // error={formik.errors.product_name}
+                            text={formik.values.store_name}
+                            disabled={submit}
+                          />
 
-                        {submit ? (
-                          <Form.Button
-                            label="."
-                            className="button-add-product"
-                            type="reset"
-                            color="blue"
-                          >
-                            Tạo thêm đơn nhập hàng
-                          </Form.Button>
-                        ) : (
-                          <Form.Button
-                            label="."
-                            className="button-add-product"
-                            type="submit"
-                            color="green"
-                          >
-                            Thêm sản phẩm vào đơn nhập hàng
-                          </Form.Button>
-                        )}
-                      </Form.Group>
-                    </Form>
-                  );
-                }}
-              </Formik>
+                          {submit ? (
+                            <Form.Button
+                              label="."
+                              className="button-add-product"
+                              type="reset"
+                              color="blue"
+                            >
+                              Tạo thêm đơn nhập hàng
+                            </Form.Button>
+                          ) : (
+                            <Form.Button
+                              label="."
+                              className="button-add-product"
+                              type="submit"
+                              color="green"
+                            >
+                              Thêm sản phẩm vào đơn nhập hàng
+                            </Form.Button>
+                          )}
+                        </Form.Group>
+                      </Form>
+                    );
+                  }}
+                </Formik>
+              )}
             </div>
             <div className="accountTopLeft">
               <Box sx={{ width: "100%" }}>

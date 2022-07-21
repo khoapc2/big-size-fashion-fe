@@ -1,5 +1,4 @@
 import deliveryApi from "../../api/deliveryApi";
-import storeApi from "../../api/storeApi";
 import {
   IMPORT_DELIVER_LIST_REQUEST,
   IMPORT_DELIVER_LIST_SUCCESS,
@@ -78,52 +77,50 @@ export const viewDetailDeliveryNoteAction = (id) => async (dispatch) => {
   }
 };
 
-export const deliveryImportToMainWareHouseAction = (para, deliveryName) => async (dispatch) => {
-  const listProduct = Array.from(para.values());
-  const listProductHandleParse = [];
-  const listProductSendToBE = [];
-  listProduct.forEach((product) => {
-    const inforIdProduct = product.product_id.split("+");
-    const parseProduct = {
-      ...product,
-      product_id: parseInt(inforIdProduct[1], 10),
-      colour_id: parseInt(inforIdProduct[0], 10),
-      size_id: parseInt(inforIdProduct[2], 10),
-    };
-    console.log(parseProduct);
-    listProductHandleParse.push(parseProduct);
-  });
-  listProductHandleParse.forEach((product) => {
-    if (product) {
-      const { id, product_name, ...rest } = product;
-      listProductSendToBE.push(rest);
-    }
-  });
-  dispatch({
-    type: CREATE_IMPORT_PRODUCT_LIST_REQUEST,
-  });
-  try {
-    const params = {
-      IsMainWarehouse: true,
-      Status: true,
-    };
-    const { content } = await storeApi.getListStore(params);
-    const paramsForApiImport = {
-      delivery_note_name: deliveryName,
-      from_store_id: content[0].store_id,
-      list_products: listProductSendToBE,
-    };
-    const data = await deliveryApi.createDeliveryNote(paramsForApiImport);
-    dispatch({ type: CREATE_IMPORT_PRODUCT_LIST_SUCCESS, payload: data.content });
-  } catch (error) {
-    console.log(error);
-    dispatch({
-      type: CREATE_IMPORT_PRODUCT_LIST_FAIL,
-      payload:
-        error.response && error.response.data.message ? error.response.data.message : error.message,
+export const deliveryImportToMainWareHouseAction =
+  (para, deliveryName, store_id) => async (dispatch) => {
+    const listProduct = Array.from(para.values());
+    const listProductHandleParse = [];
+    const listProductSendToBE = [];
+    listProduct.forEach((product) => {
+      const inforIdProduct = product.product_id.split("+");
+      const parseProduct = {
+        ...product,
+        product_id: parseInt(inforIdProduct[1], 10),
+        colour_id: parseInt(inforIdProduct[0], 10),
+        size_id: parseInt(inforIdProduct[2], 10),
+      };
+      console.log(parseProduct);
+      listProductHandleParse.push(parseProduct);
     });
-  }
-};
+    listProductHandleParse.forEach((product) => {
+      if (product) {
+        const { id, product_name, ...rest } = product;
+        listProductSendToBE.push(rest);
+      }
+    });
+    dispatch({
+      type: CREATE_IMPORT_PRODUCT_LIST_REQUEST,
+    });
+    try {
+      const paramsForApiImport = {
+        delivery_note_name: deliveryName,
+        from_store_id: store_id,
+        list_products: listProductSendToBE,
+      };
+      const data = await deliveryApi.createDeliveryNote(paramsForApiImport);
+      dispatch({ type: CREATE_IMPORT_PRODUCT_LIST_SUCCESS, payload: data.content });
+    } catch (error) {
+      console.log(error);
+      dispatch({
+        type: CREATE_IMPORT_PRODUCT_LIST_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 export const listExportDeliverAdmin = (page, size) => async (dispatch) => {
   dispatch({ type: EXPORT_DELIVER_LIST_REQUEST });
