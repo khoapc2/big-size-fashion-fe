@@ -18,6 +18,12 @@ import {
   STORE_LIST_DROPDOWN_REQUEST,
   STORE_LIST_DROPDOWN_SUCCESS,
   STORE_LIST_DROPDOWN_FAIL,
+  ACTIVE_STORE_LIST_DROPDOWN_REQUEST,
+  ACTIVE_STORE_LIST_DROPDOWN_SUCCESS,
+  ACTIVE_STORE_LIST_DROPDOWN_FAIL,
+  GET_MAINWAREHOUSE_REQUEST,
+  GET_MAINWAREHOUSE_SUCCESS,
+  GET_MAINWAREHOUSE_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listStore =
@@ -139,5 +145,43 @@ export const updateStore = (storeModels, id) => async (dispatch) => {
       payload:
         error.response && error.response.data.message ? error.response.data.message : error.message,
     });
+  }
+};
+
+export const listActiveStore = (param) => async (dispatch) => {
+  dispatch({ type: ACTIVE_STORE_LIST_DROPDOWN_REQUEST });
+  try {
+    const params = {
+      IsMainWarehouse: param.mainWareHouse,
+      Status: param.status,
+    };
+    console.log(params);
+    const data = await storeApi.getListStore(params);
+    console.log(data);
+    dispatch({ type: ACTIVE_STORE_LIST_DROPDOWN_SUCCESS, payload: data.content });
+  } catch (error) {
+    const message =
+      error.respone && error.respone.content.message
+        ? error.respone.content.message
+        : error.message;
+    dispatch({ type: ACTIVE_STORE_LIST_DROPDOWN_FAIL, payload: message });
+  }
+};
+
+export const getMainWareHouseAction = () => async (dispatch) => {
+  dispatch({ type: GET_MAINWAREHOUSE_REQUEST });
+  try {
+    const params = {
+      IsMainWarehouse: true,
+      Status: true,
+    };
+    const { content } = await storeApi.getListStore(params);
+    dispatch({ type: GET_MAINWAREHOUSE_SUCCESS, payload: content });
+  } catch (error) {
+    const message =
+      error.respone && error.respone.content.message
+        ? error.respone.content.message
+        : error.message;
+    dispatch({ type: GET_MAINWAREHOUSE_FAIL, payload: message });
   }
 };

@@ -17,6 +17,12 @@ import {
   STORE_LIST_DROPDOWN_REQUEST,
   STORE_LIST_DROPDOWN_SUCCESS,
   STORE_LIST_DROPDOWN_FAIL,
+  ACTIVE_STORE_LIST_DROPDOWN_REQUEST,
+  ACTIVE_STORE_LIST_DROPDOWN_SUCCESS,
+  ACTIVE_STORE_LIST_DROPDOWN_FAIL,
+  GET_MAINWAREHOUSE_REQUEST,
+  GET_MAINWAREHOUSE_SUCCESS,
+  GET_MAINWAREHOUSE_FAIL,
 } from "../../service/Validations/VarConstant";
 
 function resultArr(payload) {
@@ -27,6 +33,17 @@ function resultArr(payload) {
     text: store_name,
     value: store_id,
     status,
+  }));
+  return result;
+}
+
+function resultArr1(payload) {
+  let result = [];
+  const newArray = [...payload];
+  result = newArray.map(({ store_id, store_name }) => ({
+    key: store_id.toString(),
+    text: store_name,
+    value: store_id,
   }));
   return result;
 }
@@ -114,6 +131,46 @@ export const listStoreDropdownReducer = (
         store: [...resultArr(action.payload)],
       };
     case STORE_LIST_DROPDOWN_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const listActiveStoreDropdownReducer = (
+  state = { loading: true, store: [], error: "" },
+  action
+) => {
+  switch (action.type) {
+    case ACTIVE_STORE_LIST_DROPDOWN_REQUEST:
+      return { ...state, loading: true };
+    case ACTIVE_STORE_LIST_DROPDOWN_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        store: [...resultArr1(action.payload)],
+      };
+    case ACTIVE_STORE_LIST_DROPDOWN_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const getMainWareHouseReducer = (
+  state = { loading: true, store: [], error: "" },
+  action
+) => {
+  switch (action.type) {
+    case GET_MAINWAREHOUSE_REQUEST:
+      return { ...state, loading: true };
+    case GET_MAINWAREHOUSE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        store: action.payload,
+      };
+    case GET_MAINWAREHOUSE_FAIL:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;
