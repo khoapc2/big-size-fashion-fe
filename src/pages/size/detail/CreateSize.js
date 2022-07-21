@@ -20,8 +20,8 @@ export default function CreateSize() {
     <DashboardLayout>
       <DashboardNavbar />
       <PageHeader
-        title="Thêm thông tin cửa hàng mới"
-        subTitle="Sử dụng cho cửa hàng mới"
+        title="Thêm kích cỡ mới cho sản phẩm"
+        subTitle=""
         icon={<AddBusinessIcon fontSize="large" />}
       />
       <Paper className={classes.pageContent}>

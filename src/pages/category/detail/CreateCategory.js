@@ -20,8 +20,8 @@ export default function CreateCategory() {
     <DashboardLayout>
       <DashboardNavbar />
       <PageHeader
-        title="Thêm thông tin cửa hàng mới"
-        subTitle="Sử dụng cho cửa hàng mới"
+        title="Tạo thể loại mới cho sản phẩm"
+        subTitle=""
         icon={<AddBusinessIcon fontSize="large" />}
       />
       <Paper className={classes.pageContent}>

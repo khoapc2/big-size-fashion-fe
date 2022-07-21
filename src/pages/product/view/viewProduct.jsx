@@ -38,7 +38,7 @@ export default function ViewProduct() {
     <DashboardLayout>
       <DashboardNavbar />
       <div className="updateProduct">
-        <h1 className="addProductTitle">Chỉnh sửa thông tin sản phẩm</h1>
+        <h1 className="addProductTitle">Thông tin sản phẩm</h1>
         {loading ? (
           <Loading />
         ) : (

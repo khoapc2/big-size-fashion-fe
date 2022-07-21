@@ -326,3 +326,38 @@ export const routesManager = [
     component: <Profile />,
   },
 ];
+
+export const routesOwner = [
+  {
+    type: "collapse",
+    name: "Sản phẩm",
+    key: "products",
+    icon: <Icon fontSize="small">styler</Icon>,
+    route: "/products",
+    component: <Products />,
+  },
+  {
+    type: "collapse",
+    name: "Profile",
+    key: "profile",
+    icon: <Icon fontSize="small">person</Icon>,
+    route: "/profile",
+    component: <Profile />,
+  },
+  {
+    type: "collapse",
+    name: "Thống kê",
+    key: "statistic",
+    icon: <Icon fontSize="small">analytics </Icon>,
+    route: "/statistic",
+    component: <Statistic />,
+  },
+  {
+    type: "collapse",
+    name: "Nhân viên",
+    key: "staff",
+    icon: <Icon fontSize="small">person </Icon>,
+    route: "/staff",
+    component: <Profile />,
+  },
+];
