@@ -11,6 +11,12 @@ import {
   VIEW_DETAIL_DELIVERY_NOTE_REQUEST,
   VIEW_DETAIL_DELIVERY_NOTE_FAIL,
   VIEW_DETAIL_DELIVERY_NOTE_SUCCESS,
+  APPROVE_DELIVERY_NOTE_REQUEST,
+  APPROVE_DELIVERY_NOTE_SUCCESS,
+  APPROVE_DELIVERY_NOTE_FAIL,
+  REJECT_DELIVERY_NOTE_REQUEST,
+  REJECT_DELIVERY_NOTE_FAIL,
+  REJECT_DELIVERY_NOTE_SUCCESS,
 } from "../../service/Validations/VarConstant";
 
 const calculateTotalPrice = ({ total_price }) => {
@@ -113,17 +119,43 @@ export const viewDetailDeliveryNoteReducer = (
   }
 };
 
+export const approveDeliveryReducer = (state = { loading: true }, action) => {
+  switch (action.type) {
+    case APPROVE_DELIVERY_NOTE_REQUEST:
+      return { ...state, loading: true };
+    case APPROVE_DELIVERY_NOTE_SUCCESS:
+      return { ...state, loading: false, success: action.payload };
+    case APPROVE_DELIVERY_NOTE_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const rejectDeliveryReducer = (state = { loading: true }, action) => {
+  switch (action.type) {
+    case REJECT_DELIVERY_NOTE_REQUEST:
+      return { ...state, loading: true };
+    case REJECT_DELIVERY_NOTE_SUCCESS:
+      return { ...state, loading: false, success: action.payload };
+    case REJECT_DELIVERY_NOTE_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
 // export const listOfflineOrderReducer = (state = { loading: true, data: [], error: "" }, action) => {
 //   switch (action.type) {
-//     case OFFLINE_ORDER_LIST_REQUEST:
+//     case DELIVERY_NOTE_LIST_REQUEST:
 //       return { ...state, loading: true };
-//     case OFFLINE_ORDER_LIST_SUCCESS:
+//     case DELIVERY_NOTE_LIST_SUCCESS:
 //       return {
 //         ...state,
 //         loading: false,
 //         data: action.payload,
 //       };
-//     case OFFLINE_ORDER_LIST_FAIL:
+//     case DELIVERY_NOTE_LIST_FAIL:
 //       return { ...state, loading: false, error: action.payload };
 //     default:
 //       return state;
@@ -135,11 +167,11 @@ export const viewDetailDeliveryNoteReducer = (
 //   action
 // ) => {
 //   switch (action.type) {
-//     case VIEW_DETAIL_OFFLINE_ORDER_LIST_REQUEST:
+//     case VIEW_DETAIL_DELIVERY_NOTE_LIST_REQUEST:
 //       return { ...state, loading: true };
-//     case VIEW_DETAIL_OFFLINE_ORDER_LIST_SUCCESS:
+//     case VIEW_DETAIL_DELIVERY_NOTE_LIST_SUCCESS:
 //       return { ...state, loading: false, data: action.payload };
-//     case VIEW_DETAIL_OFFLINE_ORDER_LIST_FAIL:
+//     case VIEW_DETAIL_DELIVERY_NOTE_LIST_FAIL:
 //       return { ...state, loading: false, error: action.payload };
 //     default:
 //       return state;
@@ -148,11 +180,11 @@ export const viewDetailDeliveryNoteReducer = (
 
 // export const approveOfflineOrderReducer = (state = { loading: true }, action) => {
 //   switch (action.type) {
-//     case APPROVE_OFFLINE_ORDER_REQUEST:
+//     case APPROVE_DELIVERY_NOTE_REQUEST:
 //       return { ...state, loading: true };
-//     case APPROVE_OFFLINE_ORDER_SUCCESS:
+//     case APPROVE_DELIVERY_NOTE_SUCCESS:
 //       return { ...state, loading: false, success: action.payload };
-//     case APPROVE_OFFLINE_ORDER_FAIL:
+//     case APPROVE_DELIVERY_NOTE_FAIL:
 //       return { ...state, loading: false, error: action.payload };
 //     default:
 //       return state;
@@ -161,11 +193,11 @@ export const viewDetailDeliveryNoteReducer = (
 
 // export const rejectOfflineOrderReducer = (state = { loading: true }, action) => {
 //   switch (action.type) {
-//     case CANCEL_OFFLINE_ORDER_REQUEST:
+//     case REJECT_DELIVERY_NOTE_REQUEST:
 //       return { ...state, loading: true };
-//     case CANCEL_OFFLINE_ORDER_SUCCESS:
+//     case REJECT_DELIVERY_NOTE_SUCCESS:
 //       return { ...state, loading: false, success: action.payload };
-//     case CANCEL_OFFLINE_ORDER_FAIL:
+//     case REJECT_DELIVERY_NOTE_FAIL:
 //       return { ...state, loading: false, error: action.payload };
 //     default:
 //       return state;
@@ -187,11 +219,11 @@ export const viewDetailDeliveryNoteReducer = (
 
 // export const rejectOnlineOrderReducer = (state = { loading: true }, action) => {
 //   switch (action.type) {
-//     case CANCEL_ONLINE_ORDER_REQUEST:
+//     case REJECT_ONLINE_ORDER_REQUEST:
 //       return { ...state, loading: true };
-//     case CANCEL_ONLINE_ORDER_SUCCESS:
+//     case REJECT_ONLINE_ORDER_SUCCESS:
 //       return { ...state, loading: false, success: action.payload };
-//     case CANCEL_ONLINE_ORDER_FAIL:
+//     case REJECT_ONLINE_ORDER_FAIL:
 //       return { ...state, loading: false, error: action.payload };
 //     default:
 //       return state;

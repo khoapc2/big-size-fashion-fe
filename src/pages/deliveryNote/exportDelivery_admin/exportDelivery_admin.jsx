@@ -20,9 +20,9 @@ import {
   GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
 
-import "./exportDeliver.css";
+import "./importDeliver.css";
 
-import { listExportDeliver } from "../../../redux/actions/deliverAction";
+import { listExportDeliverAdmin } from "../../../redux/actions/deliverAction";
 
 // import staffApi from "../../api/staffApi";
 // import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
@@ -33,6 +33,10 @@ styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css
 document.head.appendChild(styleLink);
 
 export default function StaffList() {
+  // const [notify, setNotify] = useState({ isOpen: false, message: "", type: "" });
+  // const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
+  // // const [paging, setPaging] = useState({});
+  //Test
   const { data, error, loading, totalCount } = useSelector((state) => state.viewExportDeliver);
   const [pageState, setPageState] = useState({
     page: 1,
@@ -42,7 +46,7 @@ export default function StaffList() {
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
   useEffect(() => {
-    dispatch(listExportDeliver(pageState.page, pageState.pageSize));
+    dispatch(listExportDeliverAdmin(pageState.page, pageState.pageSize));
   }, [dispatch, pageState.page, pageState.pageSize, searchText, triggerReload]);
 
   function CustomToolbar() {
@@ -54,6 +58,20 @@ export default function StaffList() {
       </GridToolbarContainer>
     );
   }
+
+  // const handleClickSearch = (searchText) => {};
+
+  // const handleDelete = (id) => {
+  //   setConfirmDialog({
+  //     ...confirmDialog,
+  //     isOpen: false,
+  //   });
+  //   setNotify({
+  //     isOpen: true,
+  //     message: "Deleted Successfully",
+  //     type: "success",
+  //   });
+  // };
 
   function NoRowsOverlay() {
     return (
@@ -74,6 +92,18 @@ export default function StaffList() {
   const columns = [
     { field: "delivery_note_id", headerName: "Mã đơn hàng", width: 150 },
     {
+      field: "delivery_note_name",
+      headerName: "Tên đơn",
+      width: 250,
+      renderCell: (params) => <div>{params.row.delivery_note_name}</div>,
+    },
+    {
+      field: "request_store",
+      headerName: "Cửa hàng yêu cầu",
+      width: 200,
+      renderCell: (params) => <div>{params.row.request_store}</div>,
+    },
+    {
       field: "total_price",
       headerName: "Tổng giá trị (VNĐ)",
       width: 150,
@@ -86,7 +116,7 @@ export default function StaffList() {
     {
       field: "create_date",
       headerName: "Ngày tạo",
-      width: 250,
+      width: 150,
       renderCell: (params) => <div>{params.row.create_date}</div>,
     },
     {
@@ -95,15 +125,14 @@ export default function StaffList() {
       width: 160,
       renderCell: (params) => <div>{params.row.status}</div>,
     },
-
     {
       field: "action",
       headerName: "Thao tác",
-      width: 250,
+      width: 150,
       renderCell: (params) => (
         <>
-          <Link to={`/offline-order-detail/${params.row.order_id}`}>
-            <button type="submit" className="exportDeliverEdit">
+          <Link to={`/export-delivery-note-detail-admin/${params.row.delivery_note_id}`}>
+            <button type="submit" className="importDeliverEdit">
               Xem chi tiết
             </button>
           </Link>
@@ -113,29 +142,8 @@ export default function StaffList() {
   ];
 
   return (
-    <div className="exportDeliverTab">
-      {/* <FormControl sx={{ m: 1, width: "35ch" }} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment">Tìm kiếm nhân viên</InputLabel>
-        <OutlinedInput
-          id="outlined-adornment"
-          value={searchText}
-          onChange={inputSearchHandler}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickSearch}
-                edge="end"
-              >
-                <SearchIcon />
-              </IconButton>
-            </InputAdornment>
-          }
-          label="Tìm kiếm nhân viên"
-        />
-      </FormControl> */}
-
-      <div className="exportDeliver">
+    <div className="importDeliverTab">
+      <div className="importDeliver">
         <DataGrid
           sx={{
             "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {
@@ -150,12 +158,14 @@ export default function StaffList() {
           rows={data}
           autoHeight
           rowCount={totalCount}
-          rowsPerPageOptions={[10, 20, 50, 100]}
+          rowsPerPageOptions={[10, 20, 50]}
           pagination
           page={pageState.page - 1}
           paginationMode="server"
-          onPageChange={(newPage) => setPageState((old) => ({ ...old, page: newPage + 1}))}
-          onPageSizeChange={(newPageSize) => setPageState(old => ({ ...old, pageSize: newPageSize}))}
+          onPageChange={(newPage) => setPageState((old) => ({ ...old, page: newPage + 1 }))}
+          onPageSizeChange={(newPageSize) =>
+            setPageState((old) => ({ ...old, pageSize: newPageSize }))
+          }
           disableSelectionOnClick
           columns={columns}
           pageSize={pageState.pageSize}

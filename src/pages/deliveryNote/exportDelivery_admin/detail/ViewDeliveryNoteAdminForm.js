@@ -2,7 +2,7 @@
 // import { useState } from "react";
 import { useEffect, useState } from "react";
 import { Grid } from "@material-ui/core";
-
+import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
@@ -11,10 +11,20 @@ import Stack from "@mui/material/Stack";
 import { DataGrid } from "@mui/x-data-grid";
 
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
-import { viewDetailDeliveryNoteAction } from "../../../../redux/actions/deliverAction";
+import {
+  viewDetailDeliveryNoteAction,
+  approveDeliveryAction,
+  rejectDeliveryAction,
+} from "../../../../redux/actions/deliverAction";
 import { triggerReload } from "../../../../redux/actions/userAction";
 import Loading from "../../../../components/Loading";
-// import "./viewDeliveryNote.css";
+import "./viewDeliveryNote.css";
+import {
+  APPROVE_DELIVERY_NOTE_SUCCESS,
+  APPROVE_DELIVERY_NOTE_FAIL,
+  CANCEL_DELIVERY_NOTE_SUCCESS,
+  CANCEL_DELIVERY_NOTE_FAIL,
+} from "../../../../service/Validations/VarConstant";
 
 export default function DeliveryNoteForm() {
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
@@ -22,13 +32,53 @@ export default function DeliveryNoteForm() {
   const { deliveryId } = useParams();
   const dispatch = useDispatch();
   const { data, loading, totalProduct } = useSelector((state) => state.viewDetailDeliveryNote);
+  const approveDelivery = useSelector((state) => state.approveDeliveryState);
+  const rejectDelivery = useSelector((state) => state.rejectDeliveryState);
 
   console.log(data);
   console.log(totalProduct);
 
   useEffect(() => {
     dispatch(viewDetailDeliveryNoteAction(deliveryId));
-  }, [dispatch, triggerReload]);
+  }, [dispatch, triggerReload, data.status]);
+
+  useEffect(() => {
+    if (approveDelivery.success) {
+      toast.success("Duyệt đơn hàng thành công");
+      dispatch({ type: APPROVE_DELIVERY_NOTE_SUCCESS, payload: false });
+    }
+    if (approveDelivery.error) {
+      toast.error("Duyệt đơn hàng thất bại, vui lòng thử lại");
+      dispatch({ type: APPROVE_DELIVERY_NOTE_FAIL, payload: false });
+    }
+  }, [triggerReload, approveDelivery.success, approveDelivery.error]);
+
+  useEffect(() => {
+    if (rejectDelivery.success) {
+      toast.success("Thao tác thành công");
+      dispatch({ type: CANCEL_DELIVERY_NOTE_SUCCESS, payload: false });
+    }
+    if (rejectDelivery.error) {
+      toast.error("Thao tác thất bại, vui lòng thử lại");
+      dispatch({ type: CANCEL_DELIVERY_NOTE_FAIL, payload: false });
+    }
+  }, [triggerReload, rejectDelivery.success, rejectDelivery.error]);
+
+  const handleReject = (id) => {
+    dispatch(rejectDeliveryAction(id));
+    setConfirmDialog({
+      ...confirmDialog,
+      isOpen: false,
+    });
+  };
+
+  const handleAccept = (id) => {
+    dispatch(approveDeliveryAction(id));
+    setConfirmDialog({
+      ...confirmDialog,
+      isOpen: false,
+    });
+  };
 
   const columns = [
     {
@@ -103,6 +153,46 @@ export default function DeliveryNoteForm() {
         </div>
       ) : (
         <div className="offlineOrderTop">
+          <div className="buttonApprove">
+            {data.status === "Chờ xác nhận" ? (
+              <Stack className="bottom-button" direction="row" spacing={2}>
+                <Button
+                  className="approve"
+                  variant="outlined"
+                  onClick={() =>
+                    setConfirmDialog({
+                      isOpen: true,
+                      title: "Bạn có muốn xác nhận yêu cầu nhập hàng này?",
+                      subTitle: "Xác nhận",
+                      onConfirm: () => {
+                        handleAccept(deliveryId);
+                      },
+                    })
+                  }
+                >
+                  Xác nhận
+                </Button>
+                <Button
+                  className="deny"
+                  variant="outlined"
+                  onClick={() =>
+                    setConfirmDialog({
+                      isOpen: true,
+                      title: "Bạn có muốn hủy yêu cầu nhập hàng này?",
+                      subTitle: "Hủy",
+                      onConfirm: () => {
+                        handleReject(deliveryId);
+                      },
+                    })
+                  }
+                >
+                  Hủy
+                </Button>
+              </Stack>
+            ) : (
+              <></>
+            )}
+          </div>
           <Grid container>
             <Grid item xs={4}>
               <div className="container-title">
@@ -117,23 +207,19 @@ export default function DeliveryNoteForm() {
                 <div className="title">Người Tạo Đơn:</div>
                 <div className="content">&emsp;{data.receive_staff_name}</div>
               </div>
+            </Grid>
+            <Grid item xs={8}>
               <div className="container-title">
                 <div className="title">Cửa hàng: </div>
                 <div className="content">&emsp;{data.to_store.store_name}</div>
               </div>
-            </Grid>
-            <Grid item xs={8}>
-              <div className="container-title">
-                <div className="title">Cửa hàng nhận yêu cầu: </div>
-                <div className="content">&emsp;{data.from_store.store_name}</div>
-              </div>
               <div className="container-title">
                 <div className="title">SĐT: </div>
-                <div className="content"> &emsp; {data.from_store.store_phone}</div>
+                <div className="content"> &emsp; {data.to_store.store_phone}</div>
               </div>
               <div className="container-title">
                 <div className="title">Địa chỉ: </div>
-                <div className="content">&emsp; {data.from_store.store_address}</div>
+                <div className="content">&emsp; {data.to_store.store_address}</div>
               </div>
             </Grid>
           </Grid>

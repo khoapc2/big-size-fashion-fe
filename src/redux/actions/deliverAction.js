@@ -13,6 +13,12 @@ import {
   VIEW_DETAIL_DELIVERY_NOTE_REQUEST,
   VIEW_DETAIL_DELIVERY_NOTE_FAIL,
   VIEW_DETAIL_DELIVERY_NOTE_SUCCESS,
+  APPROVE_DELIVERY_NOTE_REQUEST,
+  APPROVE_DELIVERY_NOTE_SUCCESS,
+  APPROVE_DELIVERY_NOTE_FAIL,
+  REJECT_DELIVERY_NOTE_REQUEST,
+  REJECT_DELIVERY_NOTE_FAIL,
+  REJECT_DELIVERY_NOTE_SUCCESS,
 } from "../../service/Validations/VarConstant";
 
 export const listImportDeliver = (page, size) => async (dispatch) => {
@@ -119,17 +125,74 @@ export const deliveryImportToMainWareHouseAction = (para, deliveryName) => async
   }
 };
 
+export const listExportDeliverAdmin = (page, size) => async (dispatch) => {
+  dispatch({ type: EXPORT_DELIVER_LIST_REQUEST });
+  try {
+    const param = {
+      PageNumber: page,
+      PageSize: size,
+    };
+    const data = await deliveryApi.adminGetExportList(param);
+    dispatch({ type: EXPORT_DELIVER_LIST_SUCCESS, payload: data });
+    dispatch({ type: EXPORT_DELIVER_LIST_FAIL, payload: "" });
+  } catch (error) {
+    const message =
+      error.respone && error.respone.content.message
+        ? error.respone.content.message
+        : error.message;
+    dispatch({ type: EXPORT_DELIVER_LIST_FAIL, payload: message });
+  }
+};
+
+export const approveDeliveryAction = (id) => async (dispatch) => {
+  dispatch({
+    type: APPROVE_DELIVERY_NOTE_REQUEST,
+    payload: { id },
+  });
+  try {
+    if (id) {
+      const data = await deliveryApi.approveDelivery(id);
+      dispatch({ type: APPROVE_DELIVERY_NOTE_SUCCESS, payload: data });
+    }
+  } catch (error) {
+    dispatch({
+      type: APPROVE_DELIVERY_NOTE_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const rejectDeliveryAction = (id) => async (dispatch) => {
+  dispatch({
+    type: REJECT_DELIVERY_NOTE_REQUEST,
+    payload: { id },
+  });
+  try {
+    if (id) {
+      const data = await deliveryApi.rejectDelivery(id);
+      dispatch({ type: REJECT_DELIVERY_NOTE_SUCCESS, payload: data });
+    }
+  } catch (error) {
+    dispatch({
+      type: REJECT_DELIVERY_NOTE_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
 // export const viewDetailOfflineOrder = (orderId) => async (dispatch) => {
 //   dispatch({
-//     type: VIEW_DETAIL_OFFLINE_ORDER_LIST_REQUEST,
+//     type: VIEW_DETAIL_DELIVERY_NOTE_LIST_REQUEST,
 //     payload: { orderId },
 //   });
 //   try {
 //     const data = await orderApi.getOrderDetailById(orderId);
-//     dispatch({ type: VIEW_DETAIL_OFFLINE_ORDER_LIST_SUCCESS, payload: data.content });
+//     dispatch({ type: VIEW_DETAIL_DELIVERY_NOTE_LIST_SUCCESS, payload: data.content });
 //   } catch (error) {
 //     dispatch({
-//       type: VIEW_DETAIL_OFFLINE_ORDER_LIST_FAIL,
+//       type: VIEW_DETAIL_DELIVERY_NOTE_LIST_FAIL,
 //       payload:
 //         error.response && error.response.data.message ? error.response.data.message : error.message,
 //     });
@@ -138,17 +201,17 @@ export const deliveryImportToMainWareHouseAction = (para, deliveryName) => async
 
 // export const approveOfflineOrderAction = (id) => async (dispatch) => {
 //   dispatch({
-//     type: APPROVE_OFFLINE_ORDER_REQUEST,
+//     type: APPROVE_DELIVERY_NOTE_REQUEST,
 //     payload: { id },
 //   });
 //   try {
 //     if (id) {
 //       const data = await orderApi.approveOfflineOrder(id);
-//       dispatch({ type: APPROVE_OFFLINE_ORDER_SUCCESS, payload: data });
+//       dispatch({ type: APPROVE_DELIVERY_NOTE_SUCCESS, payload: data });
 //     }
 //   } catch (error) {
 //     dispatch({
-//       type: APPROVE_OFFLINE_ORDER_FAIL,
+//       type: APPROVE_DELIVERY_NOTE_FAIL,
 //       payload:
 //         error.response && error.response.data.message ? error.response.data.message : error.message,
 //     });
@@ -157,17 +220,17 @@ export const deliveryImportToMainWareHouseAction = (para, deliveryName) => async
 
 // export const cancelOfflineOrderAction = (id) => async (dispatch) => {
 //   dispatch({
-//     type: CANCEL_OFFLINE_ORDER_REQUEST,
+//     type: CANCEL_DELIVERY_NOTE_REQUEST,
 //     payload: { id },
 //   });
 //   try {
 //     if (id) {
 //       const data = await orderApi.rejectOrder(id);
-//       dispatch({ type: CANCEL_OFFLINE_ORDER_SUCCESS, payload: data });
+//       dispatch({ type: CANCEL_DELIVERY_NOTE_SUCCESS, payload: data });
 //     }
 //   } catch (error) {
 //     dispatch({
-//       type: CANCEL_OFFLINE_ORDER_FAIL,
+//       type: CANCEL_DELIVERY_NOTE_FAIL,
 //       payload:
 //         error.response && error.response.data.message ? error.response.data.message : error.message,
 //     });
@@ -176,17 +239,17 @@ export const deliveryImportToMainWareHouseAction = (para, deliveryName) => async
 
 // export const cancelOnlineOrderAction = (id) => async (dispatch) => {
 //   dispatch({
-//     type: CANCEL_ONLINE_ORDER_REQUEST,
+//     type: CANCEL_DELIVERY_NOTE_REQUEST,
 //     payload: { id },
 //   });
 //   try {
 //     if (id) {
 //       const data = await orderApi.rejectOrder(id);
-//       dispatch({ type: CANCEL_ONLINE_ORDER_SUCCESS, payload: data });
+//       dispatch({ type: CANCEL_DELIVERY_NOTE_SUCCESS, payload: data });
 //     }
 //   } catch (error) {
 //     dispatch({
-//       type: CANCEL_ONLINE_ORDER_FAIL,
+//       type: CANCEL_DELIVERY_NOTE_FAIL,
 //       payload:
 //         error.response && error.response.data.message ? error.response.data.message : error.message,
 //     });
