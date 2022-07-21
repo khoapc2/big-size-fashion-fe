@@ -87,7 +87,7 @@ export default function OfflineOrderForm() {
     }
   }, [triggerReload, rejectOffOrder.success, rejectOffOrder.error]);
 
-  const handleCancel = (id, formik) => {
+  const handleReject = (id, formik) => {
     console.log(formik);
     formik.setSubmitting(true);
     dispatch(cancelOfflineOrderAction(id));
@@ -229,7 +229,7 @@ export default function OfflineOrderForm() {
                               title: "Bạn có muốn hủy đơn hàng này?",
                               subTitle: "Xác nhận",
                               onConfirm: () => {
-                                handleCancel(order_id, formik);
+                                handleReject(order_id, formik);
                               },
                             })
                           }

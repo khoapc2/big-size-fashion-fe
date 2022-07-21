@@ -7,6 +7,7 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 // import { Link } from "react-router-dom";
 import ImportDeliver from "pages/deliveryNote/importDeliver/importDeliver";
 import ExportDeliver from "pages/deliveryNote/exportDeliver/exportDeliver";
+import ExportDeliveryAdmin from "pages/deliveryNote/exportDelivery_admin/exportDelivery_admin";
 
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 // import BadgeIcon from "@mui/icons-material/Badge";
@@ -55,7 +56,7 @@ export default function Layout() {
           </>
         ) : (
           <TabPanel value="1">
-            <ExportDeliver />
+            <ExportDeliveryAdmin />
           </TabPanel>
         )}
       </TabContext>

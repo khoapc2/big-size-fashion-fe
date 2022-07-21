@@ -5,6 +5,8 @@ const URL_ENTITY = "/v1/delivery-notes";
 const IMPORT_LIST = "/import-list";
 const EXPORT_LIST = "/export-list";
 const ADMIN_EXPORT_LIST = "/export-list-for-main-warehouse";
+const APPROVE = "approve/";
+const REJECT = "reject/";
 
 const deliverApi = {
   getImportList: (param) => {
@@ -16,9 +18,9 @@ const deliverApi = {
     return axios.get(url);
   },
 
-  adminGetExportList: () => {
+  adminGetExportList: (param) => {
     const url = `${URL_ENTITY}${ADMIN_EXPORT_LIST}`;
-    return axios.get(url);
+    return axios.get(url, { param });
   },
 
   createDeliveryNote: (params) => {
@@ -29,6 +31,16 @@ const deliverApi = {
   getDeliveryNoteDetailById: (id) => {
     const url = `${URL_ENTITY}/${id}`;
     return axios.get(url);
+  },
+
+  approveDelivery: (params) => {
+    const url = `${URL_ENTITY}/${APPROVE}${params}`;
+    return axios.put(url);
+  },
+
+  rejectDelivery: (params) => {
+    const url = `${URL_ENTITY}/${REJECT}${params}`;
+    return axios.put(url);
   },
 };
 export default deliverApi;
