@@ -45,6 +45,7 @@ export default function StaffList() {
     dispatch(listExportDeliver(pageState.page, pageState.pageSize));
   }, [dispatch, pageState.page, pageState.pageSize, searchText, triggerReload]);
 
+  console.log(data);
   // let inputSearchHandler = (e) => {
   //   let lowerCase = e.target.value.toLowerCase();
   //   setSearchText(lowerCase);
@@ -91,7 +92,7 @@ export default function StaffList() {
   }
 
   const columns = [
-    { field: "order_id", headerName: "Mã đơn hàng", width: 150 },
+    { field: "delivery_note_id", headerName: "Mã đơn hàng", width: 150 },
     {
       field: "total_price",
       headerName: "Tổng giá trị (VNĐ)",
@@ -127,7 +128,7 @@ export default function StaffList() {
       width: 250,
       renderCell: (params) => (
         <>
-          <Link to={`/offline-order-detail/${params.row.order_id}`}>
+          <Link to={`/delivery-export-detail/${params.row.delivery_note_id}`}>
             <button type="submit" className="exportDeliverEdit">
               Xem chi tiết
             </button>
