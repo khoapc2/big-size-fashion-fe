@@ -22,8 +22,8 @@ import "./viewDeliveryNote.css";
 import {
   APPROVE_DELIVERY_NOTE_SUCCESS,
   APPROVE_DELIVERY_NOTE_FAIL,
-  CANCEL_DELIVERY_NOTE_SUCCESS,
-  CANCEL_DELIVERY_NOTE_FAIL,
+  REJECT_DELIVERY_NOTE_FAIL,
+  REJECT_DELIVERY_NOTE_SUCCESS,
 } from "../../../../service/Validations/VarConstant";
 
 export default function DeliveryNoteForm() {
@@ -34,16 +34,17 @@ export default function DeliveryNoteForm() {
   const { data, loading, totalProduct } = useSelector((state) => state.viewDetailDeliveryNote);
   const approveDelivery = useSelector((state) => state.approveDeliveryState);
   const rejectDelivery = useSelector((state) => state.rejectDeliveryState);
-
+  const [reload, setReload] = useState(false);
   console.log(data);
   console.log(totalProduct);
 
   useEffect(() => {
     dispatch(viewDetailDeliveryNoteAction(deliveryId));
-  }, [dispatch, triggerReload, data.status]);
+  }, [dispatch, triggerReload, reload]);
 
   useEffect(() => {
     if (approveDelivery.success) {
+      setReload(true);
       toast.success("Duyệt đơn hàng thành công");
       dispatch({ type: APPROVE_DELIVERY_NOTE_SUCCESS, payload: false });
     }
@@ -55,12 +56,13 @@ export default function DeliveryNoteForm() {
 
   useEffect(() => {
     if (rejectDelivery.success) {
-      toast.success("Thao tác thành công");
-      dispatch({ type: CANCEL_DELIVERY_NOTE_SUCCESS, payload: false });
+      setReload(true);
+      toast.success("Từ chối đơn hàng thành công");
+      dispatch({ type: REJECT_DELIVERY_NOTE_SUCCESS, payload: false });
     }
     if (rejectDelivery.error) {
-      toast.error("Thao tác thất bại, vui lòng thử lại");
-      dispatch({ type: CANCEL_DELIVERY_NOTE_FAIL, payload: false });
+      toast.error("Từ chối đơn hàng thất bại, vui lòng thử lại");
+      dispatch({ type: REJECT_DELIVERY_NOTE_FAIL, payload: false });
     }
   }, [triggerReload, rejectDelivery.success, rejectDelivery.error]);
 
@@ -186,7 +188,7 @@ export default function DeliveryNoteForm() {
                     })
                   }
                 >
-                  Hủy
+                  Từ chối
                 </Button>
               </Stack>
             ) : (
