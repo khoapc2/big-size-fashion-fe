@@ -44,12 +44,19 @@ export default function SizeList() {
 
   console.log(data);
   const [page, setPage] = useState(1);
+  const [role, setRole] = useState(1);
   const triggerReload = useSelector((state) => state.triggerReload);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [keySearch, setKeySearch] = useState("");
+
   useEffect(() => {
-    dispatch(listStore({keySearch}));
+    const currentUser = JSON.parse(localStorage.getItem("user"));
+    setRole(currentUser.role);
+  }, []);
+
+  useEffect(() => {
+    dispatch(listStore({ keySearch }));
     if (success) {
       toast.success("Thao tác thành công");
       dispatch({ type: DELETE_STORE_SUCCESS, payload: false });
@@ -150,46 +157,51 @@ export default function SizeList() {
           >
             <VisibilityIcon />
           </IconButton>
-          <Link to={`/update-store/${params.row.store_id}`}>
-            <button type="submit" className="storeListEdit">
-              Edit
-            </button>
-          </Link>
-
-          {/* <Link to={`/store/:${params.row.store_id}`}> */}
-
-          {params.row.status ? (
-            <Button
-              className="storeListDelete"
-              onClick={() =>
-                setConfirmDialog({
-                  isOpen: true,
-                  title: "Bạn có muốn xóa cửa hàng này ra khỏi chuỗi Big size không?",
-                  subTitle: "Xóa cửa hàng",
-                  onConfirm: () => {
-                    handleDelete(params.row.store_id);
-                  },
-                })
-              }
-              color="red"
-              icon="trash alternate"
-            />
+          {role === "Admin" ? (
+            <Link to={`/update-store/${params.row.store_id}`}>
+              <button type="submit" className="storeListEdit">
+                Sửa
+              </button>
+            </Link>
           ) : (
-            <Button
-              className="storeListDelete"
-              onClick={() =>
-                setConfirmDialog({
-                  isOpen: true,
-                  title: "Bạn có khôi phục cửa hàng này?",
-                  subTitle: "Khôi phục cửa hàng",
-                  onConfirm: () => {
-                    handleDelete(params.row.store_id);
-                  },
-                })
-              }
-              color="green"
-              icon="undo"
-            />
+            ""
+          )}
+          {role === "Admin" ? (
+            params.row.status ? (
+              <Button
+                className="storeListDelete"
+                onClick={() =>
+                  setConfirmDialog({
+                    isOpen: true,
+                    title: "Bạn có muốn xóa cửa hàng này ra khỏi chuỗi Big size không?",
+                    subTitle: "Xóa cửa hàng",
+                    onConfirm: () => {
+                      handleDelete(params.row.store_id);
+                    },
+                  })
+                }
+                color="red"
+                icon="trash alternate"
+              />
+            ) : (
+              <Button
+                className="storeListDelete"
+                onClick={() =>
+                  setConfirmDialog({
+                    isOpen: true,
+                    title: "Bạn có khôi phục cửa hàng này?",
+                    subTitle: "Khôi phục cửa hàng",
+                    onConfirm: () => {
+                      handleDelete(params.row.store_id);
+                    },
+                  })
+                }
+                color="green"
+                icon="undo"
+              />
+            )
+          ) : (
+            ""
           )}
         </>
       ),
@@ -208,11 +220,15 @@ export default function SizeList() {
           label="Tìm kiếm địa chỉ"
         />
       </FormControl>
-      <Link to="/newstore">
-        <button type="button" className="storeAddButton">
-          Tạo cửa hàng mới
-        </button>
-      </Link>
+      {role === "Admin" ? (
+        <Link to="/newstore">
+          <button type="button" className="storeAddButton">
+            Tạo cửa hàng mới
+          </button>
+        </Link>
+      ) : (
+        ""
+      )}
 
       <div className="storeList">
         <DataGrid

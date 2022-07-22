@@ -153,23 +153,24 @@ export const createProduct = (productModels, files) => async (dispatch) => {
   }
 };
 
-export const viewDetailProduct = (productId) => async (dispatch) => {
+export const viewDetailProduct = (productId, role) => async (dispatch) => {
   dispatch({
     type: VIEW_DETAIL_PRODUCT_REQUEST,
     payload: { productId },
   });
   try {
     const data = await productApi.getProductDetailById(productId);
-    data.content.product_detail_list.map(async (item) => {
-      const params = {
-        ProductId: data.content.product_id,
-        ColourId: item.colour.colour_id,
-        SizeId: item.size.size_id,
-      };
-      const dataQuantity = await productApi.getQuantityProduct(params);
-      item.quantity = dataQuantity.content.quantity;
-    });
-    console.log(data.content.product_detail_list);
+    if (role !== "Owner") {
+      await data.content.product_detail_list.map(async (item) => {
+        const params = {
+          ProductId: data.content.product_id,
+          ColourId: item.colour.colour_id,
+          SizeId: item.size.size_id,
+        };
+        const dataQuantity = await productApi.getQuantityProduct(params);
+        item.quantity = await dataQuantity.content.quantity;
+      });
+    }
     dispatch({ type: VIEW_DETAIL_PRODUCT_SUCCESS, payload: data.content });
   } catch (error) {
     dispatch({

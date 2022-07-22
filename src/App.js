@@ -29,7 +29,7 @@ import themeDark from "assets/theme-dark";
 // import createCache from "@emotion/cache";
 
 // Material Dashboard 2 React routes
-import { routes, routesManager, routesAdmin } from "routes";
+import { routes, routesManager, routesAdmin, routesOwner } from "routes";
 
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setMiniSidenav } from "context";
@@ -242,13 +242,22 @@ export default function App() {
             color={sidenavColor}
             brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
             brandName="BigSize Management"
-            routes={routes}
+            routes={routesOwner}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
           />
         );
       default:
-        return <h1>No project match</h1>;
+        return (
+          <Sidenav
+            color={sidenavColor}
+            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+            brandName="BigSize Management"
+            routes={routes}
+            onMouseEnter={handleOnMouseEnter}
+            onMouseLeave={handleOnMouseLeave}
+          />
+        );
     }
   };
 

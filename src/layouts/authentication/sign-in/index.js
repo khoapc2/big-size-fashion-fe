@@ -50,7 +50,7 @@ function Basic() {
       if (userInfo.role === "Admin") {
         navigate("/dashboard", { replace: true });
       } else if (userInfo.role === "Manager") {
-        navigate("/dashboard", { replace: true });
+        navigate("/statistic", { replace: true });
       } else if (userInfo.role === "Owner") {
         navigate("/dashboard", { replace: true });
       } else {

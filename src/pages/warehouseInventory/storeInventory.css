@@ -215,10 +215,14 @@ section {
 .top-add-product {
   padding: 15px;
   margin-top: 20px;
-  display: flex;
+  /* display: flex; */
   align-items: center;
 }
 
 .choose-button-add-product {
   text-align: end;
+}
+
+.ui.form .fields {
+  display: -webkit-box !important;
 }

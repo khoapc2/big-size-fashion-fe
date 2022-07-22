@@ -44,11 +44,18 @@ export default function ManagerList() {
   const { data, error, loading } = useSelector((state) => state.managerList);
   const { success, loadingDelete, errorDelete } = useSelector((state) => state.deleteAccountState);
   const [page, setPage] = useState(1);
+  const [role, setRole] = useState("");
   const triggerReload = useSelector((state) => state.triggerReload);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchText, setSearchText] = useState("");
   console.log(data);
+
+  useEffect(() => {
+    const currentUser = JSON.parse(localStorage.getItem("user"));
+    setRole(currentUser.role);
+  }, []);
+
   useEffect(() => {
     dispatch(listManager(searchText));
     if (success) {
@@ -79,16 +86,6 @@ export default function ManagerList() {
   }
 
   const handleClickSearch = (searchText) => {};
-
-  function handleRowClick(rowData) {
-    // console.log(rowData);
-    // <div>
-    //   <Route path={`/manager/:${rowData}`}>
-    //     <Product />
-    //   </Route>
-    // </div>
-    // <Link to={`/manager/:${rowData.manager_id}`}></Link>;
-  }
 
   const handleDelete = (id) => {
     dispatch(deleteAccount(id));
@@ -154,41 +151,50 @@ export default function ManagerList() {
           >
             <VisibilityIcon />
           </IconButton>
-          <Link to={`/reset-password/${params.row.uid}`}>
-            <button type="submit" className="managerListEdit">
-              Cập nhật mật khẩu 
-            </button>
-          </Link>
-          {params.row.status === "Active" ? (
-            <Button
-              onClick={() =>
-                setConfirmDialog({
-                  isOpen: true,
-                  title: "Bạn muốn khóa tài khoản quản lý này?",
-                  subTitle: "Đảm bảo không có sự nhầm lẫn nào",
-                  onConfirm: () => {
-                    handleDelete(params.row.uid);
-                  },
-                })
-              }
-              color="red"
-              icon="trash alternate"
-            />
+          {role === "Admin" ? (
+            <Link to={`/reset-password/${params.row.uid}`}>
+              <button type="submit" className="managerListEdit">
+                Cập nhật mật khẩu
+              </button>
+            </Link>
           ) : (
-            <Button
-              onClick={() =>
-                setConfirmDialog({
-                  isOpen: true,
-                  title: "Bạn muốn khôi phục tài khoản quản lý này?",
-                  subTitle: "Đảm bảo không có sự nhầm lẫn nào",
-                  onConfirm: () => {
-                    handleDelete(params.row.uid);
-                  },
-                })
-              }
-              color="green"
-              icon="undo"
-            />
+            ""
+          )}
+
+          {role === "Admin" ? (
+            params.row.status === "Active" ? (
+              <Button
+                onClick={() =>
+                  setConfirmDialog({
+                    isOpen: true,
+                    title: "Bạn muốn khóa tài khoản quản lý này?",
+                    subTitle: "Đảm bảo không có sự nhầm lẫn nào",
+                    onConfirm: () => {
+                      handleDelete(params.row.uid);
+                    },
+                  })
+                }
+                color="red"
+                icon="trash alternate"
+              />
+            ) : (
+              <Button
+                onClick={() =>
+                  setConfirmDialog({
+                    isOpen: true,
+                    title: "Bạn muốn khôi phục tài khoản quản lý này?",
+                    subTitle: "Đảm bảo không có sự nhầm lẫn nào",
+                    onConfirm: () => {
+                      handleDelete(params.row.uid);
+                    },
+                  })
+                }
+                color="green"
+                icon="undo"
+              />
+            )
+          ) : (
+            ""
           )}
         </>
       ),
@@ -217,11 +223,15 @@ export default function ManagerList() {
           label="Tìm kiếm quản lý"
         />
       </FormControl>
-      <Link to="/newAccount">
-        <button type="button" className="managerAddButton">
-          Tạo quản lý mới
-        </button>
-      </Link>
+      {role === "Admin" ? (
+        <Link to="/newAccount">
+          <button type="button" className="managerAddButton">
+            Tạo quản lý mới
+          </button>
+        </Link>
+      ) : (
+        ""
+      )}
 
       <div className="managerList">
         <DataGrid

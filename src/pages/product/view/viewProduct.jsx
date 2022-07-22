@@ -25,13 +25,21 @@ const options = [
 
 export default function ViewProduct() {
   const dispatch = useDispatch();
+  const [role, setRole] = useState("");
 
   const { productId } = useParams();
   const productDetail = useSelector((state) => state.viewProduct);
   const { loading, data } = productDetail;
 
+  console.log(data);
+
   useEffect(() => {
-    dispatch(viewDetailProduct(productId));
+    const currentUser = JSON.parse(localStorage.getItem("user"));
+    setRole(currentUser.role);
+  }, []);
+
+  useEffect(() => {
+    dispatch(viewDetailProduct(productId, role));
   }, [dispatch, triggerReload]);
 
   return (
@@ -53,6 +61,7 @@ export default function ViewProduct() {
               promotion: data.promotion_name ? data.promotion_name : "Chưa có",
               image: data.images,
               productDetailList: data.product_detail_list,
+              // quantity
             }}
             validateOnBlur
           >
@@ -92,7 +101,6 @@ export default function ViewProduct() {
                           />
                         </Form.Group>
                         <Form.Group widths="equal">
-                          {console.log(formik.values.category)}
                           <Form.Input
                             name="category"
                             fluid
@@ -144,16 +152,23 @@ export default function ViewProduct() {
                                 label="Kích cỡ"
                                 placeholder="Kích cỡ"
                                 value={item.size.size_name}
+                                // value={item.size.size_name}
                                 readOnly
                               />
-                              <Form.Input
-                                name={`productDetailList[${index}].quantity`}
-                                fluid
-                                label="Số lượng"
-                                placeholder="Số lượng"
-                                value={item.quantity}
-                                readOnly
-                              />
+                              {console.log(item.quantity)}
+                              {role !== "Owner" ? (
+                                <Form.Input
+                                  name={`productDetailList[${index}].quantity`}
+                                  fluid
+                                  label="Số lượng"
+                                  placeholder="Số lượng"
+                                  value={item.quantity}
+                                  // value={item.size.size_name}
+                                  readOnly
+                                />
+                              ) : (
+                                ""
+                              )}
                             </Form.Group>
                           </div>
                         ))}
