@@ -45,28 +45,31 @@ export default function OfflineOrderForm() {
   const cancelOnOrder = useSelector((state) => state.cancelOnlineOrder);
   const staffDropdown = useSelector((state) => state.getListStaffDropDown);
   const { product_list, store, order_id, create_date, status, payment_method } = data;
-
+  const [reload, setReload] = useState(false);
   console.log(data);
   console.log(product_list);
 
   useEffect(() => {
     dispatch(viewDetailOfflineOrderAction(onlineOrderId));
     dispatch(listStaffInStoreAction());
-  }, [dispatch, triggerReload]);
+    setReload(false);
+  }, [dispatch, triggerReload, reload]);
 
   useEffect(() => {
     if (approveOnOrder.success) {
-      toast.success("Thao tác thành công");
+      setReload(true);
+      toast.success("Duyệt đơn hàng thành công");
       dispatch({ type: APPROVE_ONLINE_ORDER_SUCCESS, payload: false });
     }
     if (approveOnOrder.error) {
-      toast.error("Thao tác thất bại, vui lòng thử lại");
+      toast.error("Duyệt đơn hàng thất bại, vui lòng thử lại");
       dispatch({ type: APPROVE_ONLINE_ORDER_FAIL, payload: false });
     }
   }, [triggerReload, approveOnOrder.success, approveOnOrder.error]);
 
   useEffect(() => {
     if (rejectOnOrder.success) {
+      setReload(true);
       toast.success("Từ chối đơn hàng thành công");
       dispatch({ type: REJECT_ONLINE_ORDER_SUCCESS, payload: false });
     }
@@ -78,6 +81,7 @@ export default function OfflineOrderForm() {
 
   useEffect(() => {
     if (cancelOnOrder.success) {
+      setReload(true);
       toast.success("Hủy thành công, đơn hàng quay lại chờ xác nhận");
       dispatch({ type: CANCEL_ONLINE_ORDER_SUCCESS, payload: false });
     }
