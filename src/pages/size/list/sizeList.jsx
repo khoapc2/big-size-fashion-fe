@@ -48,7 +48,7 @@ export default function SizeList() {
   const [keySearch, setSearchText] = useState("");
 
   useEffect(() => {
-    dispatch(listSize({keySearch}));
+    dispatch(listSize({ keySearch }));
   }, [dispatch, page, keySearch, triggerReload]);
 
   let inputSearchHandler = (e) => {
@@ -114,11 +114,11 @@ export default function SizeList() {
       width: 200,
       renderCell: (params) => <div className="sizeListItem">{params.row.size_name}</div>,
     },
-    {
-      field: "status",
-      headerName: "Tình trạng",
-      width: 120,
-    },
+    // {
+    //   field: "status",
+    //   headerName: "Tình trạng",
+    //   width: 120,
+    // },
     {
       field: "action",
       headerName: "Thao tác",
@@ -127,7 +127,7 @@ export default function SizeList() {
         <>
           <Link to={`/update-size/${params.row.size_id}`}>
             <button type="submit" className="sizeListEdit">
-              Edit
+              Chỉnh sửa
             </button>
           </Link>
         </>
