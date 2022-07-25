@@ -57,7 +57,8 @@ export default function ManagerList() {
   }, []);
 
   useEffect(() => {
-    dispatch(listManager(searchText));
+    const currentUser = JSON.parse(localStorage.getItem("user"));
+    dispatch(listManager(searchText, currentUser.role));
     if (success) {
       toast.success("Thao tác thành công");
       dispatch({ type: DISABLE_ACCOUNT_SUCCESS, payload: false });
@@ -201,6 +202,84 @@ export default function ManagerList() {
     },
   ];
 
+  const ownerColumns = [
+    { field: "uid", headerName: "Mã NV", width: 100 },
+    {
+      field: "fullname",
+      headerName: "Họ tên  quản lí",
+      width: 400,
+      renderCell: (params) => <div className="managerListItem">{params.row.fullname}</div>,
+    },
+    {
+      field: "store_name",
+      headerName: "Chi nhánh",
+      width: 160,
+      renderCell: (params) => <div>{params.row.store_name}</div>,
+    },
+    {
+      field: "action",
+      headerName: "Thao tác",
+      width: 250,
+      renderCell: (params) => (
+        <>
+          <IconButton
+            size="large"
+            color="secondary"
+            type="submit"
+            onClick={() => navigate(`/employee/${params.row.uid}`)}
+          >
+            <VisibilityIcon />
+          </IconButton>
+          {role === "Admin" ? (
+            <Link to={`/reset-password/${params.row.uid}`}>
+              <button type="submit" className="managerListEdit">
+                Cập nhật mật khẩu
+              </button>
+            </Link>
+          ) : (
+            ""
+          )}
+
+          {role === "Admin" ? (
+            params.row.status === "Active" ? (
+              <Button
+                onClick={() =>
+                  setConfirmDialog({
+                    isOpen: true,
+                    title: "Bạn muốn khóa tài khoản quản lý này?",
+                    subTitle: "Đảm bảo không có sự nhầm lẫn nào",
+                    onConfirm: () => {
+                      handleDelete(params.row.uid);
+                    },
+                  })
+                }
+                color="red"
+                icon="trash alternate"
+              />
+            ) : (
+              <Button
+                onClick={() =>
+                  setConfirmDialog({
+                    isOpen: true,
+                    title: "Bạn muốn khôi phục tài khoản quản lý này?",
+                    subTitle: "Đảm bảo không có sự nhầm lẫn nào",
+                    onConfirm: () => {
+                      handleDelete(params.row.uid);
+                    },
+                  })
+                }
+                color="green"
+                icon="undo"
+              />
+            )
+          ) : (
+            ""
+          )}
+        </>
+      ),
+    },
+  ];
+
   return (
     <div className="managerTab">
       <FormControl sx={{ m: 1, width: "35ch" }} variant="outlined">
@@ -247,7 +326,7 @@ export default function ManagerList() {
           getRowId={(r) => r.uid}
           rows={data}
           disableSelectionOnClick
-          columns={columns}
+          columns={role === "Admin" ? columns : ownerColumns}
           pageSize={8}
           data={(query) =>
             new Promise(() => {

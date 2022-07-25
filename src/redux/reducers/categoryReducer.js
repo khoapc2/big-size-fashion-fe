@@ -23,7 +23,7 @@ function resultArr(payload) {
     key: category_id.toString(),
     text: category_name,
     value: category_id,
-    status,
+    status: status.toString(),
   }));
   return result;
 }

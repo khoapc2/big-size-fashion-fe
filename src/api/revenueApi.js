@@ -7,6 +7,10 @@ const revenueApi = {
     const url = `${URL_ENTITY}`;
     return axios.get(url, { params });
   },
+  getRevenueOwner: (storeId, params) => {
+    const url = `${URL_ENTITY}/${storeId}`;
+    return axios.get(url, { params });
+  },
 };
 
 export default revenueApi;

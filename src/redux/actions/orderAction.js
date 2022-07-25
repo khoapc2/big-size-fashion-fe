@@ -222,21 +222,30 @@ export const exportExcelAction = (orderId) => async () => {
   }
 };
 
-export const orderTodayAction = () => async (dispatch) => {
-  dispatch({
-    type: STATISTIC_TODAY_ORDER_REQUEST,
-  });
-  try {
-    const data = await orderApi.orderToday();
-    dispatch({ type: STATISTIC_TODAY_ORDER_SUCCESS, payload: data.content });
-  } catch (error) {
+export const orderTodayAction =
+  (role, store_id = 0) =>
+  async (dispatch) => {
     dispatch({
-      type: STATISTIC_TODAY_ORDER_FAIL,
-      payload:
-        error.response && error.response.data.message ? error.response.data.message : error.message,
+      type: STATISTIC_TODAY_ORDER_REQUEST,
     });
-  }
-};
+    try {
+      if (role === "Manager") {
+        const data = await orderApi.orderToday();
+        dispatch({ type: STATISTIC_TODAY_ORDER_SUCCESS, payload: data.content });
+      } else if (role === "Owner") {
+        const data = await orderApi.orderTodayForOwner(store_id);
+        dispatch({ type: STATISTIC_TODAY_ORDER_SUCCESS, payload: data.content });
+      }
+    } catch (error) {
+      dispatch({
+        type: STATISTIC_TODAY_ORDER_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 export const staffPerformanceAction = (params) => async (dispatch) => {
   dispatch({
@@ -257,22 +266,3 @@ export const staffPerformanceAction = (params) => async (dispatch) => {
     });
   }
 };
-
-// export const deleteStore = (storeId) => async (dispatch) => {
-//   // console.log("DeleteStore");
-//   // console.log(storeId);
-//   dispatch({
-//     type: DELETE_STORE_REQUEST,
-//     payload: { storeId },
-//   });
-//   try {
-//     const data = await storeApi.deleteStoreService(storeId);
-//     dispatch({ type: DELETE_STORE_SUCCESS, payload: data });
-//   } catch (error) {
-//     dispatch({
-//       type: DELETE_STORE_FAIL,
-//       payload:
-//         error.response && error.response.data.message ? error.response.data.message : error.message,
-//     });
-//   }
-// };

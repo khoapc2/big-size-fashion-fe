@@ -5,24 +5,40 @@ import {
   MANAGER_LIST_FAIL,
 } from "../../service/Validations/VarConstant";
 
-export const listManager = (keySearch) => async (dispatch) => {
-  const params = {
-    Role: "Manager",
-    Status: "Both",
-  };
-  const searchParams = {
-    Fullname: keySearch,
-    Role: "Manager",
-    Status: "Both",
-  };
+export const listManager = (keySearch, role) => async (dispatch) => {
+  console.log(role);
   dispatch({ type: MANAGER_LIST_REQUEST });
   try {
-    if (!keySearch) {
-      const data = await accountApi.getListAccount(params);
-      dispatch({ type: MANAGER_LIST_SUCCESS, payload: data.content });
-      dispatch({ type: MANAGER_LIST_FAIL, payload: "" });
-    } else {
-      const data = await accountApi.getSearchListAccount(searchParams);
+    if (role === "Admin") {
+      console.log("Admin come here");
+
+      const params = {
+        Role: "Manager",
+        Status: "Both",
+      };
+      const searchParams = {
+        Fullname: keySearch,
+        Role: "Manager",
+        Status: "Both",
+      };
+      if (!keySearch) {
+        const data = await accountApi.getListAccount(params);
+        console.log(data);
+        dispatch({ type: MANAGER_LIST_SUCCESS, payload: data.content });
+        dispatch({ type: MANAGER_LIST_FAIL, payload: "" });
+      } else {
+        console.log("yo");
+        const data = await accountApi.getSearchListAccount(searchParams);
+        dispatch({ type: MANAGER_LIST_SUCCESS, payload: data.content });
+        dispatch({ type: MANAGER_LIST_FAIL, payload: "" });
+      }
+    } else if (role === "Owner") {
+      console.log("Owner come here");
+
+      const params = {
+        Fullname: keySearch,
+      };
+      const data = await accountApi.getManagerForOwner(params);
       dispatch({ type: MANAGER_LIST_SUCCESS, payload: data.content });
       dispatch({ type: MANAGER_LIST_FAIL, payload: "" });
     }

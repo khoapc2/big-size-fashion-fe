@@ -26,7 +26,7 @@ function resultArr(payload) {
     key: promotion_id.toString(),
     text: promotion_name,
     value: promotion_id,
-    status,
+    status: status.toString(),
   }));
   result.push({ key: "0", text: "*Không", value: 0, status: true });
   return result;

@@ -26,7 +26,7 @@ function resultArr(payload) {
     key: size_id.toString(),
     text: size_name,
     value: size_id,
-    status,
+    status: status.toString(),
   }));
   return result;
 }
