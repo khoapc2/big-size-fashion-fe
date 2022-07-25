@@ -30,6 +30,7 @@ import { listProduct } from "../../redux/actions/productAction";
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
 import Product from "pages/product/Product";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import RateReviewIcon from '@mui/icons-material/RateReview';
 
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
@@ -134,7 +135,7 @@ export default function ProductList() {
     {
       field: "promotion_value",
       headerName: "Giá trị khuyến mãi (%)",
-      width: 200,
+      width: 150,
       renderCell: (params) => (
         <div>{params.row.promotion_value ? `${params.row.promotion_value}` : "Chưa áp dụng"}</div>
       ),
@@ -150,7 +151,7 @@ export default function ProductList() {
     {
       field: "action",
       headerName: "Thao tác",
-      width: 200,
+      width: 250,
       renderCell: (params) => (
         <>
           <IconButton
@@ -161,30 +162,39 @@ export default function ProductList() {
           >
             <VisibilityIcon />
           </IconButton>
+          <IconButton
+            size="large"
+            color="secondary"
+            type="submit"
+            onClick={() => navigate(`/feedback/${params.row.product_id}`)}
+          >
+            <RateReviewIcon />
+          </IconButton>
           {role === "Admin" ? (
-            <div>
-              <Link to={`/update-product/${params.row.product_id}`}>
-                <button type="submit" className="productListEdit">
-                  Edit
-                </button>
-              </Link>
-
-              <Button
-                className="productListDelete"
-                onClick={() =>
-                  setConfirmDialog({
-                    isOpen: true,
-                    title: "Are you sure to delete this record?",
-                    subTitle: "Delete",
-                    onConfirm: () => {
-                      handleDelete(params.row.id);
-                    },
-                  })
-                }
-                color="red"
-                icon="trash alternate"
-              />
-            </div>
+            <Link to={`/update-product/${params.row.product_id}`}>
+              <button type="submit" className="productListEdit">
+                Edit
+              </button>
+            </Link>
+          ) : (
+            <></>
+          )}
+          {role === "Admin" ? (
+            <Button
+              className="productListDelete"
+              onClick={() =>
+                setConfirmDialog({
+                  isOpen: true,
+                  title: "Are you sure to delete this record?",
+                  subTitle: "Delete",
+                  onConfirm: () => {
+                    handleDelete(params.row.id);
+                  },
+                })
+              }
+              color="red"
+              icon="trash alternate"
+            />
           ) : (
             <></>
           )}
@@ -244,8 +254,10 @@ export default function ProductList() {
           pagination
           page={pageState.page - 1}
           paginationMode="server"
-          onPageChange={(newPage) => setPageState((old) => ({ ...old, page: newPage + 1}))}
-          onPageSizeChange={(newPageSize) => setPageState(old => ({ ...old, pageSize: newPageSize}))}
+          onPageChange={(newPage) => setPageState((old) => ({ ...old, page: newPage + 1 }))}
+          onPageSizeChange={(newPageSize) =>
+            setPageState((old) => ({ ...old, pageSize: newPageSize }))
+          }
           disableSelectionOnClick
           columns={columns}
           pageSize={pageState.pageSize}

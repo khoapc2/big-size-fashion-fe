@@ -83,6 +83,7 @@ import {
   quantityAjustmentReducer,
 } from "redux/reducers/inventoryReducer";
 import { viewRevenueReducer } from "redux/reducers/revenueReducer";
+import { listFeedbackReducer, deleteFeedbackReducer } from "redux/reducers/feedbackReducer";
 
 const initialState = {
   userLogin: {
@@ -155,6 +156,8 @@ const reducer = combineReducers({
   rejectDeliveryState: rejectDeliveryReducer,
   listActiveStoreDropdown: listActiveStoreDropdownReducer,
   getMainWareHouse: getMainWareHouseReducer,
+  listFeedbackState: listFeedbackReducer,
+  deleteFeedbackState: deleteFeedbackReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

@@ -91,6 +91,7 @@ import StaffPerformance from "pages/staff/performance/staffPerformance";
 import ImportDeliveryDetail from "pages/deliveryNote/importDeliver/detail/ViewDeliveryNote";
 import ExportDeliveryDetail from "pages/deliveryNote/exportDeliver/detail/ViewDeliveryNote";
 import ExportDeliveryDetailAdmin from "pages/deliveryNote/exportDelivery_admin/detail/ViewDeliveryNote";
+import Feedbacks from "pages/feedback/Feedback";
 // import Fader from "pages/components/Fader";
 // import { onMessageListener } from "./firebase/firebase";
 // import FirebaseNotifications from "./pages/components/FirebaseNotification/FirebaseNotifications";
@@ -343,6 +344,7 @@ export default function App() {
           path="export-delivery-note-detail-admin/:deliveryId"
           element={<ExportDeliveryDetailAdmin />}
         />
+        <Route path="feedback/:productId" element={<Feedbacks />} />
       </Routes>
     </ThemeProvider>
   );

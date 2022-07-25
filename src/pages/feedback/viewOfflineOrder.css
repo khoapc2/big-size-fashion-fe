@@ -1,0 +1,45 @@
+/* .offlineOrder {
+  flex: 4;
+  height: 600px;
+  margin-left: 10px;
+} */
+.container-title {
+  display: flex;
+}
+
+.container-title > .title {
+  font-weight: bold;
+  font-size: medium;
+  width: fit-content;
+}
+
+.container-title > .content {
+  font-size: medium;
+}
+
+/* .orderBottom {
+  text-align: center;
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+} */
+.MuiButton-outlined {
+  width: 150px;
+  font-size: small !important;
+}
+
+.offlineOrderTopLeft {
+  padding: 20px;
+  margin: 20px;
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+}
+
+.offlineOrderTop {
+  padding: 10px;
+  margin: 10px;
+}
+
+.MuiDataGrid-root {
+  margin-top: 10px;
+  height: 500px;
+}

@@ -40,9 +40,8 @@ export default function SizeList() {
   // const [paging, setPaging] = useState({});
   //Test
   const { data, error, loading } = useSelector((state) => state.storeList);
-  const { success, loadingDelete, errorDelete } = useSelector((state) => state.deleteStoreState);
+  const deleteState = useSelector((state) => state.deleteStoreState);
 
-  console.log(data);
   const [page, setPage] = useState(1);
   const [role, setRole] = useState(1);
   const triggerReload = useSelector((state) => state.triggerReload);
@@ -57,18 +56,18 @@ export default function SizeList() {
 
   useEffect(() => {
     dispatch(listStore({ keySearch }));
-    if (success) {
-      toast.success("Thao tác thành công");
+    if (deleteState.success) {
+      toast.success("Xóa cửa hàng thành công");
       dispatch({ type: DELETE_STORE_SUCCESS, payload: false });
     } else {
       // console.log(`create:${success}`);
     }
-    if (errorDelete) {
+    if (deleteState.error) {
       // console.log(error);
-      toast.error("Thao tác thất bại, vui lòng thử lại");
+      toast.error("Xóa cửa hàng thất bại, vui lòng thử lại");
       dispatch({ type: DELETE_STORE_FAIL, payload: false });
     }
-  }, [page, keySearch, triggerReload, success, errorDelete]);
+  }, [page, keySearch, triggerReload, deleteState.success, deleteState.error]);
 
   let inputSearchHandler = (e) => {
     let lowerCase = e.target.value.toLowerCase();

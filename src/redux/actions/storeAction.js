@@ -34,6 +34,7 @@ export const listStore =
         dispatch({ type: STORE_LIST_REQUEST });
         if (!keySearch) {
           const data = await storeApi.getListStore();
+          data.content = data.content.filter((item) => item.is_main_warehouse === false);
           dispatch({ type: STORE_LIST_SUCCESS, payload: data.content });
           dispatch({ type: STORE_LIST_FAIL, payload: "" });
         } else {
@@ -41,6 +42,7 @@ export const listStore =
             StoreAddress: keySearch,
           };
           const data = await storeApi.getSearchListStore(searchParams);
+          data.content = data.content.filter((item) => item.is_main_warehouse === false);
           dispatch({ type: STORE_LIST_SUCCESS, payload: data.content });
           dispatch({ type: STORE_LIST_FAIL, payload: "" });
         }
@@ -49,9 +51,8 @@ export const listStore =
         const params = {
           Status: status,
         };
-        console.log(params);
         const data = await storeApi.getListStore(params);
-        console.log(data);
+        data.content = data.content.filter((item) => item.is_main_warehouse === false);
         dispatch({ type: STORE_LIST_DROPDOWN_SUCCESS, payload: data.content });
         dispatch({ type: STORE_LIST_DROPDOWN_FAIL, payload: "" });
       }

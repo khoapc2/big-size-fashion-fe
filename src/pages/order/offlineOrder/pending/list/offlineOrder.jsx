@@ -65,20 +65,6 @@ export default function StaffList() {
     );
   }
 
-  // const handleClickSearch = (searchText) => {};
-
-  // const handleDelete = (id) => {
-  //   setConfirmDialog({
-  //     ...confirmDialog,
-  //     isOpen: false,
-  //   });
-  //   setNotify({
-  //     isOpen: true,
-  //     message: "Deleted Successfully",
-  //     type: "success",
-  //   });
-  // };
-
   function NoRowsOverlay() {
     return (
       <Stack height="100%" alignItems="center" justifyContent="center">

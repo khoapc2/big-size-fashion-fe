@@ -60,15 +60,20 @@ export default function OfflineOrderForm() {
   console.log(data);
   console.log(totalProduct);
   console.log(zaloPay.data);
-  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     dispatch(viewDetailOfflineOrderAction(offlineOrderId));
-  }, [dispatch, triggerReload, reload]);
+  }, [
+    dispatch,
+    triggerReload,
+    approveOffOrder.success,
+    approveOffOrder.error,
+    rejectOffOrder.success,
+    rejectOffOrder.error,
+  ]);
 
   useEffect(() => {
     if (approveOffOrder.success) {
-      setReload(true);
       toast.success("Duyệt đơn hàng thành công");
       dispatch({ type: APPROVE_OFFLINE_ORDER_SUCCESS, payload: false });
     }
@@ -80,7 +85,6 @@ export default function OfflineOrderForm() {
 
   useEffect(() => {
     if (rejectOffOrder.success) {
-      setReload(true);
       toast.success("Từ chối đơn thành công");
       dispatch({ type: CANCEL_OFFLINE_ORDER_SUCCESS, payload: false });
     }
