@@ -43,7 +43,7 @@ export default function SizeList() {
   const deleteState = useSelector((state) => state.deleteStoreState);
 
   const [page, setPage] = useState(1);
-  const [role, setRole] = useState(1);
+  const [role, setRole] = useState("");
   const triggerReload = useSelector((state) => state.triggerReload);
   const dispatch = useDispatch();
   const navigate = useNavigate();

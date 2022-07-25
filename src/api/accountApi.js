@@ -12,6 +12,8 @@ const URL_LIST_STAFF_IN_STORE = "/v1/staffs/all-staff-of-store";
 
 const URL_RESET_PASSWORD = "/v1/accounts/reset-password";
 
+const GET_LIST_MANAGER_OWNER = "/v1/staffs/list-manager";
+
 const accountApi = {
   getListAccount: (params) => {
     const url = `${URL_ENTITY}`;
@@ -46,6 +48,10 @@ const accountApi = {
   resetPasswordEmployee: (params, id) => {
     const url = `${URL_RESET_PASSWORD}/${id}`;
     return axios.put(url, params);
+  },
+  getManagerForOwner: (params) => {
+    const url = `${GET_LIST_MANAGER_OWNER}`;
+    return axios.get(url, { params });
   },
 };
 

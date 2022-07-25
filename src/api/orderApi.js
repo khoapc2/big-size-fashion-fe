@@ -57,6 +57,10 @@ const orderApi = {
     const url = `${URL_ENTITY}${ORDER_TODAY}`;
     return axios.get(url);
   },
+  orderTodayForOwner: (id) => {
+    const url = `${URL_ENTITY}${ORDER_TODAY}/${id}`;
+    return axios.get(url);
+  },
 
   staffPerformOnOrder: (params) => {
     const url = `${URL_ENTITY}${STAFF_PERFORMANCE}`;

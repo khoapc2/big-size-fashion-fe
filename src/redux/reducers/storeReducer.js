@@ -32,7 +32,7 @@ function resultArr(payload) {
     key: store_id.toString(),
     text: store_name,
     value: store_id,
-    status,
+    status: status.toString(),
   }));
   return result;
 }

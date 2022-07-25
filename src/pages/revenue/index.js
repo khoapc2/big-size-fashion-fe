@@ -7,10 +7,7 @@ import MDBox from "components/MDBox";
 import { Form } from "semantic-ui-react";
 import { Formik } from "formik";
 
-import {
-  // useState,
-  useEffect,
-} from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // Material Dashboard 2 React example components
@@ -31,6 +28,7 @@ import { SchemaErrorMessageRevenueManager } from "../../service/Validations/Reve
 // import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 import "./revenue.css";
 import { listRevenueInMonthAction } from "../../redux/actions/revenueAction";
+import { listActiveStore } from "../../redux/actions/storeAction";
 import { orderTodayAction } from "../../redux/actions/orderAction";
 
 function generateArrayOfYears() {
@@ -62,21 +60,34 @@ function generateArrayOfMonths() {
 function Dashboard() {
   // const [selectedDate, handleDateChange] = useState(new Date());
   // const [age, setAge] = useState("");
+  const activeStore = useSelector((state) => state.listActiveStoreDropdown);
 
   const { revenue, loading, data } = useSelector((state) => state.viewRevenue);
   const orderToday = useSelector((state) => state.orderToday);
   const triggerReload = useSelector((state) => state.triggerReload);
+  const [role, setRole] = useState("");
   const { total_orders, pending_orders, processing_orders, received_orders, canceled_orders } =
     orderToday.data;
 
   const dispatch = useDispatch();
+  console.log(activeStore);
+
   useEffect(() => {
-    dispatch(listRevenueInMonthAction({ month: currentMonth, year: currentYear }));
-    dispatch(orderTodayAction());
+    const currentUser = JSON.parse(localStorage.getItem("user"));
+    setRole(currentUser.role);
+
+    if (currentUser.role === "Owner") {
+      dispatch(listActiveStore({ status: true, mainWareHouse: false }));
+    }
+
+    dispatch(
+      listRevenueInMonthAction({ month: currentMonth, year: currentYear }, currentUser.role)
+    );
+    dispatch(orderTodayAction(currentUser.role));
   }, [dispatch, triggerReload]);
 
   const handleSubmit = (para) => {
-    dispatch(listRevenueInMonthAction(para));
+    dispatch(listRevenueInMonthAction(para, role, para.store_id));
   };
 
   return (
@@ -130,6 +141,8 @@ function Dashboard() {
                   initialValues={{
                     month: currentMonth,
                     year: currentYear,
+                    store_id: "",
+                    store_name: "",
                   }}
                   onSubmit={handleSubmit}
                   validationSchema={SchemaErrorMessageRevenueManager}
@@ -168,6 +181,24 @@ function Dashboard() {
                             value={formik.values.year}
                             error={formik.errors.year}
                           />
+                          {role === "Owner" && (
+                            <Form.Select
+                              // key={store.value}
+                              // fluid
+                              label="Chi nhánh"
+                              options={activeStore.store}
+                              placeholder="Chọn chi nhánh"
+                              onChange={(e, v) => {
+                                const { text } = activeStore.store.find((o) => o.value === v.value);
+                                formik.setFieldValue("store_id", v.value);
+                                formik.setFieldValue("store_name", text);
+                              }}
+                              name="year"
+                              value={formik.values.store_id}
+                              text={formik.values.store_name}
+                            />
+                          )}
+
                           <Form.Button type="submit" label="." color="green">
                             Xem
                           </Form.Button>
