@@ -76,7 +76,7 @@ export default function CategoryUpdateForm() {
 
               return (
                 <Form className={classes.root}>
-                  <Grid container>
+                  <Grid container direction="row" alignItems="center">
                     <Grid item xs={6}>
                       <Controls.Input
                         name="category"
@@ -88,6 +88,8 @@ export default function CategoryUpdateForm() {
                         fullWidth
                         multiline
                       />
+                    </Grid>
+                    <Grid item xs={2}>
                       {loadingUpdate ? (
                         <Loading />
                       ) : (

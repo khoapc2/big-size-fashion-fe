@@ -92,6 +92,8 @@ import ImportDeliveryDetail from "pages/deliveryNote/importDeliver/detail/ViewDe
 import ExportDeliveryDetail from "pages/deliveryNote/exportDeliver/detail/ViewDeliveryNote";
 import ExportDeliveryDetailAdmin from "pages/deliveryNote/exportDelivery_admin/detail/ViewDeliveryNote";
 import Feedbacks from "pages/feedback/Feedback";
+import ProductsInPromotion from "pages/promotion/product_in_promotion/ProductsInPromotion";
+import AddProductToPromotion from "pages/promotion/product_in_promotion/addProductToPromotion/AddProductToPromotion";
 // import Fader from "pages/components/Fader";
 // import { onMessageListener } from "./firebase/firebase";
 // import FirebaseNotifications from "./pages/components/FirebaseNotification/FirebaseNotifications";
@@ -345,6 +347,8 @@ export default function App() {
           element={<ExportDeliveryDetailAdmin />}
         />
         <Route path="feedback/:productId" element={<Feedbacks />} />
+        <Route path="products-in-promotion/:promotionId" element={<ProductsInPromotion />} />
+        <Route path="add-products-to-promotion/:promotionId" element={<AddProductToPromotion />} />
       </Routes>
     </ThemeProvider>
   );

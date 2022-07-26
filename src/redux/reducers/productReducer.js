@@ -14,6 +14,9 @@ import {
   IMPORT_PRODUCT_LIST_REQUEST,
   IMPORT_PRODUCT_LIST_SUCCESS,
   IMPORT_PRODUCT_LIST_FAIL,
+  DELETE_PRODUCT_REQUEST,
+  DELETE_PRODUCT_SUCCESS,
+  DELETE_PRODUCT_FAIL,
 } from "../../service/Validations/VarConstant";
 
 function formatArray(payload) {
@@ -86,6 +89,19 @@ export const updateProductReducer = (state = { loading: true }, action) => {
     case UPDATE_PRODUCT_SUCCESS:
       return { ...state, loading: false, success: action.payload };
     case UPDATE_PRODUCT_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const deleteProductReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DELETE_PRODUCT_REQUEST:
+      return { ...state, loading: true };
+    case DELETE_PRODUCT_SUCCESS:
+      return { ...state, loading: false, success: action.payload };
+    case DELETE_PRODUCT_FAIL:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;

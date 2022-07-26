@@ -121,7 +121,7 @@ export default function StaffList() {
     {
       field: "fullname",
       headerName: "Họ tên",
-      width: 400,
+      width: 350,
       renderCell: (params) => <div className="staffListItem">{params.row.fullname}</div>,
     },
     {
@@ -147,7 +147,7 @@ export default function StaffList() {
     {
       field: "action",
       headerName: "Thao tác",
-      width: 250,
+      width: 280,
       renderCell: (params) => (
         <>
           <IconButton

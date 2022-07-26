@@ -51,11 +51,10 @@ export default function NewProduct() {
   // const { size } = useSelector((state) => state.sizeList);
   // const { colour } = useSelector((state) => state.colorList);
   const { category } = useSelector((state) => state.getListCategoryDropdown);
-  const { promotion } = useSelector((state) => state.getListPromotionDropdown);
   const productDetail = useSelector((state) => state.viewProduct);
   const { loading, data } = productDetail;
   const updateStatus = useSelector((state) => state.updateProduct);
-  const { success, error } = updateStatus;
+  const { success, error, loadingUpdate } = updateStatus;
 
   const [selectedImgs, setSelectedImgs] = useState([]);
   console.log(productDetail);
@@ -357,11 +356,11 @@ export default function NewProduct() {
                         </div>
                       </div>
                     </div>
-                    {updateStatus.loading ? (
+                    {loadingUpdate ? (
                       <Loading />
                     ) : (
                       <div className="productBottom">
-                        <Form.Button type="submit" color="green" disabled={updateStatus.loading}>
+                        <Form.Button type="submit" color="green" disabled={loadingUpdate}>
                           Xác nhận
                         </Form.Button>
                       </div>

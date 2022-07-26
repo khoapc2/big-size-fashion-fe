@@ -14,21 +14,28 @@ import {
   UPDATE_PROMOTION_REQUEST,
   UPDATE_PROMOTION_SUCCESS,
   UPDATE_PROMOTION_FAIL,
-  PROMOTION_LIST_DROPDOWN_REQUEST,
-  PROMOTION_LIST_DROPDOWN_SUCCESS,
-  PROMOTION_LIST_DROPDOWN_FAIL,
+  PRODUCT_PROMOTION_LIST_REQUEST,
+  PRODUCT_PROMOTION_LIST_FAIL,
+  PRODUCT_PROMOTION_LIST_SUCCESS,
+  DELETE_PRODUCT_FROM_PROMOTION_REQUEST,
+  DELETE_PRODUCT_FROM_PROMOTION_FAIL,
+  DELETE_PRODUCT_FROM_PROMOTION_SUCCESS,
+  ADD_PRODUCT_TO_PROMOTION_REQUEST,
+  ADD_PRODUCT_TO_PROMOTION_FAIL,
+  ADD_PRODUCT_TO_PROMOTION_SUCCESS,
+  LIST_PRODUCT_ADD_PROMOTION_REQUEST,
+  LIST_PRODUCT_ADD_PROMOTION_FAIL,
+  LIST_PRODUCT_ADD_PROMOTION_SUCCESS,
 } from "../../service/Validations/VarConstant";
 
-function resultArr(payload) {
+function formatArray(payload) {
   let result = [];
   const newArray = [...payload];
-  result = newArray.map(({ promotion_id, promotion_name, status }) => ({
-    key: promotion_id.toString(),
-    text: promotion_name,
-    value: promotion_id,
-    status: status.toString(),
+  result = newArray.map(({ product_id, product_name }) => ({
+    key: `${product_id}`,
+    text: `${product_name}`,
+    value: `${product_id}`,
   }));
-  result.push({ key: "0", text: "*Không", value: 0, status: true });
   return result;
 }
 
@@ -104,20 +111,67 @@ export const viewDetailPromotionReducer = (
   }
 };
 
-export const listPromotionDropdownReducer = (
-  state = { loading: true, promotion: [], error: "" },
+export const listProductOfPromotionReducer = (
+  state = { loading: true, data: [], error: "", totalCount: 0 },
   action
 ) => {
   switch (action.type) {
-    case PROMOTION_LIST_DROPDOWN_REQUEST:
+    case PRODUCT_PROMOTION_LIST_REQUEST:
       return { ...state, loading: true };
-    case PROMOTION_LIST_DROPDOWN_SUCCESS:
+    case PRODUCT_PROMOTION_LIST_SUCCESS:
       return {
         ...state,
         loading: false,
-        promotion: [...resultArr(action.payload)],
+        data: action.payload.content,
+        totalCount: action.payload.total_count,
       };
-    case PROMOTION_LIST_DROPDOWN_FAIL:
+    case PRODUCT_PROMOTION_LIST_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const deleteProductFromPromotionReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DELETE_PRODUCT_FROM_PROMOTION_REQUEST:
+      return { ...state, loading: true };
+    case DELETE_PRODUCT_FROM_PROMOTION_SUCCESS:
+      return { ...state, loading: false, success: action.payload };
+    case DELETE_PRODUCT_FROM_PROMOTION_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const addProductToPromotionReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ADD_PRODUCT_TO_PROMOTION_REQUEST:
+      return { ...state, loading: true };
+    case ADD_PRODUCT_TO_PROMOTION_SUCCESS:
+      return { ...state, loading: false, success: action.payload };
+    case ADD_PRODUCT_TO_PROMOTION_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const listProductsToAddPromotionReducer = (
+  state = { loading: true, data: [], error: "" },
+  action
+) => {
+  switch (action.type) {
+    case LIST_PRODUCT_ADD_PROMOTION_REQUEST:
+      return { ...state, loading: true };
+    case LIST_PRODUCT_ADD_PROMOTION_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        data: formatArray(action.payload),
+      };
+    case LIST_PRODUCT_ADD_PROMOTION_FAIL:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;

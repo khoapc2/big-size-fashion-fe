@@ -128,19 +128,19 @@ export default function PromotionList() {
     {
       field: "promotion_value",
       headerName: "Giá trị khuyến mãi (%)",
-      width: 160,
+      width: 150,
       renderCell: (params) => <div>{params.row.promotion_value}</div>,
     },
     {
       field: "apply_date",
       headerName: "Ngày áp dụng",
-      width: 160,
+      width: 100,
       renderCell: (params) => <div>{params.row.apply_date}</div>,
     },
     {
       field: "expired_date",
       headerName: "Ngày hết hạn",
-      width: 160,
+      width: 100,
       renderCell: (params) => <div>{params.row.expired_date}</div>,
     },
     {
@@ -152,7 +152,7 @@ export default function PromotionList() {
     {
       field: "action",
       headerName: "Thao tác",
-      width: 250,
+      width: 330,
       renderCell: (params) => (
         <>
           <IconButton
@@ -166,6 +166,11 @@ export default function PromotionList() {
           <Link to={`/update-promotion/${params.row.promotion_id}`}>
             <button type="submit" className="promotionListEdit">
               Edit
+            </button>
+          </Link>
+          <Link to={`/products-in-promotion/${params.row.promotion_id}`}>
+            <button type="submit" className="promotionListEdit">
+              Sản phẩm áp dụng
             </button>
           </Link>
           {params.row.status ? (

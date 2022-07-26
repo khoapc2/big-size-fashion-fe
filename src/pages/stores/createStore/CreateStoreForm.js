@@ -51,6 +51,7 @@ export default function StoreForm() {
   return (
     <Formik
       initialValues={{
+        storeName: "",
         storeAddress: "",
         phone: "",
       }}
@@ -64,6 +65,15 @@ export default function StoreForm() {
         <Form className={classes.root}>
           <Grid container>
             <Grid item xs={6}>
+              <Controls.Input
+                name="storeName"
+                label="Tên cửa hàng"
+                value={props.values.storeName}
+                onChange={props.handleChange}
+                error={props.errors.storeName}
+                helperText={props.errors.storeName}
+                fullWidth
+              />
               <Controls.Input
                 name="storeAddress"
                 label="Địa chỉ cửa hàng"

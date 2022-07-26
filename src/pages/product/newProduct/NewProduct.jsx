@@ -48,7 +48,6 @@ export default function NewProduct() {
 
   // const [price, setPrice] = useState(0);
   const { size } = useSelector((state) => state.getListSizeDropdown);
-  const { promotion } = useSelector((state) => state.getListPromotionDropdown);
   const { colour } = useSelector((state) => state.getListColorDropdown);
   const { category } = useSelector((state) => state.getListCategoryDropdown);
   const response = useSelector((state) => state.createProductState);
@@ -73,7 +72,6 @@ export default function NewProduct() {
     dispatch(listPromotion({ status }));
   }, [dispatch, triggerReload]);
 
-  console.log(promotion);
   const onSubmit = (data) => {
     const formData = new FormData();
     Object.values(fileImg).forEach(function (img, index) {
@@ -116,7 +114,6 @@ export default function NewProduct() {
             brandName: "",
             category: "",
             sex: "",
-            promotion: "",
             description: "",
             price: 1000,
             colourWithSize: [{ colour: "", size: [] }],
@@ -166,6 +163,7 @@ export default function NewProduct() {
                       <Form.Group widths="equal">
                         <Form.Select
                           key={category.value}
+                          search
                           fluid
                           label="Thể Loại"
                           options={category || []}
@@ -189,20 +187,6 @@ export default function NewProduct() {
                           name="sex"
                           value={formik.values.sex}
                           error={formik.errors.sex}
-                        />
-                        <Form.Select
-                          key={promotion.value}
-                          fluid
-                          search
-                          label="Khuyến mại"
-                          options={promotion || []}
-                          placeholder="Khuyến mại"
-                          onChange={(e, v) => {
-                            formik.setFieldValue("promotion", v.value);
-                            console.log(v);
-                          }}
-                          name="promotion"
-                          value={formik.values.promotion}
                         />
                       </Form.Group>
                       <Form.TextArea
