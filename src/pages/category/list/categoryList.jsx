@@ -110,24 +110,24 @@ export default function CategoryList() {
     { field: "category_id", headerName: "ID", width: 90 },
     {
       field: "category_name",
-      headerName: "Category",
+      headerName: "Tên thể loại",
       width: 200,
       renderCell: (params) => <div className="categoryListItem">{params.row.category_name}</div>,
     },
-    {
-      field: "status",
-      headerName: "Status",
-      width: 120,
-    },
+    // {
+    //   field: "status",
+    //   headerName: "Status",
+    //   width: 120,
+    // },
     {
       field: "action",
-      headerName: "Action",
+      headerName: "Thao tác",
       width: 250,
       renderCell: (params) => (
         <>
           <Link to={`/update-category/${params.row.category_id}`}>
             <button type="submit" className="categoryListEdit">
-              Edit
+              Chỉnh sửa
             </button>
           </Link>
         </>

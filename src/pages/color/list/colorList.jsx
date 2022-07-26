@@ -120,11 +120,11 @@ export default function ColorList() {
       width: 200,
       renderCell: (params) => <div className="colorListItem">{params.row.colour_code}</div>,
     },
-    {
-      field: "status",
-      headerName: "Tình trạng",
-      width: 120,
-    },
+    // {
+    //   field: "status",
+    //   headerName: "Tình trạng",
+    //   width: 120,
+    // },
     {
       field: "action",
       headerName: "Thao tác",
@@ -133,7 +133,7 @@ export default function ColorList() {
         <>
           <Link to={`/update-color/${params.row.colour_id}`}>
             <button type="submit" className="colorListEdit">
-              Edit
+              Chỉnh sửa
             </button>
           </Link>
         </>
