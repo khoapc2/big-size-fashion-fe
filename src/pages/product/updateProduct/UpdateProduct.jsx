@@ -57,6 +57,8 @@ export default function NewProduct() {
   const updateStatus = useSelector((state) => state.updateProduct);
   const { success, error } = updateStatus;
 
+  console.log(updateStatus);
+
   const [selectedImgs, setSelectedImgs] = useState([]);
   console.log(productDetail);
   useEffect(() => {

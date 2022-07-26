@@ -79,7 +79,7 @@ export const viewDetailProductReducer = (
   }
 };
 
-export const updateProductReducer = (state = { loading: true }, action) => {
+export const updateProductReducer = (state = { loading: false }, action) => {
   switch (action.type) {
     case UPDATE_PRODUCT_REQUEST:
       return { ...state, loading: true };

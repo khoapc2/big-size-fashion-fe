@@ -36,8 +36,9 @@ import { useMaterialUIController, setMiniSidenav } from "context";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // Images
-import brandWhite from "assets/images/logo-ct.png";
-import brandDark from "assets/images/logo-ct-dark.png";
+// import brandWhite from "assets/images/logo-ct.png";
+// import brandDark from "assets/images/logo-ct-dark.png";
+import bigSize from "assets/images/bigsize-logo.png";
 
 import Dashboard from "layouts/dashboard";
 import Products from "pages/productList/ProductList";
@@ -219,8 +220,8 @@ export default function App() {
         return (
           <Sidenav
             color={sidenavColor}
-            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-            brandName="BigSize Management"
+            brand={(transparentSidenav && !darkMode) || whiteSidenav ? bigSize : bigSize}
+            brandName="BigSize Fashion"
             routes={routesAdmin}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
@@ -230,8 +231,8 @@ export default function App() {
         return (
           <Sidenav
             color={sidenavColor}
-            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-            brandName="BigSize Management"
+            brand={(transparentSidenav && !darkMode) || whiteSidenav ? bigSize : bigSize}
+            brandName="BigSize Fashion"
             routes={routesManager}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
@@ -241,8 +242,8 @@ export default function App() {
         return (
           <Sidenav
             color={sidenavColor}
-            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-            brandName="BigSize Management"
+            brand={(transparentSidenav && !darkMode) || whiteSidenav ? bigSize : bigSize}
+            brandName="BigSize Fashion"
             routes={routesOwner}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
@@ -252,8 +253,8 @@ export default function App() {
         return (
           <Sidenav
             color={sidenavColor}
-            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-            brandName="BigSize Management"
+            brand={(transparentSidenav && !darkMode) || whiteSidenav ? bigSize : bigSize}
+            brandName="BigSize Fashion"
             routes={routes}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}

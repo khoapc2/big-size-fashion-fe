@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 // react-router-dom components
 import { Link } from "react-router-dom";
 
@@ -27,7 +12,7 @@ import Icon from "@mui/material/Icon";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 
-function Breadcrumbs({ icon, title, route, light }) {
+function Breadcrumbs({ icon, route, light }) {
   const routes = route.slice(0, -1);
 
   return (
@@ -65,7 +50,7 @@ function Breadcrumbs({ icon, title, route, light }) {
             </MDTypography>
           </Link>
         ))}
-        <MDTypography
+        {/* <MDTypography
           variant="button"
           fontWeight="regular"
           textTransform="capitalize"
@@ -73,7 +58,7 @@ function Breadcrumbs({ icon, title, route, light }) {
           sx={{ lineHeight: 0 }}
         >
           {title.replace("-", " ")}
-        </MDTypography>
+        </MDTypography> */}
       </MuiBreadcrumbs>
       <MDTypography
         fontWeight="bold"
@@ -82,7 +67,7 @@ function Breadcrumbs({ icon, title, route, light }) {
         color={light ? "white" : "dark"}
         noWrap
       >
-        {title.replace("-", " ")}
+        {/* {title.replace("-", " ")} */}
       </MDTypography>
     </MDBox>
   );
@@ -96,7 +81,7 @@ Breadcrumbs.defaultProps = {
 // Typechecking props for the Breadcrumbs
 Breadcrumbs.propTypes = {
   icon: PropTypes.node.isRequired,
-  title: PropTypes.string.isRequired,
+  // title: PropTypes.string.isRequired,
   route: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
   light: PropTypes.bool,
 };

@@ -293,7 +293,7 @@ export default function OfflineOrderForm() {
                               <Loading />
                             ) : (
                               <div>
-                                {data.staff_name ? (
+                                {data.status !== "Chờ xác nhận" ? (
                                   <Form.Select
                                     fluid
                                     // options={staffDropdown.data || []}
@@ -305,6 +305,7 @@ export default function OfflineOrderForm() {
                                     value={formik.values.staff}
                                     error={formik.errors.staff}
                                     text={data.staff_name}
+                                    // disabled
                                   />
                                 ) : (
                                   <Form.Select
@@ -356,11 +357,13 @@ export default function OfflineOrderForm() {
               }}
               autoHeight
               getRowId={(r) => r.product_detail_id}
+              hideFooter
               loading={loading}
               rows={totalProduct}
               disableSelectionOnClick
               columns={columns}
               pageSize={8}
+              rowsPerPageOptions={[]}
               data={(query) =>
                 new Promise(() => {
                   console.log(query);

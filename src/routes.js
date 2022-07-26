@@ -156,14 +156,14 @@ export const routes = [
 ];
 
 export const routesAdmin = [
-  {
-    type: "collapse",
-    name: "Bảng điều khiển",
-    key: "dashboard",
-    icon: <Icon fontSize="small">dashboard</Icon>,
-    route: "/dashboard",
-    component: <Dashboard />,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Bảng điều khiển",
+  //   key: "dashboard",
+  //   icon: <Icon fontSize="small">dashboard</Icon>,
+  //   route: "/dashboard",
+  //   component: <Dashboard />,
+  // },
   {
     type: "collapse",
     name: "Sản phẩm",

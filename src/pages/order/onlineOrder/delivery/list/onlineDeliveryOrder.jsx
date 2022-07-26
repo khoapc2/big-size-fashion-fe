@@ -49,7 +49,7 @@ export default function StaffList() {
   const [searchText, setSearchText] = useState("");
   // console.log(data);
   useEffect(() => {
-    dispatch(listOrder("Delivery" ,true, pageState.page, pageState.pageSize));
+    dispatch(listOrder("Delivery", true, pageState.page, pageState.pageSize));
   }, [dispatch, pageState.page, pageState.pageSize, searchText, triggerReload]);
 
   // let inputSearchHandler = (e) => {
@@ -205,8 +205,10 @@ export default function StaffList() {
           pagination
           page={pageState.page - 1}
           paginationMode="server"
-          onPageChange={(newPage) => setPageState((old) => ({ ...old, page: newPage + 1}))}
-          onPageSizeChange={(newPageSize) => setPageState(old => ({ ...old, pageSize: newPageSize}))}
+          onPageChange={(newPage) => setPageState((old) => ({ ...old, page: newPage + 1 }))}
+          onPageSizeChange={(newPageSize) =>
+            setPageState((old) => ({ ...old, pageSize: newPageSize }))
+          }
           disableSelectionOnClick
           columns={columns}
           pageSize={pageState.pageSize}

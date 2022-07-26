@@ -48,11 +48,11 @@ function Basic() {
     // console.log(userInfo);
     if (userInfo) {
       if (userInfo.role === "Admin") {
-        navigate("/dashboard", { replace: true });
+        navigate("/products", { replace: true });
       } else if (userInfo.role === "Manager") {
         navigate("/statistic", { replace: true });
       } else if (userInfo.role === "Owner") {
-        navigate("/dashboard", { replace: true });
+        navigate("/statistic", { replace: true });
       } else {
         toast.error("Tài khoản không có quyền truy cập");
         localStorage.removeItem("user");

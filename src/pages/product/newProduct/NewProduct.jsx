@@ -44,8 +44,9 @@ export default function NewProduct() {
 
   const [selectedImgs, setSelectedImgs] = useState([]);
   const [fileImg, setFileImg] = useState();
+  const [flagSubmit, setFlagSubmit] = useState(false);
   // const [addToggle, setAddToggle] = useState(false);
-
+  console.log(flagSubmit);
   // const [price, setPrice] = useState(0);
   const { size } = useSelector((state) => state.getListSizeDropdown);
   const { promotion } = useSelector((state) => state.getListPromotionDropdown);
@@ -57,6 +58,7 @@ export default function NewProduct() {
     if (success) {
       console.log(success);
       toast.success("Tạo sản phẩm thành công");
+      setFlagSubmit(true);
       dispatch({ type: CREATE_PRODUCT_SUCCESS, payload: false });
     }
     if (error) {
@@ -104,6 +106,11 @@ export default function NewProduct() {
   const selectDelete = (image) => {
     setSelectedImgs(selectedImgs.filter((e) => e !== image));
   };
+  const handleReset = () => {
+    console.log("here");
+    setFlagSubmit(false);
+    setSelectedImgs([]);
+  };
 
   return (
     <DashboardLayout>
@@ -122,6 +129,7 @@ export default function NewProduct() {
             colourWithSize: [{ colour: "", size: [] }],
           }}
           onSubmit={onSubmit}
+          onReset={handleReset}
           validationSchema={SchemaErrorCreateProduct}
           validateOnBlur
           validateOnChange
@@ -130,7 +138,7 @@ export default function NewProduct() {
             console.log(formik);
             return (
               <div className="product">
-                <Form onSubmit={formik.handleSubmit}>
+                <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
                   <div className="productTop">
                     <div className="productTopLeft">
                       <Form.Input
@@ -141,6 +149,7 @@ export default function NewProduct() {
                         onChange={formik.handleChange}
                         value={formik.values.productName}
                         error={formik.errors.productName}
+                        disabled={flagSubmit}
                       />
                       <Form.Group widths="equal">
                         <Form.Input
@@ -152,6 +161,7 @@ export default function NewProduct() {
                           onChange={formik.handleChange}
                           value={formik.values.price}
                           error={formik.errors.price}
+                          disabled={flagSubmit}
                         />
                         <Form.Input
                           fluid
@@ -161,6 +171,7 @@ export default function NewProduct() {
                           onChange={formik.handleChange}
                           value={formik.values.brandName}
                           error={formik.errors.brandName}
+                          disabled={flagSubmit}
                         />
                       </Form.Group>
                       <Form.Group widths="equal">
@@ -178,6 +189,7 @@ export default function NewProduct() {
                           name="category"
                           value={formik.values.category}
                           error={formik.errors.category}
+                          disabled={flagSubmit}
                         />
                         <Form.Select
                           fluid
@@ -189,6 +201,7 @@ export default function NewProduct() {
                           name="sex"
                           value={formik.values.sex}
                           error={formik.errors.sex}
+                          disabled={flagSubmit}
                         />
                         <Form.Select
                           key={promotion.value}
@@ -203,6 +216,7 @@ export default function NewProduct() {
                           }}
                           name="promotion"
                           value={formik.values.promotion}
+                          disabled={flagSubmit}
                         />
                       </Form.Group>
                       <Form.TextArea
@@ -212,6 +226,7 @@ export default function NewProduct() {
                         onChange={formik.handleChange}
                         value={formik.values.description}
                         error={formik.errors.description}
+                        disabled={flagSubmit}
                       />
 
                       <FieldArray name="colourWithSize">
@@ -234,6 +249,7 @@ export default function NewProduct() {
                                         )
                                       }
                                       placeholder="Màu sắc"
+                                      disabled={flagSubmit}
                                     />
                                     <div className="text-danger">
                                       <ErrorMessage
@@ -256,6 +272,7 @@ export default function NewProduct() {
                                         )
                                       }
                                       placeholder="Kích cỡ"
+                                      disabled={flagSubmit}
                                     />
                                     <div className="text-danger">
                                       <ErrorMessage
@@ -266,7 +283,9 @@ export default function NewProduct() {
                                   </div>
                                   <Form.Button
                                     label="."
-                                    disabled={formik.values.colourWithSize.length == 1}
+                                    disabled={
+                                      formik.values.colourWithSize.length == 1 || flagSubmit
+                                    }
                                     color="red"
                                     onClick={() => remove(index)}
                                   >
@@ -278,6 +297,7 @@ export default function NewProduct() {
                             <Form.Button
                               color="green"
                               onClick={() => push({ colour: "", size: [] })}
+                              disabled={flagSubmit}
                             >
                               Thêm màu, cỡ
                             </Form.Button>
@@ -313,6 +333,7 @@ export default function NewProduct() {
                                       type="file"
                                       onChange={selectedImg}
                                       multiple
+                                      disabled={flagSubmit}
                                     />
                                     <IconButton
                                       color="primary"
@@ -396,10 +417,12 @@ export default function NewProduct() {
                     </div>
                   </div>
                   <div className="productBottom">
-                    {loading ? (
-                      <Loading />
+                    {flagSubmit ? (
+                      <Form.Button type="reset" color="blue">
+                        Tạo thêm sản phẩm
+                      </Form.Button>
                     ) : (
-                      <Form.Button type="submit" color="green" disabled={loading}>
+                      <Form.Button type="submit" color="green">
                         Xác nhận
                       </Form.Button>
                     )}

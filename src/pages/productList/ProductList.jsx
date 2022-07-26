@@ -30,7 +30,7 @@ import { listProduct } from "../../redux/actions/productAction";
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
 import Product from "pages/product/Product";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import RateReviewIcon from '@mui/icons-material/RateReview';
+import RateReviewIcon from "@mui/icons-material/RateReview";
 
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
@@ -50,6 +50,8 @@ export default function ProductList() {
     page: 1,
     pageSize: 10,
   });
+
+  console.log(data);
 
   useEffect(() => {
     dispatch(listProduct(searchText, pageState.page, pageState.pageSize));
@@ -127,7 +129,7 @@ export default function ProductList() {
       renderCell: (params) => (
         <div>
           {params.row.promotion_price
-            ? `${params.row.price.toLocaleString("vi-VN")}`
+            ? `${params.row.promotion_price.toLocaleString("vi-VN")}`
             : "Hiện chưa áp dụng"}
         </div>
       ),

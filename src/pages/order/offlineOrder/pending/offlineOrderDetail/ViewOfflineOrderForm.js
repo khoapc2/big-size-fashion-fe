@@ -307,6 +307,7 @@ export default function OfflineOrderForm() {
                 },
               }}
               autoHeight
+              hideFooter
               getRowId={(r) => r.product_detail_id}
               loading={loading}
               rows={totalProduct}
