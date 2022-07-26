@@ -141,7 +141,7 @@ export default function ManagerList() {
     {
       field: "action",
       headerName: "Thao tác",
-      width: 250,
+      width: 280,
       renderCell: (params) => (
         <>
           <IconButton
@@ -206,8 +206,8 @@ export default function ManagerList() {
     { field: "uid", headerName: "Mã NV", width: 100 },
     {
       field: "fullname",
-      headerName: "Họ tên  quản lí",
-      width: 400,
+      headerName: "Họ tên quản lí",
+      width: 350,
       renderCell: (params) => <div className="managerListItem">{params.row.fullname}</div>,
     },
     {

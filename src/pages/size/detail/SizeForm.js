@@ -65,27 +65,27 @@ export default function SizeForm() {
     >
       {(props) => (
         <Form className={classes.root}>
-          <Grid container>
+          <Grid container direction="row" alignItems="center">
             <Grid item xs={6}>
-              <div>
-                <Controls.Input
-                  type="text"
-                  name="size"
-                  label="Kích cỡ"
-                  required
-                  value={props.values.size}
-                  onChange={props.handleChange}
-                  error={!!props.errors.size}
-                  helperText={props.errors.size}
-                  fullWidth
-                  multiline
-                />
-                {loading ? (
-                  <Loading />
-                ) : (
-                  <Controls.Button type="submit" text="Xác nhận" disabled={loading} />
-                )}
-              </div>
+              <Controls.Input
+                type="text"
+                name="size"
+                label="Kích cỡ"
+                required
+                value={props.values.size}
+                onChange={props.handleChange}
+                error={!!props.errors.size}
+                helperText={props.errors.size}
+                fullWidth
+                multiline
+              />
+            </Grid>
+            <Grid item xs={2}>
+              {loading ? (
+                <Loading />
+              ) : (
+                <Controls.Button type="submit" text="Xác nhận" disabled={loading} />
+              )}
             </Grid>
             {/* {console.log(props)} */}
           </Grid>

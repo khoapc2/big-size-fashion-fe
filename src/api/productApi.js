@@ -4,7 +4,7 @@ const URL_ENTITY = "/v1/products";
 // const URL_ADD_IMG = "/product-images/add-image";
 const IMPORT_PRODUCT = "/all-product-to-import";
 const URL_CREATE_DETAIL = "/v1/product-details";
-const ADD_PROMOTION_PRODUCT = "/v1/promotion-details";
+
 const GET_QUANTITY_PRODUCT = "/v1/products/quantity-of-store";
 
 const productApi = {
@@ -28,6 +28,11 @@ const productApi = {
     return axios.put(url, params);
   },
 
+  deleteProduct: (params) => {
+    const url = `${URL_ENTITY}/${params}`;
+    return axios.delete(url);
+  },
+
   createDetailProduct: (params) => {
     const url = `${URL_CREATE_DETAIL}`;
     return axios.post(url, params);
@@ -41,15 +46,6 @@ const productApi = {
   getProductToImport: () => {
     const url = `${URL_ENTITY.concat(IMPORT_PRODUCT)}`;
     return axios.get(url);
-  },
-  addPromotionProduct: (params) => {
-    const url = `${ADD_PROMOTION_PRODUCT}`;
-    return axios.post(url, params);
-  },
-
-  deletePromotionProduct: (params) => {
-    const url = `${ADD_PROMOTION_PRODUCT}`;
-    return axios.delete(url, params);
   },
 
   getQuantityProduct: (params) => {

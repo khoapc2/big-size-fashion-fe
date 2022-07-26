@@ -70,7 +70,7 @@ export default function SizeUpdateForm() {
           >
             {(props) => (
               <Form className={classes.root}>
-                <Grid container>
+                <Grid container direction="row" alignItems="center">
                   <Grid item xs={6}>
                     <Controls.Input
                       name="size"
@@ -82,6 +82,8 @@ export default function SizeUpdateForm() {
                       fullWidth
                       multiline
                     />
+                  </Grid>
+                  <Grid item xs={2}>
                     {loadingUpdate ? (
                       <Loading />
                     ) : (

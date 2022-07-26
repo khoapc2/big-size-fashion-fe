@@ -7,6 +7,7 @@ import {
   viewDetailProductReducer,
   updateProductReducer,
   productImportInvoiceReducer,
+  deleteProductReducer,
 } from "redux/reducers/productReducer";
 import {
   listStoreReducer,
@@ -46,7 +47,10 @@ import {
   deletePromotionReducer,
   viewDetailPromotionReducer,
   updatePromotionReducer,
-  listPromotionDropdownReducer,
+  listProductOfPromotionReducer,
+  deleteProductFromPromotionReducer,
+  addProductToPromotionReducer,
+  listProductsToAddPromotionReducer,
 } from "redux/reducers/promotionReducer";
 import { listManagerReducer } from "redux/reducers/managerReducer";
 import { listStaffReducer, listStaffInStoreReducer } from "redux/reducers/staffReducer";
@@ -138,7 +142,6 @@ const reducer = combineReducers({
   rejectOnlineOrder: rejectOnlineOrderReducer,
   resetPasswordState: resetPasswordReducer,
   getListSizeDropdown: listSizeDropdownReducer,
-  getListPromotionDropdown: listPromotionDropdownReducer,
   viewImportDeliver: listImportDeliverReducer,
   viewExportDeliver: listExportDeliverReducer,
   updateProduct: updateProductReducer,
@@ -158,6 +161,11 @@ const reducer = combineReducers({
   getMainWareHouse: getMainWareHouseReducer,
   listFeedbackState: listFeedbackReducer,
   deleteFeedbackState: deleteFeedbackReducer,
+  listProductOfPromotionState: listProductOfPromotionReducer,
+  deleteProductFromPromotionState: deleteProductFromPromotionReducer,
+  addProductToPromotionState: addProductToPromotionReducer,
+  listProductsToAddPromotionState: listProductsToAddPromotionReducer,
+  deleteProductState: deleteProductReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

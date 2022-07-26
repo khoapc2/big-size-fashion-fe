@@ -1,0 +1,228 @@
+.newImport {
+  flex: 4;
+  padding-left: 2rem;
+}
+
+.createImportForm {
+  margin-top: 10px;
+}
+
+.createImportItem {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.createImportItem > .label {
+  color: gray;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.createImportItem > input {
+  padding: 10px;
+}
+
+.createImportItem > select {
+  padding: 10px;
+}
+
+.storeListEdit {
+  border: none;
+  border-radius: 10px;
+  padding: 5px 10px;
+  background-color: #3bb077;
+  color: white;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.createImportButton {
+  margin-top: 10px;
+  padding: 7px 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: darkblue;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+input {
+  margin-left: 100px;
+}
+
+.account {
+  flex: 4;
+  padding: 20px;
+}
+
+.accountTitleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.accountTop {
+  display: flex;
+  flex-direction: column;
+}
+
+.accountTopLeft,
+.accountTopRight {
+  flex: 1;
+}
+
+.accountTopRight,
+.accountTopLeft {
+  padding: 20px;
+  margin: 20px;
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+}
+
+.accountInfoImg {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.accountInfoTop {
+  display: flex;
+  align-items: center;
+}
+
+.accountName {
+  font-weight: 600;
+}
+
+.accountInfoBottom {
+  margin-top: 10px;
+}
+
+.accountInfoItem {
+  width: 150px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.accountInfoValue {
+  font-weight: 300;
+}
+
+.accountBottom {
+  display: flex;
+  justify-content: center;
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  padding: 30px 0px;
+}
+
+.account-top {
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+}
+
+.accountForm {
+  display: flex;
+  justify-content: space-between;
+}
+
+.accountFormLeft {
+  display: flex;
+  flex-direction: column;
+}
+
+.accountFormLeft > label {
+  margin-bottom: 10px;
+  color: gray;
+}
+
+.accountFormLeft > input {
+  margin-bottom: 10px;
+  border: none;
+  padding: 5px;
+  border-bottom: 1px solid gray;
+}
+
+.accountFormLeft > select {
+  margin-bottom: 10px;
+}
+
+.accountUploadImg {
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.accountFormRight {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.accountUpload {
+  display: flex;
+  justify-content: space-between;
+}
+
+.accountButton {
+  border: none;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: darkblue;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.upload-img {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  font-size: large;
+  cursor: pointer;
+  width: 10rem;
+  height: 10rem;
+  border-radius: 20px;
+  border: 1px dotted black;
+  color: gray;
+  font-weight: 600;
+}
+
+label span {
+  font-weight: lighter;
+  font-size: small;
+  padding-top: 0.5rem;
+}
+
+section {
+  padding: 2rem 0;
+}
+
+.MuiBox-root .css-8bvdc8 {
+  margin: 0;
+  border-radius: 5px;
+}
+
+.top-add-product {
+  padding: 15px;
+  margin-top: 20px;
+  /* display: flex; */
+  align-items: center;
+}
+
+.choose-button-add-product {
+  text-align: end;
+}
+
+.ui.form .fields {
+  display: -webkit-box !important;
+}

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Button } from "semantic-ui-react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 import IconButton from "@mui/material/IconButton";
 import FormControl from "@mui/material/FormControl";
@@ -24,13 +25,13 @@ import {
 import "./productList.css";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import { listProduct } from "../../redux/actions/productAction";
+import { listProduct, deleteProduct } from "../../redux/actions/productAction";
 
 // import productApi from "../../api/productApi";
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
-import Product from "pages/product/Product";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import RateReviewIcon from "@mui/icons-material/RateReview";
+import { DELETE_PRODUCT_FAIL, DELETE_PRODUCT_SUCCESS } from "../../service/Validations/VarConstant";
 
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
@@ -45,6 +46,7 @@ export default function ProductList() {
   const [searchText, setSearchText] = useState("");
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
   const triggerReload = useSelector((state) => state.triggerReload);
+  const deleteState = useSelector((state) => state.deleteProductState);
   const { data, error, loading, totalCount } = useSelector((state) => state.productList);
   const [pageState, setPageState] = useState({
     page: 1,
@@ -55,8 +57,26 @@ export default function ProductList() {
 
   useEffect(() => {
     dispatch(listProduct(searchText, pageState.page, pageState.pageSize));
-    console.log(pageState);
-  }, [dispatch, pageState.page, pageState.pageSize, searchText, triggerReload]);
+    if (deleteState.success) {
+      toast.success("Thao tác thành công");
+      dispatch({ type: DELETE_PRODUCT_SUCCESS, payload: false });
+    } else {
+      // console.log(`create:${success}`);
+    }
+    if (deleteState.error) {
+      // console.log(error);
+      toast.error("Thao tác thất bại, vui lòng thử lại");
+      dispatch({ type: DELETE_PRODUCT_FAIL, payload: false });
+    }
+  }, [
+    dispatch,
+    pageState.page,
+    pageState.pageSize,
+    searchText,
+    triggerReload,
+    deleteState.success,
+    deleteState.error,
+  ]);
 
   let inputSearchHandler = (e) => {
     let lowerCase = e.target.value.toLowerCase();
@@ -76,6 +96,7 @@ export default function ProductList() {
   const handleClickSearch = (searchText) => {};
 
   const handleDelete = (id) => {
+    dispatch(deleteProduct(id));
     setConfirmDialog({
       ...confirmDialog,
       isOpen: false,
@@ -182,21 +203,39 @@ export default function ProductList() {
             <></>
           )}
           {role === "Admin" ? (
-            <Button
-              className="productListDelete"
-              onClick={() =>
-                setConfirmDialog({
-                  isOpen: true,
-                  title: "Are you sure to delete this record?",
-                  subTitle: "Delete",
-                  onConfirm: () => {
-                    handleDelete(params.row.id);
-                  },
-                })
-              }
-              color="red"
-              icon="trash alternate"
-            />
+            params.row.status ? (
+              <Button
+                className="productListDelete"
+                onClick={() =>
+                  setConfirmDialog({
+                    isOpen: true,
+                    title: "Bạn muốn ngừng bán sản phẩm này?",
+                    subTitle: "Bạn chắc chứ?",
+                    onConfirm: () => {
+                      handleDelete(params.row.product_id);
+                    },
+                  })
+                }
+                color="red"
+                icon="trash alternate"
+              />
+            ) : (
+              <Button
+                className="productListDelete"
+                onClick={() =>
+                  setConfirmDialog({
+                    isOpen: true,
+                    title: "Bạn muốn khôi phục sản phẩm này?",
+                    subTitle: "Bạn chắc chứ?",
+                    onConfirm: () => {
+                      handleDelete(params.row.product_id);
+                    },
+                  })
+                }
+                color="green"
+                icon="undo"
+              />
+            )
           ) : (
             <></>
           )}

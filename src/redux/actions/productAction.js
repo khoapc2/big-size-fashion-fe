@@ -16,6 +16,9 @@ import {
   IMPORT_PRODUCT_LIST_REQUEST,
   IMPORT_PRODUCT_LIST_SUCCESS,
   IMPORT_PRODUCT_LIST_FAIL,
+  DELETE_PRODUCT_REQUEST,
+  DELETE_PRODUCT_SUCCESS,
+  DELETE_PRODUCT_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listProduct = (keySearch, page, size) => async (dispatch) => {
@@ -128,21 +131,14 @@ export const createProduct = (productModels, files) => async (dispatch) => {
         return dataDetail;
       });
 
-      if (productModels.promotion) {
-        const paramPromotion = {
-          promotion_id: productModels.promotion,
-          list_product_id: [data.content.product_id],
-        };
-        await productApi.addPromotionProduct(paramPromotion);
-      }
+      // if (productModels.promotion) {
+      //   const paramPromotion = {
+      //     promotion_id: productModels.promotion,
+      //     list_product_id: [data.content.product_id],
+      //   };
+      //   await productApi.addPromotionProduct(paramPromotion);
+      // }
       dispatch({ type: CREATE_PRODUCT_SUCCESS, payload: data });
-      // await axios({
-      //   method: "post",
-      //   url: `https://20.211.17.194/api/product-images/add-image/${data.content.product_id}`,
-      //   data: files,
-      //   headers: axiosConfig.headers,
-      // });
-      // await productApi.addImgToProduct(data.content.product_id, files),
     }
   } catch (error) {
     dispatch({
@@ -197,42 +193,30 @@ export const updateProduct = (productModels, id) => async (dispatch) => {
         brand: productModels.brandName,
       };
       const data = await productApi.updateProduct(param, id);
-
-      // if (productModels.promotion !== null) {
-      //   if (productModels.promotion === 0 && productModels.promotion_backup !== null) {
-      //     console.log("delete promotion");
-      //     const paramRemovePromotionFromProduct = {
-      //       product_id: productModels.productId,
-      //       promotion_id: productModels.promotion_backup,
-      //     };
-      //     const dat = await productApi.deletePromotionProduct(paramRemovePromotionFromProduct);
-      //     console.log(dat);
-      //   } else if (productModels.promotion !== 0) {
-      //     console.log("update promotion");
-      //     if (productModels.promotion_backup) {
-      //       console.log("delete before add promotion");
-      //       const paramRemovePromotionFromProduct = {
-      //         product_id: productModels.productId,
-      //         promotion_id: productModels.promotion_backup,
-      //       };
-      //       console.log(paramRemovePromotionFromProduct);
-      //       await productApi.deletePromotionProduct(paramRemovePromotionFromProduct);
-      //     }
-
-      //     const paramAddPromotionToProduct = {
-      //       promotion_id: productModels.promotion,
-      //       list_product_id: [productModels.productId],
-      //     };
-      //     console.log(paramAddPromotionToProduct);
-      //     await productApi.addPromotionProduct(paramAddPromotionToProduct);
-      //   }
-      // }
-      console.log(data);
       dispatch({ type: UPDATE_PRODUCT_SUCCESS, payload: data });
     }
   } catch (error) {
     dispatch({
       type: UPDATE_PRODUCT_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const deleteProduct = (productId) => async (dispatch) => {
+  // console.log("DeleteStore");
+  // console.log(storeId);
+  dispatch({
+    type: DELETE_PRODUCT_REQUEST,
+    payload: { productId },
+  });
+  try {
+    const data = await productApi.deleteProduct(productId);
+    dispatch({ type: DELETE_PRODUCT_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: DELETE_PRODUCT_FAIL,
       payload:
         error.response && error.response.data.message ? error.response.data.message : error.message,
     });

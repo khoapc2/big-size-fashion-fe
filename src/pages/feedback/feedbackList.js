@@ -77,7 +77,7 @@ export default function FeedbackForm() {
   function NoRowsOverlay() {
     return (
       <Stack height="100%" alignItems="center" justifyContent="center">
-        Không tìm thấy đơn hàng nào
+        Không tìm thấy đánh giá nào
       </Stack>
     );
   }
@@ -85,7 +85,7 @@ export default function FeedbackForm() {
   function NoResultsOverlay() {
     return (
       <Stack height="100%" alignItems="center" justifyContent="center">
-        Không tìm thấy đơn hàng nào
+        Không tìm thấy đánh giá nào
       </Stack>
     );
   }

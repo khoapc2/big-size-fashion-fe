@@ -56,16 +56,26 @@ export default function CreateImportDeliver() {
   }, [dispatch, triggerReload]);
 
   useEffect(() => {
+    if (
+      typeof error === "string" &&
+      error.includes("Trùng sản phẩm")
+    ) {
+      toast.error("Thêm thất bại, vui lòng không chọn sản phẩm trùng");
+      dispatch({ type: CREATE_IMPORT_PRODUCT_LIST_FAIL, payload: false });
+    } else if (error) {
+      toast.error("Thêm thất bại, vui lòng thử lại");
+      dispatch({ type: CREATE_IMPORT_PRODUCT_LIST_FAIL, payload: false });
+    }
+  }, [dispatch, error]);
+
+
+  useEffect(() => {
     if (success) {
       toast.success("Tạo đơn nhập hàng thành công");
       setSubmit(true);
       dispatch({ type: CREATE_IMPORT_PRODUCT_LIST_SUCCESS, payload: false });
     }
-    if (error) {
-      toast.error("Tạo đơn nhập hàng thất bại, vui lòng thử lại");
-      dispatch({ type: CREATE_IMPORT_PRODUCT_LIST_FAIL, payload: false });
-    }
-  }, [success, error, triggerReload, dispatch]);
+  }, [success, triggerReload, dispatch]);
 
   //
 
