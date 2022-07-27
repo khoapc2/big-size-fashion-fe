@@ -39,6 +39,24 @@ const formatDate = (date) => {
   return newDate;
 };
 
+const formatToDate = (date) => {
+  const arrayDate = date.split("/");
+  const newDate = `${arrayDate[1]}/${arrayDate[0]}/${arrayDate[2]}`;
+  return newDate;
+};
+
+const currentDate = () => {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  let mm = today.getMonth() + 1; // Months start at 0!
+  let dd = today.getDate();
+
+  if (dd < 10) dd = "0" + dd;
+  if (mm < 10) mm = "0" + mm;
+  const formattedToday = mm + "/" + dd + "/" + yyyy;
+  return formattedToday;
+};
+
 export default function CreateImportDeliver() {
   const apiRef = useRef(null);
   const [rows, setRows] = useState([]);
@@ -52,6 +70,7 @@ export default function CreateImportDeliver() {
   const response = useSelector((state) => state.quantityAjustment);
   let { data, loading, list_products, error } = useSelector((state) => state.listInventoryProduct);
 
+  // console.log(currentDate());
   // const { list_products } = data;
 
   // console.log(data);
@@ -96,11 +115,11 @@ export default function CreateImportDeliver() {
   //
 
   const onSubmit = (data) => {
-    // console.log(data);
+    console.log(data);
     // const {product_name, product_id, quantity} = data
     // dispatch(createAccount(data));
     setFromdate(formatDate(data.from_date));
-    setTodate(formatDate(data.to_date));
+    setTodate(formatToDate(data.to_date));
     // console.log(fromDate);
     // console.log(toDate);
 
@@ -339,7 +358,7 @@ export default function CreateImportDeliver() {
                   product_id: "",
                   real_quantity: "",
                   from_date: "",
-                  to_date: "",
+                  to_date: currentDate(),
                 }}
                 onReset={handleReset}
                 onSubmit={onSubmit}
@@ -362,18 +381,18 @@ export default function CreateImportDeliver() {
                           onChange={formik.handleChange}
                           value={formik.values.from_date}
                           error={formik.errors.from_date}
-                          disabled={data ? true : false}
+                          readOnly={data ? true : false}
                         />
                         <Form.Input
                           name="to_date"
                           fluid
-                          label="Đến ngày"
+                          label="Ngày hiện hành"
                           placeholder="Ngày"
-                          type="date"
+                          type="input"
                           onChange={formik.handleChange}
                           value={formik.values.to_date}
-                          error={formik.errors.to_date}
-                          disabled={data ? true : false}
+                          // error={formik.errors.to_date}
+                          readOnly
                         />
                       </Form.Group>
                       <Form.Group className="top-add-product" widths="equal">
@@ -391,7 +410,7 @@ export default function CreateImportDeliver() {
                           value={formik.values.product_name}
                           error={formik.errors.product_name}
                           text={formik.values.product_name}
-                          disabled={data ? true : false}
+                          readOnly={data ? true : false}
                         />
                         <Form.Input
                           fluid
@@ -402,7 +421,7 @@ export default function CreateImportDeliver() {
                           onChange={formik.handleChange}
                           value={formik.values.real_quantity}
                           error={formik.errors.real_quantity}
-                          disabled={data ? true : false}
+                          readOnly={data ? true : false}
                         />
                         {data ? (
                           ""

@@ -9,7 +9,8 @@ import {
 } from "../../service/Validations/VarConstant";
 
 export const getInventoryAction = (para, from_date, to_date) => async (dispatch) => {
-  console.log(para);
+  console.log(to_date);
+  console.log(from_date);
   const listProduct = Array.from(para.values());
   const listProductHandleParse = [];
   const listProductSendToBE = [];

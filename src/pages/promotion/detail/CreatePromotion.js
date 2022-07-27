@@ -20,8 +20,8 @@ export default function CreatePromotion() {
     <DashboardLayout>
       <DashboardNavbar />
       <PageHeader
-        title="Thêm thông tin cửa hàng mới"
-        subTitle="Sử dụng cho cửa hàng mới"
+        title="Tạo mã khuyến mãi mới"
+        subTitle=""
         icon={<AddBusinessIcon fontSize="large" />}
       />
       <Paper className={classes.pageContent}>

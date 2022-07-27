@@ -226,3 +226,7 @@ section {
 .ui.form .fields {
   display: -webkit-box !important;
 }
+
+.field.choose-button-add-product.field > label {
+  color: rgb(240 242 245) !important;
+}

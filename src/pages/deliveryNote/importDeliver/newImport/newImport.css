@@ -210,9 +210,6 @@ section {
   border-radius: 5px;
 }
 
-/* .top-add-product {
-  padding: 15px;
-  margin-top: 20px;
-  display: flex;
-  align-items: center;
-} */
+.field.button-add-product.field > label {
+  color: rgb(240 242 245) !important;
+}

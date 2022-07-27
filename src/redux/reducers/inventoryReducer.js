@@ -31,7 +31,6 @@ export const getStorewarehouseReducer = (
     case GET_INVENTORY_PRODUCT_LIST_SUCCESS:
       return { data: action.payload, loading: false, list_products: formatArray(action.payload) };
     case GET_INVENTORY_PRODUCT_LIST_FAIL:
-      console.log(action.payload);
       return { error: action.payload, loading: false };
     default:
       return state;

@@ -29,8 +29,8 @@ const useStyles = makeStyles((theme) => ({
 const initialValues = {
   promotion_name: "",
   promotion_value: "",
-  apply_date: "",
-  expired_date: "",
+  apply_date: "12/12/2022",
+  expired_date: "13/12/2022",
 };
 
 export default function PromotionForm() {
@@ -99,7 +99,7 @@ export default function PromotionForm() {
                 name="apply_date"
                 label="Ngày hiệu lực"
                 required
-                value={props.values.apply_date}
+                value={props.values.apply_date || ""}
                 onChange={props.handleChange}
                 error={!!props.errors.apply_date}
                 helperText={props.errors.apply_date}
@@ -109,7 +109,7 @@ export default function PromotionForm() {
                 name="expired_date"
                 label="Ngày hết hạn"
                 required
-                value={props.values.expired_date}
+                value={props.values.expired_date || ""}
                 onChange={props.handleChange}
                 error={!!props.errors.expired_date}
                 helperText={props.errors.expired_date}

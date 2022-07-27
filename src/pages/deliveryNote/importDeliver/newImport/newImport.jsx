@@ -56,10 +56,7 @@ export default function CreateImportDeliver() {
   }, [dispatch, triggerReload]);
 
   useEffect(() => {
-    if (
-      typeof error === "string" &&
-      error.includes("Trùng sản phẩm")
-    ) {
+    if (typeof error === "string" && error.includes("Trùng sản phẩm")) {
       toast.error("Thêm thất bại, vui lòng không chọn sản phẩm trùng");
       dispatch({ type: CREATE_IMPORT_PRODUCT_LIST_FAIL, payload: false });
     } else if (error) {
@@ -67,7 +64,6 @@ export default function CreateImportDeliver() {
       dispatch({ type: CREATE_IMPORT_PRODUCT_LIST_FAIL, payload: false });
     }
   }, [dispatch, error]);
-
 
   useEffect(() => {
     if (success) {
@@ -210,10 +206,26 @@ export default function CreateImportDeliver() {
                             error={formik.errors.delivery_note_name}
                             disabled={submit}
                           />
+                          <Form.Select
+                            // fluid
+                            label="Yều cầu nhập hàng tới"
+                            options={activeStore.store || []}
+                            placeholder="Đến cửa hàng"
+                            name="store_name"
+                            onChange={(e, v) => {
+                              const { text } = activeStore.store.find((o) => o.value === v.value);
+                              formik.setFieldValue("store_id", v.value);
+                              formik.setFieldValue("store_name", text);
+                            }}
+                            value={formik.values.store_id}
+                            // error={formik.errors.product_name}
+                            text={formik.values.store_name}
+                            disabled={submit}
+                          />
                         </Form.Group>
+
                         <Form.Group className="top-add-product" widths="4">
                           <Form.Select
-                            search
                             fluid
                             label="Sản phẩm"
                             options={listImportPro.data || []}
@@ -240,42 +252,29 @@ export default function CreateImportDeliver() {
                             error={formik.errors.quantity}
                             disabled={submit}
                           />
-                          <Form.Select
-                            search
-                            // fluid
-                            label="Cửa hàng"
-                            options={activeStore.store || []}
-                            placeholder="Đến cửa hàng"
-                            name="store_name"
-                            onChange={(e, v) => {
-                              const { text } = activeStore.store.find((o) => o.value === v.value);
-                              formik.setFieldValue("store_id", v.value);
-                              formik.setFieldValue("store_name", text);
-                            }}
-                            value={formik.values.store_id}
-                            // error={formik.errors.product_name}
-                            text={formik.values.store_name}
-                            disabled={submit}
-                          />
 
                           {submit ? (
-                            <Form.Button
-                              label="."
-                              className="button-add-product"
-                              type="reset"
-                              color="blue"
-                            >
-                              Tạo thêm đơn nhập hàng
-                            </Form.Button>
+                            <div className="button">
+                              <Form.Button
+                                label=" "
+                                className="button-add-product"
+                                type="reset"
+                                color="blue"
+                              >
+                                Tạo thêm đơn nhập hàng
+                              </Form.Button>
+                            </div>
                           ) : (
-                            <Form.Button
-                              label="."
-                              className="button-add-product"
-                              type="submit"
-                              color="green"
-                            >
-                              Thêm sản phẩm vào đơn nhập hàng
-                            </Form.Button>
+                            <div className="button">
+                              <Form.Button
+                                className="button-add-product"
+                                label="·"
+                                type="submit"
+                                color="green"
+                              >
+                                Thêm sản phẩm vào đơn nhập hàng
+                              </Form.Button>
+                            </div>
                           )}
                         </Form.Group>
                       </Form>
