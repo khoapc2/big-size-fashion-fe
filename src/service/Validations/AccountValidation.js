@@ -6,10 +6,13 @@ export const SchemaErrorCreateAccount = Yup.object().shape({
   username: Yup.string()
     .max(50, "Tên tài khoản phải dưới 50 ký tự")
     .required("Tên tài khoản không được bỏ trống"),
-  password: Yup.string().required("Mật khẩu không được bỏ trống"),
+  password: Yup.string()
+    .required("Mật khẩu không được bỏ trống")
+    .min(3, "Mật khẩu không ít hơn 3 kí tự"),
   passwordConfirm: Yup.string()
     .oneOf([Yup.ref("password"), null], "Mật khẩu xác nhận không khớp")
-    .required("Mật khẩu xác nhận không được bỏ trống"),
+    .required("Mật khẩu xác nhận không được bỏ trống")
+    .min(3, "Mật khẩu không ít hơn 3 kí tự"),
   fullname: Yup.string().required("Họ tên không được bỏ trống"),
   store_id: Yup.string().required("Cửa hàng không được bỏ trống"),
   phone_number: Yup.string()
