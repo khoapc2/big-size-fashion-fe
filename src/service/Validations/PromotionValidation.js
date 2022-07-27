@@ -7,8 +7,9 @@ export const SchemaErrorMessageCreatePromotion = Yup.object().shape({
     .required("Tên khuyến mại không được bỏ trống"),
   promotion_value: Yup.number()
     .min(1, "Khuyến mại phải ít nhất 1% !")
-    .max(100, "Khuyến mại không vượt quá 100% !")
-    .integer("Khuyến mãi phaie là số nguyên!")
+    .max(100, "Giá trị khuyến mại không vượt quá 100% !")
+    .integer("Khuyến mãi phải là số nguyên!")
+    .typeError("Giá trị khuyến mại phải là số")
     .required("Giá trị khuyến mại không được bỏ trống!"),
   apply_date: Yup.date(),
   expired_date: Yup.date().when("apply_date", (apply_date, schema) => {

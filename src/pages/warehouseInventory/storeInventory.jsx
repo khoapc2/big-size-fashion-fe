@@ -361,7 +361,11 @@ export default function CreateImportDeliver() {
                           type="date"
                           onChange={formik.handleChange}
                           value={formik.values.from_date}
-                          error={formik.errors.from_date}
+                          error={
+                            formik.touched.from_date && formik.errors.from_date
+                              ? formik.errors.from_date
+                              : null
+                          }
                           disabled={data ? true : false}
                         />
                         <Form.Input
@@ -372,7 +376,11 @@ export default function CreateImportDeliver() {
                           type="date"
                           onChange={formik.handleChange}
                           value={formik.values.to_date}
-                          error={formik.errors.to_date}
+                          error={
+                            formik.touched.to_date && formik.errors.to_date
+                              ? formik.errors.to_date
+                              : null
+                          }
                           disabled={data ? true : false}
                         />
                       </Form.Group>
@@ -389,7 +397,11 @@ export default function CreateImportDeliver() {
                             formik.setFieldValue("product_name", text);
                           }}
                           value={formik.values.product_name}
-                          error={formik.errors.product_name}
+                          error={
+                            formik.touched.product_name && formik.errors.product_name
+                              ? formik.errors.product_name
+                              : null
+                          }
                           text={formik.values.product_name}
                           disabled={data ? true : false}
                         />
@@ -401,7 +413,11 @@ export default function CreateImportDeliver() {
                           name="real_quantity"
                           onChange={formik.handleChange}
                           value={formik.values.real_quantity}
-                          error={formik.errors.real_quantity}
+                          error={
+                            formik.touched.real_quantity && formik.errors.real_quantity
+                              ? formik.errors.real_quantity
+                              : null
+                          }
                           disabled={data ? true : false}
                         />
                         {data ? (

@@ -56,10 +56,7 @@ export default function CreateImportDeliver() {
   }, [dispatch, triggerReload]);
 
   useEffect(() => {
-    if (
-      typeof error === "string" &&
-      error.includes("Trùng sản phẩm")
-    ) {
+    if (typeof error === "string" && error.includes("Trùng sản phẩm")) {
       toast.error("Thêm thất bại, vui lòng không chọn sản phẩm trùng");
       dispatch({ type: CREATE_IMPORT_PRODUCT_LIST_FAIL, payload: false });
     } else if (error) {
@@ -67,7 +64,6 @@ export default function CreateImportDeliver() {
       dispatch({ type: CREATE_IMPORT_PRODUCT_LIST_FAIL, payload: false });
     }
   }, [dispatch, error]);
-
 
   useEffect(() => {
     if (success) {
@@ -207,7 +203,11 @@ export default function CreateImportDeliver() {
                             name="delivery_note_name"
                             onChange={formik.handleChange}
                             value={formik.values.delivery_note_name}
-                            error={formik.errors.delivery_note_name}
+                            error={
+                              formik.touched.delivery_note_name && formik.errors.delivery_note_name
+                                ? formik.errors.delivery_note_name
+                                : null
+                            }
                             disabled={submit}
                           />
                         </Form.Group>
@@ -225,7 +225,11 @@ export default function CreateImportDeliver() {
                               formik.setFieldValue("product_name", text);
                             }}
                             value={formik.values.product_name}
-                            error={formik.errors.product_name}
+                            error={
+                              formik.touched.product_name && formik.errors.product_name
+                                ? formik.errors.product_name
+                                : null
+                            }
                             text={formik.values.product_name}
                             disabled={submit}
                           />
@@ -237,7 +241,11 @@ export default function CreateImportDeliver() {
                             name="quantity"
                             onChange={formik.handleChange}
                             value={formik.values.quantity}
-                            error={formik.errors.quantity}
+                            error={
+                              formik.touched.quantity && formik.errors.quantity
+                                ? formik.errors.quantity
+                                : null
+                            }
                             disabled={submit}
                           />
                           <Form.Select
