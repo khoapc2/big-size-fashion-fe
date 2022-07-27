@@ -70,8 +70,12 @@ export default function StoreForm() {
                 label="Tên cửa hàng"
                 value={props.values.storeName}
                 onChange={props.handleChange}
-                error={props.errors.storeName}
-                helperText={props.errors.storeName}
+                error={
+                  props.touched.storeName && props.errors.storeName ? props.errors.storeName : null
+                }
+                helperText={
+                  props.touched.storeName && props.errors.storeName ? props.errors.storeName : null
+                }
                 fullWidth
               />
               <Controls.Input
@@ -79,8 +83,16 @@ export default function StoreForm() {
                 label="Địa chỉ cửa hàng"
                 value={props.values.storeAddress}
                 onChange={props.handleChange}
-                error={props.errors.storeAddress}
-                helperText={props.errors.storeAddress}
+                error={
+                  props.touched.storeAddress && props.errors.storeAddress
+                    ? props.errors.storeAddress
+                    : null
+                }
+                helperText={
+                  props.touched.storeAddress && props.errors.storeAddress
+                    ? props.errors.storeAddress
+                    : null
+                }
                 fullWidth
                 multiline
               />
@@ -91,8 +103,8 @@ export default function StoreForm() {
                 label="Số điện thoại"
                 value={props.values.phone}
                 onChange={props.handleChange}
-                error={props.errors.phone}
-                helperText={props.errors.phone}
+                error={props.touched.phone && props.errors.phone ? props.errors.phone : null}
+                helperText={props.touched.phone && props.errors.phone ? props.errors.phone : null}
               />
               {loading ? (
                 <Loading />

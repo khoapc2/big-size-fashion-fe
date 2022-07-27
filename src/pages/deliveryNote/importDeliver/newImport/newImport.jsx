@@ -203,7 +203,11 @@ export default function CreateImportDeliver() {
                             name="delivery_note_name"
                             onChange={formik.handleChange}
                             value={formik.values.delivery_note_name}
-                            error={formik.errors.delivery_note_name}
+                            error={
+                              formik.touched.delivery_note_name && formik.errors.delivery_note_name
+                                ? formik.errors.delivery_note_name
+                                : null
+                            }
                             disabled={submit}
                           />
                           <Form.Select
@@ -237,7 +241,11 @@ export default function CreateImportDeliver() {
                               formik.setFieldValue("product_name", text);
                             }}
                             value={formik.values.product_name}
-                            error={formik.errors.product_name}
+                            error={
+                              formik.touched.product_name && formik.errors.product_name
+                                ? formik.errors.product_name
+                                : null
+                            }
                             text={formik.values.product_name}
                             disabled={submit}
                           />
@@ -249,7 +257,11 @@ export default function CreateImportDeliver() {
                             name="quantity"
                             onChange={formik.handleChange}
                             value={formik.values.quantity}
-                            error={formik.errors.quantity}
+                            error={
+                              formik.touched.quantity && formik.errors.quantity
+                                ? formik.errors.quantity
+                                : null
+                            }
                             disabled={submit}
                           />
 

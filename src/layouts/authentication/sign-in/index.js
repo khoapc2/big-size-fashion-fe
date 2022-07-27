@@ -20,7 +20,7 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 import Loading from "components/Loading";
 
 // Images
-import bgImage from "assets/images/bg-sign-in.jpg";
+import bgImage from "assets/images/bgLogin.jpg";
 import { useEffect } from "react";
 import { SchemaErrorMessageLogin } from "../../../service/Validations/UserValidation";
 // import userApi from "api/userApi";
@@ -70,7 +70,7 @@ function Basic() {
       <Card>
         <MDBox
           variant="gradient"
-          bgColor="info"
+          bgColor="secondary"
           borderRadius="lg"
           coloredShadow="info"
           mx={2}
@@ -80,7 +80,7 @@ function Basic() {
           textAlign="center"
         >
           <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-            Đăng nhập
+            Bigsize Fashion
           </MDTypography>
         </MDBox>
         <Formik
@@ -99,13 +99,16 @@ function Basic() {
                     name="username"
                     type="text"
                     label="Tài khoản"
-                    // onChange={handleChange}
                     required
                     fullWidth
                     value={props.values.username}
                     onChange={props.handleChange}
-                    error={!!props.errors.username}
-                    helperText={props.errors.username}
+                    error={
+                      props.touched.username && props.errors.username ? props.errors.username : null
+                    }
+                    helperText={
+                      props.touched.username && props.errors.username ? props.errors.username : null
+                    }
                   />
                 </MDBox>
                 <MDBox mb={2}>
@@ -116,10 +119,13 @@ function Basic() {
                     required
                     fullWidth
                     value={props.values.password}
-                    onBlur={props.handleBlur}
                     onChange={props.handleChange}
-                    error={!!props.errors.password}
-                    helperText={props.errors.password}
+                    error={
+                      props.touched.password && props.errors.password ? props.errors.password : null
+                    }
+                    helperText={
+                      props.touched.password && props.errors.password ? props.errors.password : null
+                    }
                   />
                 </MDBox>
                 <MDBox mt={4} mb={1}>
@@ -128,12 +134,12 @@ function Basic() {
                   ) : (
                     <MDButton
                       variant="gradient"
-                      color="info"
+                      color="secondary"
                       fullWidth
                       // disabled={props.errors && props.isSubmitting}
                       type="submit"
                     >
-                      Nhập
+                      Đăng nhập
                     </MDButton>
                   )}
                 </MDBox>

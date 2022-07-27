@@ -76,8 +76,16 @@ export default function ColorForm() {
                 required
                 value={props.values.color_name}
                 onChange={props.handleChange}
-                error={!!props.errors.color_name}
-                helperText={props.errors.color_name}
+                error={
+                  props.touched.color_name && props.errors.color_name
+                    ? props.errors.color_name
+                    : null
+                }
+                helperText={
+                  props.touched.color_name && props.errors.color_name
+                    ? props.errors.color_name
+                    : null
+                }
                 fullWidth
               />
             </Grid>
@@ -89,8 +97,16 @@ export default function ColorForm() {
                 required
                 value={props.values.color_code}
                 onChange={props.handleChange}
-                error={!!props.errors.color_code}
-                helperText={props.errors.color_code}
+                error={
+                  props.touched.color_code && props.errors.color_code
+                    ? props.errors.color_code
+                    : null
+                }
+                helperText={
+                  props.touched.color_code && props.errors.color_code
+                    ? props.errors.color_code
+                    : null
+                }
                 fullWidth
               />
             </Grid>

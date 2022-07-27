@@ -22,7 +22,6 @@ import { listSize } from "../../../redux/actions/sizeAction";
 import { listColor } from "../../../redux/actions/colorAction";
 import { listCategory } from "../../../redux/actions/categoryAction";
 import { createProduct } from "../../../redux/actions/productAction";
-import { listPromotion } from "../../../redux/actions/promotionAction";
 import { triggerReload } from "../../../redux/actions/userAction";
 import Loading from "../../../components/Loading";
 import {
@@ -71,7 +70,6 @@ export default function NewProduct() {
     dispatch(listSize({ status }));
     dispatch(listColor({ status }));
     dispatch(listCategory({ status }));
-    dispatch(listPromotion({ status }));
   }, [dispatch, triggerReload]);
 
   const onSubmit = (data) => {
@@ -128,8 +126,8 @@ export default function NewProduct() {
           onSubmit={onSubmit}
           onReset={handleReset}
           validationSchema={SchemaErrorCreateProduct}
-          validateOnBlur
-          validateOnChange
+          validateOnBlur={true}
+          validateOnChange={true}
         >
           {(formik) => {
             console.log(formik);
@@ -145,7 +143,11 @@ export default function NewProduct() {
                         name="productName"
                         onChange={formik.handleChange}
                         value={formik.values.productName}
-                        error={formik.errors.productName}
+                        error={
+                          formik.touched.productName && formik.errors.productName
+                            ? formik.errors.productName
+                            : null
+                        }
                         disabled={flagSubmit}
                       />
                       <Form.Group widths="equal">
@@ -167,7 +169,9 @@ export default function NewProduct() {
                           name="brandName"
                           onChange={formik.handleChange}
                           value={formik.values.brandName}
-                          error={formik.errors.brandName}
+                          error={formik.touched.brandName && formik.errors.brandName
+                            ? formik.errors.brandName
+                            : null}
                           disabled={flagSubmit}
                         />
                       </Form.Group>
@@ -186,7 +190,9 @@ export default function NewProduct() {
                           }}
                           name="category"
                           value={formik.values.category}
-                          error={formik.errors.category}
+                          error={formik.touched.category && formik.errors.category
+                            ? formik.errors.category
+                            : null}
                           disabled={flagSubmit}
                         />
                         <Form.Select
@@ -198,22 +204,9 @@ export default function NewProduct() {
                           onChange={(e, v) => formik.setFieldValue("sex", v.value)}
                           name="sex"
                           value={formik.values.sex}
-                          error={formik.errors.sex}
-                          disabled={flagSubmit}
-                        />
-                        <Form.Select
-                          key={promotion.value}
-                          fluid
-                          search
-                          label="Khuyến mại"
-                          options={promotion || []}
-                          placeholder="Khuyến mại"
-                          onChange={(e, v) => {
-                            formik.setFieldValue("promotion", v.value);
-                            console.log(v);
-                          }}
-                          name="promotion"
-                          value={formik.values.promotion}
+                          error={formik.touched.sex && formik.errors.sex
+                            ? formik.errors.sex
+                            : null}
                           disabled={flagSubmit}
                         />
                       </Form.Group>
@@ -223,7 +216,9 @@ export default function NewProduct() {
                         name="description"
                         onChange={formik.handleChange}
                         value={formik.values.description}
-                        error={formik.errors.description}
+                        error={formik.touched.description && formik.errors.description
+                          ? formik.errors.description
+                          : null}
                         disabled={flagSubmit}
                       />
 

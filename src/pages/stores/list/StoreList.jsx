@@ -145,7 +145,7 @@ export default function SizeList() {
     {
       field: "action",
       headerName: "Thao tác",
-      width: 250,
+      width: 180,
       renderCell: (params) => (
         <>
           <IconButton

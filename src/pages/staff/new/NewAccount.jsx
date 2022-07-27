@@ -50,7 +50,7 @@ export default function NewAccount() {
     <DashboardLayout>
       <DashboardNavbar />
       <div className="newAccount">
-        <h1 className="addAccountTitle">Tạo tài khoản cho quản lý</h1>
+        <h1 className="addAccountTitle">Tạo tài khoản cho nhân viên</h1>
         <Formik
           initialValues={{
             username: "",
@@ -80,7 +80,7 @@ export default function NewAccount() {
                         name="fullname"
                         onChange={formik.handleChange}
                         value={formik.values.fullname}
-                        error={formik.errors.fullname}
+                        error={formik.touched.fullname && formik.errors.fullname ? formik.errors.fullname : null}
                       />
                       <Form.Input
                         fluid
@@ -89,7 +89,7 @@ export default function NewAccount() {
                         name="username"
                         onChange={formik.handleChange}
                         value={formik.values.username}
-                        error={formik.errors.username}
+                        error={formik.touched.username && formik.errors.username ? formik.errors.username : null}
                       />
                       <Form.Group widths="equal">
                         <Form.Input
@@ -100,7 +100,7 @@ export default function NewAccount() {
                           name="password"
                           onChange={formik.handleChange}
                           value={formik.values.password}
-                          error={formik.errors.password}
+                          error={formik.touched.password && formik.errors.password ? formik.errors.password : null}
                         />
                         <Form.Input
                           type="password"
@@ -110,7 +110,7 @@ export default function NewAccount() {
                           name="passwordConfirm"
                           onChange={formik.handleChange}
                           value={formik.values.passwordConfirm}
-                          error={formik.errors.passwordConfirm}
+                          error={formik.touched.passwordConfirm && formik.errors.passwordConfirm ? formik.errors.passwordConfirm : null}
                         />
                       </Form.Group>
                       <Form.Group widths="equal">
@@ -121,7 +121,7 @@ export default function NewAccount() {
                           name="phone_number"
                           onChange={formik.handleChange}
                           value={formik.values.phone_number}
-                          error={formik.errors.phone_number}
+                          error={formik.touched.phone_number && formik.errors.phone_number ? formik.errors.phone_number : null}
                         />
                         <Form.Select
                           key={store.value}
@@ -134,7 +134,7 @@ export default function NewAccount() {
                           }}
                           name="store_id"
                           value={formik.values.store_id}
-                          error={formik.errors.store_id}
+                          error={formik.touched.store_id && formik.errors.store_id ? formik.errors.store_id : null}
                         />
                       </Form.Group>
                     </div>

@@ -80,8 +80,16 @@ export default function PromotionForm() {
                 required
                 value={props.values.promotion_name}
                 onChange={props.handleChange}
-                error={!!props.errors.promotion_name}
-                helperText={props.errors.promotion_name}
+                error={
+                  props.touched.promotion_name && props.errors.promotion_name
+                    ? props.errors.promotion_name
+                    : null
+                }
+                helperText={
+                  props.touched.promotion_name && props.errors.promotion_name
+                    ? props.errors.promotion_name
+                    : null
+                }
               />
               <Controls.Input
                 type="text"
@@ -90,8 +98,16 @@ export default function PromotionForm() {
                 required
                 value={props.values.promotion_value}
                 onChange={props.handleChange}
-                error={!!props.errors.promotion_value}
-                helperText={props.errors.promotion_value}
+                error={
+                  props.touched.promotion_value && props.errors.promotion_value
+                    ? props.errors.promotion_value
+                    : null
+                }
+                helperText={
+                  props.touched.promotion_value && props.errors.promotion_value
+                    ? props.errors.promotion_value
+                    : null
+                }
               />
             </Grid>
             <Grid item xs={6}>

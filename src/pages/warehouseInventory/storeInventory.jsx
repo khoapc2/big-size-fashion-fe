@@ -380,8 +380,12 @@ export default function CreateImportDeliver() {
                           type="date"
                           onChange={formik.handleChange}
                           value={formik.values.from_date}
-                          error={formik.errors.from_date}
                           readOnly={data ? true : false}
+                          error={
+                            formik.touched.from_date && formik.errors.from_date
+                              ? formik.errors.from_date
+                              : null
+                          }
                         />
                         <Form.Input
                           name="to_date"
@@ -391,8 +395,12 @@ export default function CreateImportDeliver() {
                           type="input"
                           onChange={formik.handleChange}
                           value={formik.values.to_date}
-                          // error={formik.errors.to_date}
-                          readOnly
+                          error={
+                            formik.touched.to_date && formik.errors.to_date
+                              ? formik.errors.to_date
+                              : null
+                          }
+                          readOnly={data ? true : false}
                         />
                       </Form.Group>
                       <Form.Group className="top-add-product" widths="equal">
@@ -408,7 +416,11 @@ export default function CreateImportDeliver() {
                             formik.setFieldValue("product_name", text);
                           }}
                           value={formik.values.product_name}
-                          error={formik.errors.product_name}
+                          error={
+                            formik.touched.product_name && formik.errors.product_name
+                              ? formik.errors.product_name
+                              : null
+                          }
                           text={formik.values.product_name}
                           readOnly={data ? true : false}
                         />
@@ -420,8 +432,12 @@ export default function CreateImportDeliver() {
                           name="real_quantity"
                           onChange={formik.handleChange}
                           value={formik.values.real_quantity}
-                          error={formik.errors.real_quantity}
                           readOnly={data ? true : false}
+                          error={
+                            formik.touched.real_quantity && formik.errors.real_quantity
+                              ? formik.errors.real_quantity
+                              : null
+                          }
                         />
                         {data ? (
                           ""

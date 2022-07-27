@@ -165,7 +165,7 @@ export default function PromotionList() {
           </IconButton>
           <Link to={`/update-promotion/${params.row.promotion_id}`}>
             <button type="submit" className="promotionListEdit">
-              Edit
+              Sửa
             </button>
           </Link>
           <Link to={`/products-in-promotion/${params.row.promotion_id}`}>
