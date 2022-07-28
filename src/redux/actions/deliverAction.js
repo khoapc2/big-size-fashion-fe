@@ -66,7 +66,6 @@ export const viewDetailDeliveryNoteAction = (id) => async (dispatch) => {
   });
   try {
     const data = await deliveryApi.getDeliveryNoteDetailById(id);
-    console.log(data);
     dispatch({ type: VIEW_DETAIL_DELIVERY_NOTE_SUCCESS, payload: data.content });
   } catch (error) {
     dispatch({

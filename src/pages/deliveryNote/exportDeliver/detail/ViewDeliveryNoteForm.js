@@ -11,6 +11,7 @@ import Stack from "@mui/material/Stack";
 import { DataGrid } from "@mui/x-data-grid";
 
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
+import TableDialog from "pages/deliveryNote/exportDelivery_admin/detail/dialogTable";
 import {
   viewDetailDeliveryNoteAction,
   approveDeliveryAction,
@@ -28,35 +29,55 @@ import {
 
 export default function DeliveryNoteForm() {
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
-
+  const [tableDialog, setTableDialog] = useState({
+    isOpen: false,
+    title: "",
+    subTitle: "",
+    data: [],
+  });
   const { deliveryId } = useParams();
   const dispatch = useDispatch();
   const { data, loading, totalProduct } = useSelector((state) => state.viewDetailDeliveryNote);
   const approveDelivery = useSelector((state) => state.approveDeliveryState);
   const rejectDelivery = useSelector((state) => state.rejectDeliveryState);
-  const [reload, setReload] = useState(false);
-  console.log(data);
-  console.log(totalProduct);
+
 
   useEffect(() => {
     dispatch(viewDetailDeliveryNoteAction(deliveryId));
-  }, [dispatch, triggerReload, reload]);
+  }, [dispatch, triggerReload, approveDelivery.success, approveDelivery.error]);
 
   useEffect(() => {
     if (approveDelivery.success) {
-      setReload(true);
-      toast.success("Duyệt đơn xuất hàng thành công");
-      dispatch({ type: APPROVE_DELIVERY_NOTE_SUCCESS, payload: false });
+      if (approveDelivery.success.is_success && !approveDelivery.success.content) {
+        console.log(approveDelivery);
+        toast.success("Duyệt đơn hàng thành công");
+        dispatch({ type: APPROVE_DELIVERY_NOTE_SUCCESS, payload: false });
+      } else if (approveDelivery.success.is_success && approveDelivery.success.content) {
+        console.log(approveDelivery.success.content);
+        setTableDialog({
+          isOpen: true,
+          title: "Yêu cầu nhập hàng không thành công?",
+          subTitle: "Có sản phẩm vượt số lượng trong kho",
+          data: approveDelivery.success.content,
+        });
+        toast.error("Duyệt thất bại, có sản phẩm vượt số lượng trong kho");
+        dispatch({ type: APPROVE_DELIVERY_NOTE_SUCCESS, payload: false });
+      }
     }
     if (approveDelivery.error) {
       toast.error("Duyệt đơn xuất hàng thất bại, vui lòng thử lại");
       dispatch({ type: APPROVE_DELIVERY_NOTE_FAIL, payload: false });
     }
-  }, [triggerReload, approveDelivery.success, approveDelivery.error]);
+  }, [
+    triggerReload,
+    approveDelivery.success,
+    approveDelivery.error,
+    rejectDelivery.success,
+    rejectDelivery.error,
+  ]);
 
   useEffect(() => {
     if (rejectDelivery.success) {
-      setReload(true);
       toast.success("Từ chối đơn xuất hàng thành công");
       dispatch({ type: REJECT_DELIVERY_NOTE_SUCCESS, payload: false });
     }
@@ -80,8 +101,7 @@ export default function DeliveryNoteForm() {
       ...confirmDialog,
       isOpen: false,
     });
-  }; 
-
+  };
 
   const columns = [
     {
@@ -268,6 +288,7 @@ export default function DeliveryNoteForm() {
         </div>
       )}
       <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />
+      <TableDialog confirmDialog={tableDialog} setConfirmDialog={setTableDialog} />
     </div>
   );
 }

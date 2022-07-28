@@ -13,6 +13,7 @@ import Stack from "@mui/material/Stack";
 import { DataGrid } from "@mui/x-data-grid";
 
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
+import TableDialog from "pages/deliveryNote/exportDelivery_admin/detail/dialogTable";
 import {
   viewDetailOfflineOrderAction,
   approveOnlineOrderAction,
@@ -36,7 +37,12 @@ import {
 
 export default function OfflineOrderForm() {
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
-
+  const [tableDialog, setTableDialog] = useState({
+    isOpen: false,
+    title: "",
+    subTitle: "",
+    data: [],
+  });
   const { onlineOrderId } = useParams();
   const dispatch = useDispatch();
   const { data, loading, totalProduct } = useSelector((state) => state.viewDetailOfflineOrder);
@@ -64,8 +70,21 @@ export default function OfflineOrderForm() {
 
   useEffect(() => {
     if (approveOnOrder.success) {
-      toast.success("Duyệt đơn hàng thành công");
-      dispatch({ type: APPROVE_ONLINE_ORDER_SUCCESS, payload: false });
+      if (approveOnOrder.success.is_success && !approveOnOrder.success.content) {
+        console.log(approveOnOrder);
+        toast.success("Duyệt đơn hàng thành công");
+        dispatch({ type: APPROVE_ONLINE_ORDER_SUCCESS, payload: false });
+      } else if (approveOnOrder.success.is_success && approveOnOrder.success.content) {
+        console.log(approveOnOrder.success.content);
+        setTableDialog({
+          isOpen: true,
+          title: "Yêu cầu nhập hàng không thành công?",
+          subTitle: "Có sản phẩm vượt số lượng trong kho",
+          data: approveOnOrder.success.content,
+        });
+        toast.error("Duyệt thất bại, có sản phẩm vượt số lượng trong kho");
+        dispatch({ type: APPROVE_ONLINE_ORDER_SUCCESS, payload: false });
+      }
     }
     if (approveOnOrder.error) {
       toast.error("Duyệt đơn hàng thất bại, vui lòng thử lại");
@@ -374,6 +393,7 @@ export default function OfflineOrderForm() {
         </div>
       )}
       <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />
+      <TableDialog confirmDialog={tableDialog} setConfirmDialog={setTableDialog} />
     </div>
   );
 }
