@@ -34,7 +34,11 @@ export default function NewAccount() {
       dispatch({ type: CREATE_ACCOUNT_SUCCESS, payload: false });
     }
     if (error) {
-      toast.error("Tạo tài khoản quản lý thất bại, vui lòng thử lại");
+      if (error.includes("Đã tồn tại")) {
+        toast.error(error);
+      } else {
+        toast.error("Tạo tài khoản quản lý thất bại, vui lòng thử lại");
+      }
       dispatch({ type: CREATE_ACCOUNT_FAIL, payload: false });
     }
   }, [success, error, triggerReload, dispatch]);
@@ -78,7 +82,11 @@ export default function NewAccount() {
                         name="fullname"
                         onChange={formik.handleChange}
                         value={formik.values.fullname}
-                        error={formik.touched.fullname && formik.errors.fullname ? formik.errors.fullname : null}
+                        error={
+                          formik.touched.fullname && formik.errors.fullname
+                            ? formik.errors.fullname
+                            : null
+                        }
                       />
                       <Form.Input
                         fluid
@@ -87,7 +95,11 @@ export default function NewAccount() {
                         name="username"
                         onChange={formik.handleChange}
                         value={formik.values.username}
-                        error={formik.touched.username && formik.errors.username ? formik.errors.username : null}
+                        error={
+                          formik.touched.username && formik.errors.username
+                            ? formik.errors.username
+                            : null
+                        }
                       />
                       <Form.Group widths="equal">
                         <Form.Input
@@ -98,7 +110,11 @@ export default function NewAccount() {
                           name="password"
                           onChange={formik.handleChange}
                           value={formik.values.password}
-                          error={formik.touched.password && formik.errors.password ? formik.errors.password : null}
+                          error={
+                            formik.touched.password && formik.errors.password
+                              ? formik.errors.password
+                              : null
+                          }
                         />
                         <Form.Input
                           type="password"
@@ -108,7 +124,11 @@ export default function NewAccount() {
                           name="passwordConfirm"
                           onChange={formik.handleChange}
                           value={formik.values.passwordConfirm}
-                          error={formik.touched.passwordConfirm && formik.errors.passwordConfirm ? formik.errors.passwordConfirm : null}
+                          error={
+                            formik.touched.passwordConfirm && formik.errors.passwordConfirm
+                              ? formik.errors.passwordConfirm
+                              : null
+                          }
                         />
                       </Form.Group>
                       <Form.Group widths="equal">
@@ -119,7 +139,11 @@ export default function NewAccount() {
                           name="phone_number"
                           onChange={formik.handleChange}
                           value={formik.values.phone_number}
-                          error={formik.touched.phone_number && formik.errors.phone_number ? formik.errors.phone_number : null}
+                          error={
+                            formik.touched.phone_number && formik.errors.phone_number
+                              ? formik.errors.phone_number
+                              : null
+                          }
                         />
                         <Form.Select
                           key={store.value}
@@ -132,7 +156,11 @@ export default function NewAccount() {
                           }}
                           name="store_id"
                           value={formik.values.store_id}
-                          error={formik.touched.store_id && formik.errors.store_id ? formik.errors.store_id : null}
+                          error={
+                            formik.touched.store_id && formik.errors.store_id
+                              ? formik.errors.store_id
+                              : null
+                          }
                         />
                       </Form.Group>
                     </div>

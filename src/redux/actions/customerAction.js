@@ -107,10 +107,13 @@ export const createAccount = (accountModels) => async (dispatch) => {
       dispatch({ type: CREATE_ACCOUNT_SUCCESS, payload: data });
     }
   } catch (error) {
+    console.log(error);
     dispatch({
       type: CREATE_ACCOUNT_FAIL,
       payload:
-        error.response && error.response.data.message ? error.response.data.message : error.message,
+        error.response && error.response.data.error.message
+          ? error.response.data.error.message
+          : error.message,
     });
   }
 };
