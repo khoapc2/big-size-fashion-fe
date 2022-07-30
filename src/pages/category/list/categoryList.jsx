@@ -174,12 +174,13 @@ export default function CategoryList() {
               color: "green",
             },
           }}
+          autoHeight
           loading={loading}
           getRowId={(r) => r.category_id}
           rows={category}
           disableSelectionOnClick
           columns={columns}
-          pageSize={8}
+          pageSize={10}
           data={(query) =>
             new Promise(() => {
               console.log(query);

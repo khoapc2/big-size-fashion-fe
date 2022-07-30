@@ -5,7 +5,7 @@ import {
   MANAGER_LIST_FAIL,
 } from "../../service/Validations/VarConstant";
 
-export const listManager = (keySearch, role) => async (dispatch) => {
+export const listManager = (keySearch, role, page, size) => async (dispatch) => {
   console.log(role);
   dispatch({ type: MANAGER_LIST_REQUEST });
   try {
@@ -15,21 +15,25 @@ export const listManager = (keySearch, role) => async (dispatch) => {
       const params = {
         Role: "Manager",
         Status: "Both",
+        PageNumber: page,
+        PageSize: size,
       };
       const searchParams = {
         Fullname: keySearch,
         Role: "Manager",
         Status: "Both",
+        PageNumber: page,
+        PageSize: size,
       };
       if (!keySearch) {
         const data = await accountApi.getListAccount(params);
         console.log(data);
-        dispatch({ type: MANAGER_LIST_SUCCESS, payload: data.content });
+        dispatch({ type: MANAGER_LIST_SUCCESS, payload: data });
         dispatch({ type: MANAGER_LIST_FAIL, payload: "" });
       } else {
         console.log("yo");
         const data = await accountApi.getSearchListAccount(searchParams);
-        dispatch({ type: MANAGER_LIST_SUCCESS, payload: data.content });
+        dispatch({ type: MANAGER_LIST_SUCCESS, payload: data });
         dispatch({ type: MANAGER_LIST_FAIL, payload: "" });
       }
     } else if (role === "Owner") {

@@ -43,9 +43,12 @@ export default function StaffList() {
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
   // const [paging, setPaging] = useState({});
   //Test
-  const { data, error, loading } = useSelector((state) => state.staffList);
+  const { data, error, loading, totalCount } = useSelector((state) => state.staffList);
   const { success, loadingDelete, errorDelete } = useSelector((state) => state.deleteAccountState);
-  const [page, setPage] = useState(1);
+  const [pageState, setPageState] = useState({
+    page: 1,
+    pageSize: 10,
+  });
   const triggerReload = useSelector((state) => state.triggerReload);
   // const [keySearch, setKeySearch] = useState("");
   const dispatch = useDispatch();
@@ -53,7 +56,8 @@ export default function StaffList() {
   const [searchText, setSearchText] = useState("");
   console.log(data);
   useEffect(() => {
-    dispatch(listStaff(searchText));if (success) {
+    dispatch(listStaff(searchText, pageState.page, pageState.pageSize));
+    if (success) {
       toast.success("Thao tác thành công");
       dispatch({ type: DISABLE_ACCOUNT_SUCCESS, payload: false });
     } else {
@@ -63,7 +67,7 @@ export default function StaffList() {
       toast.error("Thao tác thất bại, vui lòng thử lại");
       dispatch({ type: DISABLE_ACCOUNT_FAIL, payload: false });
     }
-  }, [dispatch, page, searchText, triggerReload, success, errorDelete]);
+  }, [dispatch, pageState.page, pageState.pageSize, searchText, triggerReload, success, errorDelete]);
 
   let inputSearchHandler = (e) => {
     let lowerCase = e.target.value.toLowerCase();
@@ -140,9 +144,7 @@ export default function StaffList() {
       field: "status",
       headerName: "Tình trạng",
       width: 120,
-      renderCell: (params) => (
-        <div>{params.row.status === "Active" ? "Hoạt động" : "Đã khóa"}</div>
-      ),
+      renderCell: (params) => <div>{params.row.status === "Active" ? "Hoạt động" : "Đã khóa"}</div>,
     },
     {
       field: "action",
@@ -160,7 +162,7 @@ export default function StaffList() {
           </IconButton>
           <Link to={`/reset-password/${params.row.uid}`}>
             <button type="submit" className="staffListEdit">
-              Cập nhật mật khẩu 
+              Cập nhật mật khẩu
             </button>
           </Link>
           {params.row.status === "Active" ? (
@@ -240,9 +242,17 @@ export default function StaffList() {
           loading={loading}
           getRowId={(r) => r.uid}
           rows={data}
+          autoHeight
+          rowCount={totalCount}
+          rowsPerPageOptions={[10, 20, 50, 100]}
+          pagination
+          page={pageState.page - 1}
+          paginationMode="server"
+          onPageChange={(newPage) => setPageState((old) => ({ ...old, page: newPage + 1}))}
+          onPageSizeChange={(newPageSize) => setPageState(old => ({ ...old, pageSize: newPageSize}))}
           disableSelectionOnClick
           columns={columns}
-          pageSize={8}
+          pageSize={pageState.pageSize}
           data={(query) =>
             new Promise(() => {
               console.log(query);

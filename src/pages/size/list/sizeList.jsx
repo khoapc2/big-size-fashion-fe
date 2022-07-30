@@ -163,12 +163,13 @@ export default function SizeList() {
               color: "green",
             },
           }}
+          autoHeight
           loading={loading}
           getRowId={(r) => r.size_id}
           rows={size}
           disableSelectionOnClick
           columns={columns}
-          pageSize={8}
+          pageSize={10}
           data={(query) =>
             new Promise(() => {
               console.log(query);
