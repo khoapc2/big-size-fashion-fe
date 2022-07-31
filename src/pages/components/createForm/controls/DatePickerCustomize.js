@@ -14,7 +14,6 @@ export default function DatePicker(props) {
   });
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      {console.log(value)}
       <KeyboardDatePicker
         disableToolbar
         inputVariant="standard"

@@ -95,6 +95,8 @@ import ExportDeliveryDetailAdmin from "pages/deliveryNote/exportDelivery_admin/d
 import Feedbacks from "pages/feedback/Feedback";
 import ProductsInPromotion from "pages/promotion/product_in_promotion/ProductsInPromotion";
 import AddProductToPromotion from "pages/promotion/product_in_promotion/addProductToPromotion/AddProductToPromotion";
+import StoreAdjust from "pages/warehouseInventory/list/storeInventoryHistory";
+import InventoryNoteDetail from "pages/warehouseInventory/detail/ViewAdjustInventory";
 // import Fader from "pages/components/Fader";
 // import { onMessageListener } from "./firebase/firebase";
 // import FirebaseNotifications from "./pages/components/FirebaseNotification/FirebaseNotifications";
@@ -313,7 +315,7 @@ export default function App() {
         <Route path="/sizes" element={<Sizes />} />
         <Route path="/colors" element={<Colors />} />
         <Route path="/categories" element={<Categories />} />
-        {/* <Route path="/sizes" element={<Sizes />} /> */}
+        <Route path="store-adjust" element={<StoreAdjust />} />
         <Route path="*" element={<Navigate to="/sign-in" />} />
         <Route path="/staffs" element={<Staffs />} />
         <Route path="/managers" element={<Managers />} />
@@ -350,6 +352,7 @@ export default function App() {
         <Route path="feedback/:productId" element={<Feedbacks />} />
         <Route path="products-in-promotion/:promotionId" element={<ProductsInPromotion />} />
         <Route path="add-products-to-promotion/:promotionId" element={<AddProductToPromotion />} />
+        <Route path="inventory-notes/:inventoryId" element={<InventoryNoteDetail />} />
       </Routes>
     </ThemeProvider>
   );

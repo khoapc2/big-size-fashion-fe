@@ -6,6 +6,9 @@ import {
   QUANTITY_ADJUSTMENT_INVENTORY_REQUEST,
   QUANTITY_ADJUSTMENT_INVENTORY_SUCCESS,
   QUANTITY_ADJUSTMENT_INVENTORY_FAIL,
+  GET_LIST_INVENTORY_REQUEST,
+  GET_LIST_INVENTORY_SUCCESS,
+  GET_LIST_INVENTORY_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const getInventoryAction = (para, from_date, to_date) => async (dispatch) => {
@@ -110,5 +113,28 @@ export const quantityAdjusmentAction = (para) => async (dispatch) => {
       payload:
         error.response && error.response.data.message ? error.response.data.message : error.message,
     });
+  }
+};
+
+export const listInventoryNoteAction = (keySearch, page, size) => async (dispatch) => {
+  console.log(keySearch);
+  dispatch({ type: GET_LIST_INVENTORY_REQUEST });
+  try {
+    const param = {
+      InventoryNoteName: keySearch.trim(),
+      PageNumber: page,
+      PageSize: size,
+    };
+
+    const data = await inventoryApi.getAdjustListInStore(param);
+    console.log(data);
+    dispatch({ type: GET_LIST_INVENTORY_SUCCESS, payload: data });
+    dispatch({ type: GET_LIST_INVENTORY_FAIL, payload: "" });
+  } catch (error) {
+    const message =
+      error.respone && error.respone.content.message
+        ? error.respone.content.message
+        : error.message;
+    dispatch({ type: GET_LIST_INVENTORY_FAIL, payload: message });
   }
 };

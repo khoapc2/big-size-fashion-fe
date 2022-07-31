@@ -8,7 +8,7 @@ export const SchemaErrorMessageCheckInventory = Yup.object().shape({
     .when("from_date", (from_date, schema) => {
       if (from_date) {
         const dayAfter = new Date(from_date.getTime() + 86400000);
-        return schema.min(dayAfter, "Ngày kiểm kê phải lớn hơn ngày bắt đầu");
+        return schema.min(dayAfter, "Ngày kiểm kê phải bé hơn ngày hiện hành");
       }
       return schema;
     })

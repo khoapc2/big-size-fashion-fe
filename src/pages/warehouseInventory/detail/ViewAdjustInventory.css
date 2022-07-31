@@ -1,0 +1,64 @@
+.adjust-inventory {
+  flex: 4;
+  height: 600px;
+  margin-left: 10px;
+}
+.container-title {
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.container-title > .title {
+  font-weight: bold;
+  font-size: medium;
+  width: fit-content;
+}
+
+.container-title > .content {
+  font-size: medium;
+}
+
+/* .orderBottom {
+  text-align: center;
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+} */
+.MuiButton-outlined {
+  width: 150px;
+  font-size: small !important;
+}
+
+.deny {
+  background: red !important;
+}
+
+.approve {
+  background: green !important;
+}
+
+.MuiDataGrid-root {
+  margin-top: 10px;
+  height: 500px;
+}
+
+.adjust-inventory-top {
+  padding: 10px;
+  margin: 10px;
+}
+
+.button-approve {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: stretch;
+  align-content: stretch;
+}
+
+.adjust-inventory-top-left {
+  padding: 20px;
+  margin: 20px;
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+}

@@ -37,6 +37,7 @@ function Breadcrumbs({ icon, route, light }) {
         </Link>
         {routes.map((el) => (
           <Link to={`/${el}`} key={el}>
+            {console.log(el)}
             <MDTypography
               component="span"
               variant="button"
@@ -57,18 +58,19 @@ function Breadcrumbs({ icon, route, light }) {
           color={light ? "white" : "dark"}
           sx={{ lineHeight: 0 }}
         >
+          hehehe
           {title.replace("-", " ")}
         </MDTypography> */}
       </MuiBreadcrumbs>
-      <MDTypography
+      {/* <MDTypography
         fontWeight="bold"
         textTransform="capitalize"
         variant="h6"
         color={light ? "white" : "dark"}
         noWrap
       >
-        {/* {title.replace("-", " ")} */}
-      </MDTypography>
+        {title.replace("-", " ")}
+      </MDTypography> */}
     </MDBox>
   );
 }

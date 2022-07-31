@@ -20,13 +20,23 @@ import {
 } from "../../service/Validations/VarConstant";
 
 function formatArray(payload) {
+  console.log(payload);
   let result = [];
   const newArray = [...payload];
   result = newArray.map(
-    ({ colour_id, colour_name, product_id, product_name, size_id, size_name }) => ({
+    ({
+      colour_id,
+      colour_name,
+      product_id,
+      product_name,
+      size_id,
+      size_name,
+      product_deatail_id,
+    }) => ({
       key: `${colour_id}+${product_id}+${size_id}`,
       text: `${product_name} - ${colour_name} - ${size_name}`,
       value: `${colour_id}+${product_id}+${size_id}`,
+      id: product_deatail_id,
     })
   );
   return result;

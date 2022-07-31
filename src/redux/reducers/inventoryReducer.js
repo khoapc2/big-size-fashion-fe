@@ -5,6 +5,9 @@ import {
   QUANTITY_ADJUSTMENT_INVENTORY_REQUEST,
   QUANTITY_ADJUSTMENT_INVENTORY_SUCCESS,
   QUANTITY_ADJUSTMENT_INVENTORY_FAIL,
+  GET_LIST_INVENTORY_REQUEST,
+  GET_LIST_INVENTORY_SUCCESS,
+  GET_LIST_INVENTORY_FAIL,
 } from "../../service/Validations/VarConstant";
 
 function formatArray(payload) {
@@ -45,6 +48,26 @@ export const quantityAjustmentReducer = (state = { loading: true }, action) => {
       return { ...state, loading: false, success: action.payload };
     case QUANTITY_ADJUSTMENT_INVENTORY_FAIL:
       return { ...state, error: action.payload, loading: false };
+    default:
+      return state;
+  }
+};
+
+export const listInventoryNoteReducer = (
+  state = { loading: true, data: [], error: "" },
+  action
+) => {
+  switch (action.type) {
+    case GET_LIST_INVENTORY_REQUEST:
+      return { ...state, loading: true };
+    case GET_LIST_INVENTORY_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        data: action.payload,
+      };
+    case GET_LIST_INVENTORY_FAIL:
+      return { ...state, loading: false, error: action.payload };
     default:
       return state;
   }

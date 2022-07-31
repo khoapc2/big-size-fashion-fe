@@ -24,9 +24,16 @@ import { listActiveStore, getMainWareHouseAction } from "../../../../redux/actio
 import Loading from "../../../../components/Loading";
 
 let idCounter = 0;
-const createRow = ({ product_id, product_name, quantity }) => {
+const createRow = ({ product_id, product_name, quantity, product_detail_id }) => {
   idCounter += 1;
-  return { id: idCounter, product_name: product_name, quantity: quantity, product_id: product_id };
+  return {
+    id: idCounter,
+    product_name: product_name,
+    quantity: quantity,
+    product_id: product_id,
+    product_detail_id,
+    product_detail_id,
+  };
 };
 
 export default function CreateImportDeliver() {
@@ -46,6 +53,7 @@ export default function CreateImportDeliver() {
   // const { apiRef, columns } = useApiRef();
 
   console.log(mainWareHouse);
+  console.log(listImportPro);
   // console.log(listImportPro);
   const { success, error } = response;
 
@@ -76,7 +84,7 @@ export default function CreateImportDeliver() {
   //
 
   const onSubmit = (data) => {
-    // console.log(data);
+    console.log(data);
     // const {product_name, product_id, quantity} = data
     // dispatch(createAccount(data));
     setDeliverName(data.delivery_note_name);
@@ -93,6 +101,7 @@ export default function CreateImportDeliver() {
     if (apiRef.current) {
       const data = apiRef.current.getRowModels();
       if (data.size > 0) {
+        console.log(data);
         dispatch(deliveryImportToMainWareHouseAction(data, deliveryName, storeId));
       } else {
         toast.error("Bạn chưa thêm sản phẩm nào đơn nhập hàng, Vui lòng thử lại");
@@ -184,6 +193,7 @@ export default function CreateImportDeliver() {
                     delivery_note_name: "",
                     store_id: mainWareHouse.store[0].store_id,
                     store_name: mainWareHouse.store[0].store_name,
+                    product_detail_id: "",
                   }}
                   onSubmit={onSubmit}
                   validationSchema={SchemaErrorMessageImportInvoice}
@@ -236,9 +246,12 @@ export default function CreateImportDeliver() {
                             placeholder="Sản phẩm"
                             name="product_name"
                             onChange={(e, v) => {
-                              const { text } = listImportPro.data.find((o) => o.value === v.value);
+                              const { text, id } = listImportPro.data.find(
+                                (o) => o.value === v.value
+                              );
                               formik.setFieldValue("product_id", v.value);
                               formik.setFieldValue("product_name", text);
+                              formik.setFieldValue("product_detail_id", id);
                             }}
                             value={formik.values.product_name}
                             error={

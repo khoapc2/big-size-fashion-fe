@@ -89,6 +89,7 @@ export const deliveryImportToMainWareHouseAction =
         product_id: parseInt(inforIdProduct[1], 10),
         colour_id: parseInt(inforIdProduct[0], 10),
         size_id: parseInt(inforIdProduct[2], 10),
+        product_deatil_id: product.product_detail_id,
       };
       console.log(parseProduct);
       listProductHandleParse.push(parseProduct);
@@ -96,9 +97,12 @@ export const deliveryImportToMainWareHouseAction =
     listProductHandleParse.forEach((product) => {
       if (product) {
         const { id, product_name, ...rest } = product;
+        console.log(rest);
         listProductSendToBE.push(rest);
       }
     });
+
+    console.log(listProductHandleParse);
     dispatch({
       type: CREATE_IMPORT_PRODUCT_LIST_REQUEST,
     });

@@ -66,6 +66,8 @@ function Dashboard() {
   const orderToday = useSelector((state) => state.orderToday);
   const triggerReload = useSelector((state) => state.triggerReload);
   const [role, setRole] = useState("");
+  const [selectMonth, setSelectMonth] = useState(currentMonth);
+  const [selectYear, setSelectYear] = useState(currentYear);
   const { total_orders, pending_orders, processing_orders, received_orders, canceled_orders } =
     orderToday.data;
 
@@ -87,6 +89,8 @@ function Dashboard() {
   }, [dispatch, triggerReload]);
 
   const handleSubmit = (para) => {
+    setSelectMonth(para.month);
+    setSelectYear(para.year);
     dispatch(listRevenueInMonthAction(para, role, para.store_id));
   };
 
@@ -199,7 +203,12 @@ function Dashboard() {
                             />
                           )}
 
-                          <Form.Button type="submit" label="." color="green">
+                          <Form.Button
+                            className="view-revenue-button"
+                            type="submit"
+                            label="."
+                            color="green"
+                          >
                             Xem
                           </Form.Button>
                         </Form.Group>
@@ -257,9 +266,9 @@ function Dashboard() {
                 ) : (
                   <ReportsLineChart
                     color="info"
-                    title="Doanh thu cửa hàng trong 1 tháng"
-                    description="Last Campaign Performance"
-                    date="campaign sent 2 days ago"
+                    title="Doanh thu"
+                    description="Doanh thu cửa hàng trong tháng"
+                    date={`Biểu đồ tháng ${selectMonth} năm ${selectYear}`}
                     chart={revenue}
                   />
                 )}

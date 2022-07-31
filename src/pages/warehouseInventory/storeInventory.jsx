@@ -382,8 +382,9 @@ export default function CreateImportDeliver() {
                           value={formik.values.from_date}
                           readOnly={data ? true : false}
                           error={
-                            formik.touched.from_date && formik.errors.from_date
-                              ? formik.errors.from_date
+                            (formik.touched.from_date && formik.errors.from_date) ||
+                            (formik.touched.to_date && formik.errors.to_date)
+                              ? formik.errors.from_date || formik.errors.to_date
                               : null
                           }
                         />
@@ -395,12 +396,12 @@ export default function CreateImportDeliver() {
                           type="input"
                           onChange={formik.handleChange}
                           value={formik.values.to_date}
-                          error={
-                            formik.touched.to_date && formik.errors.to_date
-                              ? formik.errors.to_date
-                              : null
-                          }
-                          readOnly={data ? true : false}
+                          // error={
+                          //   formik.touched.to_date && formik.errors.to_date
+                          //     ? formik.errors.to_date
+                          //     : null
+                          // }
+                          readOnly
                         />
                       </Form.Group>
                       <Form.Group className="top-add-product" widths="equal">

@@ -85,6 +85,7 @@ import { zaloLinkReducer } from "redux/reducers/zaloReducer";
 import {
   getStorewarehouseReducer,
   quantityAjustmentReducer,
+  listInventoryNoteReducer,
 } from "redux/reducers/inventoryReducer";
 import { viewRevenueReducer } from "redux/reducers/revenueReducer";
 import { listFeedbackReducer, deleteFeedbackReducer } from "redux/reducers/feedbackReducer";
@@ -166,6 +167,7 @@ const reducer = combineReducers({
   addProductToPromotionState: addProductToPromotionReducer,
   listProductsToAddPromotionState: listProductsToAddPromotionReducer,
   deleteProductState: deleteProductReducer,
+  listInventoryNote: listInventoryNoteReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
