@@ -13,6 +13,7 @@ import Stack from "@mui/material/Stack";
 import { DataGrid } from "@mui/x-data-grid";
 
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
+import TableDialog from "pages/deliveryNote/exportDelivery_admin/detail/dialogTable";
 import {
   viewDetailOfflineOrderAction,
   approveOfflineOrderAction,
@@ -43,7 +44,12 @@ import {
 
 export default function OfflineOrderForm() {
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
-
+  const [tableDialog, setTableDialog] = useState({
+    isOpen: false,
+    title: "",
+    subTitle: "",
+    data: [],
+  });
   const { offlineOrderId } = useParams();
   const dispatch = useDispatch();
   const { data, loading, totalProduct } = useSelector((state) => state.viewDetailOfflineOrder);
@@ -52,14 +58,6 @@ export default function OfflineOrderForm() {
   const rejectOffOrder = useSelector((state) => state.rejectOfflineOrder);
   const { store, order_id, create_date, status, payment_method, customer_name, staff_name } = data;
 
-  // console.log(setRow(...product_list, createRow(row)));
-
-  // const row = [...product_list, totalPrice];
-  // console.log(row);
-
-  console.log(data);
-  console.log(totalProduct);
-  console.log(zaloPay.data);
 
   useEffect(() => {
     dispatch(viewDetailOfflineOrderAction(offlineOrderId));
@@ -74,8 +72,21 @@ export default function OfflineOrderForm() {
 
   useEffect(() => {
     if (approveOffOrder.success) {
-      toast.success("Duyệt đơn hàng thành công");
-      dispatch({ type: APPROVE_OFFLINE_ORDER_SUCCESS, payload: false });
+      if (approveOffOrder.success.is_success && !approveOffOrder.success.content) {
+        console.log(approveOffOrder);
+        toast.success("Duyệt đơn hàng thành công");
+        dispatch({ type: APPROVE_OFFLINE_ORDER_SUCCESS, payload: false });
+      } else if (approveOffOrder.success.is_success && approveOffOrder.success.content) {
+        console.log(approveOffOrder.success.content);
+        setTableDialog({
+          isOpen: true,
+          title: "Yêu cầu nhập hàng không thành công?",
+          subTitle: "Có sản phẩm vượt số lượng trong kho",
+          data: approveOffOrder.success.content,
+        });
+        toast.error("Duyệt thất bại, có sản phẩm vượt số lượng trong kho");
+        dispatch({ type: APPROVE_OFFLINE_ORDER_SUCCESS, payload: false });
+      }
     }
     if (approveOffOrder.error) {
       toast.error("Duyệt đơn hàng thất bại, vui lòng thử lại");
@@ -324,6 +335,7 @@ export default function OfflineOrderForm() {
         </div>
       )}
       <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />
+      <TableDialog confirmDialog={tableDialog} setConfirmDialog={setTableDialog} />
     </div>
   );
 }

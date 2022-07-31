@@ -56,7 +56,7 @@ export const listStoreReducer = (state = { loading: true, data: [], error: "" },
       return {
         ...state,
         loading: false,
-        data: action.payload,
+        data: action.payload.content,
       };
     case STORE_LIST_FAIL:
       return { ...state, loading: false, error: action.payload };

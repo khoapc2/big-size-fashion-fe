@@ -18,7 +18,10 @@ function resultArr(payload) {
   return result;
 }
 
-export const listStaffReducer = (state = { loading: true, data: [], error: "" }, action) => {
+export const listStaffReducer = (
+  state = { loading: true, data: [], error: "", totalCount: 0 },
+  action
+) => {
   switch (action.type) {
     case STAFF_LIST_REQUEST:
       return { ...state, loading: true };
@@ -26,7 +29,8 @@ export const listStaffReducer = (state = { loading: true, data: [], error: "" },
       return {
         ...state,
         loading: false,
-        data: action.payload,
+        data: action.payload.content,
+        totalCount: action.payload.total_count,
       };
     case STAFF_LIST_FAIL:
       return { ...state, loading: false, error: action.payload };

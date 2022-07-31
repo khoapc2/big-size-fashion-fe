@@ -16,7 +16,10 @@ import {
   RESET_PASSWORD_ACCOUNT_FAIL,
 } from "../../service/Validations/VarConstant";
 
-export const listCustomerReducer = (state = { loading: true, data: [], error: "" }, action) => {
+export const listCustomerReducer = (
+  state = { loading: true, data: [], error: "", totalCount: 0 },
+  action
+) => {
   switch (action.type) {
     case CUSTOMER_LIST_REQUEST:
       return { ...state, loading: true };
@@ -24,7 +27,8 @@ export const listCustomerReducer = (state = { loading: true, data: [], error: ""
       return {
         ...state,
         loading: false,
-        data: action.payload,
+        data: action.payload.content,
+        totalCount: action.payload.total_count,
       };
     case CUSTOMER_LIST_FAIL:
       return { ...state, loading: false, error: action.payload };

@@ -8,26 +8,30 @@ import {
   GET_LIST_STAFF_IN_STORE_FAIL,
 } from "../../service/Validations/VarConstant";
 
-export const listStaff = (keySearch, page) => async (dispatch) => {
+export const listStaff = (keySearch, page, size) => async (dispatch) => {
   const params = {
     Role: "Staff",
     Status: "Both",
+    PageNumber: page,
+    PageSize: size,
   };
   const searchParams = {
     Fullname: keySearch,
     Role: "Staff",
     Status: "Both",
+    PageNumber: page,
+    PageSize: size,
   };
   dispatch({ type: STAFF_LIST_REQUEST });
   try {
     if (!keySearch) {
-      const data = await accountApi.getListAccount(params, page);
-      dispatch({ type: STAFF_LIST_SUCCESS, payload: data.content });
+      const data = await accountApi.getListAccount(params);
+      dispatch({ type: STAFF_LIST_SUCCESS, payload: data });
       dispatch({ type: STAFF_LIST_FAIL, payload: "" });
       console.log(data);
     } else {
       const data = await accountApi.getSearchListAccount(searchParams);
-      dispatch({ type: STAFF_LIST_SUCCESS, payload: data.content });
+      dispatch({ type: STAFF_LIST_SUCCESS, payload: data });
       dispatch({ type: STAFF_LIST_FAIL, payload: "" });
     }
   } catch (error) {

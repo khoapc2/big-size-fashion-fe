@@ -33,7 +33,7 @@ import {
 } from "../../service/Validations/VarConstant";
 
 export const listPromotion =
-  ({ keySearch, status }) =>
+  ({ keySearch, status }, page, size) =>
   async (dispatch) => {
     try {
       if (!status) {
@@ -41,17 +41,21 @@ export const listPromotion =
         if (!keySearch) {
           const params = {
             OrderByExpiredDate: true,
+            PageNumber: page,
+            PageSize: size,
           };
           const data = await promotionApi.getListPromotion(params);
-          dispatch({ type: PROMOTION_LIST_SUCCESS, payload: data.content });
+          dispatch({ type: PROMOTION_LIST_SUCCESS, payload: data });
           dispatch({ type: PROMOTION_LIST_FAIL, payload: "" });
         } else {
           const searchParams = {
             PromotionName: keySearch,
             OrderByExpiredDate: true,
+            PageNumber: page,
+            PageSize: size,
           };
           const data = await promotionApi.getSearchListPromotion(searchParams);
-          dispatch({ type: PROMOTION_LIST_SUCCESS, payload: data.content });
+          dispatch({ type: PROMOTION_LIST_SUCCESS, payload: data });
           dispatch({ type: PROMOTION_LIST_FAIL, payload: "" });
         }
       } else {

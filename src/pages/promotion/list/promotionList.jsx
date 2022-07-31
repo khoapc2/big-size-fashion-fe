@@ -42,17 +42,20 @@ export default function PromotionList() {
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
   // const [paging, setPaging] = useState({});
   //Test
-  const { data, error, loading } = useSelector((state) => state.promotionList);
+  const { data, error, loading, totalCount } = useSelector((state) => state.promotionList);
   const { success, loadingDelete, errorDelete } = useSelector(
     (state) => state.deletePromotionState
   );
-  const [page, setPage] = useState(1);
+  const [pageState, setPageState] = useState({
+    page: 1,
+    pageSize: 10,
+  });
   const triggerReload = useSelector((state) => state.triggerReload);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [keySearch, setSearchText] = useState("");
   useEffect(() => {
-    dispatch(listPromotion({ keySearch }));
+    dispatch(listPromotion({ keySearch }, pageState.page, pageState.pageSize));
     if (success) {
       toast.success("Thao tác thành công");
       dispatch({ type: DELETE_PROMOTION_SUCCESS, payload: false });
@@ -64,7 +67,15 @@ export default function PromotionList() {
       toast.error("Thao tác thất bại, vui lòng thử lại");
       dispatch({ type: DELETE_PROMOTION_FAIL, payload: false });
     }
-  }, [page, keySearch, triggerReload, success, errorDelete]);
+  }, [
+    dispatch,
+    pageState.page,
+    pageState.pageSize,
+    keySearch,
+    triggerReload,
+    success,
+    errorDelete,
+  ]);
 
   let inputSearchHandler = (e) => {
     let lowerCase = e.target.value.toLowerCase();
@@ -243,9 +254,18 @@ export default function PromotionList() {
           loading={loading}
           getRowId={(r) => r.promotion_id}
           rows={data}
+          rowCount={totalCount}
+          rowsPerPageOptions={[10, 20, 50, 100]}
+          pagination
+          page={pageState.page - 1}
+          paginationMode="server"
+          onPageChange={(newPage) => setPageState((old) => ({ ...old, page: newPage + 1 }))}
+          onPageSizeChange={(newPageSize) =>
+            setPageState((old) => ({ ...old, pageSize: newPageSize }))
+          }
           disableSelectionOnClick
           columns={columns}
-          pageSize={8}
+          pageSize={pageState.pageSize}
           data={(query) =>
             new Promise(() => {
               console.log(query);

@@ -39,10 +39,8 @@ export default function SizeList() {
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
   // const [paging, setPaging] = useState({});
   //Test
-  const { data, error, loading } = useSelector((state) => state.storeList);
+  const { data, error, loading} = useSelector((state) => state.storeList);
   const deleteState = useSelector((state) => state.deleteStoreState);
-
-  const [page, setPage] = useState(1);
   const [role, setRole] = useState("");
   const triggerReload = useSelector((state) => state.triggerReload);
   const dispatch = useDispatch();
@@ -67,7 +65,13 @@ export default function SizeList() {
       toast.error("Xóa cửa hàng thất bại, vui lòng thử lại");
       dispatch({ type: DELETE_STORE_FAIL, payload: false });
     }
-  }, [page, keySearch, triggerReload, deleteState.success, deleteState.error]);
+  }, [
+    dispatch,
+    keySearch,
+    triggerReload,
+    deleteState.success,
+    deleteState.error,
+  ]);
 
   let inputSearchHandler = (e) => {
     let lowerCase = e.target.value.toLowerCase();
@@ -242,9 +246,10 @@ export default function SizeList() {
           loading={loading}
           getRowId={(r) => r.store_id}
           rows={data}
-          // disableSelectionOnClick
+          autoHeight
+          disableSelectionOnClick
           columns={columns}
-          pageSize={8}
+          pageSize={10}
           data={(query) =>
             new Promise(() => {
               console.log(query);

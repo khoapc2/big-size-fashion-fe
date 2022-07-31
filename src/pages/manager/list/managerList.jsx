@@ -41,9 +41,12 @@ document.head.appendChild(styleLink);
 
 export default function ManagerList() {
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
-  const { data, error, loading } = useSelector((state) => state.managerList);
+  const { data, error, loading, totalCount } = useSelector((state) => state.managerList);
   const { success, loadingDelete, errorDelete } = useSelector((state) => state.deleteAccountState);
-  const [page, setPage] = useState(1);
+  const [pageState, setPageState] = useState({
+    page: 1,
+    pageSize: 10,
+  });
   const [role, setRole] = useState("");
   const triggerReload = useSelector((state) => state.triggerReload);
   const dispatch = useDispatch();
@@ -58,7 +61,7 @@ export default function ManagerList() {
 
   useEffect(() => {
     const currentUser = JSON.parse(localStorage.getItem("user"));
-    dispatch(listManager(searchText, currentUser.role));
+    dispatch(listManager(searchText, currentUser.role, pageState.page, pageState.pageSize));
     if (success) {
       toast.success("Thao tác thành công");
       dispatch({ type: DISABLE_ACCOUNT_SUCCESS, payload: false });
@@ -69,7 +72,7 @@ export default function ManagerList() {
       toast.error("Thao tác thất bại, vui lòng thử lại");
       dispatch({ type: DISABLE_ACCOUNT_FAIL, payload: false });
     }
-  }, [dispatch, page, searchText, triggerReload, success, errorDelete]);
+  }, [dispatch, pageState.page, pageState.pageSize, searchText, triggerReload, success, errorDelete]);
 
   let inputSearchHandler = (e) => {
     let lowerCase = e.target.value.toLowerCase();
@@ -325,9 +328,17 @@ export default function ManagerList() {
           loading={loading}
           getRowId={(r) => r.uid}
           rows={data}
+          autoHeight
+          rowCount={totalCount}
+          rowsPerPageOptions={[10, 20, 50, 100]}
+          pagination
+          page={pageState.page - 1}
+          paginationMode="server"
+          onPageChange={(newPage) => setPageState((old) => ({ ...old, page: newPage + 1}))}
+          onPageSizeChange={(newPageSize) => setPageState(old => ({ ...old, pageSize: newPageSize}))}
           disableSelectionOnClick
+          pageSize={pageState.pageSize}
           columns={role === "Admin" ? columns : ownerColumns}
-          pageSize={8}
           data={(query) =>
             new Promise(() => {
               console.log(query);

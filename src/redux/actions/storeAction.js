@@ -35,7 +35,7 @@ export const listStore =
         if (!keySearch) {
           const data = await storeApi.getListStore();
           data.content = data.content.filter((item) => item.is_main_warehouse === false);
-          dispatch({ type: STORE_LIST_SUCCESS, payload: data.content });
+          dispatch({ type: STORE_LIST_SUCCESS, payload: data });
           dispatch({ type: STORE_LIST_FAIL, payload: "" });
         } else {
           const searchParams = {
@@ -43,7 +43,7 @@ export const listStore =
           };
           const data = await storeApi.getSearchListStore(searchParams);
           data.content = data.content.filter((item) => item.is_main_warehouse === false);
-          dispatch({ type: STORE_LIST_SUCCESS, payload: data.content });
+          dispatch({ type: STORE_LIST_SUCCESS, payload: data });
           dispatch({ type: STORE_LIST_FAIL, payload: "" });
         }
       } else {
