@@ -52,7 +52,11 @@ import {
   addProductToPromotionReducer,
   listProductsToAddPromotionReducer,
 } from "redux/reducers/promotionReducer";
-import { listManagerReducer } from "redux/reducers/managerReducer";
+import {
+  listManagerReducer,
+  viewOwnProfileReducer,
+  updateProfileReducer,
+} from "redux/reducers/managerReducer";
 import { listStaffReducer, listStaffInStoreReducer } from "redux/reducers/staffReducer";
 import {
   listOnlineOrderReducer,
@@ -166,6 +170,8 @@ const reducer = combineReducers({
   addProductToPromotionState: addProductToPromotionReducer,
   listProductsToAddPromotionState: listProductsToAddPromotionReducer,
   deleteProductState: deleteProductReducer,
+  viewOwnProfileState: viewOwnProfileReducer,
+  updateProfileState: updateProfileReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

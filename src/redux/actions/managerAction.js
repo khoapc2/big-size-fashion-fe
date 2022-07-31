@@ -3,6 +3,12 @@ import {
   MANAGER_LIST_REQUEST,
   MANAGER_LIST_SUCCESS,
   MANAGER_LIST_FAIL,
+  VIEW_OWN_PROFILE_REQUEST,
+  VIEW_OWN_PROFILE_FAIL,
+  VIEW_OWN_PROFILE_SUCCESS,
+  UPDATE_PROFILE_REQUEST,
+  UPDATE_PROFILE_FAIL,
+  UPDATE_PROFILE_SUCCESS,
 } from "../../service/Validations/VarConstant";
 
 export const listManager = (keySearch, role, page, size) => async (dispatch) => {
@@ -52,5 +58,70 @@ export const listManager = (keySearch, role, page, size) => async (dispatch) => 
         ? error.respone.content.message
         : error.message;
     dispatch({ type: MANAGER_LIST_FAIL, payload: message });
+  }
+};
+
+export const viewOwnProfile = () => async (dispatch) => {
+  dispatch({
+    type: VIEW_OWN_PROFILE_REQUEST,
+  });
+  try {
+    const currentUser = JSON.parse(localStorage.getItem("user"));
+    let data = null;
+    if (currentUser.role === "Manager") {
+      data = await accountApi.getManagerProfile();
+    } else if (currentUser.role === "Admin" || currentUser.role === "Owner") {
+      data = await accountApi.getAdminOwnerProfile();
+    }
+    const names = data.content.fullname.split(" ");
+    data.content.name = `Mr. ${names[names.length - 1]}`;
+    dispatch({ type: VIEW_OWN_PROFILE_SUCCESS, payload: data.content });
+  } catch (error) {
+    dispatch({
+      type: VIEW_OWN_PROFILE_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const updateProfile = (profileModels) => async (dispatch) => {
+  dispatch({
+    type: UPDATE_PROFILE_REQUEST,
+  });
+  try {
+    if (profileModels) {
+      let birthDay;
+      if (profileModels.birthday.toString().includes("/")) {
+        birthDay = profileModels.birthday.split("/").reverse().join("/");
+      } else {
+        birthDay = profileModels.birthday.toLocaleDateString("vi-VN", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        });
+      }
+      const param = {
+        fullname: profileModels.fullname,
+        phone_number: profileModels.phone_number,
+        email: profileModels.email,
+        birthday: birthDay,
+      };
+      console.log(param);
+      const currentUser = JSON.parse(localStorage.getItem("user"));
+      let data = null;
+      if (currentUser.role === "Manager") {
+        data = await accountApi.updateManagerProfile(param);
+      } else if (currentUser.role === "Admin" || currentUser.role === "Owner") {
+        data = await accountApi.updateAdminProfile(param);
+      }
+      dispatch({ type: UPDATE_PROFILE_SUCCESS, payload: data });
+    }
+  } catch (error) {
+    dispatch({
+      type: UPDATE_PROFILE_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
   }
 };

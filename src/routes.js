@@ -42,6 +42,7 @@ import Statistic from "pages/revenue/";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+// import ProfileManager from "./pages/profile/Main";
 // import Product from "./pages/product/Product";
 // const currentUser = JSON.parse(localStorage.getItem("user"));
 // const { role } = currentUser;
@@ -285,7 +286,6 @@ export const routesManager = [
     key: "profile",
     icon: <Icon fontSize="small">person</Icon>,
     route: "/profile",
-    component: <Profile />,
   },
 
   {
