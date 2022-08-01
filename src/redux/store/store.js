@@ -91,6 +91,7 @@ import {
   quantityAjustmentReducer,
   listInventoryNoteReducer,
   viewDetailInventoryNoteReducer,
+  createInventoryNoteReducer,
 } from "redux/reducers/inventoryReducer";
 import { viewRevenueReducer } from "redux/reducers/revenueReducer";
 import { listFeedbackReducer, deleteFeedbackReducer } from "redux/reducers/feedbackReducer";
@@ -176,6 +177,7 @@ const reducer = combineReducers({
   viewOwnProfileState: viewOwnProfileReducer,
   updateProfileState: updateProfileReducer,
   viewDetailInventoryNote: viewDetailInventoryNoteReducer,
+  createInventoryNote: createInventoryNoteReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

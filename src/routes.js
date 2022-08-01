@@ -32,7 +32,7 @@ import Categories from "pages/category/list/categoryList";
 import Users from "pages/user/userTab";
 import DeliveryNote from "pages/deliveryNote/deliveryTab";
 import Order from "pages/order/orderTab";
-import WarehouseInventory from "pages/warehouseInventory/storeInventory";
+import WarehouseInventory from "pages/warehouseInventory/list/storeInventoryHistory";
 // import RTL from "layouts/rtl";
 import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
@@ -275,9 +275,9 @@ export const routesManager = [
   {
     type: "collapse",
     name: "Kiểm kê",
-    key: "inventory",
+    key: "store-adjust",
     icon: <Icon fontSize="small">calculate</Icon>,
-    route: "/inventory",
+    route: "/store-adjust",
     component: <WarehouseInventory />,
   },
   {

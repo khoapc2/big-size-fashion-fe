@@ -45,7 +45,7 @@ export default function CategoryList() {
   //Test
   // const { category, error, loading } = useSelector((state) => state.categoryList);
   const listInventoryNote = useSelector((state) => state.listInventoryNote);
-  const [page, setPage] = useState(1);
+  // const [page, setPage] = useState(1);
   const triggerReload = useSelector((state) => state.triggerReload);
   // const [keySearch, setKeySearch] = useState("");
   const dispatch = useDispatch();
@@ -60,7 +60,7 @@ export default function CategoryList() {
   console.log(listInventoryNote);
   useEffect(() => {
     dispatch(listInventoryNoteAction(keySearch, pageState.page, pageState.pageSize));
-  }, [dispatch, page, keySearch, triggerReload]);
+  }, [dispatch, pageState.page, pageState.pageSize, keySearch, triggerReload]);
 
   let inputSearchHandler = (e) => {
     let lowerCase = e.target.value.toLowerCase();
@@ -199,7 +199,7 @@ export default function CategoryList() {
           label="Tìm các đơn kiểm kê"
         />
       </FormControl>
-      <Link to="/newCategory">
+      <Link to="/new-inventory-note">
         <button type="button" className="store-inventory-add-button">
           Tạo đơn kiểm kê mới
         </button>
@@ -220,7 +220,7 @@ export default function CategoryList() {
           getRowId={(r) => r.inventory_note_id}
           rows={listInventoryNote.data.content || []}
           disableSelectionOnClick
-          rowCount={listInventoryNote.data.totalCount}
+          rowCount={listInventoryNote.data.total_count}
           rowsPerPageOptions={[10, 20, 50, 100]}
           pagination
           page={pageState.page - 1}

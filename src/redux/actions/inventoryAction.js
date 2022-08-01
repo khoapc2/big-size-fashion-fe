@@ -12,6 +12,9 @@ import {
   GET_DETAIL_INVENTORY_REQUEST,
   GET_DETAIL_INVENTORY_SUCCESS,
   GET_DETAIL_INVENTORY_FAIL,
+  CREATE_INVENTORY_NOTE_REQUEST,
+  CREATE_INVENTORY_NOTE_SUCCESS,
+  CREATE_INVENTORY_NOTE_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const getInventoryAction = (para, from_date, to_date) => async (dispatch) => {
@@ -152,6 +155,29 @@ export const viewDetailInventoryNoteAction = (inventoryId) => async (dispatch) =
   } catch (error) {
     dispatch({
       type: GET_DETAIL_INVENTORY_FAIL,
+      payload:
+        error.response && error.response.data.error.message
+          ? error.response.data.error.message
+          : error.message,
+    });
+  }
+};
+
+export const createInventoryNoteAction = (para, from_date, to_date) => async (dispatch) => {
+  dispatch({
+    type: CREATE_INVENTORY_NOTE_REQUEST,
+  });
+  try {
+    const param = {
+      inventory_note_name: para.inventory_note_name,
+      from_date,
+      to_date,
+    };
+    const data = await inventoryApi.createInventoryNote(param);
+    dispatch({ type: CREATE_INVENTORY_NOTE_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: CREATE_INVENTORY_NOTE_FAIL,
       payload:
         error.response && error.response.data.error.message
           ? error.response.data.error.message

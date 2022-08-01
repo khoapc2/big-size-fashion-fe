@@ -21,5 +21,9 @@ const inventoryApi = {
     const url = `${URL_ENTITY_INVENTORY}/${param}`;
     return axios.get(url);
   },
+  createInventoryNote: (param) => {
+    const url = `${URL_ENTITY_INVENTORY}`;
+    return axios.post(url, param);
+  },
 };
 export default inventoryApi;
