@@ -23,6 +23,7 @@ import {
 import { SchemaErrorMessageOnlineOrderAssign } from "../../../service/Validations/OrderAssignValidation";
 
 import { listStaffInStoreAction } from "../../../redux/actions/staffAction";
+import { viewDetailInventoryNoteAction } from "../../../redux/actions/inventoryAction";
 import { triggerReload } from "../../../redux/actions/userAction";
 import Loading from "../../../components/Loading";
 import "./ViewAdjustInventory.css";
@@ -41,16 +42,19 @@ export default function OfflineOrderForm() {
   const { inventoryId } = useParams();
   const dispatch = useDispatch();
   const { data, loading, totalProduct } = useSelector((state) => state.viewDetailOfflineOrder);
+  const viewDetailInventoryNote = useSelector((state) => state.viewDetailInventoryNote);
   const approveOnOrder = useSelector((state) => state.approveOnlineOrder);
   const rejectOnOrder = useSelector((state) => state.rejectOnlineOrder);
   const cancelOnOrder = useSelector((state) => state.cancelOnlineOrder);
   const staffDropdown = useSelector((state) => state.getListStaffDropDown);
   const { product_list, store, order_id, create_date, status, payment_method } = data;
-  console.log(data);
-  console.log(product_list);
+  // console.log(data);
+  console.log(viewDetailInventoryNote);
 
   useEffect(() => {
     dispatch(viewDetailOfflineOrderAction(inventoryId));
+    dispatch(viewDetailInventoryNoteAction(inventoryId));
+
     dispatch(listStaffInStoreAction());
   }, [
     dispatch,
@@ -122,78 +126,33 @@ export default function OfflineOrderForm() {
       field: "product_detail_id",
       headerName: "Mã",
       width: 50,
-      renderCell: (params) => (
-        <div className="productListItem">
-          {params.row.total_quantity_price ? "" : params.row.product_detail_id}
-        </div>
-      ),
+      renderCell: (params) => <div className="productListItem">{params.row.product_detail_id}</div>,
     },
     {
       field: "product_name",
       headerName: "Sản phẩm",
-      width: 500,
+      width: 300,
       renderCell: (params) => (
         <div className="productListItem">
-          {params.row.total_quantity_price ? (
-            ""
-          ) : (
-            <img
-              className="productListImg"
-              src={params.row.product_image_url}
-              alt={params.row.product_name}
-            />
-          )}
-          {params.row.product_name}&emsp;&emsp;
-          {params.row.category}&emsp;&emsp;
-          {params.row.colour}&emsp;&emsp;
-          {params.row.size}&emsp;&emsp;
+          {params.row.product_name}&thinsp; - &thinsp;{params.row.colour}&thinsp; - &thinsp;
+          {params.row.size}
         </div>
       ),
     },
     {
-      field: "price",
-      headerName: "Đơn giá",
-      width: 150,
-      renderCell: (params) => (
-        <div>
-          {params.row.discount_price_per_one ? (
-            <div>
-              <del>{params.row.price_per_one.toLocaleString("vi-VN")}</del>&emsp;
-              {params.row.discount_price_per_one.toLocaleString("vi-VN")}
-            </div>
-          ) : (
-            <div>{params.row.price.toLocaleString("vi-VN")}</div>
-          )}
-        </div>
-      ),
+      field: "beginning_quantity",
+      headerName: "S.Lượng Đầu kì",
+      width: 120,
     },
     {
-      field: "quantity",
-      headerName: "Số lượng",
-      width: 200,
+      field: "ending_quantity",
+      headerName: "S.lượng Cuối kì",
+      width: 120,
     },
     {
       field: "total_quantity_price",
-      headerName: "Thành Tiền",
-      width: 250,
-      renderCell: (params) => (
-        <div>
-          {params.row.total_quantity_price ? (
-            <b>{params.row.total_quantity_price.toLocaleString("vi-VN")}</b>
-          ) : (
-            ""
-          )}
-          {params.row.discount_price ? (
-            <div className="adjust-inventory-item">{`${params.row.discount_price.toLocaleString(
-              "vi-VN"
-            )}`}</div>
-          ) : (
-            <div className="adjust-inventory-item">{`${params.row.price.toLocaleString(
-              "vi-VN"
-            )}`}</div>
-          )}
-        </div>
-      ),
+      headerName: "S.lượng sau khi điều chỉnh",
+      width: 170,
     },
   ];
 
@@ -278,68 +237,49 @@ export default function OfflineOrderForm() {
                     <Grid container>
                       <Grid item xs={4}>
                         <div className="container-title">
-                          <div className="title">Ngày bán:</div>
-                          <div className="content">&emsp;{create_date}</div>
-                        </div>
-                        <div className="container-title">
-                          <div className="title">Hóa đơn:</div>
-                          <div className="content">&emsp;{order_id}</div>
-                        </div>
-                        <div className="container-title">
-                          <div className="title">Phương thức thanh toán:</div>
-                          <div className="content">&emsp;{payment_method}</div>
-                        </div>
-                        <div className="container-title">
-                          <div className="title">Nhân viên phụ trách:&emsp;</div>
+                          <div className="title">Ngày điều chỉnh:</div>
                           <div className="content">
-                            {staffDropdown.loading ? (
-                              <Loading />
-                            ) : (
-                              <div>
-                                {data.status !== "Chờ xác nhận" ? (
-                                  <Form.Select
-                                    fluid
-                                    // options={staffDropdown.data || []}
-                                    placeholder="Nhân viên"
-                                    onChange={(e, v) => {
-                                      formik.setFieldValue("staff", v.value);
-                                    }}
-                                    name="staff"
-                                    value={formik.values.staff}
-                                    error={formik.errors.staff}
-                                    text={data.staff_name}
-                                    // disabled
-                                  />
-                                ) : (
-                                  <Form.Select
-                                    fluid
-                                    options={staffDropdown.data || []}
-                                    placeholder="Nhân viên"
-                                    onChange={(e, v) => {
-                                      formik.setFieldValue("staff", v.value);
-                                    }}
-                                    name="staff"
-                                    value={formik.values.staff}
-                                    error={formik.errors.staff}
-                                  />
-                                )}
-                              </div>
-                            )}
+                            &emsp;{viewDetailInventoryNote.data.adjusted_date}
+                          </div>
+                        </div>
+                        <div className="container-title">
+                          <div className="title">Đơn kiểm kê:</div>
+                          <div className="content">
+                            &emsp;{viewDetailInventoryNote.data.inventory_note_id}
+                          </div>
+                        </div>
+                        <div className="container-title">
+                          <div className="title">Tên đơn:</div>
+                          <div className="content">
+                            &emsp;{viewDetailInventoryNote.data.inventory_note_name}
+                          </div>
+                        </div>
+                        <div className="container-title">
+                          <div className="title">Người tạo đơn:</div>
+                          <div className="content">
+                            &emsp;{viewDetailInventoryNote.data.staff_name}
                           </div>
                         </div>
                       </Grid>
                       <Grid item xs={8}>
                         <div className="container-title">
-                          <div className="title">Cửa hàng:</div>
-                          <div className="content">&emsp;{store.store_name}</div>
+                          <div className="title">Kiểm kê từ ngày:</div>
+                          <div className="content">
+                            &emsp;{viewDetailInventoryNote.data.from_date} - &thinsp;
+                            {viewDetailInventoryNote.data.to_date}
+                          </div>
                         </div>
                         <div className="container-title">
-                          <div className="title">SĐT cửa hàng:</div>
-                          <div className="content">&emsp; {store.store_phone}</div>
+                          <div className="title">Cửa hàng:</div>
+                          <div className="content">
+                            &emsp;{viewDetailInventoryNote.data.store.store_name}
+                          </div>
                         </div>
                         <div className="container-title">
                           <div className="title">Địa chỉ:</div>
-                          <div className="content">&emsp;{store.store_address}</div>
+                          <div className="content">
+                            &emsp;{viewDetailInventoryNote.data.store.store_address}
+                          </div>
                         </div>
                       </Grid>
                     </Grid>
@@ -360,12 +300,11 @@ export default function OfflineOrderForm() {
               }}
               autoHeight
               getRowId={(r) => r.product_detail_id}
-              hideFooter
-              loading={loading}
-              rows={totalProduct}
+              loading={viewDetailInventoryNote.loading}
+              rows={viewDetailInventoryNote.data.inventory_note_detail || []}
               disableSelectionOnClick
               columns={columns}
-              pageSize={8}
+              pageSize={10}
               rowsPerPageOptions={[]}
               data={(query) =>
                 new Promise(() => {

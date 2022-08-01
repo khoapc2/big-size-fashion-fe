@@ -8,6 +8,9 @@ import {
   GET_LIST_INVENTORY_REQUEST,
   GET_LIST_INVENTORY_SUCCESS,
   GET_LIST_INVENTORY_FAIL,
+  GET_DETAIL_INVENTORY_REQUEST,
+  GET_DETAIL_INVENTORY_SUCCESS,
+  GET_DETAIL_INVENTORY_FAIL,
 } from "../../service/Validations/VarConstant";
 
 function formatArray(payload) {
@@ -67,6 +70,22 @@ export const listInventoryNoteReducer = (
         data: action.payload,
       };
     case GET_LIST_INVENTORY_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const viewDetailInventoryNoteReducer = (
+  state = { loading: true, data: {}, error: "" },
+  action
+) => {
+  switch (action.type) {
+    case GET_DETAIL_INVENTORY_REQUEST:
+      return { ...state, loading: true };
+    case GET_DETAIL_INVENTORY_SUCCESS:
+      return { ...state, loading: false, data: action.payload };
+    case GET_DETAIL_INVENTORY_FAIL:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;

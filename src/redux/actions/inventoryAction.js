@@ -9,6 +9,9 @@ import {
   GET_LIST_INVENTORY_REQUEST,
   GET_LIST_INVENTORY_SUCCESS,
   GET_LIST_INVENTORY_FAIL,
+  GET_DETAIL_INVENTORY_REQUEST,
+  GET_DETAIL_INVENTORY_SUCCESS,
+  GET_DETAIL_INVENTORY_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const getInventoryAction = (para, from_date, to_date) => async (dispatch) => {
@@ -136,5 +139,23 @@ export const listInventoryNoteAction = (keySearch, page, size) => async (dispatc
         ? error.respone.content.message
         : error.message;
     dispatch({ type: GET_LIST_INVENTORY_FAIL, payload: message });
+  }
+};
+
+export const viewDetailInventoryNoteAction = (inventoryId) => async (dispatch) => {
+  dispatch({
+    type: GET_DETAIL_INVENTORY_REQUEST,
+  });
+  try {
+    const data = await inventoryApi.getDetailAdjustListInStore(inventoryId);
+    dispatch({ type: GET_DETAIL_INVENTORY_SUCCESS, payload: data.content });
+  } catch (error) {
+    dispatch({
+      type: GET_DETAIL_INVENTORY_FAIL,
+      payload:
+        error.response && error.response.data.error.message
+          ? error.response.data.error.message
+          : error.message,
+    });
   }
 };

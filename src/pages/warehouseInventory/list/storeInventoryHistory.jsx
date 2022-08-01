@@ -180,7 +180,7 @@ export default function CategoryList() {
     <DashboardLayout>
       <DashboardNavbar />
       <FormControl sx={{ m: 1, width: "35ch" }} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment">Tìm kiếm các điều chỉnh</InputLabel>
+        <InputLabel htmlFor="outlined-adornment">Tìm các đơn kiểm kê</InputLabel>
         <OutlinedInput
           id="outlined-adornment"
           value={keySearch}
@@ -196,12 +196,12 @@ export default function CategoryList() {
               </IconButton>
             </InputAdornment>
           }
-          label="Tìm kiếm đơn điều chỉnh"
+          label="Tìm các đơn kiểm kê"
         />
       </FormControl>
       <Link to="/newCategory">
         <button type="button" className="store-inventory-add-button">
-          Tạo đơn điều chỉnh mới
+          Tạo đơn kiểm kê mới
         </button>
       </Link>
 
