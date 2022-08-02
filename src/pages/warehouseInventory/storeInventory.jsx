@@ -9,6 +9,7 @@ import { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import ClearIcon from "@mui/icons-material/Clear";
+import { useParams } from "react-router-dom";
 
 import {
   QUANTITY_ADJUSTMENT_INVENTORY_SUCCESS,
@@ -23,38 +24,15 @@ import { getInventoryAction, quantityAdjusmentAction } from "../../redux/actions
 import { SchemaErrorMessageCheckInventory } from "../../service/Validations/InventoryValidation";
 import Loading from "../../components/Loading";
 let idCounter = 0;
-const createRow = ({ product_id, product_name, real_quantity }) => {
+const createRow = ({ product_id, product_name, real_quantity, product_detail_id }) => {
   idCounter += 1;
   return {
     id: idCounter,
     product_name: product_name,
     real_quantity: real_quantity,
     product_id: product_id,
+    product_detail_id,
   };
-};
-
-const formatDate = (date) => {
-  const arrayDate = date.split("-");
-  const newDate = `${arrayDate[2]}/${arrayDate[1]}/${arrayDate[0]}`;
-  return newDate;
-};
-
-const formatToDate = (date) => {
-  const arrayDate = date.split("/");
-  const newDate = `${arrayDate[1]}/${arrayDate[0]}/${arrayDate[2]}`;
-  return newDate;
-};
-
-const currentDate = () => {
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  let mm = today.getMonth() + 1; // Months start at 0!
-  let dd = today.getDate();
-
-  if (dd < 10) dd = "0" + dd;
-  if (mm < 10) mm = "0" + mm;
-  const formattedToday = mm + "/" + dd + "/" + yyyy;
-  return formattedToday;
 };
 
 export default function CreateImportDeliver() {
@@ -64,12 +42,14 @@ export default function CreateImportDeliver() {
   const [toDate, setTodate] = useState("");
   // console.log(rows);
   // const { apiRef, columns } = useApiRef();
-
+  const { inventoryNoteId } = useParams();
   const dispatch = useDispatch();
   const listImportPro = useSelector((state) => state.listImportProduct);
   const response = useSelector((state) => state.quantityAjustment);
   let { data, loading, list_products, error } = useSelector((state) => state.listInventoryProduct);
 
+  console.log(inventoryNoteId);
+  console.log(listImportPro);
   // console.log(currentDate());
   // const { list_products } = data;
 
@@ -118,8 +98,6 @@ export default function CreateImportDeliver() {
     console.log(data);
     // const {product_name, product_id, quantity} = data
     // dispatch(createAccount(data));
-    setFromdate(formatDate(data.from_date));
-    setTodate(formatToDate(data.to_date));
     // console.log(fromDate);
     // console.log(toDate);
 
@@ -130,7 +108,7 @@ export default function CreateImportDeliver() {
     if (apiRef.current) {
       const data = apiRef.current.getRowModels();
       if (data.size > 0) {
-        dispatch(getInventoryAction(data, fromDate, toDate));
+        dispatch(getInventoryAction(data, inventoryNoteId));
       } else {
         toast.error("Vui lòng chọn sản phẩm để kiểm kê số lượng");
       }
@@ -357,8 +335,7 @@ export default function CreateImportDeliver() {
                 initialValues={{
                   product_id: "",
                   real_quantity: "",
-                  from_date: "",
-                  to_date: currentDate(),
+                  product_detail_id: "",
                 }}
                 onReset={handleReset}
                 onSubmit={onSubmit}
@@ -372,39 +349,6 @@ export default function CreateImportDeliver() {
                   return (
                     <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
                       <Form.Group className="top-add-product" widths="equal">
-                        <Form.Input
-                          name="from_date"
-                          fluid
-                          label="Từ ngày"
-                          placeholder="Ngày"
-                          type="date"
-                          onChange={formik.handleChange}
-                          value={formik.values.from_date}
-                          readOnly={data ? true : false}
-                          error={
-                            (formik.touched.from_date && formik.errors.from_date) ||
-                            (formik.touched.to_date && formik.errors.to_date)
-                              ? formik.errors.from_date || formik.errors.to_date
-                              : null
-                          }
-                        />
-                        <Form.Input
-                          name="to_date"
-                          fluid
-                          label="Ngày hiện hành"
-                          placeholder="Ngày"
-                          type="input"
-                          onChange={formik.handleChange}
-                          value={formik.values.to_date}
-                          // error={
-                          //   formik.touched.to_date && formik.errors.to_date
-                          //     ? formik.errors.to_date
-                          //     : null
-                          // }
-                          readOnly
-                        />
-                      </Form.Group>
-                      <Form.Group className="top-add-product" widths="equal">
                         <Form.Select
                           fluid
                           label="Sản phẩm"
@@ -412,8 +356,11 @@ export default function CreateImportDeliver() {
                           placeholder="Sản phẩm"
                           name="product_name"
                           onChange={(e, v) => {
-                            const { text } = listImportPro.data.find((o) => o.value === v.value);
+                            const { text, id } = listImportPro.data.find(
+                              (o) => o.value === v.value
+                            );
                             formik.setFieldValue("product_id", v.value);
+                            formik.setFieldValue("product_detail_id", id);
                             formik.setFieldValue("product_name", text);
                           }}
                           value={formik.values.product_name}

@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import "./createInventoryNote.css";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
@@ -8,18 +9,18 @@ import { toast } from "react-toastify";
 import { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import ClearIcon from "@mui/icons-material/Clear";
 
 import {
-  GET_INVENTORY_PRODUCT_LIST_FAIL,
-  GET_INVENTORY_PRODUCT_LIST_SUCCESS,
-  CREATE_INVENTORY_NOTE_SUCCESS,
   CREATE_INVENTORY_NOTE_FAIL,
   CREATE_INVENTORY_NOTE_REQUEST,
+  CREATE_INVENTORY_NOTE_TRIGGER,
 } from "../../../service/Validations/VarConstant";
 import { DataGrid } from "@mui/x-data-grid";
 import { Formik } from "formik";
-import { createInventoryNoteAction } from "../../../redux/actions/inventoryAction";
+import {
+  createInventoryNoteAction,
+  exportExcelAction,
+} from "../../../redux/actions/inventoryAction";
 import { SchemaErrorMessageCreateInventoryNote } from "../../../service/Validations/InventoryNoteValidation";
 import Loading from "../../../components/Loading";
 
@@ -50,62 +51,35 @@ const currentDate = () => {
 export default function CreateImportDeliver() {
   const apiRef = useRef(null);
   const [rows, setRows] = useState([]);
-  const [flagDisplay, setDisplay] = useState(false);
   const [flagDisable, setDisable] = useState(false);
   const [flagSubmit, setSubmit] = useState(false);
   // console.log(rows);
   // const { apiRef, columns } = useApiRef();
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   // const response = useSelector((state) => state.quantityAjustment);
   const createInventoryNote = useSelector((state) => state.createInventoryNote);
   // let { data, loading, list_products, error } = useSelector((state) => state.listInventoryProduct);
+
+  const { loading } = createInventoryNote;
 
   console.log(createInventoryNote);
   // console.log(currentDate());
   // const { list_products } = data;
 
-  // console.log(data);
-  // console.log(loading);
-  // console.log(list_products);
-
-  // const { success, error } = response;
-
-  // useEffect(() => {
-  //   if (!createInventoryNote.data) {
-  //     dispatch({ type: CREATE_INVENTORY_NOTE_REQUEST });
-  //     setDisplay(false);
-  //   }
-  //   setDisplay(false);
-  // }, [dispatch]);
-
   useEffect(() => {
     if (createInventoryNote.error) {
-      setDisplay(false);
       toast.error("Lấy danh sách kiểm kê thất bại");
       dispatch({ type: CREATE_INVENTORY_NOTE_FAIL, payload: false });
     }
   }, [dispatch, createInventoryNote.error]);
 
-  // useEffect(() => {
-  //   if (response.success) {
-  //     toast.success("Điều chỉnh số lượng trong kho thành công");
-  //     dispatch({ type: QUANTITY_ADJUSTMENT_INVENTORY_SUCCESS, payload: false });
-  //     if (apiRef.current) {
-  //       const data = apiRef.current.getRowModels();
-  //       dispatch(getInventoryAction(data, fromDate, toDate));
-  //     }
-  //   }
-  //   if (response.error) {
-  //     toast.error("Điều chỉnh số lượng trong kho thất bại, vui lòng thử lại");
-  //     dispatch({ type: QUANTITY_ADJUSTMENT_INVENTORY_FAIL, payload: false });
-  //   }
-  // }, [response.success, response.error, dispatch]);
-
-  //
+  const handleExportToExcel = (id) => {
+    dispatch(exportExcelAction(id));
+  };
 
   const onSubmit = (data) => {
-    setDisplay(true);
     setSubmit(true);
     setDisable(true);
     dispatch(
@@ -123,9 +97,9 @@ export default function CreateImportDeliver() {
 
   const handleReset = () => {
     // if (createInventoryNote.data) {
-    //   dispatch({ type: CREATE_INVENTORY_NOTE_SUCCESS, payload: "" });
+    //
     // }
-    setDisplay(false);
+    dispatch({ type: CREATE_INVENTORY_NOTE_TRIGGER });
     setDisable(false);
     setSubmit(false);
   };
@@ -281,33 +255,44 @@ export default function CreateImportDeliver() {
                         />
                       </Form.Group>
                       <Form.Group className="top-add-product" widths="equal">
-                        {flagSubmit ? (
+                        {loading === "end" && (
                           <>
                             <Form.Button
                               label="."
                               // className="choose-button-add-product"
-                              type="submit"
+                              type="button"
                               color="green"
+                              onClick={() =>
+                                handleExportToExcel(
+                                  createInventoryNote.data.content.inventory_note_id
+                                )
+                              }
                             >
                               Xuất Excel
                             </Form.Button>
                             <Form.Button
                               label="."
                               // className="choose-button-add-product"
-                              type="submit"
+                              type="button"
                               color="green"
+                              onClick={() =>
+                                navigate(
+                                  `/inventory/${createInventoryNote.data.content.inventory_note_id}`
+                                )
+                              }
                             >
                               Điều Chỉnh
                             </Form.Button>
                           </>
-                        ) : (
+                        )}
+                        {loading === "normal" && (
                           <Form.Button
                             label="."
                             className="choose-button-add-product"
                             type="submit"
                             color="green"
                           >
-                            Kiểm kê
+                            Tạo
                           </Form.Button>
                         )}
                         <Form.Button
@@ -326,60 +311,42 @@ export default function CreateImportDeliver() {
               </Formik>
             </div>
             <div>
-              {flagDisplay ? (
-                <div>
-                  {createInventoryNote.loading ? (
-                    <Loading />
-                  ) : (
-                    <div className="account-top-left">
-                      <Box sx={{ width: "100%" }}>
-                        <Stack direction="row" spacing={1}>
-                          <DataGrid
-                            sx={{
-                              "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {
-                                outline: "none",
-                              },
-                              "& .MuiDataGrid-cell:hover": {
-                                color: "green",
-                              },
-                            }}
-                            autoHeight
-                            loading={createInventoryNote.loading}
-                            getRowId={(r) => r.product_detail_id}
-                            rows={createInventoryNote.data.content.inventory_note_detail || []}
-                            disableSelectionOnClick
-                            columns={columns}
-                            pageSize={10}
-                            data={(query) =>
-                              new Promise(() => {
-                                console.log(query);
-                              })
-                            }
-                            components={{
-                              NoRowsOverlay,
-                            }}
-                          />
-                        </Stack>
-                      </Box>
-                    </div>
-                  )}
+              {loading === "normal" && ""}
+              {loading === "loading" && <Loading />}
+              {loading === "end" && (
+                <div className="account-top-left">
+                  <Box sx={{ width: "100%" }}>
+                    <Stack direction="row" spacing={1}>
+                      <DataGrid
+                        sx={{
+                          "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {
+                            outline: "none",
+                          },
+                          "& .MuiDataGrid-cell:hover": {
+                            color: "green",
+                          },
+                        }}
+                        autoHeight
+                        getRowId={(r) => r.product_detail_id}
+                        rows={createInventoryNote.data.content.inventory_note_detail || []}
+                        disableSelectionOnClick
+                        columns={columns}
+                        pageSize={10}
+                        data={(query) =>
+                          new Promise(() => {
+                            console.log(query);
+                          })
+                        }
+                        components={{
+                          NoRowsOverlay,
+                        }}
+                      />
+                    </Stack>
+                  </Box>
                 </div>
-              ) : (
-                ""
               )}
             </div>
           </div>
-          {/* <div className="accountBottom">
-            {list_products && list_products.length > 0 ? (
-              <Form.Button type="submit" color="yellow" onClick={handleClickAdjusment}>
-                Điều chỉnh
-              </Form.Button>
-            ) : (
-              <Form.Button type="submit" color="green" onClick={handleClickButton}>
-                Kiểm kê
-              </Form.Button>
-            )}
-          </div> */}
         </div>
       </div>
     </DashboardLayout>

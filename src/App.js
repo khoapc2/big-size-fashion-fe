@@ -343,7 +343,7 @@ export default function App() {
         <Route path="employee/:employeeId" element={<ViewEmployee />} />
         <Route path="reset-password/:employeeId" element={<ResetPassword />} />
         <Route path="create-import-invoice" element={<CreateImport />} />
-        <Route path="inventory" element={<Inventory />} />
+        <Route path="inventory/:inventoryNoteId" element={<Inventory />} />
         <Route path="statistic" element={<Statistic />} />
         <Route path="staff" element={<StaffPerformance />} />
         <Route path="delivery-note-detail/:deliveryId" element={<ImportDeliveryDetail />} />
