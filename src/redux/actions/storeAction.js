@@ -149,21 +149,39 @@ export const updateStore = (storeModels, id) => async (dispatch) => {
   }
 };
 
-export const listActiveStore = (param) => async (dispatch) => {
+export const listActiveStore = (para) => async (dispatch) => {
   dispatch({ type: ACTIVE_STORE_LIST_DROPDOWN_REQUEST });
+  const listProduct = Array.from(para.values());
+  const listProductHandleParse = [];
+  const listProductSendToBE = [];
+  listProduct.forEach((product) => {
+    const parseProduct = {
+      ...product,
+      product_detail_id: product.product_detail_id,
+    };
+    console.log(parseProduct);
+    listProductHandleParse.push(parseProduct);
+  });
+  listProductHandleParse.forEach((product) => {
+    if (product) {
+      const { id, product_name, product_id, ...rest } = product;
+      console.log(rest);
+      listProductSendToBE.push(rest);
+    }
+  });
+
+  console.log(listProductHandleParse);
   try {
     const params = {
-      IsMainWarehouse: param.mainWareHouse,
-      Status: param.status,
+      listProductSendToBE,
     };
     console.log(params);
-    const data = await storeApi.getListStore(params);
-    console.log(data);
+    const data = await storeApi.checkAvailableStore(listProductSendToBE);
     dispatch({ type: ACTIVE_STORE_LIST_DROPDOWN_SUCCESS, payload: data.content });
   } catch (error) {
     const message =
-      error.respone && error.respone.content.message
-        ? error.respone.content.message
+      error.response && error.response.data.error.message
+        ? error.response.data.error.message
         : error.message;
     dispatch({ type: ACTIVE_STORE_LIST_DROPDOWN_FAIL, payload: message });
   }

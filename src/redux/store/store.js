@@ -84,6 +84,7 @@ import {
   viewDetailDeliveryNoteReducer,
   approveDeliveryReducer,
   rejectDeliveryReducer,
+  cancelDeliveryReducer,
 } from "redux/reducers/deliverReducer";
 import { zaloLinkReducer } from "redux/reducers/zaloReducer";
 import {
@@ -92,6 +93,7 @@ import {
   listInventoryNoteReducer,
   viewDetailInventoryNoteReducer,
   createInventoryNoteReducer,
+  deleteInventoryNoteReducer,
 } from "redux/reducers/inventoryReducer";
 import { viewRevenueReducer } from "redux/reducers/revenueReducer";
 import { listFeedbackReducer, deleteFeedbackReducer } from "redux/reducers/feedbackReducer";
@@ -176,8 +178,10 @@ const reducer = combineReducers({
   listInventoryNote: listInventoryNoteReducer,
   viewOwnProfileState: viewOwnProfileReducer,
   updateProfileState: updateProfileReducer,
+  cancelDeliveryState: cancelDeliveryReducer,
   viewDetailInventoryNote: viewDetailInventoryNoteReducer,
   createInventoryNote: createInventoryNoteReducer,
+  deleteInventoryNoteState: deleteInventoryNoteReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

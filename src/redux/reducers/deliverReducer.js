@@ -17,6 +17,9 @@ import {
   REJECT_DELIVERY_NOTE_REQUEST,
   REJECT_DELIVERY_NOTE_FAIL,
   REJECT_DELIVERY_NOTE_SUCCESS,
+  CANCEL_DELIVERY_NOTE_REQUEST,
+  CANCEL_DELIVERY_NOTE_SUCCESS,
+  CANCEL_DELIVERY_NOTE_FAIL,
 } from "../../service/Validations/VarConstant";
 
 const calculateTotalPrice = ({ total_price }) => {
@@ -139,6 +142,19 @@ export const rejectDeliveryReducer = (state = { loading: true }, action) => {
     case REJECT_DELIVERY_NOTE_SUCCESS:
       return { ...state, loading: false, success: action.payload };
     case REJECT_DELIVERY_NOTE_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const cancelDeliveryReducer = (state = { loading: true }, action) => {
+  switch (action.type) {
+    case CANCEL_DELIVERY_NOTE_REQUEST:
+      return { ...state, loading: true };
+    case CANCEL_DELIVERY_NOTE_SUCCESS:
+      return { ...state, loading: false, success: action.payload };
+    case CANCEL_DELIVERY_NOTE_FAIL:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;

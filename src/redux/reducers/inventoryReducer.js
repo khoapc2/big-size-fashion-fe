@@ -14,6 +14,9 @@ import {
   CREATE_INVENTORY_NOTE_REQUEST,
   CREATE_INVENTORY_NOTE_SUCCESS,
   CREATE_INVENTORY_NOTE_FAIL,
+  DELETE_INVENTORY_NOTE_REQUEST,
+  DELETE_INVENTORY_NOTE_FAIL,
+  DELETE_INVENTORY_NOTE_SUCCESS,
   CREATE_INVENTORY_NOTE_TRIGGER,
   QUANTITY_ADJUSTMENT_TRIGGER_SUCCESS_NOTIFICATION,
 } from "../../service/Validations/VarConstant";
@@ -120,6 +123,19 @@ export const createInventoryNoteReducer = (
       };
     case CREATE_INVENTORY_NOTE_FAIL:
       return { ...state, loading: "end", error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const deleteInventoryNoteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DELETE_INVENTORY_NOTE_REQUEST:
+      return { ...state, loading: true };
+    case DELETE_INVENTORY_NOTE_SUCCESS:
+      return { ...state, loading: false, success: action.payload };
+    case DELETE_INVENTORY_NOTE_FAIL:
+      return { ...state, loading: false, error: action.payload };
     default:
       return state;
   }

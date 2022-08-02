@@ -27,6 +27,10 @@ const inventoryApi = {
     const url = `${URL_ENTITY_INVENTORY}`;
     return axios.post(url, param);
   },
+  deleteInventoryNote: (id) => {
+    const url = `${URL_ENTITY_INVENTORY}/${id}`;
+    return axios.delete(url);
+  },
   exportInventoryNoteToExcel: (param) => {
     const url = `${URL_ENTITY_INVENTORY}${EXPORT_EXCEL}${param}`;
     return axios.get(url, { responseType: "blob" });

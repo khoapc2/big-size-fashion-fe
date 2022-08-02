@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Button } from "semantic-ui-react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 import IconButton from "@mui/material/IconButton";
 import FormControl from "@mui/material/FormControl";
@@ -26,12 +27,18 @@ import {
 import "./storeInventoryHistory.css";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import { listCategory } from "../../../redux/actions/categoryAction";
-import { listInventoryNoteAction } from "../../../redux/actions/inventoryAction";
+import {
+  listInventoryNoteAction,
+  // deleteInventoryNoteAction,
+} from "../../../redux/actions/inventoryAction";
 
 // import categoryApi from "../../api/categoryApi";
 import Notification from "pages/components/dialog/Notification";
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
+import {
+  DELETE_INVENTORY_NOTE_FAIL,
+  DELETE_INVENTORY_NOTE_SUCCESS,
+} from "../../../service/Validations/VarConstant";
 
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
@@ -45,6 +52,7 @@ export default function CategoryList() {
   //Test
   // const { category, error, loading } = useSelector((state) => state.categoryList);
   const listInventoryNote = useSelector((state) => state.listInventoryNote);
+  const deleteInventoryNote = useSelector((state) => state.deleteInventoryNoteState);
   // const [page, setPage] = useState(1);
   const triggerReload = useSelector((state) => state.triggerReload);
   // const [keySearch, setKeySearch] = useState("");
@@ -57,10 +65,29 @@ export default function CategoryList() {
     pageSize: 10,
   });
 
-  console.log(listInventoryNote);
+  console.log(deleteInventoryNote);
   useEffect(() => {
     dispatch(listInventoryNoteAction(keySearch, pageState.page, pageState.pageSize));
-  }, [dispatch, pageState.page, pageState.pageSize, keySearch, triggerReload]);
+    if (deleteInventoryNote.success) {
+      toast.success("Thao tác thành công");
+      dispatch({ type: DELETE_INVENTORY_NOTE_SUCCESS, payload: false });
+    } else {
+      // console.log(`create:${success}`);
+    }
+    if (deleteInventoryNote.error) {
+      // console.log(error);
+      toast.error("Thao tác thất bại, vui lòng thử lại");
+      dispatch({ type: DELETE_INVENTORY_NOTE_FAIL, payload: false });
+    }
+  }, [
+    dispatch,
+    pageState.page,
+    pageState.pageSize,
+    keySearch,
+    triggerReload,
+    deleteInventoryNote.success,
+    deleteInventoryNote.error,
+  ]);
 
   let inputSearchHandler = (e) => {
     let lowerCase = e.target.value.toLowerCase();
@@ -89,17 +116,13 @@ export default function CategoryList() {
   //   // <Link to={`/category/:${rowData.category_id}`}></Link>;
   // }
 
-  const handleDelete = (id) => {
-    setConfirmDialog({
-      ...confirmDialog,
-      isOpen: false,
-    });
-    setNotify({
-      isOpen: true,
-      message: "Deleted Successfully",
-      type: "success",
-    });
-  };
+  // const handleDelete = (id) => {
+  //   dispatch(deleteInventoryNoteAction(id));
+  //   setConfirmDialog({
+  //     ...confirmDialog,
+  //     isOpen: false,
+  //   });
+  // };
 
   function NoRowsOverlay() {
     return (
@@ -112,7 +135,7 @@ export default function CategoryList() {
   function NoResultsOverlay() {
     return (
       <Stack height="100%" alignItems="center" justifyContent="center">
-        Không tìm thấy đơn điều chỉnh nào
+        Không tìm thấy đơn kiểm kê nào
       </Stack>
     );
   }
@@ -121,7 +144,7 @@ export default function CategoryList() {
     { field: "inventory_note_id", headerName: "ID", width: 90 },
     {
       field: "inventory_note_name",
-      headerName: "Tên đơn điều chỉnh",
+      headerName: "Tên đơn kiểm kê",
       width: 200,
       renderCell: (params) => (
         <div className="store-inventory-list-item">{params.row.inventory_note_name}</div>

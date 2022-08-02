@@ -18,6 +18,9 @@ import {
   REJECT_DELIVERY_NOTE_REQUEST,
   REJECT_DELIVERY_NOTE_FAIL,
   REJECT_DELIVERY_NOTE_SUCCESS,
+  CANCEL_DELIVERY_NOTE_REQUEST,
+  CANCEL_DELIVERY_NOTE_SUCCESS,
+  CANCEL_DELIVERY_NOTE_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listImportDeliver = (page, size) => async (dispatch) => {
@@ -176,6 +179,25 @@ export const rejectDeliveryAction = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: REJECT_DELIVERY_NOTE_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const cancelDeliveryAction = (id) => async (dispatch) => {
+  dispatch({
+    type: CANCEL_DELIVERY_NOTE_REQUEST,
+    payload: { id },
+  });
+  try {
+    if (id) {
+      const data = await deliveryApi.cancelDelivery(id);
+      dispatch({ type: CANCEL_DELIVERY_NOTE_SUCCESS, payload: data });
+    }
+  } catch (error) {
+    dispatch({
+      type: CANCEL_DELIVERY_NOTE_FAIL,
       payload:
         error.response && error.response.data.message ? error.response.data.message : error.message,
     });

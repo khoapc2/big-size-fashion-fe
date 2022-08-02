@@ -144,8 +144,8 @@ export const listInventoryNoteAction = (keySearch, page, size) => async (dispatc
     dispatch({ type: GET_LIST_INVENTORY_FAIL, payload: "" });
   } catch (error) {
     const message =
-      error.respone && error.respone.content.message
-        ? error.respone.content.message
+      error.respone && error.response.content.message
+        ? error.response.content.message
         : error.message;
     dispatch({ type: GET_LIST_INVENTORY_FAIL, payload: message });
   }
@@ -191,6 +191,24 @@ export const createInventoryNoteAction = (para, from_date, to_date) => async (di
     });
   }
 };
+
+// export const deleteInventoryNoteAction = (id) => async (dispatch) => {
+//   dispatch({
+//     type: DELETE_INVENTORY_NOTE_REQUEST,
+//     payload: { id },
+//   });
+//   try {
+//     const data = await inventoryApi.deleteInventoryNote(id);
+//     console.log(data);
+//     dispatch({ type: DELETE_INVENTORY_NOTE_SUCCESS, payload: data });
+//   } catch (error) {
+//     dispatch({
+//       type: DELETE_INVENTORY_NOTE_FAIL,
+//       payload:
+//         error.response && error.response.data.message ? error.response.data.message : error.message,
+//     });
+//   }
+// };
 
 export const exportExcelAction = (inventoryId) => async () => {
   try {

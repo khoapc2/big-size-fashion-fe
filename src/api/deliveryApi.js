@@ -42,5 +42,10 @@ const deliverApi = {
     const url = `${URL_ENTITY}/${REJECT}${params}`;
     return axios.put(url);
   },
+
+  cancelDelivery: (id) => {
+    const url = `${URL_ENTITY}/${id}`;
+    return axios.delete(url);
+  },
 };
 export default deliverApi;

@@ -109,7 +109,7 @@ export default function OfflineOrderForm() {
       dispatch({ type: CANCEL_ONLINE_ORDER_SUCCESS, payload: false });
     }
     if (cancelOnOrder.error) {
-      toast.error("Từ chối đơn hàng thất bại, vui lòng thử lại");
+      toast.error("Hủy đơn hàng thất bại, vui lòng thử lại");
       dispatch({ type: CANCEL_ONLINE_ORDER_FAIL, payload: false });
     }
   }, [triggerReload, cancelOnOrder.success, cancelOnOrder.error]);

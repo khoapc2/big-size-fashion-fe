@@ -13,6 +13,8 @@ import ClearIcon from "@mui/icons-material/Clear";
 import {
   CREATE_IMPORT_PRODUCT_LIST_FAIL,
   CREATE_IMPORT_PRODUCT_LIST_SUCCESS,
+  ACTIVE_STORE_LIST_DROPDOWN_SUCCESS,
+  ACTIVE_STORE_LIST_DROPDOWN_FAIL,
 } from "../../../../service/Validations/VarConstant";
 import { DataGrid } from "@mui/x-data-grid";
 import { Formik } from "formik";
@@ -41,6 +43,7 @@ export default function CreateImportDeliver() {
   const listImportPro = useSelector((state) => state.listImportProduct);
   const response = useSelector((state) => state.createImportDeliver);
   const activeStore = useSelector((state) => state.listActiveStoreDropdown);
+  const { store } = activeStore;
   const mainWareHouse = useSelector((state) => state.getMainWareHouse);
   const [rows, setRows] = useState([]);
   const [submit, setSubmit] = useState(false);
@@ -60,7 +63,7 @@ export default function CreateImportDeliver() {
   useEffect(() => {
     dispatch(getProductToImportAction());
     dispatch(getMainWareHouseAction());
-    dispatch(listActiveStore({ status: true }));
+    dispatch({ type: ACTIVE_STORE_LIST_DROPDOWN_SUCCESS, payload: "" });
   }, [dispatch, triggerReload]);
 
   useEffect(() => {
@@ -72,6 +75,16 @@ export default function CreateImportDeliver() {
       dispatch({ type: CREATE_IMPORT_PRODUCT_LIST_FAIL, payload: false });
     }
   }, [dispatch, error]);
+
+  useEffect(() => {
+    if (typeof activeStore.error === "string" && activeStore.error.includes("Trùng sản phẩm")) {
+      toast.error("Kiểm tra cửa hàng còn hàng thất bại, vui lòng không chọn sản phẩm trùng");
+      dispatch({ type: ACTIVE_STORE_LIST_DROPDOWN_FAIL, payload: false });
+    } else if (activeStore.error) {
+      toast.error("Kiểm tra cửa hàng còn hàng thất bại, vui lòng thử lại");
+      dispatch({ type: ACTIVE_STORE_LIST_DROPDOWN_FAIL, payload: false });
+    }
+  }, [activeStore.error, triggerReload, dispatch]);
 
   useEffect(() => {
     if (success) {
@@ -94,6 +107,12 @@ export default function CreateImportDeliver() {
 
   const handleReset = () => {
     setSubmit(false);
+    if (store) {
+      dispatch({ type: ACTIVE_STORE_LIST_DROPDOWN_SUCCESS, payload: "" });
+    }
+    if (rows) {
+      setRows([]);
+    }
     setRows([]);
   };
 
@@ -111,8 +130,18 @@ export default function CreateImportDeliver() {
     }
   };
 
-  const handleAddRow = () => {
-    setRows((prevRows) => [...prevRows, createRow()]);
+  const handleCheckingButton = () => {
+    if (apiRef.current) {
+      const data = apiRef.current.getRowModels();
+      if (data.size > 0) {
+        console.log(data);
+        dispatch(listActiveStore(data));
+      } else {
+        toast.error("Bạn chưa thêm sản phẩm nào đơn nhập hàng, Vui lòng thử lại");
+      }
+    } else {
+      toast.error("Bạn chưa thêm sản phẩm nào đơn nhập hàng, Vui lòng thử lại");
+    }
   };
 
   function NoRowsOverlay() {
@@ -220,26 +249,30 @@ export default function CreateImportDeliver() {
                             }
                             disabled={submit}
                           />
-                          <Form.Select
-                            // fluid
-                            label="Yều cầu nhập hàng tới"
-                            options={activeStore.store || []}
-                            placeholder="Đến cửa hàng"
-                            name="store_name"
-                            onChange={(e, v) => {
-                              const { text } = activeStore.store.find((o) => o.value === v.value);
-                              formik.setFieldValue("store_id", v.value);
-                              formik.setFieldValue("store_name", text);
-                            }}
-                            value={formik.values.store_id}
-                            // error={formik.errors.product_name}
-                            text={formik.values.store_name}
-                            disabled={submit}
-                          />
+                          {store && store.length > 0 ? (
+                            <Form.Select
+                              label="Nhập hàng từ"
+                              options={activeStore.store || []}
+                              placeholder="Đến cửa hàng"
+                              name="store_name"
+                              onChange={(e, v) => {
+                                const { text } = activeStore.store.find((o) => o.value === v.value);
+                                formik.setFieldValue("store_id", v.value);
+                                formik.setFieldValue("store_name", text);
+                              }}
+                              value={formik.values.store_id}
+                              // error={formik.errors.product_name}
+                              text={formik.values.store_name}
+                              disabled={submit}
+                            />
+                          ) : (
+                            ""
+                          )}
                         </Form.Group>
 
                         <Form.Group className="top-add-product" widths="4">
                           <Form.Select
+                            search
                             fluid
                             label="Sản phẩm"
                             options={listImportPro.data || []}
@@ -261,6 +294,7 @@ export default function CreateImportDeliver() {
                             }
                             text={formik.values.product_name}
                             disabled={submit}
+                            readOnly
                           />
                           <Form.Input
                             fluid
@@ -276,31 +310,30 @@ export default function CreateImportDeliver() {
                                 : null
                             }
                             disabled={submit}
+                            readOnly={store && store.length > 0 ? true : false}
                           />
 
-                          {submit ? (
-                            <div className="button">
-                              <Form.Button
-                                label=" "
-                                className="button-add-product"
-                                type="reset"
-                                color="blue"
-                              >
-                                Tạo thêm đơn nhập hàng
-                              </Form.Button>
-                            </div>
+                          {store && store.length > 0 ? (
+                            ""
                           ) : (
-                            <div className="button">
-                              <Form.Button
-                                className="button-add-product"
-                                label="·"
-                                type="submit"
-                                color="green"
-                              >
-                                Thêm sản phẩm vào đơn nhập hàng
-                              </Form.Button>
-                            </div>
+                            <Form.Button
+                              className="button-add-product"
+                              label="·"
+                              type="submit"
+                              color="green"
+                            >
+                              Thêm sản phẩm vào đơn nhập hàng
+                            </Form.Button>
                           )}
+
+                          <Form.Button
+                            label="."
+                            className="button-add-product"
+                            type="reset"
+                            color="blue"
+                          >
+                            Làm mới
+                          </Form.Button>
                         </Form.Group>
                       </Form>
                     );
@@ -310,17 +343,6 @@ export default function CreateImportDeliver() {
             </div>
             <div className="accountTopLeft">
               <Box sx={{ width: "100%" }}>
-                <Stack direction="row" spacing={1}>
-                  {/* <Button size="small" onClick={handleDeleteRow}>
-                            Delete a row
-                          </Button> */}
-                  <Button size="small" onClick={handleAddRow}>
-                    Thêm mới hàng
-                  </Button>
-                </Stack>
-                {/* <Box sx={{ height: 400, mt: 1 }}>
-                          <DataGrid rows={rows} columns={columns} />
-                        </Box> */}
                 <DataGrid
                   sx={{
                     "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {
@@ -350,9 +372,25 @@ export default function CreateImportDeliver() {
             </div>
           </div>
           <div className="accountBottom">
-            <Form.Button type="submit" color="green" onClick={handleClickButton} disabled={submit}>
-              Xác nhận
-            </Form.Button>
+            {store && store.length > 0 ? (
+              <Form.Button
+                type="submit"
+                color="green"
+                onClick={handleClickButton}
+                disabled={submit}
+              >
+                Xác nhận
+              </Form.Button>
+            ) : (
+              <Form.Button
+                type="submit"
+                color="blue"
+                onClick={handleCheckingButton}
+                disabled={submit}
+              >
+                Kiểm tra cửa hàng còn hàng
+              </Form.Button>
+            )}
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@
 // import { useState } from "react";
 import { useEffect, useState } from "react";
 import { Grid } from "@material-ui/core";
+import { toast } from "react-toastify";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -11,10 +12,17 @@ import Stack from "@mui/material/Stack";
 import { DataGrid } from "@mui/x-data-grid";
 
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
-import { viewDetailDeliveryNoteAction } from "../../../../redux/actions/deliverAction";
+import {
+  viewDetailDeliveryNoteAction,
+  cancelDeliveryAction,
+} from "../../../../redux/actions/deliverAction";
 import { triggerReload } from "../../../../redux/actions/userAction";
 import Loading from "../../../../components/Loading";
-// import "./viewDeliveryNote.css";
+import {
+  CANCEL_DELIVERY_NOTE_SUCCESS,
+  CANCEL_DELIVERY_NOTE_FAIL,
+} from "../../../../service/Validations/VarConstant";
+import "./viewDeliveryNote.css";
 
 export default function DeliveryNoteForm() {
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
@@ -22,13 +30,30 @@ export default function DeliveryNoteForm() {
   const { deliveryId } = useParams();
   const dispatch = useDispatch();
   const { data, loading, totalProduct } = useSelector((state) => state.viewDetailDeliveryNote);
-
-  console.log(data);
-  console.log(totalProduct);
+  const cancelDelivery = useSelector((state) => state.cancelDeliveryState);
 
   useEffect(() => {
     dispatch(viewDetailDeliveryNoteAction(deliveryId));
-  }, [dispatch, triggerReload]);
+  }, [dispatch, triggerReload, cancelDelivery.success, cancelDelivery.error]);
+
+  useEffect(() => {
+    if (cancelDelivery.success) {
+      toast.success("Hủy thành công");
+      dispatch({ type: CANCEL_DELIVERY_NOTE_SUCCESS, payload: false });
+    }
+    if (cancelDelivery.error) {
+      toast.error("Hủy thất bại, vui lòng thử lại");
+      dispatch({ type: CANCEL_DELIVERY_NOTE_FAIL, payload: false });
+    }
+  }, [triggerReload, cancelDelivery.success, cancelDelivery.error]);
+
+  const handleCancel = (id) => {
+    dispatch(cancelDeliveryAction(id));
+    setConfirmDialog({
+      ...confirmDialog,
+      isOpen: false,
+    });
+  };
 
   const columns = [
     {
@@ -102,42 +127,67 @@ export default function DeliveryNoteForm() {
           <Loading />
         </div>
       ) : (
-        <div className="offlineOrderTop">
-          <Grid container>
-            <Grid item xs={4}>
-              <div className="container-title">
-                <div className="title">Tên đơn:</div>
-                <div className="content">&emsp;{data.delivery_note_name}</div>
-              </div>
-              <div className="container-title">
-                <div className="title">Ngày tạo:</div>
-                <div className="content">&emsp;{data.create_date}</div>
-              </div>
-              <div className="container-title">
-                <div className="title">Người Tạo Đơn:</div>
-                <div className="content">&emsp;{data.receive_staff_name}</div>
-              </div>
-              <div className="container-title">
-                <div className="title">Cửa hàng: </div>
-                <div className="content">&emsp;{data.to_store.store_name}</div>
-              </div>
+        <div className="onlineOrderTop">
+          <div className="buttonCancel">
+            {data.status === "Chờ xác nhận" ? (
+              <Stack className="bottom-button" direction="row" spacing={2}>
+                <Button
+                  className="deny"
+                  variant="outlined"
+                  onClick={() =>
+                    setConfirmDialog({
+                      isOpen: true,
+                      title: "Bạn có muốn hủy đơn nhập hàng này?",
+                      subTitle: "Xác nhận",
+                      onConfirm: () => {
+                        handleCancel(deliveryId);
+                      },
+                    })
+                  }
+                >
+                  Hủy
+                </Button>
+              </Stack>
+            ) : (
+              <div />
+            )}
+          </div>
+          <div className="offlineOrderTop">
+            <Grid container>
+              <Grid item xs={4}>
+                <div className="container-title">
+                  <div className="title">Tên đơn:</div>
+                  <div className="content">&emsp;{data.delivery_note_name}</div>
+                </div>
+                <div className="container-title">
+                  <div className="title">Ngày tạo:</div>
+                  <div className="content">&emsp;{data.create_date}</div>
+                </div>
+                <div className="container-title">
+                  <div className="title">Người Tạo Đơn:</div>
+                  <div className="content">&emsp;{data.receive_staff_name}</div>
+                </div>
+                <div className="container-title">
+                  <div className="title">Cửa hàng: </div>
+                  <div className="content">&emsp;{data.to_store.store_name}</div>
+                </div>
+              </Grid>
+              <Grid item xs={8}>
+                <div className="container-title">
+                  <div className="title">Cửa hàng nhận yêu cầu: </div>
+                  <div className="content">&emsp;{data.from_store.store_name}</div>
+                </div>
+                <div className="container-title">
+                  <div className="title">SĐT: </div>
+                  <div className="content"> &emsp; {data.from_store.store_phone}</div>
+                </div>
+                <div className="container-title">
+                  <div className="title">Địa chỉ: </div>
+                  <div className="content">&emsp; {data.from_store.store_address}</div>
+                </div>
+              </Grid>
             </Grid>
-            <Grid item xs={8}>
-              <div className="container-title">
-                <div className="title">Cửa hàng nhận yêu cầu: </div>
-                <div className="content">&emsp;{data.from_store.store_name}</div>
-              </div>
-              <div className="container-title">
-                <div className="title">SĐT: </div>
-                <div className="content"> &emsp; {data.from_store.store_phone}</div>
-              </div>
-              <div className="container-title">
-                <div className="title">Địa chỉ: </div>
-                <div className="content">&emsp; {data.from_store.store_address}</div>
-              </div>
-            </Grid>
-          </Grid>
-
+          </div>
           <div className="offlineOrderTopLeft">
             <DataGrid
               sx={{
