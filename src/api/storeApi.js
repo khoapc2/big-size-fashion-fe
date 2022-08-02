@@ -2,6 +2,8 @@ import axios from "./axios";
 
 const URL_ENTITY = "/v1/stores";
 
+const CHECK_AVAILABLE_STORE = "/v1/stores/available-store";
+
 const storeApi = {
   getListStore: (params) => {
     const url = `${URL_ENTITY}`;
@@ -31,6 +33,11 @@ const storeApi = {
   updateStoreService: (params, id) => {
     const url = `${URL_ENTITY}/${id}`;
     return axios.put(url, params);
+  },
+
+  checkAvailableStore: (params) => {
+    const url = `${CHECK_AVAILABLE_STORE}`;
+    return axios.post(url, params);
   },
 };
 

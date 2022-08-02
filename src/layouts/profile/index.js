@@ -58,12 +58,12 @@ function Overview() {
               <Grid container spacing={1}>
                 <Grid item xs={12}>
                   <ProfileInfoCard
-                    title="profile information"
+                    title="Thông tin người dùng"
                     info={{
-                      fullName: data.fullname,
-                      phone: data.phone_number,
+                      họTên: data.fullname,
+                      điệnThoại: data.phone_number,
                       email: data.email,
-                      birthday: data.birthday,
+                      ngàySinh: data.birthday,
                     }}
                     action={{ route: "/update-profile", tooltip: "Edit Profile" }}
                     shadow={false}

@@ -40,7 +40,7 @@
   margin: 10px;
 }
 
-.buttonApprove {
+.buttonCancel {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
