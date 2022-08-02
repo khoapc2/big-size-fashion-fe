@@ -9,6 +9,15 @@ import {
   GET_LIST_INVENTORY_REQUEST,
   GET_LIST_INVENTORY_SUCCESS,
   GET_LIST_INVENTORY_FAIL,
+  GET_DETAIL_INVENTORY_REQUEST,
+  GET_DETAIL_INVENTORY_SUCCESS,
+  GET_DETAIL_INVENTORY_FAIL,
+  CREATE_INVENTORY_NOTE_REQUEST,
+  CREATE_INVENTORY_NOTE_SUCCESS,
+  CREATE_INVENTORY_NOTE_FAIL,
+  DELETE_INVENTORY_NOTE_REQUEST,
+  DELETE_INVENTORY_NOTE_FAIL,
+  DELETE_INVENTORY_NOTE_SUCCESS,
 } from "../../service/Validations/VarConstant";
 
 export const getInventoryAction = (para, from_date, to_date) => async (dispatch) => {
@@ -132,9 +141,68 @@ export const listInventoryNoteAction = (keySearch, page, size) => async (dispatc
     dispatch({ type: GET_LIST_INVENTORY_FAIL, payload: "" });
   } catch (error) {
     const message =
-      error.respone && error.respone.content.message
-        ? error.respone.content.message
+      error.respone && error.response.content.message
+        ? error.response.content.message
         : error.message;
     dispatch({ type: GET_LIST_INVENTORY_FAIL, payload: message });
+  }
+};
+
+export const viewDetailInventoryNoteAction = (inventoryId) => async (dispatch) => {
+  dispatch({
+    type: GET_DETAIL_INVENTORY_REQUEST,
+  });
+  try {
+    const data = await inventoryApi.getDetailAdjustListInStore(inventoryId);
+    dispatch({ type: GET_DETAIL_INVENTORY_SUCCESS, payload: data.content });
+  } catch (error) {
+    dispatch({
+      type: GET_DETAIL_INVENTORY_FAIL,
+      payload:
+        error.response && error.response.data.error.message
+          ? error.response.data.error.message
+          : error.message,
+    });
+  }
+};
+
+export const createInventoryNoteAction = (para, from_date, to_date) => async (dispatch) => {
+  dispatch({
+    type: CREATE_INVENTORY_NOTE_REQUEST,
+  });
+  try {
+    const param = {
+      inventory_note_name: para.inventory_note_name,
+      from_date,
+      to_date,
+    };
+    const data = await inventoryApi.createInventoryNote(param);
+    dispatch({ type: CREATE_INVENTORY_NOTE_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: CREATE_INVENTORY_NOTE_FAIL,
+      payload:
+        error.response && error.response.data.error.message
+          ? error.response.data.error.message
+          : error.message,
+    });
+  }
+};
+
+export const deleteInventoryNoteAction = (id) => async (dispatch) => {
+  dispatch({
+    type: DELETE_INVENTORY_NOTE_REQUEST,
+    payload: { id },
+  });
+  try {
+    const data = await inventoryApi.deleteInventoryNote(id);
+    console.log(data);
+    dispatch({ type: DELETE_INVENTORY_NOTE_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: DELETE_INVENTORY_NOTE_FAIL,
+      payload:
+        error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
   }
 };

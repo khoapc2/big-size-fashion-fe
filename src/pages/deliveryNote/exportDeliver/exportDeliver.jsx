@@ -80,6 +80,12 @@ export default function StaffList() {
   const columns = [
     { field: "delivery_note_id", headerName: "Mã đơn hàng", width: 150 },
     {
+      field: "delivery_note_name",
+      headerName: "Tên đơn nhập",
+      width: 250,
+      renderCell: (params) => <div>{params.row.delivery_note_name}</div>,
+    },
+    {
       field: "total_price",
       headerName: "Tổng giá trị (VNĐ)",
       width: 150,
