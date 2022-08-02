@@ -156,21 +156,6 @@ export default function CategoryList() {
           >
             <VisibilityIcon />
           </IconButton>
-          <Button
-            className="productListDelete"
-            onClick={() =>
-              setConfirmDialog({
-                isOpen: true,
-                title: "Bạn muốn xóa đơn kiểm kê này khỏi lịch sử?",
-                subTitle: "Bạn chắc chứ?",
-                onConfirm: () => {
-                  handleDelete(params.row.product_id);
-                },
-              })
-            }
-            color="red"
-            icon="trash alternate"
-          />
         </>
       ),
     },

@@ -15,9 +15,11 @@ import {
   CREATE_INVENTORY_NOTE_REQUEST,
   CREATE_INVENTORY_NOTE_SUCCESS,
   CREATE_INVENTORY_NOTE_FAIL,
+  QUANTITY_ADJUSTMENT_TRIGGER_SUCCESS_NOTIFICATION,
 } from "../../service/Validations/VarConstant";
 
 export const getInventoryAction = (para, inventoryNoteId) => async (dispatch) => {
+  console.log(para);
   const listProduct = Array.from(para.values());
   const listProductHandleParse = [];
   const listProductSendToBE = [];
@@ -40,7 +42,6 @@ export const getInventoryAction = (para, inventoryNoteId) => async (dispatch) =>
       listProductSendToBE.push(rest);
     }
   });
-  console.log(listProductSendToBE);
   listProductSendToBE.forEach((product) => {
     if (product) {
       const { product_id, size_id, colour_id, real_quantity, product_detail_id } = product;
@@ -53,7 +54,6 @@ export const getInventoryAction = (para, inventoryNoteId) => async (dispatch) =>
       });
     }
   });
-  console.log(listFormatProductSendToBE);
   dispatch({
     type: GET_INVENTORY_PRODUCT_LIST_REQUEST,
   });
@@ -62,11 +62,9 @@ export const getInventoryAction = (para, inventoryNoteId) => async (dispatch) =>
       inventory_note_id: inventoryNoteId,
       list_products: listFormatProductSendToBE,
     };
-    console.log(params);
     const data = await inventoryApi.getInventoryInStore(params);
     dispatch({ type: GET_INVENTORY_PRODUCT_LIST_SUCCESS, payload: data.content });
   } catch (error) {
-    console.log(error);
     dispatch({
       type: GET_INVENTORY_PRODUCT_LIST_FAIL,
       payload:
@@ -77,7 +75,7 @@ export const getInventoryAction = (para, inventoryNoteId) => async (dispatch) =>
   }
 };
 
-export const quantityAdjusmentAction = (para) => async (dispatch) => {
+export const quantityAdjusmentAction = (para, inventoryNoteId) => async (dispatch) => {
   console.log(para);
   const listProduct = Array.from(para.values());
   const listProductHandleParse = [];
@@ -106,8 +104,12 @@ export const quantityAdjusmentAction = (para) => async (dispatch) => {
   });
   listProductSendToBE.forEach((product) => {
     if (product) {
-      const { product_id, size_id, colour_id, difference_quantity } = product;
-      listFormatProductSendToBE.push({ product_id, size_id, colour_id, difference_quantity });
+      const { difference_quantity, product_detail_id } = product;
+      listFormatProductSendToBE.push({
+        inventory_note_id: inventoryNoteId,
+        difference_quantity,
+        product_detail_id,
+      });
     }
   });
   dispatch({
@@ -115,7 +117,7 @@ export const quantityAdjusmentAction = (para) => async (dispatch) => {
   });
   try {
     const data = await inventoryApi.quantityAdjustment(listFormatProductSendToBE);
-    console.log(data);
+    dispatch({ type: QUANTITY_ADJUSTMENT_TRIGGER_SUCCESS_NOTIFICATION, payload: data.is_success });
     dispatch({ type: QUANTITY_ADJUSTMENT_INVENTORY_SUCCESS, payload: data.content });
   } catch (error) {
     dispatch({

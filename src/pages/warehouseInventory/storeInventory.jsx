@@ -1,4 +1,5 @@
 /* eslint-disable */
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useDispatch, useSelector } from "react-redux";
 import "./storeInventory.css";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -9,13 +10,14 @@ import { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import ClearIcon from "@mui/icons-material/Clear";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import {
   QUANTITY_ADJUSTMENT_INVENTORY_SUCCESS,
   QUANTITY_ADJUSTMENT_INVENTORY_FAIL,
   GET_INVENTORY_PRODUCT_LIST_FAIL,
   GET_INVENTORY_PRODUCT_LIST_SUCCESS,
+  QUANTITY_ADJUSTMENT_TRIGGER_SUCCESS_NOTIFICATION,
 } from "../../service/Validations/VarConstant";
 import { DataGrid } from "@mui/x-data-grid";
 import { Formik } from "formik";
@@ -31,25 +33,25 @@ const createRow = ({ product_id, product_name, real_quantity, product_detail_id 
     product_name: product_name,
     real_quantity: real_quantity,
     product_id: product_id,
-    product_detail_id,
+    product_detail_id: product_detail_id,
   };
 };
 
 export default function CreateImportDeliver() {
   const apiRef = useRef(null);
   const [rows, setRows] = useState([]);
-  const [fromDate, setFromdate] = useState("");
-  const [toDate, setTodate] = useState("");
   // console.log(rows);
   // const { apiRef, columns } = useApiRef();
   const { inventoryNoteId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const listImportPro = useSelector((state) => state.listImportProduct);
   const response = useSelector((state) => state.quantityAjustment);
   let { data, loading, list_products, error } = useSelector((state) => state.listInventoryProduct);
 
+  console.log(data);
   console.log(inventoryNoteId);
-  console.log(listImportPro);
+  console.log(response);
   // console.log(currentDate());
   // const { list_products } = data;
 
@@ -62,17 +64,16 @@ export default function CreateImportDeliver() {
   useEffect(() => {
     dispatch(getProductToImportAction());
     dispatch({ type: GET_INVENTORY_PRODUCT_LIST_SUCCESS, payload: "" });
+    dispatch({ type: QUANTITY_ADJUSTMENT_INVENTORY_SUCCESS, payload: "" });
+    dispatch({ type: QUANTITY_ADJUSTMENT_TRIGGER_SUCCESS_NOTIFICATION, payload: false });
   }, [dispatch]);
 
   useEffect(() => {
-    if (
-      typeof error === "string" &&
-      error.includes("An item with the same key has already been added")
-    ) {
-      toast.error("Kiểm kê kho thất bại, vui lòng không chọn trùng sản phẩm");
+    if (typeof error === "string" && error.includes("Trùng sản phẩm")) {
+      toast.error("Kiểm tra kho thất bại, vui lòng không chọn trùng sản phẩm");
       dispatch({ type: GET_INVENTORY_PRODUCT_LIST_FAIL, payload: false });
     } else if (error) {
-      toast.error("Kiểm kê kho thất bại, vui lòng thử lại");
+      toast.error("Kiểm tra kho thất bại, vui lòng thử lại");
       dispatch({ type: GET_INVENTORY_PRODUCT_LIST_FAIL, payload: false });
     }
   }, [dispatch, error]);
@@ -80,27 +81,17 @@ export default function CreateImportDeliver() {
   useEffect(() => {
     if (response.success) {
       toast.success("Điều chỉnh số lượng trong kho thành công");
-      dispatch({ type: QUANTITY_ADJUSTMENT_INVENTORY_SUCCESS, payload: false });
-      if (apiRef.current) {
-        const data = apiRef.current.getRowModels();
-        dispatch(getInventoryAction(data, fromDate, toDate));
-      }
+      dispatch({ type: QUANTITY_ADJUSTMENT_TRIGGER_SUCCESS_NOTIFICATION, payload: false });
     }
     if (response.error) {
       toast.error("Điều chỉnh số lượng trong kho thất bại, vui lòng thử lại");
       dispatch({ type: QUANTITY_ADJUSTMENT_INVENTORY_FAIL, payload: false });
     }
-  }, [response.success, response.error, dispatch]);
+  }, [response.error, dispatch, response.success]);
 
   //
 
   const onSubmit = (data) => {
-    console.log(data);
-    // const {product_name, product_id, quantity} = data
-    // dispatch(createAccount(data));
-    // console.log(fromDate);
-    // console.log(toDate);
-
     setRows((prevRows) => [...prevRows, createRow(data)]);
   };
 
@@ -108,7 +99,7 @@ export default function CreateImportDeliver() {
     if (apiRef.current) {
       const data = apiRef.current.getRowModels();
       if (data.size > 0) {
-        dispatch(getInventoryAction(data, inventoryNoteId));
+        dispatch(getInventoryAction(data, parseInt(inventoryNoteId)));
       } else {
         toast.error("Vui lòng chọn sản phẩm để kiểm kê số lượng");
       }
@@ -120,7 +111,7 @@ export default function CreateImportDeliver() {
   const handleClickAdjusment = () => {
     if (apiRef.current) {
       const data = apiRef.current.getRowModels();
-      dispatch(quantityAdjusmentAction(data));
+      dispatch(quantityAdjusmentAction(data, inventoryNoteId));
     } else {
       toast.error("Cập nhật số lượng sản phẩm thất bại, vui lòng thử lại sau");
     }
@@ -138,6 +129,8 @@ export default function CreateImportDeliver() {
     apiRef.current = null;
     if (data) {
       dispatch({ type: GET_INVENTORY_PRODUCT_LIST_SUCCESS, payload: "" });
+      dispatch({ type: QUANTITY_ADJUSTMENT_INVENTORY_SUCCESS, payload: "" });
+      dispatch({ type: QUANTITY_ADJUSTMENT_TRIGGER_SUCCESS_NOTIFICATION, payload: false });
     }
     if (rows) {
       setRows([]);
@@ -156,7 +149,7 @@ export default function CreateImportDeliver() {
     },
     {
       field: "beginning_quantity",
-      headerName: "Số lượng đầu kì",
+      headerName: "S.lượng đầu kì",
       flex: 0.5,
       disableClickEventBubbling: true,
       sortable: false,
@@ -164,7 +157,7 @@ export default function CreateImportDeliver() {
     },
     {
       field: "ending_quantity_in_system",
-      headerName: "Số lượng cuối kì",
+      headerName: "S.lượng cuối kì",
       flex: 0.5,
       disableClickEventBubbling: true,
       sortable: false,
@@ -172,8 +165,8 @@ export default function CreateImportDeliver() {
     },
     {
       field: "real_quantity",
-      headerName: "Số lượng Thực Tế",
-      flex: 0.5,
+      headerName: "S.lượng Thực Tế",
+      flex: 0.6,
       disableClickEventBubbling: true,
       sortable: false,
       disableColumnMenu: true,
@@ -198,7 +191,7 @@ export default function CreateImportDeliver() {
     {
       field: "action",
       headerName: "Thao tác",
-      flex: 0.3,
+      flex: 0.4,
       disableClickEventBubbling: true,
       disableColumnMenu: true,
       sortable: false,
@@ -220,8 +213,57 @@ export default function CreateImportDeliver() {
     },
     {
       field: "",
-      width: 0,
+      flex: 0.1,
       renderCell: (params) => {
+        console.log(params);
+        apiRef.current = params.api;
+        return null;
+      },
+    },
+  ];
+
+  const columns_after_adjust = [
+    {
+      field: "product_name",
+      headerName: "Sản phẩm",
+      flex: 1.0,
+      disableClickEventBubbling: true,
+      sortable: false,
+      disableColumnMenu: true,
+      type: "singleSelect",
+      renderCell: (params) => (
+        <div>{`${params.row.product_name} - ${params.row.colour_name}- ${params.row.size_name}`}</div>
+      ),
+    },
+    {
+      field: "beginning_quantity",
+      headerName: "S.lượng đầu kì",
+      flex: 0.5,
+      disableClickEventBubbling: true,
+      sortable: false,
+      disableColumnMenu: true,
+    },
+    {
+      field: "ending_quantity_in_system",
+      headerName: "S.lượng cuối kì",
+      flex: 0.5,
+      disableClickEventBubbling: true,
+      sortable: false,
+      disableColumnMenu: true,
+    },
+    {
+      field: "ending_quantity_after_adjusted",
+      headerName: "S.lượng Sau Điều Chỉnh",
+      flex: 0.6,
+      disableClickEventBubbling: true,
+      sortable: false,
+      disableColumnMenu: true,
+    },
+    {
+      field: "",
+      flex: 0.1,
+      renderCell: (params) => {
+        console.log(params);
         apiRef.current = params.api;
         return null;
       },
@@ -326,8 +368,15 @@ export default function CreateImportDeliver() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <div className="newImport">
-        <h1 className="createImportTitle">Kiểm kê kho</h1>
+      <div className="inventory-container">
+        <div className="inventory-card">
+          <ArrowBackIosIcon
+            className="arrow-icon"
+            onClick={() => navigate(`/new-inventory-note`)}
+          />
+          <h1 className="inventory-card-h1">Điều chỉnh số lượng trong kho</h1>
+        </div>
+
         <div className="account">
           <div className="accountTop">
             <div className="account-top">
@@ -370,17 +419,17 @@ export default function CreateImportDeliver() {
                               : null
                           }
                           text={formik.values.product_name}
-                          readOnly={data ? true : false}
+                          disabled={data || response.data.length > 0 ? true : false}
                         />
                         <Form.Input
                           fluid
-                          label="Số lượng"
-                          placeholder="Số lượng"
+                          label="Số lượng thực tế"
+                          placeholder="Số lượng thực tế"
                           type="number"
                           name="real_quantity"
                           onChange={formik.handleChange}
                           value={formik.values.real_quantity}
-                          readOnly={data ? true : false}
+                          disabled={data || response.data.length > 0 ? true : false}
                           error={
                             formik.touched.real_quantity && formik.errors.real_quantity
                               ? formik.errors.real_quantity
@@ -421,42 +470,51 @@ export default function CreateImportDeliver() {
                             Delete a row
                           </Button> */}
                 </Stack>
-                {/* <Box sx={{ height: 400, mt: 1 }}>
-                          <DataGrid rows={rows} columns={columns} />
-                        </Box> */}
-                {/* <DataGrid
-                  sx={{
-                    "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {
-                      outline: "none",
-                    },
-                    "& .MuiDataGrid-cell:hover": {
-                      color: "green",
-                    },
-                  }}
-                  // loading={loading}
-                  getRowId={(r) => r.product_id}
-                  rows={list_products}
-                  disableSelectionOnClick
-                  columns={columns}
-                  pageSize={8}
-                  data={(query) =>
-                    new Promise(() => {
-                      console.log(query);
-                    })
-                  }
-                /> */}
-                {renderTable()}
+
+                {response.data.length === 0 && renderTable()}
+                {response.data.length > 0 && (
+                  <DataGrid
+                    sx={{
+                      "&.MuiDataGrid-root .MuiDataGrid-cell:focus": {
+                        outline: "none",
+                      },
+                      "& .MuiDataGrid-cell:hover": {
+                        color: "green",
+                      },
+                    }}
+                    // loading={loading}
+                    getRowId={(r) => r.product_detail_id}
+                    rows={response.data}
+                    disableSelectionOnClick
+                    columns={columns_after_adjust}
+                    pageSize={8}
+                    data={(query) =>
+                      new Promise(() => {
+                        console.log(query);
+                      })
+                    }
+                    autoHeight
+                    components={{
+                      NoRowsOverlay,
+                    }}
+                  />
+                )}
               </Box>
             </div>
           </div>
           <div className="accountBottom">
             {list_products && list_products.length > 0 ? (
-              <Form.Button type="submit" color="yellow" onClick={handleClickAdjusment}>
+              <Form.Button
+                type="submit"
+                color="yellow"
+                onClick={handleClickAdjusment}
+                disabled={response.data.length > 0}
+              >
                 Điều chỉnh
               </Form.Button>
             ) : (
               <Form.Button type="submit" color="green" onClick={handleClickButton}>
-                Kiểm kê
+                Kiểm tra
               </Form.Button>
             )}
           </div>

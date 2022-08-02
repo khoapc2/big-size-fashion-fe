@@ -1,6 +1,19 @@
-.newImport {
+.inventory-container {
   flex: 4;
   padding-left: 2rem;
+}
+
+.inventory-card {
+  display: flex;
+  align-items: center;
+}
+
+.inventory-card-h1 {
+  padding-bottom: 2rem;
+}
+
+.arrow-icon {
+  cursor: pointer;
 }
 
 .createImportForm {

@@ -1,6 +1,6 @@
 import axios from "./axios";
 
-const URL_ENTITY = "/v1/store-warehouses";
+// const URL_ENTITY = "/v1/store-warehouses";
 const URL_ENTITY_INVENTORY = "/v1/inventory-notes";
 const AJUSMENT_QUANTITY = "/quantity-adjustment";
 const EXPORT_EXCEL = "/export-excel/";
@@ -12,7 +12,7 @@ const inventoryApi = {
     return axios.post(url, params);
   },
   quantityAdjustment: (params) => {
-    const url = `${URL_ENTITY}${AJUSMENT_QUANTITY}`;
+    const url = `${URL_ENTITY_INVENTORY}${AJUSMENT_QUANTITY}`;
     return axios.put(url, params);
   },
   getAdjustListInStore: (params) => {

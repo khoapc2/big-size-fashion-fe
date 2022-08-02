@@ -52,15 +52,25 @@
 }
 
 .buttonApprove {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	justify-content: flex-end;
-	align-items: stretch;
-	align-content: stretch;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: stretch;
+  align-content: stretch;
 }
 
 .MuiDataGrid-root {
   margin-top: 10px;
   height: 500px;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+}
+
+.reload-icon {
+  cursor: pointer;
+  margin-right: 5px;
 }
