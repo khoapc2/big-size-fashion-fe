@@ -20,9 +20,7 @@ import {
   DELETE_INVENTORY_NOTE_SUCCESS,
 } from "../../service/Validations/VarConstant";
 
-export const getInventoryAction = (para, from_date, to_date) => async (dispatch) => {
-  console.log(to_date);
-  console.log(from_date);
+export const getInventoryAction = (para, inventoryNoteId) => async (dispatch) => {
   const listProduct = Array.from(para.values());
   const listProductHandleParse = [];
   const listProductSendToBE = [];
@@ -45,10 +43,17 @@ export const getInventoryAction = (para, from_date, to_date) => async (dispatch)
       listProductSendToBE.push(rest);
     }
   });
+  console.log(listProductSendToBE);
   listProductSendToBE.forEach((product) => {
     if (product) {
-      const { product_id, size_id, colour_id, real_quantity } = product;
-      listFormatProductSendToBE.push({ product_id, size_id, colour_id, real_quantity });
+      const { product_id, size_id, colour_id, real_quantity, product_detail_id } = product;
+      listFormatProductSendToBE.push({
+        product_id,
+        size_id,
+        colour_id,
+        real_quantity,
+        product_detail_id,
+      });
     }
   });
   console.log(listFormatProductSendToBE);
@@ -57,8 +62,7 @@ export const getInventoryAction = (para, from_date, to_date) => async (dispatch)
   });
   try {
     const params = {
-      from_date,
-      to_date,
+      inventory_note_id: inventoryNoteId,
       list_products: listFormatProductSendToBE,
     };
     console.log(params);
@@ -204,5 +208,19 @@ export const deleteInventoryNoteAction = (id) => async (dispatch) => {
       payload:
         error.response && error.response.data.message ? error.response.data.message : error.message,
     });
+  }
+};
+
+export const exportExcelAction = (inventoryId) => async () => {
+  try {
+    const data = await inventoryApi.exportInventoryNoteToExcel(inventoryId);
+    const url = window.URL.createObjectURL(new Blob([data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `inventory_note_#${inventoryId}.xlsx`);
+    document.body.appendChild(link);
+    link.click();
+  } catch (error) {
+    console.log(error);
   }
 };

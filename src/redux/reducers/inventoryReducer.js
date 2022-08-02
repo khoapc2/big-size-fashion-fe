@@ -17,6 +17,7 @@ import {
   DELETE_INVENTORY_NOTE_REQUEST,
   DELETE_INVENTORY_NOTE_FAIL,
   DELETE_INVENTORY_NOTE_SUCCESS,
+  CREATE_INVENTORY_NOTE_TRIGGER,
 } from "../../service/Validations/VarConstant";
 
 function formatArray(payload) {
@@ -99,21 +100,23 @@ export const viewDetailInventoryNoteReducer = (
 };
 
 export const createInventoryNoteReducer = (
-  state = { loading: true, data: {}, error: "", success: "" },
+  state = { loading: "normal", data: {}, error: "", success: "" },
   action
 ) => {
   switch (action.type) {
+    case CREATE_INVENTORY_NOTE_TRIGGER:
+      return { ...state, loading: "normal" };
     case CREATE_INVENTORY_NOTE_REQUEST:
-      return { ...state, loading: true };
+      return { ...state, loading: "loading" };
     case CREATE_INVENTORY_NOTE_SUCCESS:
       return {
         ...state,
-        loading: false,
+        loading: "end",
         data: action.payload,
         success: true,
       };
     case CREATE_INVENTORY_NOTE_FAIL:
-      return { ...state, loading: false, error: action.payload };
+      return { ...state, loading: "end", error: action.payload };
     default:
       return state;
   }
