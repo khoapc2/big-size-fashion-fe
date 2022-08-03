@@ -1,12 +1,12 @@
 /* eslint-disable */
-// import { useState } from "react";
 import { useEffect, useState } from "react";
 import { Grid } from "@material-ui/core";
 import { toast } from "react-toastify";
-
+import { Form } from "semantic-ui-react";
+import CachedIcon from "@mui/icons-material/Cached";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { Formik } from "formik";
+// import { Formik } from "formik";
 
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
@@ -41,6 +41,10 @@ import {
 //   });
 //   return { total_quantity_price: totalPrice };
 // };
+const options = [
+  { key: "1", text: "Tiền mặt", value: "Tiền mặt" },
+  { key: "0", text: "ZaloPay", value: "ZaloPay" },
+];
 
 export default function OfflineOrderForm() {
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
@@ -57,7 +61,6 @@ export default function OfflineOrderForm() {
   const approveOffOrder = useSelector((state) => state.approveOfflineOrder);
   const rejectOffOrder = useSelector((state) => state.rejectOfflineOrder);
   const { store, order_id, create_date, status, payment_method, customer_name, staff_name } = data;
-
 
   useEffect(() => {
     dispatch(viewDetailOfflineOrderAction(offlineOrderId));
@@ -263,7 +266,7 @@ export default function OfflineOrderForm() {
           </div>
 
           <Grid container>
-            <Grid item xs={4}>
+            <Grid item xs={5}>
               <div className="container-title">
                 <div className="title">Ngày bán:</div>
                 <div className="content">&emsp;{create_date}</div>
@@ -276,6 +279,7 @@ export default function OfflineOrderForm() {
                 <div className="title">Tên Khách hàng:</div>
                 <div className="content">&emsp;{customer_name}</div>
               </div>
+
               <div className="container-title">
                 <div className="title">Phương thức thanh toán:</div>
                 {zaloPay.data ? (
@@ -286,8 +290,30 @@ export default function OfflineOrderForm() {
                   <div className="content">&emsp;{payment_method}</div>
                 )}
               </div>
+              <div className="container-title">
+                <div className="title">Đổi thanh toán:</div>
+                <div className="content">
+                  <Form.Select
+                    options={options}
+                    placeholder="Thanh toán"
+                    // onChange={(e, v) => {
+                    //   const { text } = options.find((o) => o.value === v.value);
+                    //   formik.setFieldValue("product_id", v.value);
+                    //   formik.setFieldValue("product_detail_id", id);
+                    //   formik.setFieldValue("product_name", text);
+                    // }}
+
+                    // onChange={(e, v) => {
+                    //   formik.setFieldValue("staff", v.value);
+                    // }}
+                    // value={formik.values.staff}
+                    // error={formik.errors.staff}
+                  />
+                  <CachedIcon fontSize="medium" className="reload-icon" />
+                </div>
+              </div>
             </Grid>
-            <Grid item xs={8}>
+            <Grid item xs={7}>
               <div className="container-title">
                 <div className="title">Tên Nhân viên:</div>
                 <div className="content">&emsp;{staff_name}</div>

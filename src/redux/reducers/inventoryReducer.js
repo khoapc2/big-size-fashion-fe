@@ -18,6 +18,7 @@ import {
   DELETE_INVENTORY_NOTE_FAIL,
   DELETE_INVENTORY_NOTE_SUCCESS,
   CREATE_INVENTORY_NOTE_TRIGGER,
+  QUANTITY_ADJUSTMENT_TRIGGER_SUCCESS_NOTIFICATION,
 } from "../../service/Validations/VarConstant";
 
 function formatArray(payload) {
@@ -50,12 +51,17 @@ export const getStorewarehouseReducer = (
   }
 };
 
-export const quantityAjustmentReducer = (state = { loading: true }, action) => {
+export const quantityAjustmentReducer = (
+  state = { loading: true, data: [], success: false },
+  action
+) => {
   switch (action.type) {
     case QUANTITY_ADJUSTMENT_INVENTORY_REQUEST:
       return { ...state, loading: true };
+    case QUANTITY_ADJUSTMENT_TRIGGER_SUCCESS_NOTIFICATION:
+      return { ...state, success: action.payload };
     case QUANTITY_ADJUSTMENT_INVENTORY_SUCCESS:
-      return { ...state, loading: false, success: action.payload };
+      return { ...state, loading: false, data: action.payload, success: true };
     case QUANTITY_ADJUSTMENT_INVENTORY_FAIL:
       return { ...state, error: action.payload, loading: false };
     default:

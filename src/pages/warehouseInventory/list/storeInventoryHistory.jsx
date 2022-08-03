@@ -29,7 +29,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import {
   listInventoryNoteAction,
-  deleteInventoryNoteAction,
+  // deleteInventoryNoteAction,
 } from "../../../redux/actions/inventoryAction";
 
 // import categoryApi from "../../api/categoryApi";
@@ -116,13 +116,13 @@ export default function CategoryList() {
   //   // <Link to={`/category/:${rowData.category_id}`}></Link>;
   // }
 
-  const handleDelete = (id) => {
-    dispatch(deleteInventoryNoteAction(id));
-    setConfirmDialog({
-      ...confirmDialog,
-      isOpen: false,
-    });
-  };
+  // const handleDelete = (id) => {
+  //   dispatch(deleteInventoryNoteAction(id));
+  //   setConfirmDialog({
+  //     ...confirmDialog,
+  //     isOpen: false,
+  //   });
+  // };
 
   function NoRowsOverlay() {
     return (
