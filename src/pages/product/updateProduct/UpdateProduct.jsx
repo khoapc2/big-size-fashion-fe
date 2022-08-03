@@ -90,10 +90,6 @@ export default function NewProduct() {
     setSelectedImgs((prevImg) => prevImg.concat(imgsArray));
   };
 
-  const selectDelete = (image) => {
-    setSelectedImgs(selectedImgs.filter((e) => e !== image));
-  };
-
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -328,27 +324,7 @@ export default function NewProduct() {
                                           // {...srcset(item, 250, 200, rows, cols)}
                                           loading="lazy"
                                           alt={item.image_url}
-                                        />
-                                        <ImageListItemBar
-                                          sx={{
-                                            background:
-                                              "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, " +
-                                              "rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)",
-                                          }}
-                                          position="top"
-                                          onClick={() => selectDelete(item)}
-                                          actionIcon={
-                                            <IconButton
-                                              sx={{ color: "white !important" }}
-                                              aria-label="Delete"
-                                              style={{ margin: 10 }}
-                                              size="large"
-                                            >
-                                              <DeleteForeverIcon /> Delete
-                                            </IconButton>
-                                          }
-                                          actionPosition="left"
-                                        />
+                                        />                                       
                                       </ImageListItem>
                                     );
                                   })}

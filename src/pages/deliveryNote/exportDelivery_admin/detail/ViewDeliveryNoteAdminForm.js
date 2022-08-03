@@ -202,7 +202,7 @@ export default function DeliveryNoteForm() {
                   onClick={() =>
                     setConfirmDialog({
                       isOpen: true,
-                      title: "Bạn có muốn hủy yêu cầu nhập hàng này?",
+                      title: "Bạn có muốn từ chối yêu cầu nhập hàng này?",
                       subTitle: "Hủy",
                       onConfirm: () => {
                         handleReject(deliveryId);

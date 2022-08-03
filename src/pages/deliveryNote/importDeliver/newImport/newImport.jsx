@@ -251,9 +251,9 @@ export default function CreateImportDeliver() {
                           />
                           {store && store.length > 0 ? (
                             <Form.Select
-                              label="Nhập hàng từ"
+                              label="Nhập hàng từ (cửa hàng còn hàng)"
                               options={activeStore.store || []}
-                              placeholder="Đến cửa hàng"
+                              placeholder="Từ cửa hàng"
                               name="store_name"
                               onChange={(e, v) => {
                                 const { text } = activeStore.store.find((o) => o.value === v.value);
