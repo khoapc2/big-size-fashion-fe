@@ -58,10 +58,10 @@ export default function ConfirmDialog(props) {
         <Typography variant="subtitle2">{confirmDialog.subTitle}</Typography>
       </DialogContent>
       <DialogActions className={classes.dialogAction}>
-        <Button color="blue" onClick={() => setConfirmDialog({ ...confirmDialog, isOpen: false })}>
+        <Button color="red" onClick={() => setConfirmDialog({ ...confirmDialog, isOpen: false })}>
           Hủy
         </Button>
-        <Button color="red" onClick={confirmDialog.onConfirm}>
+        <Button color="blue" onClick={confirmDialog.onConfirm}>
           Xác nhận
         </Button>
       </DialogActions>
