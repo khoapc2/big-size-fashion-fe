@@ -110,7 +110,7 @@ export default function StaffList() {
     {
       field: "create_date",
       headerName: "Ngày tạo",
-      width: 250,
+      width: 150,
       renderCell: (params) => <div>{params.row.create_date}</div>,
     },
     {
@@ -122,7 +122,7 @@ export default function StaffList() {
     {
       field: "action",
       headerName: "Thao tác",
-      width: 250,
+      width: 150,
       renderCell: (params) => (
         <>
           <Link to={`/delivery-note-detail/${params.row.delivery_note_id}`}>
@@ -162,8 +162,10 @@ export default function StaffList() {
           pagination
           page={pageState.page - 1}
           paginationMode="server"
-          onPageChange={(newPage) => setPageState((old) => ({ ...old, page: newPage + 1}))}
-          onPageSizeChange={(newPageSize) => setPageState(old => ({ ...old, pageSize: newPageSize}))}
+          onPageChange={(newPage) => setPageState((old) => ({ ...old, page: newPage + 1 }))}
+          onPageSizeChange={(newPageSize) =>
+            setPageState((old) => ({ ...old, pageSize: newPageSize }))
+          }
           disableSelectionOnClick
           columns={columns}
           pageSize={pageState.pageSize}

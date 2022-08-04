@@ -98,7 +98,7 @@ export default function StaffList() {
     {
       field: "create_date",
       headerName: "Ngày tạo",
-      width: 250,
+      width: 150,
       renderCell: (params) => <div>{params.row.create_date}</div>,
     },
     {
@@ -111,7 +111,7 @@ export default function StaffList() {
     {
       field: "action",
       headerName: "Thao tác",
-      width: 250,
+      width: 150,
       renderCell: (params) => (
         <>
           <Link to={`/delivery-export-detail/${params.row.delivery_note_id}`}>

@@ -213,3 +213,13 @@ section {
 .field.button-add-product.field > label {
   color: rgb(240 242 245) !important;
 }
+
+.ui.fluid.search.selection.dropdown {
+  margin-top: auto;
+}
+
+.button-add-product .ui.green.button {
+  margin-top: auto;
+  height: 35px;
+  font-size: smaller;
+}

@@ -399,6 +399,7 @@ export default function CreateImportDeliver() {
                     <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
                       <Form.Group className="top-add-product" widths="equal">
                         <Form.Select
+                          search
                           fluid
                           label="Sản phẩm"
                           options={listImportPro.data || []}
