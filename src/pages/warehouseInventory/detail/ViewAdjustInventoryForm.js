@@ -42,7 +42,7 @@ export default function OfflineOrderForm() {
     {
       field: "product_name",
       headerName: "Sản phẩm",
-      width: 300,
+      width: 270,
       renderCell: (params) => (
         <div className="productListItem">
           {params.row.product_name}&thinsp; - &thinsp;{params.row.colour}&thinsp; - &thinsp;
@@ -61,8 +61,8 @@ export default function OfflineOrderForm() {
       width: 120,
     },
     {
-      field: "total_quantity_price",
-      headerName: "S.lượng sau khi điều chỉnh",
+      field: "ending_quantity_after_adjusted",
+      headerName: "S.lượng sau điều chỉnh",
       width: 170,
     },
   ];
