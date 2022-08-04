@@ -226,6 +226,11 @@ section {
   display: -webkit-box !important;
 }
 
-.field.choose-button-add-product.field > label {
+.button-ui .field > label {
   color: rgb(240 242 245) !important;
+}
+
+.button-ui {
+  display: flex;
+  justify-content: center;
 }

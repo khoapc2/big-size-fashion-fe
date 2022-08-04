@@ -254,7 +254,7 @@ export default function CreateImportDeliver() {
                           readOnly
                         />
                       </Form.Group>
-                      <Form.Group className="top-add-product" widths="equal">
+                      <div className="button-ui">
                         {loading === "end" && (
                           <>
                             <Form.Button
@@ -304,7 +304,7 @@ export default function CreateImportDeliver() {
                         >
                           Reset
                         </Form.Button>
-                      </Form.Group>
+                      </div>
                     </Form>
                   );
                 }}
