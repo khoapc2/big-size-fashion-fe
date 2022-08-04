@@ -282,19 +282,18 @@ export const routesManager = [
   },
   {
     type: "collapse",
-    name: "Profile",
-    key: "profile",
-    icon: <Icon fontSize="small">person</Icon>,
-    route: "/profile",
-  },
-
-  {
-    type: "collapse",
-    name: "Nhân viên",
+    name: "Hiệu suất làm việc",
     key: "staff",
     icon: <Icon fontSize="small">people </Icon>,
     route: "/staff",
     component: <Profile />,
+  },
+  {
+    type: "collapse",
+    name: "Tài khoản",
+    key: "profile",
+    icon: <Icon fontSize="small">person</Icon>,
+    route: "/profile",
   },
 ];
 
