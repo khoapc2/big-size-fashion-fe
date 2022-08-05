@@ -69,6 +69,7 @@ import {
   cancelOnlineOrderReducer,
   orderTodayReducer,
   staffPerformanceOrderReducer,
+  changePaymentMethodReducer,
 } from "redux/reducers/orderReducer";
 import {
   listCustomerReducer,
@@ -182,6 +183,7 @@ const reducer = combineReducers({
   viewDetailInventoryNote: viewDetailInventoryNoteReducer,
   createInventoryNote: createInventoryNoteReducer,
   deleteInventoryNoteState: deleteInventoryNoteReducer,
+  changePaymentMethod: changePaymentMethodReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

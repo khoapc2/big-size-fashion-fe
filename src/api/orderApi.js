@@ -10,6 +10,8 @@ const EXPORT_ORDER = "export-bill/";
 const CANCEL_URL = "cancel/";
 const ORDER_TODAY = "/statistic-today";
 const STAFF_PERFORMANCE = "/performance-of-all-staff";
+const PENDING_ORDER = "/detail-for-manager/";
+const CHANGE_METHOD = "/change-payment-method/";
 
 const orderApi = {
   getListOrder: (params) => {
@@ -19,6 +21,11 @@ const orderApi = {
 
   getOrderDetailById: (params) => {
     const url = `${URL_ENTITY}/detail/${params}`;
+    return axios.get(url);
+  },
+
+  getPendingOrderDetailById: (params) => {
+    const url = `${URL_ENTITY}${PENDING_ORDER}${params}`;
     return axios.get(url);
   },
 
@@ -65,6 +72,11 @@ const orderApi = {
   staffPerformOnOrder: (params) => {
     const url = `${URL_ENTITY}${STAFF_PERFORMANCE}`;
     return axios.get(url, { params });
+  },
+
+  changePaymentMethod: (params) => {
+    const url = `${URL_ENTITY}${CHANGE_METHOD}${params.id}/${params.method}`;
+    return axios.get(url, params);
   },
 };
 export default orderApi;

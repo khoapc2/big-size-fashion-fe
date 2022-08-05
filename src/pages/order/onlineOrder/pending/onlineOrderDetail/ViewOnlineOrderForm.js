@@ -149,7 +149,7 @@ export default function OfflineOrderForm() {
     {
       field: "product_name",
       headerName: "Sản phẩm",
-      width: 500,
+      width: 350,
       renderCell: (params) => (
         <div className="productListItem">
           {params.row.total_quantity_price ? (
@@ -161,10 +161,10 @@ export default function OfflineOrderForm() {
               alt={params.row.product_name}
             />
           )}
-          {params.row.product_name}&emsp;&emsp;
-          {params.row.category}&emsp;&emsp;
-          {params.row.colour}&emsp;&emsp;
-          {params.row.size}&emsp;&emsp;
+          {params.row.product_name}&emsp;
+          {params.row.category}&emsp;
+          {params.row.colour}&emsp;
+          {params.row.size}
         </div>
       ),
     },
@@ -188,12 +188,95 @@ export default function OfflineOrderForm() {
     {
       field: "quantity",
       headerName: "Số lượng",
-      width: 200,
+      width: 150,
     },
     {
       field: "total_quantity_price",
       headerName: "Thành Tiền",
-      width: 250,
+      width: 100,
+      renderCell: (params) => (
+        <div>
+          {params.row.total_quantity_price ? (
+            <b>{params.row.total_quantity_price.toLocaleString("vi-VN")}</b>
+          ) : (
+            ""
+          )}
+          {params.row.discount_price ? (
+            <div className="onlineOrderItem">{`${params.row.discount_price.toLocaleString(
+              "vi-VN"
+            )}`}</div>
+          ) : (
+            <div className="onlineOrderItem">{`${params.row.price.toLocaleString("vi-VN")}`}</div>
+          )}
+        </div>
+      ),
+    },
+  ];
+
+  const columnStatusPending = [
+    {
+      field: "product_detail_id",
+      headerName: "Mã",
+      width: 50,
+      renderCell: (params) => (
+        <div className="productListItem">
+          {params.row.total_quantity_price ? "" : params.row.product_detail_id}
+        </div>
+      ),
+    },
+    {
+      field: "product_name",
+      headerName: "Sản phẩm",
+      width: 300,
+      renderCell: (params) => (
+        <div className="productListItem">
+          {params.row.total_quantity_price ? (
+            ""
+          ) : (
+            <img
+              className="productListImg"
+              src={params.row.product_image_url}
+              alt={params.row.product_name}
+            />
+          )}
+          {params.row.product_name}&emsp;
+          {params.row.category}&emsp;
+          {params.row.colour}&emsp;
+          {params.row.size}
+        </div>
+      ),
+    },
+    {
+      field: "price",
+      headerName: "Đơn giá",
+      width: 150,
+      renderCell: (params) => (
+        <div>
+          {params.row.discount_price_per_one ? (
+            <div>
+              <del>{params.row.price_per_one.toLocaleString("vi-VN")}</del>&emsp;
+              {params.row.discount_price_per_one.toLocaleString("vi-VN")}
+            </div>
+          ) : (
+            <div>{params.row.price.toLocaleString("vi-VN")}</div>
+          )}
+        </div>
+      ),
+    },
+    {
+      field: "quantity",
+      headerName: "Số lượng",
+      width: 80,
+    },
+    {
+      field: "current_quantity_in_store",
+      headerName: "S.Lượng trong cửa hàng",
+      width: 180,
+    },
+    {
+      field: "total_quantity_price",
+      headerName: "Thành Tiền",
+      width: 100,
       renderCell: (params) => (
         <div>
           {params.row.total_quantity_price ? (
@@ -380,7 +463,7 @@ export default function OfflineOrderForm() {
               loading={loading}
               rows={totalProduct}
               disableSelectionOnClick
-              columns={columns}
+              columns={status === "Chờ xác nhận" ? columnStatusPending : columns}
               pageSize={8}
               rowsPerPageOptions={[]}
               data={(query) =>

@@ -33,6 +33,9 @@ import {
   STAFF_PERFORM_ORDER_REQUEST,
   STAFF_PERFORM_ORDER_SUCCESS,
   STAFF_PERFORM_ORDER_FAIL,
+  CHANGE_PAYMENT_METHOD_REQUEST,
+  CHANGE_PAYMENT_METHOD_SUCCESS,
+  CHANGE_PAYMENT_METHOD_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listOrder = (status, type, page, size) => async (dispatch) => {
@@ -100,7 +103,12 @@ export const viewDetailOfflineOrderAction = (orderId) => async (dispatch) => {
         });
       }
     }
-    dispatch({ type: VIEW_DETAIL_OFFLINE_ORDER_LIST_SUCCESS, payload: data.content });
+    if (data.content.status === "Chờ xác nhận") {
+      const { content } = await orderApi.getPendingOrderDetailById(orderId);
+      dispatch({ type: VIEW_DETAIL_OFFLINE_ORDER_LIST_SUCCESS, payload: content });
+    } else {
+      dispatch({ type: VIEW_DETAIL_OFFLINE_ORDER_LIST_SUCCESS, payload: data.content });
+    }
   } catch (error) {
     dispatch({
       type: VIEW_DETAIL_OFFLINE_ORDER_LIST_FAIL,
@@ -264,5 +272,23 @@ export const staffPerformanceAction = (params) => async (dispatch) => {
       payload:
         error.response && error.response.data.message ? error.response.data.message : error.message,
     });
+  }
+};
+
+export const changePaymentMethodAction = (id, method) => async (dispatch) => {
+  dispatch({ type: CHANGE_PAYMENT_METHOD_REQUEST });
+  const params = {
+    id,
+    method,
+  };
+  try {
+    const data = await orderApi.changePaymentMethod(params);
+    dispatch({ type: CHANGE_PAYMENT_METHOD_SUCCESS, payload: data });
+  } catch (error) {
+    const message =
+      error.respone && error.respone.content.message
+        ? error.respone.content.message
+        : error.message;
+    dispatch({ type: CHANGE_PAYMENT_METHOD_FAIL, payload: message });
   }
 };

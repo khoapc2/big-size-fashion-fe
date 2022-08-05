@@ -29,6 +29,9 @@ import {
   STAFF_PERFORM_ORDER_REQUEST,
   STAFF_PERFORM_ORDER_SUCCESS,
   STAFF_PERFORM_ORDER_FAIL,
+  CHANGE_PAYMENT_METHOD_REQUEST,
+  CHANGE_PAYMENT_METHOD_SUCCESS,
+  CHANGE_PAYMENT_METHOD_FAIL,
 } from "../../service/Validations/VarConstant";
 
 const calculateTotalPrice = ({ product_list }) => {
@@ -136,25 +139,25 @@ export const staffPerformanceOrderReducer = (
   }
 };
 
-// export const viewDetailOfflineOrderReducer = (
-//   state = { loading: true, data: [], error: "" },
-//   action
-// ) => {
-//   switch (action.type) {
-//     case VIEW_DETAIL_OFFLINE_ORDER_LIST_REQUEST:
-//       return { ...state, loading: true };
-//     case VIEW_DETAIL_OFFLINE_ORDER_LIST_SUCCESS:
-//       return {
-//         ...state,
-//         loading: false,
-//         data: action.payload,
-//       };
-//     case VIEW_DETAIL_OFFLINE_ORDER_LIST_FAIL:
-//       return { ...state, loading: false, error: action.payload };
-//     default:
-//       return state;
-//   }
-// };
+export const changePaymentMethodReducer = (
+  state = { loading: true, success: {}, error: "" },
+  action
+) => {
+  switch (action.type) {
+    case CHANGE_PAYMENT_METHOD_REQUEST:
+      return { ...state, loading: true };
+    case CHANGE_PAYMENT_METHOD_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        success: action.payload,
+      };
+    case CHANGE_PAYMENT_METHOD_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
 
 export const viewDetailOfflineOrderReducer = (
   state = { loading: true, data: [], error: "", totalProduct: [] },

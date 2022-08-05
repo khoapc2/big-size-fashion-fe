@@ -19,6 +19,7 @@ import {
   approveOfflineOrderAction,
   cancelOfflineOrderAction,
   exportExcelAction,
+  changePaymentMethodAction,
 } from "../../../../../redux/actions/orderAction";
 import { triggerReload } from "../../../../../redux/actions/userAction";
 import Loading from "../../../../../components/Loading";
@@ -28,19 +29,10 @@ import {
   APPROVE_OFFLINE_ORDER_FAIL,
   CANCEL_OFFLINE_ORDER_SUCCESS,
   CANCEL_OFFLINE_ORDER_FAIL,
+  CHANGE_PAYMENT_METHOD_SUCCESS,
+  CHANGE_PAYMENT_METHOD_FAIL,
 } from "../../../../../service/Validations/VarConstant";
 
-// const createRow = (productList) => {
-//   let totalPrice = 0;
-//   productList.forEach(({ discount_price_per_one, quantity, price_per_one }) => {
-//     if (discount_price_per_one) {
-//       totalPrice += discount_price_per_one * quantity;
-//     } else {
-//       totalPrice += price_per_one * quantity;
-//     }
-//   });
-//   return { total_quantity_price: totalPrice };
-// };
 const options = [
   { key: "1", text: "Tiền mặt", value: "Tiền mặt" },
   { key: "0", text: "ZaloPay", value: "ZaloPay" },
@@ -48,6 +40,7 @@ const options = [
 
 export default function OfflineOrderForm() {
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
+  const [payMethod, setPaymethod] = useState("");
   const [tableDialog, setTableDialog] = useState({
     isOpen: false,
     title: "",
@@ -60,8 +53,10 @@ export default function OfflineOrderForm() {
   const zaloPay = useSelector((state) => state.getZaloLink);
   const approveOffOrder = useSelector((state) => state.approveOfflineOrder);
   const rejectOffOrder = useSelector((state) => state.rejectOfflineOrder);
+  const changePaymentMethod = useSelector((state) => state.changePaymentMethod);
   const { store, order_id, create_date, status, payment_method, customer_name, staff_name } = data;
 
+  console.log(changePaymentMethod);
   useEffect(() => {
     dispatch(viewDetailOfflineOrderAction(offlineOrderId));
   }, [
@@ -71,6 +66,7 @@ export default function OfflineOrderForm() {
     approveOffOrder.error,
     rejectOffOrder.success,
     rejectOffOrder.error,
+    changePaymentMethod.success,
   ]);
 
   useEffect(() => {
@@ -108,6 +104,17 @@ export default function OfflineOrderForm() {
     }
   }, [triggerReload, rejectOffOrder.success, rejectOffOrder.error]);
 
+  useEffect(() => {
+    if (rejectOffOrder.success) {
+      toast.success("Cập nhật phương thức thanh toán thành công");
+      dispatch({ type: CHANGE_PAYMENT_METHOD_SUCCESS, payload: "" });
+    }
+    if (changePaymentMethod.error) {
+      toast.error("Cập nhật phương thức thanh toán thất bại, vui lòng thử lại");
+      dispatch({ type: CHANGE_PAYMENT_METHOD_FAIL, payload: "" });
+    }
+  }, [triggerReload, changePaymentMethod.success, changePaymentMethod.error]);
+
   const handleReject = (id) => {
     dispatch(cancelOfflineOrderAction(id));
     setConfirmDialog({
@@ -123,15 +130,24 @@ export default function OfflineOrderForm() {
       isOpen: false,
     });
   };
+
   const handleExportOrder = (id) => {
     dispatch(exportExcelAction(id));
+  };
+
+  const handleChangePaymentMethod = () => {
+    if (payMethod) {
+      dispatch(changePaymentMethodAction(order_id, payMethod));
+    } else {
+      toast.error("Vui lòng chọn phương thức thanh toán");
+    }
   };
 
   const columns = [
     {
       field: "product_id",
-      headerName: "Mã sản phẩm",
-      width: 100,
+      headerName: "Mã",
+      width: 50,
       renderCell: (params) => (
         <div className="productListItem">
           {params.row.total_quantity_price ? "" : params.row.product_id}
@@ -141,7 +157,7 @@ export default function OfflineOrderForm() {
     {
       field: "product_name",
       headerName: "Sản phẩm",
-      width: 500,
+      width: 450,
       renderCell: (params) => (
         <div className="productListItem">
           {params.row.total_quantity_price ? (
@@ -153,10 +169,10 @@ export default function OfflineOrderForm() {
               alt={params.row.product_name}
             />
           )}
-          {params.row.product_name}&emsp;&emsp;
-          {params.row.category}&emsp;&emsp;
-          {params.row.colour}&emsp;&emsp;
-          {params.row.size}&emsp;&emsp;
+          {params.row.product_name}&emsp;
+          {params.row.category}&emsp;
+          {params.row.colour}&emsp;
+          {params.row.size}
         </div>
       ),
     },
@@ -180,12 +196,12 @@ export default function OfflineOrderForm() {
     {
       field: "quantity",
       headerName: "Số lượng",
-      width: 200,
+      width: 100,
     },
     {
       field: "total_quantity_price",
       headerName: "Thành Tiền",
-      width: 250,
+      width: 100,
       renderCell: (params) => (
         <div>
           {params.row.total_quantity_price ? (
@@ -199,6 +215,89 @@ export default function OfflineOrderForm() {
             )}`}</div>
           ) : (
             <div className="offlineOrderItem">{`${params.row.price.toLocaleString("vi-VN")}`}</div>
+          )}
+        </div>
+      ),
+    },
+  ];
+
+  const columnStatusPending = [
+    {
+      field: "product_detail_id",
+      headerName: "Mã",
+      width: 50,
+      renderCell: (params) => (
+        <div className="productListItem">
+          {params.row.total_quantity_price ? "" : params.row.product_detail_id}
+        </div>
+      ),
+    },
+    {
+      field: "product_name",
+      headerName: "Sản phẩm",
+      width: 390,
+      renderCell: (params) => (
+        <div className="productListItem">
+          {params.row.total_quantity_price ? (
+            ""
+          ) : (
+            <img
+              className="productListImg"
+              src={params.row.product_image_url}
+              alt={params.row.product_name}
+            />
+          )}
+          {params.row.product_name}&emsp;
+          {params.row.category}&emsp;
+          {params.row.colour}&emsp;
+          {params.row.size}
+        </div>
+      ),
+    },
+    {
+      field: "price",
+      headerName: "Đơn giá",
+      width: 90,
+      renderCell: (params) => (
+        <div>
+          {params.row.discount_price_per_one ? (
+            <div>
+              <del>{params.row.price_per_one.toLocaleString("vi-VN")}</del>&emsp;
+              {params.row.discount_price_per_one.toLocaleString("vi-VN")}
+            </div>
+          ) : (
+            <div>{params.row.price.toLocaleString("vi-VN")}</div>
+          )}
+        </div>
+      ),
+    },
+    {
+      field: "quantity",
+      headerName: "Số lượng",
+      width: 80,
+    },
+    {
+      field: "current_quantity_in_store",
+      headerName: "S.Lượng trong cửa hàng",
+      width: 180,
+    },
+    {
+      field: "total_quantity_price",
+      headerName: "Thành Tiền",
+      width: 100,
+      renderCell: (params) => (
+        <div>
+          {params.row.total_quantity_price ? (
+            <b>{params.row.total_quantity_price.toLocaleString("vi-VN")}</b>
+          ) : (
+            ""
+          )}
+          {params.row.discount_price ? (
+            <div className="onlineOrderItem">{`${params.row.discount_price.toLocaleString(
+              "vi-VN"
+            )}`}</div>
+          ) : (
+            <div className="onlineOrderItem">{`${params.row.price.toLocaleString("vi-VN")}`}</div>
           )}
         </div>
       ),
@@ -295,21 +394,16 @@ export default function OfflineOrderForm() {
                 <div className="content">
                   <Form.Select
                     options={options}
+                    onChange={(e, v) => {
+                      setPaymethod(v.value);
+                    }}
                     placeholder="Thanh toán"
-                    // onChange={(e, v) => {
-                    //   const { text } = options.find((o) => o.value === v.value);
-                    //   formik.setFieldValue("product_id", v.value);
-                    //   formik.setFieldValue("product_detail_id", id);
-                    //   formik.setFieldValue("product_name", text);
-                    // }}
-
-                    // onChange={(e, v) => {
-                    //   formik.setFieldValue("staff", v.value);
-                    // }}
-                    // value={formik.values.staff}
-                    // error={formik.errors.staff}
                   />
-                  <CachedIcon fontSize="medium" className="reload-icon" />
+                  <CachedIcon
+                    fontSize="medium"
+                    className="reload-icon"
+                    onClick={() => handleChangePaymentMethod()}
+                  />
                 </div>
               </div>
             </Grid>
@@ -349,7 +443,7 @@ export default function OfflineOrderForm() {
               loading={loading}
               rows={totalProduct}
               disableSelectionOnClick
-              columns={columns}
+              columns={status === "Chờ xác nhận" ? columnStatusPending : columns}
               pageSize={10}
               data={(query) =>
                 new Promise(() => {
