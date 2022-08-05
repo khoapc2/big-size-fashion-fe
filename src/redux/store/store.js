@@ -95,6 +95,8 @@ import {
   viewDetailInventoryNoteReducer,
   createInventoryNoteReducer,
   deleteInventoryNoteReducer,
+  listInventoryNoteAfterCreateReducer,
+  viewDetailInventoryNoteAfterCreateReducer,
 } from "redux/reducers/inventoryReducer";
 import { viewRevenueReducer } from "redux/reducers/revenueReducer";
 import { listFeedbackReducer, deleteFeedbackReducer } from "redux/reducers/feedbackReducer";
@@ -184,6 +186,8 @@ const reducer = combineReducers({
   createInventoryNote: createInventoryNoteReducer,
   deleteInventoryNoteState: deleteInventoryNoteReducer,
   changePaymentMethod: changePaymentMethodReducer,
+  listInventoryNoteAfterCreate: listInventoryNoteAfterCreateReducer,
+  viewDetailInventoryNoteAfterCreate: viewDetailInventoryNoteAfterCreateReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

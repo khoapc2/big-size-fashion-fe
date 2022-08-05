@@ -141,7 +141,7 @@ export default function CreateImportDeliver() {
     {
       field: "product_name",
       headerName: "Sản phẩm",
-      flex: 1.0,
+      flex: 1.15,
       disableClickEventBubbling: true,
       sortable: false,
       disableColumnMenu: true,
@@ -226,7 +226,7 @@ export default function CreateImportDeliver() {
     {
       field: "product_name",
       headerName: "Sản phẩm",
-      flex: 1.0,
+      flex: 1.15,
       disableClickEventBubbling: true,
       sortable: false,
       disableColumnMenu: true,

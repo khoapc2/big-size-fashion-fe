@@ -105,7 +105,7 @@ export default function OfflineOrderForm() {
   }, [triggerReload, rejectOffOrder.success, rejectOffOrder.error]);
 
   useEffect(() => {
-    if (rejectOffOrder.success) {
+    if (changePaymentMethod.success) {
       toast.success("Cập nhật phương thức thanh toán thành công");
       dispatch({ type: CHANGE_PAYMENT_METHOD_SUCCESS, payload: "" });
     }

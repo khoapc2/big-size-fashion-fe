@@ -12,14 +12,15 @@ import Stack from "@mui/material/Stack";
 
 import {
   CREATE_INVENTORY_NOTE_FAIL,
-  CREATE_INVENTORY_NOTE_REQUEST,
   CREATE_INVENTORY_NOTE_TRIGGER,
+  GET_INVENTORY_PRODUCT_LIST_SUCCESS_AFTER_CREATE,
 } from "../../../service/Validations/VarConstant";
 import { DataGrid } from "@mui/x-data-grid";
 import { Formik } from "formik";
 import {
   createInventoryNoteAction,
   exportExcelAction,
+  viewDetailAfterCreateInventoryNoteAction,
 } from "../../../redux/actions/inventoryAction";
 import { SchemaErrorMessageCreateInventoryNote } from "../../../service/Validations/InventoryNoteValidation";
 import Loading from "../../../components/Loading";
@@ -49,9 +50,8 @@ const currentDate = () => {
 };
 
 export default function CreateImportDeliver() {
-  const apiRef = useRef(null);
   const [rows, setRows] = useState([]);
-  const [flagDisable, setDisable] = useState(false);
+  // const [flagDisable, setDisable] = useState(false);
   const [flagSubmit, setSubmit] = useState(false);
   // console.log(rows);
   // const { apiRef, columns } = useApiRef();
@@ -60,13 +60,27 @@ export default function CreateImportDeliver() {
   const navigate = useNavigate();
   // const response = useSelector((state) => state.quantityAjustment);
   const createInventoryNote = useSelector((state) => state.createInventoryNote);
+  const listInventoryNoteAfterCreate = useSelector((state) => state.listInventoryNoteAfterCreate);
+  const viewDetailInventoryNoteAfterCreate = useSelector(
+    (state) => state.viewDetailInventoryNoteAfterCreate
+  );
   // let { data, loading, list_products, error } = useSelector((state) => state.listInventoryProduct);
 
   const { loading } = createInventoryNote;
 
-  console.log(createInventoryNote);
+  console.log(viewDetailInventoryNoteAfterCreate);
+  console.log(listInventoryNoteAfterCreate);
   // console.log(currentDate());
   // const { list_products } = data;
+
+  useEffect(() => {
+    if (Object.keys(createInventoryNote.data).length !== 0) {
+      console.log("Here");
+      dispatch(
+        viewDetailAfterCreateInventoryNoteAction(createInventoryNote.data.content.inventory_note_id)
+      );
+    }
+  }, [dispatch]);
 
   useEffect(() => {
     if (createInventoryNote.error) {
@@ -81,7 +95,7 @@ export default function CreateImportDeliver() {
 
   const onSubmit = (data) => {
     setSubmit(true);
-    setDisable(true);
+    // setDisable(true);
     dispatch(
       createInventoryNoteAction(data, formatDate(data.from_date), formatToDate(data.to_date))
     );
@@ -100,7 +114,8 @@ export default function CreateImportDeliver() {
     //
     // }
     dispatch({ type: CREATE_INVENTORY_NOTE_TRIGGER });
-    setDisable(false);
+    dispatch({ type: GET_INVENTORY_PRODUCT_LIST_SUCCESS_AFTER_CREATE, payload: "" });
+    // setDisable(false);
     setSubmit(false);
   };
 
@@ -146,37 +161,12 @@ export default function CreateImportDeliver() {
       disableColumnMenu: true,
     },
     {
-      field: "real_quantity",
+      field: "ending_quantity_after_adjusted",
       headerName: "S.lượng Sau khi điều chỉnh",
       flex: 1,
       disableClickEventBubbling: true,
       sortable: false,
       disableColumnMenu: true,
-    },
-    // {
-    //   field: "difference_quantity",
-    //   headerName: "Chênh lệch",
-    //   flex: 0.5,
-    //   disableClickEventBubbling: true,
-    //   sortable: false,
-    //   disableColumnMenu: true,
-    //   renderCell: (params) => (
-    //     <div>
-    //       {params.row.difference_quantity < 0
-    //         ? `Thiếu ${params.row.difference_quantity.toString().split("-")[1]}`
-    //         : ""}
-    //       {params.row.difference_quantity > 0 ? `Dư ${params.row.difference_quantity}` : ""}
-    //       {params.row.difference_quantity === 0 ? `${params.row.difference_quantity}` : ""}
-    //     </div>
-    //   ),
-    // },
-    {
-      field: "",
-      width: 0,
-      renderCell: (params) => {
-        apiRef.current = params.api;
-        return null;
-      },
     },
   ];
 
@@ -213,7 +203,11 @@ export default function CreateImportDeliver() {
                           type="text"
                           onChange={formik.handleChange}
                           value={formik.values.inventory_note_name}
-                          readOnly={flagDisable}
+                          disabled={
+                            Object.keys(viewDetailInventoryNoteAfterCreate.data).length !== 0
+                              ? true
+                              : false
+                          }
                           error={
                             formik.touched.inventory_note_name && formik.errors.inventory_note_name
                               ? formik.errors.inventory_note_name
@@ -230,7 +224,11 @@ export default function CreateImportDeliver() {
                           type="date"
                           onChange={formik.handleChange}
                           value={formik.values.from_date}
-                          readOnly={flagDisable}
+                          disabled={
+                            Object.keys(viewDetailInventoryNoteAfterCreate.data).length !== 0
+                              ? true
+                              : false
+                          }
                           error={
                             (formik.touched.from_date && formik.errors.from_date) ||
                             (formik.touched.to_date && formik.errors.to_date)
@@ -252,6 +250,11 @@ export default function CreateImportDeliver() {
                           //     : null
                           // }
                           readOnly
+                          disabled={
+                            Object.keys(viewDetailInventoryNoteAfterCreate.data).length !== 0
+                              ? true
+                              : false
+                          }
                         />
                       </Form.Group>
                       <div className="button-ui">
@@ -312,7 +315,11 @@ export default function CreateImportDeliver() {
             </div>
             <div>
               {loading === "normal" && ""}
-              {loading === "loading" && <Loading />}
+              {loading === "loading" && (
+                <div className="loading-inventory">
+                  <Loading />
+                </div>
+              )}
               {loading === "end" && (
                 <div className="account-top-left">
                   <Box sx={{ width: "100%" }}>
@@ -328,7 +335,11 @@ export default function CreateImportDeliver() {
                         }}
                         autoHeight
                         getRowId={(r) => r.product_detail_id}
-                        rows={createInventoryNote.data.content.inventory_note_detail || []}
+                        rows={
+                          viewDetailInventoryNoteAfterCreate.data.content.inventory_note_detail ||
+                          []
+                        }
+                        loading={viewDetailInventoryNoteAfterCreate.loading}
                         disableSelectionOnClick
                         columns={columns}
                         pageSize={10}

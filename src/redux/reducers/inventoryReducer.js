@@ -19,6 +19,10 @@ import {
   DELETE_INVENTORY_NOTE_SUCCESS,
   CREATE_INVENTORY_NOTE_TRIGGER,
   QUANTITY_ADJUSTMENT_TRIGGER_SUCCESS_NOTIFICATION,
+  GET_INVENTORY_PRODUCT_LIST_AFTER_CREATE_SUCCESS,
+  GET_INVENTORY_PRODUCT_LIST_REQUEST_AFTER_CREATE,
+  GET_INVENTORY_PRODUCT_LIST_SUCCESS_AFTER_CREATE,
+  GET_INVENTORY_PRODUCT_LIST_FAIL_AFTER_CREATE,
 } from "../../service/Validations/VarConstant";
 
 function formatArray(payload) {
@@ -89,6 +93,22 @@ export const listInventoryNoteReducer = (
   }
 };
 
+export const viewDetailInventoryNoteAfterCreateReducer = (
+  state = { loading: true, data: {}, error: "" },
+  action
+) => {
+  switch (action.type) {
+    case GET_INVENTORY_PRODUCT_LIST_REQUEST_AFTER_CREATE:
+      return { ...state, loading: true };
+    case GET_INVENTORY_PRODUCT_LIST_SUCCESS_AFTER_CREATE:
+      return { ...state, loading: false, data: action.payload };
+    case GET_INVENTORY_PRODUCT_LIST_FAIL_AFTER_CREATE:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
 export const viewDetailInventoryNoteReducer = (
   state = { loading: true, data: {}, error: "" },
   action
@@ -123,6 +143,15 @@ export const createInventoryNoteReducer = (
       };
     case CREATE_INVENTORY_NOTE_FAIL:
       return { ...state, loading: "end", error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const listInventoryNoteAfterCreateReducer = (state = { data: {} }, action) => {
+  switch (action.type) {
+    case GET_INVENTORY_PRODUCT_LIST_AFTER_CREATE_SUCCESS:
+      return { ...state, data: action.payload };
     default:
       return state;
   }

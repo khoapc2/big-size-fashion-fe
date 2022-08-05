@@ -277,12 +277,11 @@ export const staffPerformanceAction = (params) => async (dispatch) => {
 
 export const changePaymentMethodAction = (id, method) => async (dispatch) => {
   dispatch({ type: CHANGE_PAYMENT_METHOD_REQUEST });
-  const params = {
-    id,
+  const param = {
     method,
   };
   try {
-    const data = await orderApi.changePaymentMethod(params);
+    const data = await orderApi.changePaymentMethod(id, param);
     dispatch({ type: CHANGE_PAYMENT_METHOD_SUCCESS, payload: data });
   } catch (error) {
     const message =

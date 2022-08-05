@@ -16,6 +16,9 @@ import {
   CREATE_INVENTORY_NOTE_SUCCESS,
   CREATE_INVENTORY_NOTE_FAIL,
   QUANTITY_ADJUSTMENT_TRIGGER_SUCCESS_NOTIFICATION,
+  GET_INVENTORY_PRODUCT_LIST_REQUEST_AFTER_CREATE,
+  GET_INVENTORY_PRODUCT_LIST_SUCCESS_AFTER_CREATE,
+  GET_INVENTORY_PRODUCT_LIST_FAIL_AFTER_CREATE,
 } from "../../service/Validations/VarConstant";
 
 export const getInventoryAction = (para, inventoryNoteId) => async (dispatch) => {
@@ -169,9 +172,31 @@ export const viewDetailInventoryNoteAction = (inventoryId) => async (dispatch) =
   }
 };
 
+export const viewDetailAfterCreateInventoryNoteAction = (inventoryId) => async (dispatch) => {
+  dispatch({
+    type: GET_INVENTORY_PRODUCT_LIST_REQUEST_AFTER_CREATE,
+  });
+  try {
+    const data = await inventoryApi.getDetailAdjustListInStore(inventoryId);
+    dispatch({ type: GET_INVENTORY_PRODUCT_LIST_SUCCESS_AFTER_CREATE, payload: data });
+  } catch (error) {
+    dispatch({
+      type: GET_INVENTORY_PRODUCT_LIST_FAIL_AFTER_CREATE,
+      payload:
+        error.response && error.response.data.error.message
+          ? error.response.data.error.message
+          : error.message,
+    });
+  }
+};
+
+// GET_INVENTORY_PRODUCT_LIST_AFTER_CREATE_SUCCESS
 export const createInventoryNoteAction = (para, from_date, to_date) => async (dispatch) => {
   dispatch({
     type: CREATE_INVENTORY_NOTE_REQUEST,
+  });
+  dispatch({
+    type: GET_INVENTORY_PRODUCT_LIST_REQUEST_AFTER_CREATE,
   });
   try {
     const param = {
@@ -180,6 +205,8 @@ export const createInventoryNoteAction = (para, from_date, to_date) => async (di
       to_date,
     };
     const data = await inventoryApi.createInventoryNote(param);
+    const res = await inventoryApi.getDetailAdjustListInStore(data.content.inventory_note_id);
+    dispatch({ type: GET_INVENTORY_PRODUCT_LIST_SUCCESS_AFTER_CREATE, payload: res });
     dispatch({ type: CREATE_INVENTORY_NOTE_SUCCESS, payload: data });
   } catch (error) {
     dispatch({

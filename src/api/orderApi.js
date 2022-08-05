@@ -74,9 +74,9 @@ const orderApi = {
     return axios.get(url, { params });
   },
 
-  changePaymentMethod: (params) => {
-    const url = `${URL_ENTITY}${CHANGE_METHOD}${params.id}/${params.method}`;
-    return axios.get(url, params);
+  changePaymentMethod: (id, method) => {
+    const url = `${URL_ENTITY}${CHANGE_METHOD}${id}`;
+    return axios.put(url, method);
   },
 };
 export default orderApi;

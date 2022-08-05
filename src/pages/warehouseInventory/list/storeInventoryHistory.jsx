@@ -65,7 +65,7 @@ export default function CategoryList() {
     pageSize: 10,
   });
 
-  console.log(deleteInventoryNote);
+  console.log(listInventoryNote);
   useEffect(() => {
     dispatch(listInventoryNoteAction(keySearch, pageState.page, pageState.pageSize));
     if (deleteInventoryNote.success) {
@@ -145,7 +145,7 @@ export default function CategoryList() {
     {
       field: "inventory_note_name",
       headerName: "Tên đơn kiểm kê",
-      width: 200,
+      width: 400,
       renderCell: (params) => (
         <div className="store-inventory-list-item">{params.row.inventory_note_name}</div>
       ),

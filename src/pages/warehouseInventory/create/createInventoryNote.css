@@ -234,3 +234,7 @@ section {
   display: flex;
   justify-content: center;
 }
+
+.loading-inventory {
+  margin: 30px 0;
+}
