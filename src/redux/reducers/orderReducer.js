@@ -140,7 +140,7 @@ export const staffPerformanceOrderReducer = (
 };
 
 export const changePaymentMethodReducer = (
-  state = { loading: true, success: {}, error: "" },
+  state = { loading: true, success: "", error: "" },
   action
 ) => {
   switch (action.type) {

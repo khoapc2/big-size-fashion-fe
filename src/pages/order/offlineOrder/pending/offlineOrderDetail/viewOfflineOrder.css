@@ -5,6 +5,11 @@
 } */
 .container-title {
   display: flex;
+  flex-flow: wrap;
+  /* white-space: nowrap;
+  -webkit-flex: 1;
+  -moz-flex: 1;
+  flex: 1; */
 }
 
 .container-title > .title {

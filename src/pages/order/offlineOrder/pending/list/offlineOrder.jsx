@@ -82,7 +82,7 @@ export default function StaffList() {
   }
 
   const columns = [
-    { field: "order_id", headerName: "Mã đơn hàng", width: 150 },
+    { field: "order_id", headerName: "Mã đơn hàng", width: 120 },
     {
       field: "total_price",
       headerName: "Tổng giá trị (VNĐ)",
@@ -96,7 +96,7 @@ export default function StaffList() {
     {
       field: "total_price_after_discount (VNĐ)",
       headerName: "Tổng giá trị sau khi giảm giá",
-      width: 250,
+      width: 210,
       renderCell: (params) => (
         <div>
           {params.row.total_price_after_discount
@@ -108,7 +108,7 @@ export default function StaffList() {
     {
       field: "create_date",
       headerName: "Ngày cập nhật",
-      width: 160,
+      width: 140,
       renderCell: (params) => <div>{params.row.create_date}</div>,
     },
     {
@@ -121,7 +121,7 @@ export default function StaffList() {
     {
       field: "action",
       headerName: "Thao tác",
-      width: 250,
+      width: 110,
       renderCell: (params) => (
         <>
           <Link to={`/offline-order-detail/${params.row.order_id}`}>
@@ -176,8 +176,10 @@ export default function StaffList() {
           pagination
           page={pageState.page - 1}
           paginationMode="server"
-          onPageChange={(newPage) => setPageState((old) => ({ ...old, page: newPage + 1}))}
-          onPageSizeChange={(newPageSize) => setPageState(old => ({ ...old, pageSize: newPageSize}))}
+          onPageChange={(newPage) => setPageState((old) => ({ ...old, page: newPage + 1 }))}
+          onPageSizeChange={(newPageSize) =>
+            setPageState((old) => ({ ...old, pageSize: newPageSize }))
+          }
           disableSelectionOnClick
           columns={columns}
           pageSize={pageState.pageSize}

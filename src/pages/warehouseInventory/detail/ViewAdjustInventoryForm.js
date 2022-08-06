@@ -89,25 +89,25 @@ export default function OfflineOrderForm() {
                   <Form onSubmit={formik.handleSubmit}>
                     <Grid container>
                       <Grid item xs={4}>
-                        <div className="container-title">
+                        <div className="container-container-title-adjust">
                           <div className="title">Ngày điều chỉnh:</div>
                           <div className="content">
                             &emsp;{viewDetailInventoryNote.data.adjusted_date}
                           </div>
                         </div>
-                        <div className="container-title">
+                        <div className="container-title-adjust">
                           <div className="title">Đơn kiểm kê:</div>
                           <div className="content">
                             &emsp;{viewDetailInventoryNote.data.inventory_note_id}
                           </div>
                         </div>
-                        <div className="container-title">
+                        <div className="container-title-adjust">
                           <div className="title">Tên đơn:</div>
                           <div className="content">
                             &emsp;{viewDetailInventoryNote.data.inventory_note_name}
                           </div>
                         </div>
-                        <div className="container-title">
+                        <div className="container-title-adjust">
                           <div className="title">Người tạo đơn:</div>
                           <div className="content">
                             &emsp;{viewDetailInventoryNote.data.staff_name}
@@ -115,20 +115,20 @@ export default function OfflineOrderForm() {
                         </div>
                       </Grid>
                       <Grid item xs={8}>
-                        <div className="container-title">
+                        <div className="container-title-adjust">
                           <div className="title">Kiểm kê từ ngày:</div>
                           <div className="content">
                             &emsp;{viewDetailInventoryNote.data.from_date} - &thinsp;
                             {viewDetailInventoryNote.data.to_date}
                           </div>
                         </div>
-                        <div className="container-title">
+                        <div className="container-title-adjust">
                           <div className="title">Cửa hàng:</div>
                           <div className="content">
                             &emsp;{viewDetailInventoryNote.data.store.store_name}
                           </div>
                         </div>
-                        <div className="container-title">
+                        <div className="container-title-adjust">
                           <div className="title">Địa chỉ:</div>
                           <div className="content">
                             &emsp;{viewDetailInventoryNote.data.store.store_address}
