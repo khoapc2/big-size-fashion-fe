@@ -89,7 +89,7 @@ export default function OfflineOrderForm() {
                   <Form onSubmit={formik.handleSubmit}>
                     <Grid container>
                       <Grid item xs={4}>
-                        <div className="container-container-title-adjust">
+                        <div className="container-title-adjust">
                           <div className="title">Ngày điều chỉnh:</div>
                           <div className="content">
                             &emsp;{viewDetailInventoryNote.data.adjusted_date}

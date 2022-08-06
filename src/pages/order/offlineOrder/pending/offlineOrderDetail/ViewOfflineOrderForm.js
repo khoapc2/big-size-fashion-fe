@@ -157,7 +157,7 @@ export default function OfflineOrderForm() {
     {
       field: "product_name",
       headerName: "Sản phẩm",
-      width: 450,
+      width: 400,
       renderCell: (params) => (
         <div className="productListItem">
           {params.row.total_quantity_price ? (
@@ -179,7 +179,7 @@ export default function OfflineOrderForm() {
     {
       field: "price",
       headerName: "Đơn giá",
-      width: 150,
+      width: 200,
       renderCell: (params) => (
         <div>
           {params.row.discount_price_per_one ? (
@@ -257,7 +257,7 @@ export default function OfflineOrderForm() {
     {
       field: "price",
       headerName: "Đơn giá",
-      width: 90,
+      width: 140,
       renderCell: (params) => (
         <div>
           {params.row.discount_price_per_one ? (

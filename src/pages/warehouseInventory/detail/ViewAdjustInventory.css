@@ -7,9 +7,10 @@
   display: flex;
   align-items: center;
   margin-top: 1rem;
+  flex-wrap: wrap;
 }
 
-.container-title > .title {
+.container-title-adjust > .title {
   font-weight: bold;
   font-size: medium;
   width: fit-content;
