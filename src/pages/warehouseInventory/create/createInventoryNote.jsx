@@ -75,7 +75,6 @@ export default function CreateImportDeliver() {
 
   useEffect(() => {
     if (Object.keys(createInventoryNote.data).length !== 0) {
-      console.log("Here");
       dispatch(
         viewDetailAfterCreateInventoryNoteAction(createInventoryNote.data.content.inventory_note_id)
       );
@@ -202,8 +201,12 @@ export default function CreateImportDeliver() {
                           placeholder="Tên đơn kiểm kê"
                           type="text"
                           onChange={formik.handleChange}
-                          value={formik.values.inventory_note_name}
-                          disabled={
+                          value={
+                            Object.keys(viewDetailInventoryNoteAfterCreate.data).length !== 0
+                              ? viewDetailInventoryNoteAfterCreate.data.content.inventory_note_name
+                              : formik.values.inventory_note_name
+                          }
+                          readOnly={
                             Object.keys(viewDetailInventoryNoteAfterCreate.data).length !== 0
                               ? true
                               : false
@@ -221,10 +224,18 @@ export default function CreateImportDeliver() {
                           fluid
                           label="Từ ngày"
                           placeholder="Ngày"
-                          type="date"
+                          type={`${
+                            Object.keys(viewDetailInventoryNoteAfterCreate.data).length !== 0
+                              ? "input"
+                              : "date"
+                          }`}
                           onChange={formik.handleChange}
-                          value={formik.values.from_date}
-                          disabled={
+                          value={
+                            Object.keys(viewDetailInventoryNoteAfterCreate.data).length !== 0
+                              ? viewDetailInventoryNoteAfterCreate.data.content.from_date
+                              : formik.values.from_date
+                          }
+                          readOnly={
                             Object.keys(viewDetailInventoryNoteAfterCreate.data).length !== 0
                               ? true
                               : false
@@ -250,11 +261,11 @@ export default function CreateImportDeliver() {
                           //     : null
                           // }
                           readOnly
-                          disabled={
-                            Object.keys(viewDetailInventoryNoteAfterCreate.data).length !== 0
-                              ? true
-                              : false
-                          }
+                          // disabled={
+                          //   Object.keys(viewDetailInventoryNoteAfterCreate.data).length !== 0
+                          //     ? true
+                          //     : false
+                          // }
                         />
                       </Form.Group>
                       <div className="button-ui">
