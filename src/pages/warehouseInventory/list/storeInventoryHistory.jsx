@@ -66,6 +66,7 @@ export default function CategoryList() {
   });
 
   console.log(listInventoryNote);
+  console.log(listInventoryNote.data.total_count);
   useEffect(() => {
     dispatch(listInventoryNoteAction(keySearch, pageState.page, pageState.pageSize));
     if (deleteInventoryNote.success) {

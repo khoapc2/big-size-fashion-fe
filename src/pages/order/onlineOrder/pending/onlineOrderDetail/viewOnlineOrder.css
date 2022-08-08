@@ -62,3 +62,19 @@
   -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
 }
+
+.title-address {
+  font-weight: bold;
+  font-size: medium;
+  width: fit-content;
+}
+
+.container-address {
+  display: -webkit-box;
+  margin-top: 12px;
+  margin-right: 5rem;
+}
+
+.content-address {
+  font-size: medium;
+}

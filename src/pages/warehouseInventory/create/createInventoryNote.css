@@ -53,36 +53,36 @@ input {
   margin-left: 100px;
 }
 
-.account {
+.create-inventory {
   flex: 4;
   padding: 20px;
 }
 
-.account-title-container {
+.create-inventory-title-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.account-top {
+.create-inventory-top {
   display: flex;
   flex-direction: column;
 }
 
-.account-top-feft,
-.account-top-right {
+.create-inventory-top-feft,
+.create-inventory-top-right {
   flex: 1;
 }
 
-.account-top-right,
-.account-top-left {
+.create-inventory-top-right,
+.create-inventory-top-left {
   padding: 20px;
   margin: 20px;
   -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
 }
 
-.account-info-img {
+.create-inventory-info-img {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -90,30 +90,30 @@ input {
   margin-right: 20px;
 }
 
-.account-info-top {
+.create-inventory-info-top {
   display: flex;
   align-items: center;
 }
 
-.account-name {
+.create-inventory-name {
   font-weight: 600;
 }
 
-.account-info-bottom {
+.create-inventory-info-bottom {
   margin-top: 10px;
 }
 
-.account-info-item {
+.create-inventory-info-item {
   width: 150px;
   display: flex;
   justify-content: space-between;
 }
 
-.account-info-value {
+.create-inventory-info-value {
   font-weight: 300;
 }
 
-.account-bottom {
+.create-inventory-bottom {
   display: flex;
   justify-content: center;
   -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
@@ -121,38 +121,38 @@ input {
   padding: 30px 0px;
 }
 
-.account-top {
+.create-inventory-top {
   -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
 }
 
-.account-form {
+.create-inventory-form {
   display: flex;
   justify-content: space-between;
 }
 
-.account-form-left {
+.create-inventory-form-left {
   display: flex;
   flex-direction: column;
 }
 
-.account-form-left > label {
+.create-inventory-form-left > label {
   margin-bottom: 10px;
   color: gray;
 }
 
-.account-form-left > input {
+.create-inventory-form-left > input {
   margin-bottom: 10px;
   border: none;
   padding: 5px;
   border-bottom: 1px solid gray;
 }
 
-.account-form-left > select {
+.create-inventory-form-left > select {
   margin-bottom: 10px;
 }
 
-.account-upload-img {
+.create-inventory-upload-img {
   width: 100px;
   height: 100px;
   border-radius: 10px;
@@ -160,18 +160,18 @@ input {
   margin-right: 20px;
 }
 
-.account-form-right {
+.create-inventory-form-right {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
 }
 
-.account-upload {
+.create-inventory-upload {
   display: flex;
   justify-content: space-between;
 }
 
-.account-button {
+.create-inventory-button {
   border: none;
   padding: 5px;
   border-radius: 5px;

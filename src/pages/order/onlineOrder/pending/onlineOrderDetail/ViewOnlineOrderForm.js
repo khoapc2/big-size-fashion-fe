@@ -50,7 +50,16 @@ export default function OfflineOrderForm() {
   const rejectOnOrder = useSelector((state) => state.rejectOnlineOrder);
   const cancelOnOrder = useSelector((state) => state.cancelOnlineOrder);
   const staffDropdown = useSelector((state) => state.getListStaffDropDown);
-  const { product_list, store, order_id, create_date, status, payment_method } = data;
+  const {
+    product_list,
+    store,
+    order_id,
+    create_date,
+    status,
+    payment_method,
+    customer_name,
+    delivery_address,
+  } = data;
   console.log(data);
   console.log(product_list);
 
@@ -227,7 +236,7 @@ export default function OfflineOrderForm() {
     {
       field: "product_name",
       headerName: "Sản phẩm",
-      width: 300,
+      width: 390,
       renderCell: (params) => (
         <div className="productListItem">
           {params.row.total_quantity_price ? (
@@ -385,11 +394,28 @@ export default function OfflineOrderForm() {
                           <div className="content">&emsp;{order_id}</div>
                         </div>
                         <div className="container-title">
+                          <div className="title">Tên KH:</div>
+                          <div className="content">&emsp;{customer_name}</div>
+                        </div>
+                        <div className="container-title">
                           <div className="title">Phương thức thanh toán:</div>
                           <div className="content">&emsp;{payment_method}</div>
                         </div>
+                      </Grid>
+                      <Grid item xs={8}>
                         <div className="container-title">
-                          <div className="title">Nhân viên phụ trách:&emsp;</div>
+                          <div className="title">Cửa hàng:</div>
+                          <div className="content">
+                            &emsp;{store.store_name} &emsp; - &emsp; {store.store_phone}
+                          </div>
+                        </div>
+                        {/* <div className="container-title">
+                          <div className="title">SĐT cửa hàng:</div>
+                          <div className="content"></div>
+                        </div> */}
+
+                        <div className="container-title">
+                          <div className="title">Nhân viên chuẩn bị đơn hàng:&emsp;</div>
                           <div className="content">
                             {staffDropdown.loading ? (
                               <Loading />
@@ -426,19 +452,13 @@ export default function OfflineOrderForm() {
                             )}
                           </div>
                         </div>
-                      </Grid>
-                      <Grid item xs={8}>
-                        <div className="container-title">
-                          <div className="title">Cửa hàng:</div>
-                          <div className="content">&emsp;{store.store_name}</div>
+                        <div className="container-address">
+                          <div className="title-address">Địa chỉ cửa hàng:</div>
+                          <div className="content-address">&emsp;{store.store_address}</div>
                         </div>
                         <div className="container-title">
-                          <div className="title">SĐT cửa hàng:</div>
-                          <div className="content">&emsp; {store.store_phone}</div>
-                        </div>
-                        <div className="container-title">
-                          <div className="title">Địa chỉ:</div>
-                          <div className="content">&emsp;{store.store_address}</div>
+                          <div className="title">Địa chỉ giao hàng:</div>
+                          <div className="content">&emsp;{delivery_address.receive_address}</div>
                         </div>
                       </Grid>
                     </Grid>

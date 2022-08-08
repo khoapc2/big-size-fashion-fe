@@ -74,7 +74,8 @@ export default function CreateImportDeliver() {
   // const { list_products } = data;
 
   useEffect(() => {
-    if (Object.keys(createInventoryNote.data).length !== 0) {
+    if (Object.entries(createInventoryNote.data).length !== 0) {
+      console.log("Có data");
       dispatch(
         viewDetailAfterCreateInventoryNoteAction(createInventoryNote.data.content.inventory_note_id)
       );
@@ -124,8 +125,8 @@ export default function CreateImportDeliver() {
       headerName: "Mã",
       flex: 0.3,
       disableClickEventBubbling: true,
-      sortable: false,
-      disableColumnMenu: true,
+      // sortable: false,
+      // disableColumnMenu: true,
       type: "singleSelect",
     },
     {
@@ -133,8 +134,8 @@ export default function CreateImportDeliver() {
       headerName: "Sản phẩm",
       flex: 1.6,
       disableClickEventBubbling: true,
-      sortable: false,
-      disableColumnMenu: true,
+      // sortable: false,
+      // disableColumnMenu: true,
       type: "singleSelect",
       renderCell: (params) => (
         <div className="productListItem">
@@ -148,24 +149,24 @@ export default function CreateImportDeliver() {
       headerName: "S.lượng đầu kì",
       flex: 0.7,
       disableClickEventBubbling: true,
-      sortable: false,
-      disableColumnMenu: true,
+      // sortable: false,/
+      // disableColumnMenu: true,
     },
     {
       field: "ending_quantity",
       headerName: "S.lượng cuối kì",
       flex: 0.7,
       disableClickEventBubbling: true,
-      sortable: false,
-      disableColumnMenu: true,
+      // sortable: false,
+      // disableColumnMenu: true,
     },
     {
       field: "ending_quantity_after_adjusted",
       headerName: "S.lượng Sau khi điều chỉnh",
       flex: 1,
       disableClickEventBubbling: true,
-      sortable: false,
-      disableColumnMenu: true,
+      // sortable: false,
+      // disableColumnMenu: true,
     },
   ];
 
@@ -173,9 +174,9 @@ export default function CreateImportDeliver() {
     <DashboardLayout>
       <DashboardNavbar />
       <div className="new-import">
-        <div className="account">
-          <div className="account-top">
-            <div className="account-top">
+        <div className="create-inventory">
+          <div className="create-inventory-top">
+            <div className="create-inventory-top">
               <Formik
                 initialValues={{
                   inventory_note_name: "",
@@ -202,12 +203,12 @@ export default function CreateImportDeliver() {
                           type="text"
                           onChange={formik.handleChange}
                           value={
-                            Object.keys(viewDetailInventoryNoteAfterCreate.data).length !== 0
+                            Object.entries(viewDetailInventoryNoteAfterCreate.data).length !== 0
                               ? viewDetailInventoryNoteAfterCreate.data.content.inventory_note_name
                               : formik.values.inventory_note_name
                           }
                           readOnly={
-                            Object.keys(viewDetailInventoryNoteAfterCreate.data).length !== 0
+                            Object.entries(viewDetailInventoryNoteAfterCreate.data).length !== 0
                               ? true
                               : false
                           }
@@ -225,18 +226,18 @@ export default function CreateImportDeliver() {
                           label="Từ ngày"
                           placeholder="Ngày"
                           type={`${
-                            Object.keys(viewDetailInventoryNoteAfterCreate.data).length !== 0
+                            Object.entries(viewDetailInventoryNoteAfterCreate.data).length !== 0
                               ? "input"
                               : "date"
                           }`}
                           onChange={formik.handleChange}
                           value={
-                            Object.keys(viewDetailInventoryNoteAfterCreate.data).length !== 0
+                            Object.entries(viewDetailInventoryNoteAfterCreate.data).length !== 0
                               ? viewDetailInventoryNoteAfterCreate.data.content.from_date
                               : formik.values.from_date
                           }
                           readOnly={
-                            Object.keys(viewDetailInventoryNoteAfterCreate.data).length !== 0
+                            Object.entries(viewDetailInventoryNoteAfterCreate.data).length !== 0
                               ? true
                               : false
                           }
@@ -262,7 +263,7 @@ export default function CreateImportDeliver() {
                           // }
                           readOnly
                           // disabled={
-                          //   Object.keys(viewDetailInventoryNoteAfterCreate.data).length !== 0
+                          //   Object.entries(viewDetailInventoryNoteAfterCreate.data).length !== 0
                           //     ? true
                           //     : false
                           // }
@@ -332,7 +333,7 @@ export default function CreateImportDeliver() {
                 </div>
               )}
               {loading === "end" && (
-                <div className="account-top-left">
+                <div className="create-inventory-top-left">
                   <Box sx={{ width: "100%" }}>
                     <Stack direction="row" spacing={1}>
                       <DataGrid
@@ -346,12 +347,8 @@ export default function CreateImportDeliver() {
                         }}
                         autoHeight
                         getRowId={(r) => r.product_detail_id}
-                        rows={
-                          viewDetailInventoryNoteAfterCreate.data.content.inventory_note_detail ||
-                          []
-                        }
+                        rows={viewDetailInventoryNoteAfterCreate.data.content.inventory_note_detail}
                         loading={viewDetailInventoryNoteAfterCreate.loading}
-                        disableSelectionOnClick
                         columns={columns}
                         pageSize={10}
                         data={(query) =>
@@ -362,6 +359,9 @@ export default function CreateImportDeliver() {
                         components={{
                           NoRowsOverlay,
                         }}
+                        disableColumnFilter={false}
+                        disableColumnMenu={false}
+                        disableColumnSelector={false}
                       />
                     </Stack>
                   </Box>
