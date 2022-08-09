@@ -389,23 +389,27 @@ export default function OfflineOrderForm() {
                   <div className="content">&emsp;{payment_method}</div>
                 )}
               </div>
-              <div className="container-title">
-                <div className="title">Đổi thanh toán:</div>
-                <div className="content">
-                  <Form.Select
-                    options={options}
-                    onChange={(e, v) => {
-                      setPaymethod(v.value);
-                    }}
-                    placeholder="Thanh toán"
-                  />
-                  <CachedIcon
-                    fontSize="medium"
-                    className="reload-icon"
-                    onClick={() => handleChangePaymentMethod()}
-                  />
+              {status === "Chờ xác nhận" ? (
+                <div className="container-title">
+                  <div className="title">Đổi thanh toán:</div>
+                  <div className="content">
+                    <Form.Select
+                      options={options}
+                      onChange={(e, v) => {
+                        setPaymethod(v.value);
+                      }}
+                      placeholder="Thanh toán"
+                    />
+                    <CachedIcon
+                      fontSize="medium"
+                      className="reload-icon"
+                      onClick={() => handleChangePaymentMethod()}
+                    />
+                  </div>
                 </div>
-              </div>
+              ) : (
+                ""
+              )}
             </Grid>
             <Grid item xs={7}>
               <div className="container-title">
