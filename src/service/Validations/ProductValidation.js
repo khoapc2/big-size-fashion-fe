@@ -29,7 +29,11 @@ export const SchemaErrorCreateProduct = Yup.object().shape({
   description: Yup.string()
     .max(500, "Miêu tả sản phẩm không được quá 500 ký tự")
     .required("Miêu tả không được bỏ trống"),
-  price: Yup.number().required("Giá không được bỏ trống"),
+  price: Yup.number()
+    .min(1, "Giá phải lớn hơn 0!")
+    .integer("Giá phải là số nguyên!")
+    .typeError("Giá phải là số")
+    .required("Giá không được bỏ trống!"),
   colourWithSize: Yup.array()
     .of(
       Yup.object().shape({
