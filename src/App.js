@@ -98,6 +98,7 @@ import AddProductToPromotion from "pages/promotion/product_in_promotion/addProdu
 import StoreAdjust from "pages/warehouseInventory/list/storeInventoryHistory";
 import InventoryNoteDetail from "pages/warehouseInventory/detail/ViewAdjustInventory";
 import CreateInventoryNote from "pages/warehouseInventory/create/createInventoryNote";
+import PaymentSuccess from "pages/payment-success/paymentSuccess";
 import UpdateProfile from "pages/profile/UpdateProfile";
 
 // import Fader from "pages/components/Fader";
@@ -358,6 +359,7 @@ export default function App() {
         <Route path="inventory-notes/:inventoryId" element={<InventoryNoteDetail />} />
         <Route path="new-inventory-note" element={<CreateInventoryNote />} />
         <Route path="update-profile" element={<UpdateProfile />} />
+        <Route path="payment-success" element={<PaymentSuccess />} />
       </Routes>
     </ThemeProvider>
   );

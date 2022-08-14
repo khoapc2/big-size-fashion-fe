@@ -1,0 +1,12 @@
+.cart-payment-success-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.cart-payment-success-container .img-payment-sucess {
+  background-size: cover;
+}
