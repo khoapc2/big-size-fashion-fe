@@ -80,11 +80,9 @@ export default function OfflineOrderForm() {
   useEffect(() => {
     if (approveOnOrder.success) {
       if (approveOnOrder.success.is_success && !approveOnOrder.success.content) {
-        console.log(approveOnOrder);
         toast.success("Duyệt đơn hàng thành công");
         dispatch({ type: APPROVE_ONLINE_ORDER_SUCCESS, payload: false });
       } else if (approveOnOrder.success.is_success && approveOnOrder.success.content) {
-        console.log(approveOnOrder.success.content);
         setTableDialog({
           isOpen: true,
           title: "Yêu cầu nhập hàng không thành công?",
@@ -124,7 +122,6 @@ export default function OfflineOrderForm() {
   }, [triggerReload, cancelOnOrder.success, cancelOnOrder.error]);
 
   const onSubmit = (result) => {
-    console.log("submit");
     dispatch(approveOnlineOrderAction(order_id, result));
   };
 
@@ -189,7 +186,7 @@ export default function OfflineOrderForm() {
               {params.row.discount_price_per_one.toLocaleString("vi-VN")}
             </div>
           ) : (
-            <div>{params.row.price.toLocaleString("vi-VN")}</div>
+            <div>{params.row.price_per_one.toLocaleString("vi-VN")}</div>
           )}
         </div>
       ),
@@ -267,7 +264,7 @@ export default function OfflineOrderForm() {
               {params.row.discount_price_per_one.toLocaleString("vi-VN")}
             </div>
           ) : (
-            <div>{params.row.price.toLocaleString("vi-VN")}</div>
+            <div>{params.row.price_per_one.toLocaleString("vi-VN")}</div>
           )}
         </div>
       ),

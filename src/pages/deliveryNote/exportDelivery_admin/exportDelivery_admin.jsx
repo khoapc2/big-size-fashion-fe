@@ -90,7 +90,7 @@ export default function StaffList() {
   }
 
   const columns = [
-    { field: "delivery_note_id", headerName: "Mã đơn hàng", width: 150 },
+    { field: "delivery_note_id", headerName: "Mã đơn hàng", width: 120 },
     {
       field: "delivery_note_name",
       headerName: "Tên đơn",
@@ -128,7 +128,7 @@ export default function StaffList() {
     {
       field: "action",
       headerName: "Thao tác",
-      width: 150,
+      width: 140,
       renderCell: (params) => (
         <>
           <Link to={`/export-delivery-note-detail-admin/${params.row.delivery_note_id}`}>
@@ -140,6 +140,7 @@ export default function StaffList() {
       ),
     },
   ];
+  
 
   return (
     <div className="importDeliverTab">

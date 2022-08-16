@@ -2,13 +2,6 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
-// import IconButton from "@mui/material/IconButton";
-// import FormControl from "@mui/material/FormControl";
-// import OutlinedInput from "@mui/material/OutlinedInput";
-// import InputAdornment from "@mui/material/InputAdornment";
-// import SearchIcon from "@mui/icons-material/Search";
-// import InputLabel from "@mui/material/InputLabel";
 import Stack from "@mui/material/Stack";
 
 import {
@@ -16,16 +9,10 @@ import {
   GridToolbarContainer,
   GridToolbarColumnsButton,
   GridToolbarFilterButton,
-  // GridToolbarExport,
   GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
-
 import "./offlineOrder.css";
-
 import { listOrder } from "../../../../redux/actions/orderAction";
-
-// import staffApi from "../../api/staffApi";
-// import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
 
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
@@ -33,10 +20,6 @@ styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css
 document.head.appendChild(styleLink);
 
 export default function StaffList() {
-  // const [notify, setNotify] = useState({ isOpen: false, message: "", type: "" });
-  // const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
-  // // const [paging, setPaging] = useState({});
-  //Test
   const { data, error, loading, totalCount } = useSelector((state) => state.viewOfflineOrder);
   const [pageState, setPageState] = useState({
     page: 1,
@@ -45,7 +28,6 @@ export default function StaffList() {
   const triggerReload = useSelector((state) => state.triggerReload);
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
-  // console.log(data);
   useEffect(() => {
     dispatch(listOrder("Reject", false, pageState.page, pageState.pageSize));
   }, [dispatch, pageState.page, pageState.pageSize, searchText, triggerReload]);
@@ -59,20 +41,6 @@ export default function StaffList() {
       </GridToolbarContainer>
     );
   }
-
-  // const handleClickSearch = (searchText) => {};
-
-  // const handleDelete = (id) => {
-  //   setConfirmDialog({
-  //     ...confirmDialog,
-  //     isOpen: false,
-  //   });
-  //   setNotify({
-  //     isOpen: true,
-  //     message: "Deleted Successfully",
-  //     type: "success",
-  //   });
-  // };
 
   function NoRowsOverlay() {
     return (
@@ -91,11 +59,11 @@ export default function StaffList() {
   }
 
   const columns = [
-    { field: "order_id", headerName: "Mã đơn hàng", width: 120 },
+    { field: "order_id", headerName: "Mã đơn hàng", width: 130 },
     {
       field: "total_price",
       headerName: "Tổng giá trị (VNĐ)",
-      width: 150,
+      width: 180,
       renderCell: (params) => (
         <div className="offlineOrderItem">{`${params.row.total_price.toLocaleString(
           "vi-VN"
@@ -105,7 +73,7 @@ export default function StaffList() {
     {
       field: "total_price_after_discount (VNĐ)",
       headerName: "Tổng giá trị sau khi giảm giá",
-      width: 210,
+      width: 250,
       renderCell: (params) => (
         <div>
           {params.row.total_price_after_discount
@@ -117,13 +85,13 @@ export default function StaffList() {
     {
       field: "create_date",
       headerName: "Ngày cập nhật",
-      width: 140,
+      width: 180,
       renderCell: (params) => <div>{params.row.create_date}</div>,
     },
     {
       field: "status",
       headerName: "Tình trạng đơn hàng",
-      width: 160,
+      width: 180,
       renderCell: (params) => <div>{params.row.status}</div>,
     },
 
@@ -145,27 +113,6 @@ export default function StaffList() {
 
   return (
     <div className="offlineOrderTab">
-      {/* <FormControl sx={{ m: 1, width: "35ch" }} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment">Tìm kiếm nhân viên</InputLabel>
-        <OutlinedInput
-          id="outlined-adornment"
-          value={searchText}
-          onChange={inputSearchHandler}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickSearch}
-                edge="end"
-              >
-                <SearchIcon />
-              </IconButton>
-            </InputAdornment>
-          }
-          label="Tìm kiếm nhân viên"
-        />
-      </FormControl> */}
-
       <div className="offlineOrder">
         <DataGrid
           sx={{
@@ -197,11 +144,6 @@ export default function StaffList() {
               console.log(query);
             })
           }
-          // onRowClick={(param) => (
-          //   <>
-          //     <Link to={`/staff/:${param.row.uid}`}></Link>
-          //   </>
-          // )}
           components={{
             Toolbar: CustomToolbar,
             NoRowsOverlay,
@@ -209,8 +151,6 @@ export default function StaffList() {
           }}
         />
       </div>
-      {/* <Notification notify={notify} setNotify={setNotify} /> */}
-      {/* <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} /> */}
     </div>
   );
 }

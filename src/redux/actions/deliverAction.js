@@ -33,9 +33,7 @@ export const listImportDeliver = (page, size) => async (dispatch) => {
       PageNumber: page,
       PageSize: size,
     };
-    console.log(param);
     const data = await deliveryApi.getImportList(param);
-    console.log(data);
     dispatch({ type: IMPORT_DELIVER_LIST_SUCCESS, payload: data });
     dispatch({ type: IMPORT_DELIVER_LIST_FAIL, payload: "" });
   } catch (error) {
@@ -84,6 +82,7 @@ export const viewDetailDeliveryNoteAction = (id) => async (dispatch) => {
 
 export const deliveryImportToMainWareHouseAction =
   (para, deliveryName, store_id) => async (dispatch) => {
+    console.log(store_id);
     const listProduct = Array.from(para.values());
     const listProductHandleParse = [];
     const listProductSendToBE = [];
@@ -96,18 +95,14 @@ export const deliveryImportToMainWareHouseAction =
         size_id: parseInt(inforIdProduct[2], 10),
         product_deatil_id: product.product_detail_id,
       };
-      console.log(parseProduct);
       listProductHandleParse.push(parseProduct);
     });
     listProductHandleParse.forEach((product) => {
       if (product) {
-        const { id, product_name, ...rest } = product;
-        console.log(rest);
+        const { id, product_name, product_detail_id, ...rest } = product;
         listProductSendToBE.push(rest);
       }
     });
-
-    console.log(listProductHandleParse);
     dispatch({
       type: CREATE_IMPORT_PRODUCT_LIST_REQUEST,
     });
@@ -120,7 +115,6 @@ export const deliveryImportToMainWareHouseAction =
       const data = await deliveryApi.createDeliveryNote(paramsForApiImport);
       dispatch({ type: CREATE_IMPORT_PRODUCT_LIST_SUCCESS, payload: data.content });
     } catch (error) {
-      console.log(error);
       dispatch({
         type: CREATE_IMPORT_PRODUCT_LIST_FAIL,
         payload:
@@ -208,7 +202,6 @@ export const cancelDeliveryAction = (id) => async (dispatch) => {
 };
 
 export const deliverCartAction = (products, delivery_cart) => async (dispatch) => {
-  console.log(typeof delivery_cart);
   try {
     if (delivery_cart) {
       await products.forEach((product) => {
@@ -252,7 +245,6 @@ export const addToDeliverNoteAction = (deliveryNote, product) => async (dispatch
         product_detail_id,
       };
       const newCart = [...deliveryNote, newProduct];
-      console.log(newCart);
       dispatch({ type: DELIVERY_CART, payload: newCart });
       dispatch({ type: DELIVERY_CART_ACTION_SUCCESS, payload: true });
     }

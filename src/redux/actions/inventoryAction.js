@@ -22,15 +22,12 @@ import {
 } from "../../service/Validations/VarConstant";
 
 export const getInventoryAction = (para, inventoryNoteId) => async (dispatch) => {
-  console.log(para);
   const listProduct = Array.from(para.values());
   const listProductHandleParse = [];
   const listProductSendToBE = [];
   const listFormatProductSendToBE = [];
   listProduct.forEach((product) => {
     const inforIdProduct = product.product_id.split("+");
-    console.log(product);
-    console.log(inforIdProduct);
     const parseProduct = {
       ...product,
       product_id: parseInt(inforIdProduct[1], 10),
@@ -79,16 +76,12 @@ export const getInventoryAction = (para, inventoryNoteId) => async (dispatch) =>
 };
 
 export const quantityAdjusmentAction = (para, inventoryNoteId) => async (dispatch) => {
-  console.log(para);
   const listProduct = Array.from(para.values());
   const listProductHandleParse = [];
   const listProductSendToBE = [];
   const listFormatProductSendToBE = [];
   listProduct.forEach((product) => {
-    console.log(product);
     const inforIdProduct = product.product_id.split("+");
-    console.log(inforIdProduct);
-
     const parseProduct = {
       ...product,
       product_id: parseInt(inforIdProduct[1], 10),
@@ -97,8 +90,6 @@ export const quantityAdjusmentAction = (para, inventoryNoteId) => async (dispatc
     };
     listProductHandleParse.push(parseProduct);
   });
-
-  console.log(listProductHandleParse);
   listProductHandleParse.forEach((product) => {
     if (product) {
       const { id, product_name, ...rest } = product;
@@ -132,7 +123,6 @@ export const quantityAdjusmentAction = (para, inventoryNoteId) => async (dispatc
 };
 
 export const listInventoryNoteAction = (keySearch, page, size) => async (dispatch) => {
-  console.log(keySearch);
   dispatch({ type: GET_LIST_INVENTORY_REQUEST });
   try {
     const param = {
@@ -142,7 +132,6 @@ export const listInventoryNoteAction = (keySearch, page, size) => async (dispatc
     };
 
     const data = await inventoryApi.getAdjustListInStore(param);
-    console.log(data);
     dispatch({ type: GET_LIST_INVENTORY_SUCCESS, payload: data });
     dispatch({ type: GET_LIST_INVENTORY_FAIL, payload: "" });
   } catch (error) {

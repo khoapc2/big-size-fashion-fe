@@ -6,7 +6,6 @@ import { Form } from "semantic-ui-react";
 import CachedIcon from "@mui/icons-material/Cached";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-// import { Formik } from "formik";
 
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
@@ -266,7 +265,7 @@ export default function OfflineOrderForm() {
               {params.row.discount_price_per_one.toLocaleString("vi-VN")}
             </div>
           ) : (
-            <div>{params.row.price.toLocaleString("vi-VN")}</div>
+            <div>{params.row.discount_price_per_one.toLocaleString("vi-VN")}</div>
           )}
         </div>
       ),

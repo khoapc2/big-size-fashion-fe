@@ -2,13 +2,6 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
-// import IconButton from "@mui/material/IconButton";
-// import FormControl from "@mui/material/FormControl";
-// import OutlinedInput from "@mui/material/OutlinedInput";
-// import InputAdornment from "@mui/material/InputAdornment";
-// import SearchIcon from "@mui/icons-material/Search";
-// import InputLabel from "@mui/material/InputLabel";
 import Stack from "@mui/material/Stack";
 
 import {
@@ -16,16 +9,10 @@ import {
   GridToolbarContainer,
   GridToolbarColumnsButton,
   GridToolbarFilterButton,
-  // GridToolbarExport,
   GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
-
 import "./exportDeliver.css";
-
 import { listExportDeliver } from "../../../redux/actions/deliverAction";
-
-// import staffApi from "../../api/staffApi";
-// import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
 
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
@@ -46,10 +33,6 @@ export default function StaffList() {
   }, [dispatch, pageState.page, pageState.pageSize, searchText, triggerReload]);
 
   console.log(data);
-  // let inputSearchHandler = (e) => {
-  //   let lowerCase = e.target.value.toLowerCase();
-  //   setSearchText(lowerCase);
-  // };
 
   function CustomToolbar() {
     return (
@@ -126,27 +109,6 @@ export default function StaffList() {
 
   return (
     <div className="exportDeliverTab">
-      {/* <FormControl sx={{ m: 1, width: "35ch" }} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment">Tìm kiếm nhân viên</InputLabel>
-        <OutlinedInput
-          id="outlined-adornment"
-          value={searchText}
-          onChange={inputSearchHandler}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickSearch}
-                edge="end"
-              >
-                <SearchIcon />
-              </IconButton>
-            </InputAdornment>
-          }
-          label="Tìm kiếm nhân viên"
-        />
-      </FormControl> */}
-
       <div className="exportDeliver">
         <DataGrid
           sx={{
@@ -185,8 +147,6 @@ export default function StaffList() {
           }}
         />
       </div>
-      {/* <Notification notify={notify} setNotify={setNotify} /> */}
-      {/* <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} /> */}
     </div>
   );
 }

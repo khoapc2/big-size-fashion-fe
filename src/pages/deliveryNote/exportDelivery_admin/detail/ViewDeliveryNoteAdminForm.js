@@ -42,6 +42,7 @@ export default function DeliveryNoteForm() {
   const approveDelivery = useSelector((state) => state.approveDeliveryState);
   const rejectDelivery = useSelector((state) => state.rejectDeliveryState);
 
+  console.log(data);
   useEffect(() => {
     dispatch(viewDetailDeliveryNoteAction(deliveryId));
   }, [
@@ -107,8 +108,73 @@ export default function DeliveryNoteForm() {
   const columns = [
     {
       field: "product_id",
-      headerName: "Mã sản phẩm",
+      headerName: "Mã",
+      width: 70,
+      renderCell: (params) => (
+        <div className="productListItem">
+          {params.row.total_quantity_price ? "" : params.row.product_id}
+        </div>
+      ),
+    },
+    {
+      field: "product_name",
+      headerName: "Sản phẩm",
+      width: 550,
+      renderCell: (params) => (
+        <div className="productListItem">
+          {params.row.total_quantity_price ? (
+            ""
+          ) : (
+            <img
+              className="productListImg"
+              src={params.row.image_url}
+              alt={params.row.product_name}
+            />
+          )}
+          {params.row.product_name}&emsp;&emsp;
+          {params.row.category}&emsp;&emsp;
+          {params.row.colour}&emsp;&emsp;
+          {params.row.size}&emsp;&emsp;
+        </div>
+      ),
+    },
+    {
+      field: "price",
+      headerName: "Đơn giá",
+      width: 150,
+      renderCell: (params) => <div>{params.row.price_per_one.toLocaleString("vi-VN")}</div>,
+    },
+    {
+      field: "quantity",
+      headerName: "Số lượng",
+      width: 150,
+    },
+    {
+      field: "total_quantity_price",
+      headerName: "Thành Tiền",
       width: 100,
+      renderCell: (params) => (
+        <div>
+          {params.row.total_quantity_price ? (
+            <b>{params.row.total_quantity_price.toLocaleString("vi-VN")}</b>
+          ) : (
+            ""
+          )}
+          {params.row.price ? (
+            <div className="offlineOrderItem">{`${params.row.price.toLocaleString("vi-VN")}`}</div>
+          ) : (
+            ""
+          )}
+        </div>
+      ),
+    },
+  ];
+
+  const columnsPendingOrder = [
+    {
+      field: "product_id",
+      headerName: "Mã",
+      width: 50,
       renderCell: (params) => (
         <div className="productListItem">
           {params.row.total_quantity_price ? "" : params.row.product_id}
@@ -145,13 +211,18 @@ export default function DeliveryNoteForm() {
     },
     {
       field: "quantity",
-      headerName: "Số lượng",
-      width: 200,
+      headerName: "S.Lượng",
+      width: 100,
+    },
+    {
+      field: "current_quantity",
+      headerName: "S.Lượng Trong Kho",
+      width: 150,
     },
     {
       field: "total_quantity_price",
       headerName: "Thành Tiền",
-      width: 250,
+      width: 100,
       renderCell: (params) => (
         <div>
           {params.row.total_quantity_price ? (
@@ -263,7 +334,7 @@ export default function DeliveryNoteForm() {
               loading={loading}
               rows={totalProduct}
               disableSelectionOnClick
-              columns={columns}
+              columns={data.status === "Chờ xác nhận" ? columnsPendingOrder : columns}
               pageSize={10}
               data={(query) =>
                 new Promise(() => {

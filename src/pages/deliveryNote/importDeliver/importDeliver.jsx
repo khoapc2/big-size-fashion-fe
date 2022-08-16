@@ -94,13 +94,13 @@ export default function StaffList() {
     {
       field: "delivery_note_name",
       headerName: "Tên đơn nhập",
-      width: 250,
+      width: 350,
       renderCell: (params) => <div>{params.row.delivery_note_name}</div>,
     },
     {
       field: "total_price",
       headerName: "Tổng giá trị (VNĐ)",
-      width: 150,
+      width: 170,
       renderCell: (params) => (
         <div className="importDeliverItem">{`${params.row.total_price.toLocaleString(
           "vi-VN"
@@ -110,13 +110,13 @@ export default function StaffList() {
     {
       field: "create_date",
       headerName: "Ngày tạo",
-      width: 150,
+      width: 170,
       renderCell: (params) => <div>{params.row.create_date}</div>,
     },
     {
       field: "status",
       headerName: "Tình trạng đơn hàng",
-      width: 160,
+      width: 170,
       renderCell: (params) => <div>{params.row.status}</div>,
     },
     {

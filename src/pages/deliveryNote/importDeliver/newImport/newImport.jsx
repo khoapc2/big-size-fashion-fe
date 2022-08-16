@@ -57,7 +57,7 @@ export default function CreateImportDeliver() {
   const [storeId, setStoreID] = useState("");
   const apiRef = useRef(null);
 
-  // console.log(rows);
+  console.log(activeStore);
   // const { apiRef, columns } = useApiRef();
 
   console.log(mainWareHouse);
@@ -273,10 +273,12 @@ export default function CreateImportDeliver() {
                               placeholder="Từ cửa hàng"
                               name="store_name"
                               onChange={(e, v) => {
-                                const { text } = activeStore.store.find((o) => o.value === v.value);
+                                const { text, value } = activeStore.store.find(
+                                  (o) => o.value === v.value
+                                );
                                 formik.setFieldValue("store_id", v.value);
                                 formik.setFieldValue("store_name", text);
-                                setStoreID(v.value.store_id);
+                                setStoreID(value);
                               }}
                               value={formik.values.store_id}
                               // error={formik.errors.product_name}

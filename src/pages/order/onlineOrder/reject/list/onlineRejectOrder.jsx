@@ -34,28 +34,17 @@ styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css
 document.head.appendChild(styleLink);
 
 export default function StaffList() {
-  const [notify, setNotify] = useState({ isOpen: false, message: "", type: "" });
-  const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" });
-  // const [paging, setPaging] = useState({});
-  //Test
   const { data, error, loading, totalCount } = useSelector((state) => state.viewOnlineOrder);
   const [pageState, setPageState] = useState({
     page: 1,
     pageSize: 10,
   });
   const triggerReload = useSelector((state) => state.triggerReload);
-  // const [keySearch, setKeySearch] = useState("");
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
-  // console.log(data);
   useEffect(() => {
-    dispatch(listOrder("Reject" ,true, pageState.page, pageState.pageSize));
+    dispatch(listOrder("Reject", true, pageState.page, pageState.pageSize));
   }, [dispatch, pageState.page, pageState.pageSize, searchText, triggerReload]);
-
-  // let inputSearchHandler = (e) => {
-  //   let lowerCase = e.target.value.toLowerCase();
-  //   setSearchText(lowerCase);
-  // };
 
   function CustomToolbar() {
     return (
@@ -66,20 +55,6 @@ export default function StaffList() {
       </GridToolbarContainer>
     );
   }
-
-  // const handleClickSearch = (searchText) => {};
-
-  // const handleDelete = (id) => {
-  //   setConfirmDialog({
-  //     ...confirmDialog,
-  //     isOpen: false,
-  //   });
-  //   setNotify({
-  //     isOpen: true,
-  //     message: "Deleted Successfully",
-  //     type: "success",
-  //   });
-  // };
 
   function NoRowsOverlay() {
     return (
@@ -98,7 +73,7 @@ export default function StaffList() {
   }
 
   const columns = [
-    { field: "order_id", headerName: "Mã đơn hàng", width: 150 },
+    { field: "order_id", headerName: "Mã đơn hàng", width: 130 },
     {
       field: "total_price",
       headerName: "Tổng giá trị (VNĐ)",
@@ -122,20 +97,20 @@ export default function StaffList() {
     {
       field: "create_date",
       headerName: "Ngày cập nhật",
-      width: 160,
+      width: 180,
       renderCell: (params) => <div>{params.row.create_date}</div>,
     },
     {
       field: "status",
       headerName: "Tình trạng đơn hàng",
-      width: 160,
+      width: 180,
       renderCell: (params) => <div>{params.row.status}</div>,
     },
 
     {
       field: "action",
       headerName: "Thao tác",
-      width: 250,
+      width: 110,
       renderCell: (params) => (
         <>
           <Link to={`/online-order-detail/${params.row.order_id}`}>
@@ -143,21 +118,6 @@ export default function StaffList() {
               Xem chi tiết
             </button>
           </Link>
-          {/* <Button
-            className="onlineOrderDelete"
-            onClick={() =>
-              setConfirmDialog({
-                isOpen: true,
-                title: "Are you sure to delete this record?",
-                subTitle: "Delete",
-                onConfirm: () => {
-                  handleDelete(params.row.id);
-                },
-              })
-            }
-            color="red"
-            icon="trash alternate"
-          /> */}
         </>
       ),
     },
@@ -165,27 +125,6 @@ export default function StaffList() {
 
   return (
     <div className="onlineOrderTab">
-      {/* <FormControl sx={{ m: 1, width: "35ch" }} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment">Tìm kiếm nhân viên</InputLabel>
-        <OutlinedInput
-          id="outlined-adornment"
-          value={searchText}
-          onChange={inputSearchHandler}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickSearch}
-                edge="end"
-              >
-                <SearchIcon />
-              </IconButton>
-            </InputAdornment>
-          }
-          label="Tìm kiếm nhân viên"
-        />
-      </FormControl> */}
-
       <div className="onlineOrder">
         <DataGrid
           sx={{
@@ -205,8 +144,10 @@ export default function StaffList() {
           pagination
           page={pageState.page - 1}
           paginationMode="server"
-          onPageChange={(newPage) => setPageState((old) => ({ ...old, page: newPage + 1}))}
-          onPageSizeChange={(newPageSize) => setPageState(old => ({ ...old, pageSize: newPageSize}))}
+          onPageChange={(newPage) => setPageState((old) => ({ ...old, page: newPage + 1 }))}
+          onPageSizeChange={(newPageSize) =>
+            setPageState((old) => ({ ...old, pageSize: newPageSize }))
+          }
           disableSelectionOnClick
           columns={columns}
           pageSize={pageState.pageSize}
@@ -215,11 +156,6 @@ export default function StaffList() {
               console.log(query);
             })
           }
-          // onRowClick={(param) => (
-          //   <>
-          //     <Link to={`/staff/:${param.row.uid}`}></Link>
-          //   </>
-          // )}
           components={{
             Toolbar: CustomToolbar,
             NoRowsOverlay,
@@ -227,8 +163,6 @@ export default function StaffList() {
           }}
         />
       </div>
-      {/* <Notification notify={notify} setNotify={setNotify} /> */}
-      {/* <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} /> */}
     </div>
   );
 }

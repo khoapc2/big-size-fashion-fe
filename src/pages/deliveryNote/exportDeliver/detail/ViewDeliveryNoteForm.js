@@ -5,11 +5,9 @@ import { Grid } from "@material-ui/core";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { DataGrid } from "@mui/x-data-grid";
-
 import ConfirmDialog from "pages/components/dialog/ConfirmDialog";
 import TableDialog from "pages/deliveryNote/exportDelivery_admin/detail/dialogTable";
 import {
@@ -41,6 +39,7 @@ export default function DeliveryNoteForm() {
   const approveDelivery = useSelector((state) => state.approveDeliveryState);
   const rejectDelivery = useSelector((state) => state.rejectDeliveryState);
 
+  console.log(data);
 
   useEffect(() => {
     dispatch(viewDetailDeliveryNoteAction(deliveryId));
@@ -139,18 +138,88 @@ export default function DeliveryNoteForm() {
     {
       field: "price",
       headerName: "Đơn giá",
-      width: 150,
+      width: 130,
       renderCell: (params) => <div>{params.row.price_per_one.toLocaleString("vi-VN")}</div>,
     },
     {
       field: "quantity",
       headerName: "Số lượng",
-      width: 200,
+      width: 100,
     },
     {
       field: "total_quantity_price",
       headerName: "Thành Tiền",
-      width: 250,
+      width: 110,
+      renderCell: (params) => (
+        <div>
+          {params.row.total_quantity_price ? (
+            <b>{params.row.total_quantity_price.toLocaleString("vi-VN")}</b>
+          ) : (
+            ""
+          )}
+          {params.row.price ? (
+            <div className="offlineOrderItem">{`${params.row.price.toLocaleString("vi-VN")}`}</div>
+          ) : (
+            ""
+          )}
+        </div>
+      ),
+    },
+  ];
+
+  const columnsPendingOrder = [
+    {
+      field: "product_id",
+      headerName: "Mã",
+      width: 50,
+      renderCell: (params) => (
+        <div className="productListItem">
+          {params.row.total_quantity_price ? "" : params.row.product_id}
+        </div>
+      ),
+    },
+    {
+      field: "product_name",
+      headerName: "Sản phẩm",
+      width: 500,
+      renderCell: (params) => (
+        <div className="productListItem">
+          {params.row.total_quantity_price ? (
+            ""
+          ) : (
+            <img
+              className="productListImg"
+              src={params.row.image_url}
+              alt={params.row.product_name}
+            />
+          )}
+          {params.row.product_name}&emsp;&emsp;
+          {params.row.category}&emsp;&emsp;
+          {params.row.colour}&emsp;&emsp;
+          {params.row.size}&emsp;&emsp;
+        </div>
+      ),
+    },
+    {
+      field: "price",
+      headerName: "Đơn giá",
+      width: 130,
+      renderCell: (params) => <div>{params.row.price_per_one.toLocaleString("vi-VN")}</div>,
+    },
+    {
+      field: "quantity",
+      headerName: "S.Lượng",
+      width: 100,
+    },
+    {
+      field: "current_quantity",
+      headerName: "S.Lượng Trong Kho",
+      width: 150,
+    },
+    {
+      field: "total_quantity_price",
+      headerName: "Thành Tiền",
+      width: 100,
       renderCell: (params) => (
         <div>
           {params.row.total_quantity_price ? (
@@ -276,7 +345,7 @@ export default function DeliveryNoteForm() {
               loading={loading}
               rows={totalProduct}
               disableSelectionOnClick
-              columns={columns}
+              columns={data.status === "Chờ xác nhận" ? columnsPendingOrder : columns}
               pageSize={10}
               data={(query) =>
                 new Promise(() => {
