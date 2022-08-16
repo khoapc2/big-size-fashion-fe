@@ -496,7 +496,11 @@ export default function OfflineOrderForm() {
         </div>
       )}
       <ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />
-      <TableDialog confirmDialog={tableDialog} setConfirmDialog={setTableDialog} />
+      <TableDialog
+        confirmDialog={tableDialog}
+        setConfirmDialog={setTableDialog}
+        isAddProduct="true"
+      />
     </div>
   );
 }

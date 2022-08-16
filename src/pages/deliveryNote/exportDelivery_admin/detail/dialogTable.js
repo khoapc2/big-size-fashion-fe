@@ -10,6 +10,15 @@ import {
 } from "@material-ui/core";
 import { DataGrid } from "@mui/x-data-grid";
 import { Button } from "semantic-ui-react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { useEffect } from "react";
+
+import {
+  DELIVERY_CART_ACTION_SUCCESS,
+  DELIVERY_CART_ACTION_FAIL,
+} from "../../../../service/Validations/VarConstant";
+import { deliverCartAction } from "../../../../redux/actions/deliverAction";
 import "./dialogTable.css";
 
 const useStyles = makeStyles((theme) => ({
@@ -42,10 +51,31 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function TableDialog(props) {
-  const { confirmDialog, setConfirmDialog } = props;
+  const { deliveryNote, actionSuccess, actionFail } = useSelector((state) => state.deliveryCart);
+
+  const dispatch = useDispatch();
+  const { confirmDialog, setConfirmDialog, isAddProduct } = props;
   const classes = useStyles();
   const data = confirmDialog.data;
   console.log(data);
+  console.log(deliveryNote);
+
+  useEffect(() => {
+    if (actionSuccess) {
+      toast.success("Thêm sản phẩm vào đơn nhập hàng thành công");
+      setConfirmDialog({ ...confirmDialog, isOpen: false });
+      dispatch({ type: DELIVERY_CART_ACTION_SUCCESS, payload: "" });
+    }
+    if (actionFail) {
+      toast.success("Thêm sản phẩm vào đơn nhập hàng thất bại, Vui lòng thử lại sau");
+      dispatch({ type: DELIVERY_CART_ACTION_FAIL, payload: "" });
+    }
+  }, [actionSuccess, actionFail, dispatch]);
+
+  const handleAddProductToDeliveryNote = () => {
+    dispatch(deliverCartAction(data, deliveryNote));
+  };
+
   const columns = [
     {
       field: "product_id",
@@ -108,8 +138,14 @@ export default function TableDialog(props) {
         </div>
       </DialogContent>
       <DialogActions className={classes.dialogAction}>
+        {isAddProduct && (
+          <Button color="green" onClick={() => handleAddProductToDeliveryNote()}>
+            Thêm vào đơn yều cầu nhập hàng
+          </Button>
+        )}
+
         <Button color="blue" onClick={() => setConfirmDialog({ ...confirmDialog, isOpen: false })}>
-          Ok
+          Trở về
         </Button>
       </DialogActions>
     </Dialog>

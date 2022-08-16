@@ -20,6 +20,9 @@ import {
   CANCEL_DELIVERY_NOTE_REQUEST,
   CANCEL_DELIVERY_NOTE_SUCCESS,
   CANCEL_DELIVERY_NOTE_FAIL,
+  DELIVERY_CART,
+  DELIVERY_CART_ACTION_SUCCESS,
+  DELIVERY_CART_ACTION_FAIL,
 } from "../../service/Validations/VarConstant";
 
 const calculateTotalPrice = ({ total_price }) => {
@@ -161,6 +164,21 @@ export const cancelDeliveryReducer = (state = { loading: true }, action) => {
   }
 };
 
+export const deliveryCartReducer = (
+  state = { deliveryNote: [], actionSuccess: "", actionFail: "" },
+  action
+) => {
+  switch (action.type) {
+    case DELIVERY_CART:
+      return { ...state, deliveryNote: action.payload };
+    case DELIVERY_CART_ACTION_SUCCESS:
+      return { ...state, actionSuccess: action.payload };
+    case DELIVERY_CART_ACTION_FAIL:
+      return { ...state, actionFail: action.payload };
+    default:
+      return state;
+  }
+};
 // export const listOfflineOrderReducer = (state = { loading: true, data: [], error: "" }, action) => {
 //   switch (action.type) {
 //     case DELIVERY_NOTE_LIST_REQUEST:

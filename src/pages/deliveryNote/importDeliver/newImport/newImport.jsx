@@ -15,11 +15,16 @@ import {
   CREATE_IMPORT_PRODUCT_LIST_SUCCESS,
   ACTIVE_STORE_LIST_DROPDOWN_SUCCESS,
   ACTIVE_STORE_LIST_DROPDOWN_FAIL,
+  DELIVERY_CART,
 } from "../../../../service/Validations/VarConstant";
 import { DataGrid } from "@mui/x-data-grid";
 import { Formik } from "formik";
 import { getProductToImportAction } from "../../../../redux/actions/productAction";
-import { deliveryImportToMainWareHouseAction } from "../../../../redux/actions/deliverAction";
+import {
+  deliveryImportToMainWareHouseAction,
+  addToDeliverNoteAction,
+  removeProductFromDeliverNoteAction,
+} from "../../../../redux/actions/deliverAction";
 import { SchemaErrorMessageImportInvoice } from "../../../../service/Validations/ImportInvoiceValidation";
 import { triggerReload } from "../../../../redux/actions/userAction";
 import { listActiveStore, getMainWareHouseAction } from "../../../../redux/actions/storeAction";
@@ -34,7 +39,6 @@ const createRow = ({ product_id, product_name, quantity, product_detail_id }) =>
     quantity: quantity,
     product_id: product_id,
     product_detail_id,
-    product_detail_id,
   };
 };
 
@@ -43,12 +47,13 @@ export default function CreateImportDeliver() {
   const listImportPro = useSelector((state) => state.listImportProduct);
   const response = useSelector((state) => state.createImportDeliver);
   const activeStore = useSelector((state) => state.listActiveStoreDropdown);
+  const { deliveryNote } = useSelector((state) => state.deliveryCart);
+
   const { store } = activeStore;
   const mainWareHouse = useSelector((state) => state.getMainWareHouse);
   const [rows, setRows] = useState([]);
   const [submit, setSubmit] = useState(false);
   const [deliveryName, setDeliverName] = useState("");
-  // const [deliveryName, setDeliverName] = useState("");
   const [storeId, setStoreID] = useState("");
   const apiRef = useRef(null);
 
@@ -56,7 +61,7 @@ export default function CreateImportDeliver() {
   // const { apiRef, columns } = useApiRef();
 
   console.log(mainWareHouse);
-  console.log(listImportPro);
+  console.log(deliveryNote);
   // console.log(listImportPro);
   const { success, error } = response;
 
@@ -97,12 +102,15 @@ export default function CreateImportDeliver() {
   //
 
   const onSubmit = (data) => {
-    console.log(data);
-    // const {product_name, product_id, quantity} = data
-    // dispatch(createAccount(data));
+    if (deliveryNote.length > 0) {
+      dispatch(addToDeliverNoteAction(deliveryNote, data));
+    } else {
+      setRows((prevRows) => [...prevRows, createRow(data)]);
+    }
+
     setDeliverName(data.delivery_note_name);
     setStoreID(data.store_id);
-    setRows((prevRows) => [...prevRows, createRow(data)]);
+    console.log(rows);
   };
 
   const handleReset = () => {
@@ -114,6 +122,7 @@ export default function CreateImportDeliver() {
       setRows([]);
     }
     setRows([]);
+    dispatch({ type: DELIVERY_CART, payload: [] });
   };
 
   const handleClickButton = () => {
@@ -184,7 +193,11 @@ export default function CreateImportDeliver() {
           ) : (
             <button
               onClick={() => {
-                setRows(rows.filter((e) => e.id !== params.row.id));
+                if (deliveryNote.length > 0) {
+                  dispatch(removeProductFromDeliverNoteAction(deliveryNote, params.row.id));
+                } else {
+                  setRows(rows.filter((e) => e.id !== params.row.id));
+                }
               }}
             >
               <ClearIcon />
@@ -240,7 +253,11 @@ export default function CreateImportDeliver() {
                             placeholder="Tên đơn đặt hàng"
                             type="text"
                             name="delivery_note_name"
-                            onChange={formik.handleChange}
+                            onChange={(e, v) => {
+                              setDeliverName(v.value);
+                              setStoreID(mainWareHouse.store[0].store_id);
+                              formik.handleChange(e);
+                            }}
                             value={formik.values.delivery_note_name}
                             error={
                               formik.touched.delivery_note_name && formik.errors.delivery_note_name
@@ -259,6 +276,7 @@ export default function CreateImportDeliver() {
                                 const { text } = activeStore.store.find((o) => o.value === v.value);
                                 formik.setFieldValue("store_id", v.value);
                                 formik.setFieldValue("store_name", text);
+                                setStoreID(v.value.store_id);
                               }}
                               value={formik.values.store_id}
                               // error={formik.errors.product_name}
@@ -354,7 +372,7 @@ export default function CreateImportDeliver() {
                   }}
                   // loading={loading}
                   getRowId={(r) => r.id}
-                  rows={rows}
+                  rows={deliveryNote.length > 0 ? deliveryNote : rows}
                   disableSelectionOnClick
                   columns={columns}
                   pageSize={8}

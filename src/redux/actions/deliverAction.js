@@ -21,6 +21,9 @@ import {
   CANCEL_DELIVERY_NOTE_REQUEST,
   CANCEL_DELIVERY_NOTE_SUCCESS,
   CANCEL_DELIVERY_NOTE_FAIL,
+  DELIVERY_CART,
+  DELIVERY_CART_ACTION_SUCCESS,
+  DELIVERY_CART_ACTION_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listImportDeliver = (page, size) => async (dispatch) => {
@@ -204,60 +207,77 @@ export const cancelDeliveryAction = (id) => async (dispatch) => {
   }
 };
 
-// export const viewDetailOfflineOrder = (orderId) => async (dispatch) => {
-//   dispatch({
-//     type: VIEW_DETAIL_DELIVERY_NOTE_LIST_REQUEST,
-//     payload: { orderId },
-//   });
-//   try {
-//     const data = await orderApi.getOrderDetailById(orderId);
-//     dispatch({ type: VIEW_DETAIL_DELIVERY_NOTE_LIST_SUCCESS, payload: data.content });
-//   } catch (error) {
-//     dispatch({
-//       type: VIEW_DETAIL_DELIVERY_NOTE_LIST_FAIL,
-//       payload:
-//         error.response && error.response.data.message ? error.response.data.message : error.message,
-//     });
-//   }
-// };
+export const deliverCartAction = (products, delivery_cart) => async (dispatch) => {
+  console.log(typeof delivery_cart);
+  try {
+    if (delivery_cart) {
+      await products.forEach((product) => {
+        const find_product = delivery_cart.find(
+          (product_in_cart) => product.product_detail_id === product_in_cart.product_detail_id
+        );
 
-// export const approveOfflineOrderAction = (id) => async (dispatch) => {
-//   dispatch({
-//     type: APPROVE_DELIVERY_NOTE_REQUEST,
-//     payload: { id },
-//   });
-//   try {
-//     if (id) {
-//       const data = await orderApi.approveOfflineOrder(id);
-//       dispatch({ type: APPROVE_DELIVERY_NOTE_SUCCESS, payload: data });
-//     }
-//   } catch (error) {
-//     dispatch({
-//       type: APPROVE_DELIVERY_NOTE_FAIL,
-//       payload:
-//         error.response && error.response.data.message ? error.response.data.message : error.message,
-//     });
-//   }
-// };
+        if (find_product) {
+          find_product.quantity += product.required_quantity;
+        } else {
+          const new_product = {
+            id: delivery_cart.length + 1,
+            product_name: `${product.product_name} - ${product.colour_name} - ${product.size_name}`,
+            quantity: product.required_quantity,
+            product_id: `${product.colour_id}+${product.product_id}+${product.size_id}`,
+            product_detail_id: product.product_detail_id,
+          };
+          delivery_cart.push(new_product);
+        }
+      });
+    }
+    dispatch({ type: DELIVERY_CART, payload: delivery_cart });
+    dispatch({ type: DELIVERY_CART_ACTION_SUCCESS, payload: true });
+  } catch (error) {
+    dispatch({
+      type: DELIVERY_CART_ACTION_FAIL,
+      payload: error,
+    });
+  }
+};
 
-// export const cancelOfflineOrderAction = (id) => async (dispatch) => {
-//   dispatch({
-//     type: CANCEL_DELIVERY_NOTE_REQUEST,
-//     payload: { id },
-//   });
-//   try {
-//     if (id) {
-//       const data = await orderApi.rejectOrder(id);
-//       dispatch({ type: CANCEL_DELIVERY_NOTE_SUCCESS, payload: data });
-//     }
-//   } catch (error) {
-//     dispatch({
-//       type: CANCEL_DELIVERY_NOTE_FAIL,
-//       payload:
-//         error.response && error.response.data.message ? error.response.data.message : error.message,
-//     });
-//   }
-// };
+export const addToDeliverNoteAction = (deliveryNote, product) => async (dispatch) => {
+  try {
+    if (product && deliveryNote.length > 0) {
+      const { product_id, product_name, quantity, product_detail_id } = product;
+      const newProduct = {
+        id: deliveryNote.length + 1,
+        product_name,
+        quantity,
+        product_id,
+        product_detail_id,
+      };
+      const newCart = [...deliveryNote, newProduct];
+      console.log(newCart);
+      dispatch({ type: DELIVERY_CART, payload: newCart });
+      dispatch({ type: DELIVERY_CART_ACTION_SUCCESS, payload: true });
+    }
+  } catch (error) {
+    dispatch({
+      type: DELIVERY_CART_ACTION_FAIL,
+      payload: error,
+    });
+  }
+};
+
+export const removeProductFromDeliverNoteAction = (deliveryNote, productId) => async (dispatch) => {
+  try {
+    if (productId && deliveryNote.length > 0) {
+      const newCart = deliveryNote.filter((e) => e.id !== productId);
+      dispatch({ type: DELIVERY_CART, payload: newCart });
+      dispatch({ type: DELIVERY_CART_ACTION_SUCCESS, payload: true });
+    }
+  } catch (error) {
+    dispatch({
+      type: DELIVERY_CART_ACTION_FAIL,
+      payload: error,
+    });
+  }
+};
 
 // export const cancelOnlineOrderAction = (id) => async (dispatch) => {
 //   dispatch({

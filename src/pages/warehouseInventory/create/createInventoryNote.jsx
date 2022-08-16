@@ -125,8 +125,6 @@ export default function CreateImportDeliver() {
       headerName: "Mã",
       flex: 0.3,
       disableClickEventBubbling: true,
-      // sortable: false,
-      // disableColumnMenu: true,
       type: "singleSelect",
     },
     {
@@ -134,8 +132,6 @@ export default function CreateImportDeliver() {
       headerName: "Sản phẩm",
       flex: 1.6,
       disableClickEventBubbling: true,
-      // sortable: false,
-      // disableColumnMenu: true,
       type: "singleSelect",
       renderCell: (params) => (
         <div className="productListItem">
@@ -149,24 +145,18 @@ export default function CreateImportDeliver() {
       headerName: "S.lượng đầu kì",
       flex: 0.7,
       disableClickEventBubbling: true,
-      // sortable: false,/
-      // disableColumnMenu: true,
     },
     {
       field: "ending_quantity",
       headerName: "S.lượng cuối kì",
       flex: 0.7,
       disableClickEventBubbling: true,
-      // sortable: false,
-      // disableColumnMenu: true,
     },
     {
       field: "ending_quantity_after_adjusted",
       headerName: "S.lượng Sau khi điều chỉnh",
       flex: 1,
       disableClickEventBubbling: true,
-      // sortable: false,
-      // disableColumnMenu: true,
     },
   ];
 
