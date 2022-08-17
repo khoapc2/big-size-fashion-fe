@@ -56,8 +56,9 @@ export default function OfflineOrderForm() {
   const { store, order_id, create_date, status, payment_method, customer_name, staff_name } = data;
 
   console.log(changePaymentMethod);
+  console.log(totalProduct);
   useEffect(() => {
-    dispatch(viewDetailOfflineOrderAction(offlineOrderId));
+    dispatch(viewDetailOfflineOrderAction(offlineOrderId, "offline"));
   }, [
     dispatch,
     triggerReload,
@@ -265,7 +266,7 @@ export default function OfflineOrderForm() {
               {params.row.discount_price_per_one.toLocaleString("vi-VN")}
             </div>
           ) : (
-            <div>{params.row.discount_price_per_one.toLocaleString("vi-VN")}</div>
+            <div>{params.row.price_per_one.toLocaleString("vi-VN")}</div>
           )}
         </div>
       ),

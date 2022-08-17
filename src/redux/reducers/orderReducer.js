@@ -32,6 +32,9 @@ import {
   CHANGE_PAYMENT_METHOD_REQUEST,
   CHANGE_PAYMENT_METHOD_SUCCESS,
   CHANGE_PAYMENT_METHOD_FAIL,
+  VIEW_DETAIL_ONLINE_ORDER_LIST_REQUEST,
+  VIEW_DETAIL_ONLINE_ORDER_LIST_SUCCESS,
+  VIEW_DETAIL_ONLINE_ORDER_LIST_FAIL,
 } from "../../service/Validations/VarConstant";
 
 const calculateTotalPrice = ({ product_list }) => {
@@ -174,6 +177,27 @@ export const viewDetailOfflineOrderReducer = (
         totalProduct: [...action.payload.product_list, calculateTotalPrice(action.payload)],
       };
     case VIEW_DETAIL_OFFLINE_ORDER_LIST_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const viewDetailOnlineOrderReducer = (
+  state = { loading: true, data: [], error: "", totalProduct: [] },
+  action
+) => {
+  switch (action.type) {
+    case VIEW_DETAIL_ONLINE_ORDER_LIST_REQUEST:
+      return { ...state, loading: true };
+    case VIEW_DETAIL_ONLINE_ORDER_LIST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        data: action.payload,
+        totalProduct: [...action.payload.product_list, calculateTotalPrice(action.payload)],
+      };
+    case VIEW_DETAIL_ONLINE_ORDER_LIST_FAIL:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;

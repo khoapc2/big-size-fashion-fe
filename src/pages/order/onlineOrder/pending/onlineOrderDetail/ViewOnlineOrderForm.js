@@ -45,7 +45,7 @@ export default function OfflineOrderForm() {
   });
   const { onlineOrderId } = useParams();
   const dispatch = useDispatch();
-  const { data, loading, totalProduct } = useSelector((state) => state.viewDetailOfflineOrder);
+  const { data, loading, totalProduct } = useSelector((state) => state.viewDetailOnlineOrder);
   const approveOnOrder = useSelector((state) => state.approveOnlineOrder);
   const rejectOnOrder = useSelector((state) => state.rejectOnlineOrder);
   const cancelOnOrder = useSelector((state) => state.cancelOnlineOrder);
@@ -64,7 +64,7 @@ export default function OfflineOrderForm() {
   console.log(product_list);
 
   useEffect(() => {
-    dispatch(viewDetailOfflineOrderAction(onlineOrderId));
+    dispatch(viewDetailOfflineOrderAction(onlineOrderId, "online"));
     dispatch(listStaffInStoreAction());
   }, [
     dispatch,

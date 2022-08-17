@@ -10,6 +10,9 @@ import {
   VIEW_DETAIL_OFFLINE_ORDER_LIST_REQUEST,
   VIEW_DETAIL_OFFLINE_ORDER_LIST_SUCCESS,
   VIEW_DETAIL_OFFLINE_ORDER_LIST_FAIL,
+  VIEW_DETAIL_ONLINE_ORDER_LIST_REQUEST,
+  VIEW_DETAIL_ONLINE_ORDER_LIST_SUCCESS,
+  VIEW_DETAIL_ONLINE_ORDER_LIST_FAIL,
   APPROVE_OFFLINE_ORDER_REQUEST,
   APPROVE_OFFLINE_ORDER_SUCCESS,
   APPROVE_OFFLINE_ORDER_FAIL,
@@ -77,44 +80,69 @@ export const listOrder = (status, type, page, size) => async (dispatch) => {
   }
 };
 
-export const viewDetailOfflineOrderAction = (orderId) => async (dispatch) => {
-  dispatch({
-    type: VIEW_DETAIL_OFFLINE_ORDER_LIST_REQUEST,
-    payload: { orderId },
-  });
+export const viewDetailOfflineOrderAction = (orderId, status) => async (dispatch) => {
+  if (status === "online") {
+    dispatch({
+      type: VIEW_DETAIL_ONLINE_ORDER_LIST_REQUEST,
+      payload: "",
+    });
+  } else if (status === "offline") {
+    dispatch({
+      type: VIEW_DETAIL_OFFLINE_ORDER_LIST_REQUEST,
+      payload: "",
+    });
+  }
+
   try {
-    dispatch({ type: GET_ZALO_LINK_FAIL });
-    const data = await orderApi.getOrderDetailById(orderId);
-    if (
-      data.content.payment_method === "ZaloPay" &&
-      data.content.order_type === "Offline" &&
-      data.content.status === "Chờ xác nhận"
-    ) {
-      try {
-        const respone = await zaloApi.payWithZaloLink(orderId);
-        dispatch({ type: GET_ZALO_LINK_SUCCESS, payload: respone.content });
-      } catch (error) {
-        dispatch({
-          type: GET_ZALO_LINK_FAIL,
-          payload:
-            error.response && error.response.data.message
-              ? error.response.data.message
-              : error.message,
-        });
+    if (status === "offline") {
+      dispatch({ type: GET_ZALO_LINK_FAIL });
+      const data = await orderApi.getOrderDetailById(orderId);
+      if (
+        data.content.payment_method === "ZaloPay" &&
+        data.content.order_type === "Offline" &&
+        data.content.status === "Chờ xác nhận"
+      ) {
+        try {
+          const respone = await zaloApi.payWithZaloLink(orderId);
+          dispatch({ type: GET_ZALO_LINK_SUCCESS, payload: respone.content });
+        } catch (error) {
+          dispatch({
+            type: GET_ZALO_LINK_FAIL,
+            payload:
+              error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message,
+          });
+        }
       }
-    }
-    if (data.content.status === "Chờ xác nhận") {
-      const { content } = await orderApi.getPendingOrderDetailById(orderId);
-      dispatch({ type: VIEW_DETAIL_OFFLINE_ORDER_LIST_SUCCESS, payload: content });
-    } else {
-      dispatch({ type: VIEW_DETAIL_OFFLINE_ORDER_LIST_SUCCESS, payload: data.content });
+      if (data.content.status === "Chờ xác nhận") {
+        const { content } = await orderApi.getPendingOrderDetailById(orderId);
+        dispatch({ type: VIEW_DETAIL_OFFLINE_ORDER_LIST_SUCCESS, payload: content });
+      } else {
+        dispatch({ type: VIEW_DETAIL_OFFLINE_ORDER_LIST_SUCCESS, payload: data.content });
+      }
+    } else if (status === "online") {
+      const data = await orderApi.getOrderDetailById(orderId);
+      dispatch({ type: VIEW_DETAIL_ONLINE_ORDER_LIST_SUCCESS, payload: data.content });
     }
   } catch (error) {
-    dispatch({
-      type: VIEW_DETAIL_OFFLINE_ORDER_LIST_FAIL,
-      payload:
-        error.response && error.response.data.message ? error.response.data.message : error.message,
-    });
+    if (status === "online") {
+      dispatch({
+        type: VIEW_DETAIL_ONLINE_ORDER_LIST_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    } else if (status === "ofline") {
+      dispatch({
+        type: VIEW_DETAIL_OFFLINE_ORDER_LIST_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
   }
 };
 

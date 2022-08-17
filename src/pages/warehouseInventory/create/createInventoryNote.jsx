@@ -68,6 +68,7 @@ export default function CreateImportDeliver() {
 
   const { loading } = createInventoryNote;
 
+  console.log(viewDetailInventoryNoteAfterCreate.data.content.from_date);
   console.log(viewDetailInventoryNoteAfterCreate);
   console.log(listInventoryNoteAfterCreate);
   // console.log(currentDate());
@@ -223,7 +224,9 @@ export default function CreateImportDeliver() {
                           onChange={formik.handleChange}
                           value={
                             Object.entries(viewDetailInventoryNoteAfterCreate.data).length !== 0
-                              ? viewDetailInventoryNoteAfterCreate.data.content.from_date
+                              ? formatToDate(
+                                  viewDetailInventoryNoteAfterCreate.data.content.from_date
+                                )
                               : formik.values.from_date
                           }
                           readOnly={
