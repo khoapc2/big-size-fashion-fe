@@ -58,21 +58,17 @@ export default function CreateImportDeliver() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const response = useSelector((state) => state.quantityAjustment);
   const createInventoryNote = useSelector((state) => state.createInventoryNote);
-  const listInventoryNoteAfterCreate = useSelector((state) => state.listInventoryNoteAfterCreate);
+  // const listInventoryNoteAfterCreate = useSelector((state) => state.listInventoryNoteAfterCreate);
   const viewDetailInventoryNoteAfterCreate = useSelector(
     (state) => state.viewDetailInventoryNoteAfterCreate
   );
-  // let { data, loading, list_products, error } = useSelector((state) => state.listInventoryProduct);
 
   const { loading } = createInventoryNote;
 
-  console.log(viewDetailInventoryNoteAfterCreate.data.content.from_date);
   console.log(viewDetailInventoryNoteAfterCreate);
-  console.log(listInventoryNoteAfterCreate);
-  // console.log(currentDate());
-  // const { list_products } = data;
+  // console.log(viewDetailInventoryNoteAfterCreate);
+  // console.log(listInventoryNoteAfterCreate);
 
   useEffect(() => {
     if (Object.entries(createInventoryNote.data).length !== 0) {
