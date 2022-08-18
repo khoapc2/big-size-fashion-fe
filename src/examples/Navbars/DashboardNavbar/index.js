@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 // react-router components
 import { useLocation, useNavigate } from "react-router-dom";
@@ -21,7 +21,6 @@ import MDBox from "components/MDBox";
 // Material Dashboard 2 React example components
 import Breadcrumbs from "examples/Breadcrumbs";
 import NotificationItem from "examples/Items/NotificationItem";
-
 // Custom styles for DashboardNavbar
 import {
   navbar,
@@ -39,13 +38,15 @@ import {
   setOpenConfigurator,
 } from "context";
 
+import "./styleNavBar.css";
 import { logout } from "../../../redux/actions/userAction";
 
 function DashboardNavbar({ absolute, light, isMini }) {
+  const { deliveryNote } = useSelector((state) => state.deliveryCart);
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
-  const [openMenu, setOpenMenu] = useState(false);
+  // const [openMenu, setOpenMenu] = useState(false);
   const [openAccount, setAccount] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
   const navigate = useNavigate();
@@ -79,8 +80,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
   const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
-  const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
-  const handleCloseMenu = () => setOpenMenu(false);
+  // const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
+  // const handleCloseMenu = () => setOpenMenu(false);
 
   const handleOpenAccount = (event) => setAccount(event.currentTarget);
   const handleCloseAccount = () => setAccount(false);
@@ -111,23 +112,23 @@ function DashboardNavbar({ absolute, light, isMini }) {
   );
 
   // Render the notifications menu
-  const renderMenu = () => (
-    <Menu
-      anchorEl={openMenu}
-      anchorReference={null}
-      anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "left",
-      }}
-      open={Boolean(openMenu)}
-      onClose={handleCloseMenu}
-      sx={{ mt: 2 }}
-    >
-      <NotificationItem icon={<Icon>email</Icon>} title="Check new messages" />
-      <NotificationItem icon={<Icon>podcasts</Icon>} title="Manage Podcast sessions" />
-      <NotificationItem icon={<Icon>shopping_cart</Icon>} title="Payment successfully completed" />
-    </Menu>
-  );
+  // const renderMenu = () => (
+  //   <Menu
+  //     anchorEl={openMenu}
+  //     anchorReference={null}
+  //     anchorOrigin={{
+  //       vertical: "bottom",
+  //       horizontal: "left",
+  //     }}
+  //     open={Boolean(openMenu)}
+  //     onClose={handleCloseMenu}
+  //     sx={{ mt: 2 }}
+  //   >
+  //     <NotificationItem icon={<Icon>email</Icon>} title="Check new messages" />
+  //     <NotificationItem icon={<Icon>podcasts</Icon>} title="Manage Podcast sessions" />
+  //     <NotificationItem icon={<Icon>shopping_cart</Icon>} title="Payment successfully completed" />
+  //   </Menu>
+  // );
 
   // Styles for the navbar icons
   const iconsStyle = ({ palette: { dark, white, text }, functions: { rgba } }) => ({
@@ -202,11 +203,16 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 aria-controls="notification-menu"
                 aria-haspopup="true"
                 variant="contained"
-                onClick={handleOpenMenu}
+                onClick={() => navigate("/create-import-invoice")}
               >
-                <Icon sx={iconsStyle}>notifications</Icon>
+                <div className="delivery-header-fix-icon">
+                  <Icon sx={iconsStyle}> local_shipping_icon </Icon>
+                  {deliveryNote.length > 0 && (
+                    <div className="number-delivery">{deliveryNote.length}</div>
+                  )}
+                </div>
               </IconButton>
-              {renderMenu()}
+              {/* {renderMenu()} */}
             </MDBox>
           </MDBox>
         )}

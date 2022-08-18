@@ -122,7 +122,7 @@ export const viewDetailOfflineOrderAction = (orderId, status) => async (dispatch
         dispatch({ type: VIEW_DETAIL_OFFLINE_ORDER_LIST_SUCCESS, payload: data.content });
       }
     } else if (status === "online") {
-      const data = await orderApi.getOrderDetailById(orderId);
+      const data = await orderApi.getPendingOrderDetailById(orderId);
       dispatch({ type: VIEW_DETAIL_ONLINE_ORDER_LIST_SUCCESS, payload: data.content });
     }
   } catch (error) {
