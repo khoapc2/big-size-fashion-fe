@@ -35,22 +35,25 @@ import {
   useMaterialUIController,
   setTransparentNavbar,
   setMiniSidenav,
-  setOpenConfigurator,
+  // setOpenConfigurator,
 } from "context";
 
 import "./styleNavBar.css";
 import { logout } from "../../../redux/actions/userAction";
+import { viewOwnProfile } from "../../../redux/actions/managerAction";
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const { deliveryNote } = useSelector((state) => state.deliveryCart);
+  const profile = useSelector((state) => state.viewOwnProfileState);
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useMaterialUIController();
-  const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
+  const { miniSidenav, transparentNavbar, fixedNavbar, darkMode } = controller;
   // const [openMenu, setOpenMenu] = useState(false);
   const [openAccount, setAccount] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
   const navigate = useNavigate();
   const dispatcher = useDispatch();
+  console.log(profile);
 
   useEffect(() => {
     // Setting the navbar type
@@ -78,8 +81,21 @@ function DashboardNavbar({ absolute, light, isMini }) {
     return () => window.removeEventListener("scroll", handleTransparentNavbar);
   }, [dispatch, fixedNavbar]);
 
+  useEffect(() => {
+    // const currentUser = JSON.parse(localStorage.getItem("user"));
+    // if (currentUser) {
+    //   const { role } = currentUser;
+    //   if (role === "Admin") {
+    //   } else if (role === "Owner") {
+    //   } else if (role === "Manager") {
+    //   }
+    // }
+
+    dispatcher(viewOwnProfile());
+  }, []);
+
   const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
-  const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
+  // const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
   // const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   // const handleCloseMenu = () => setOpenMenu(false);
 
@@ -163,6 +179,17 @@ function DashboardNavbar({ absolute, light, isMini }) {
             {/* <MDBox pr={1}>
               <MDInput label="Search here" />
             </MDBox> */}
+            {profile.data.role === "Manager" && (
+              <div className="header-navbar-profile-name">Quản Lí, {profile.data.fullname}</div>
+            )}
+            {profile.data.role === "Admin" && (
+              <div className="header-navbar-profile-name">
+                Quản trị viên, {profile.data.fullname}
+              </div>
+            )}
+            {profile.data.role === "Owner" && (
+              <div className="header-navbar-profile-name">{profile.data.fullname}</div>
+            )}
             <MDBox color={light ? "white" : "inherit"}>
               {/* <Link to="/authentication/sign-in/basic"> */}
               <IconButton
@@ -186,7 +213,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                   {miniSidenav ? "menu_open" : "menu"}
                 </Icon>
               </IconButton>
-              <IconButton
+              {/* <IconButton
                 size="small"
                 disableRipple
                 color="inherit"
@@ -194,24 +221,27 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 onClick={handleConfiguratorOpen}
               >
                 <Icon sx={iconsStyle}>settings</Icon>
-              </IconButton>
-              <IconButton
-                size="small"
-                disableRipple
-                color="inherit"
-                sx={navbarIconButton}
-                aria-controls="notification-menu"
-                aria-haspopup="true"
-                variant="contained"
-                onClick={() => navigate("/create-import-invoice")}
-              >
-                <div className="delivery-header-fix-icon">
-                  <Icon sx={iconsStyle}> local_shipping_icon </Icon>
-                  {deliveryNote.length > 0 && (
-                    <div className="number-delivery">{deliveryNote.length}</div>
-                  )}
-                </div>
-              </IconButton>
+              </IconButton> */}
+              {profile.data.role === "Manager" && (
+                <IconButton
+                  size="small"
+                  disableRipple
+                  color="inherit"
+                  sx={navbarIconButton}
+                  aria-controls="notification-menu"
+                  aria-haspopup="true"
+                  variant="contained"
+                  onClick={() => navigate("/create-import-invoice")}
+                >
+                  <div className="delivery-header-fix-icon">
+                    <Icon sx={iconsStyle}> local_shipping_icon </Icon>
+                    {deliveryNote.length > 0 && (
+                      <div className="number-delivery">{deliveryNote.length}</div>
+                    )}
+                  </div>
+                </IconButton>
+              )}
+
               {/* {renderMenu()} */}
             </MDBox>
           </MDBox>

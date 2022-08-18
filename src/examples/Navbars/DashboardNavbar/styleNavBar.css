@@ -2,12 +2,15 @@
   display: flex;
 }
 .delivery-header-fix-icon .number-delivery {
-  /* background-color: white; */
-  /* width: 10px; */
-  /* height: 20px; */
   font-size: x-small;
   padding: top;
   border-radius: 50%;
   font-weight: 1000;
   color: red;
+}
+
+.header-navbar-profile-name {
+  font-size: medium;
+  margin-right: 2rem;
+  font-weight: 400;
 }

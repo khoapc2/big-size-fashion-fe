@@ -276,7 +276,6 @@ export default function CreateImportDeliver() {
                             </Form.Button>
                             <Form.Button
                               label="."
-                              // className="choose-button-add-product"
                               type="button"
                               color="green"
                               onClick={() =>
