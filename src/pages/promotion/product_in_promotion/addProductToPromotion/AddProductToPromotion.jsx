@@ -67,7 +67,7 @@ export default function AddProductToPromotionForm() {
         dispatch({ type: ADD_PRODUCT_TO_PROMOTION_FAIL, payload: false });
       } else if (success.length > 0) {
         console.log(success);
-        toast.error("Thêm sản phẩm khuyến mại thất bại, vui lòng thử lại");
+        toast.error("Thêm sản phẩm khuyến mại thất bại, có sản phẩm đang có khuyến mại");
         dispatch({ type: ADD_PRODUCT_TO_PROMOTION_FAIL, payload: false });
       }
     }
