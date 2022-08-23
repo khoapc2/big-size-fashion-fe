@@ -16,6 +16,7 @@ import {
   ACTIVE_STORE_LIST_DROPDOWN_SUCCESS,
   ACTIVE_STORE_LIST_DROPDOWN_FAIL,
   DELIVERY_CART,
+  USER_TOKEN,
 } from "../../../../service/Validations/VarConstant";
 import { DataGrid } from "@mui/x-data-grid";
 import { Formik } from "formik";
@@ -51,6 +52,7 @@ export default function CreateImportDeliver() {
 
   const { store } = activeStore;
   const mainWareHouse = useSelector((state) => state.getMainWareHouse);
+  const { userToken } = useSelector((state) => state.userToken);
   const [rows, setRows] = useState([]);
   const [submit, setSubmit] = useState(false);
   const [deliveryName, setDeliverName] = useState("");
@@ -69,6 +71,15 @@ export default function CreateImportDeliver() {
     dispatch(getProductToImportAction());
     dispatch(getMainWareHouseAction());
     dispatch({ type: ACTIVE_STORE_LIST_DROPDOWN_SUCCESS, payload: "" });
+    if (userToken) {
+      const currentUser = JSON.parse(localStorage.getItem("user"));
+      if (currentUser) {
+        const { token } = currentUser;
+        if (userToken !== token) {
+          dispatch({ type: DELIVERY_CART, payload: "" });
+        }
+      }
+    }
   }, [dispatch, triggerReload]);
 
   useEffect(() => {

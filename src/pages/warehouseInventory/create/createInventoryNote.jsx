@@ -335,7 +335,11 @@ export default function CreateImportDeliver() {
                         }}
                         autoHeight
                         getRowId={(r) => r.product_detail_id}
-                        rows={viewDetailInventoryNoteAfterCreate.data.content.inventory_note_detail}
+                        rows={
+                          viewDetailInventoryNoteAfterCreate
+                            ? viewDetailInventoryNoteAfterCreate.data.content.inventory_note_detail
+                            : []
+                        }
                         loading={viewDetailInventoryNoteAfterCreate.loading}
                         columns={columns}
                         pageSize={10}

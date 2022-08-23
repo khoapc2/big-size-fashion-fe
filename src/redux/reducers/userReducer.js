@@ -4,6 +4,7 @@ import {
   USER_LOGIN_FAIL,
   USER_LOGOUT,
   TRIGGER_RELOAD,
+  USER_TOKEN,
 } from "../../service/Validations/VarConstant";
 
 export const userLoginReducer = (state = {}, action) => {
@@ -25,6 +26,15 @@ export const reloadReducer = (state = {}, action) => {
   switch (action.type) {
     case TRIGGER_RELOAD:
       return { ...state };
+    default:
+      return state;
+  }
+};
+
+export const userTokenReducer = (state = { userToken: "" }, action) => {
+  switch (action.type) {
+    case USER_TOKEN:
+      return { ...state, userToken: action.payload };
     default:
       return state;
   }

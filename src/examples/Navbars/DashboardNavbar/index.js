@@ -37,10 +37,14 @@ import {
   setMiniSidenav,
   // setOpenConfigurator,
 } from "context";
-
 import "./styleNavBar.css";
 import { logout } from "../../../redux/actions/userAction";
 import { viewOwnProfile } from "../../../redux/actions/managerAction";
+import {
+  REMOVE_DELIVERY_CART,
+  REMOVE_INVENTORY_PRODUCT_LIST_LOG_OUT,
+  CREATE_INVENTORY_NOTE_TRIGGER,
+} from "../../../service/Validations/VarConstant";
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const { deliveryNote } = useSelector((state) => state.deliveryCart);
@@ -50,6 +54,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const { miniSidenav, transparentNavbar, fixedNavbar, darkMode } = controller;
   // const [openMenu, setOpenMenu] = useState(false);
   const [openAccount, setAccount] = useState(false);
+  // const { userToken } = useSelector((state) => state.userToken);
+
   const route = useLocation().pathname.split("/").slice(1);
   const navigate = useNavigate();
   const dispatcher = useDispatch();
@@ -82,12 +88,13 @@ function DashboardNavbar({ absolute, light, isMini }) {
   }, [dispatch, fixedNavbar]);
 
   useEffect(() => {
-    // const currentUser = JSON.parse(localStorage.getItem("user"));
-    // if (currentUser) {
-    //   const { role } = currentUser;
-    //   if (role === "Admin") {
-    //   } else if (role === "Owner") {
-    //   } else if (role === "Manager") {
+    // if (userToken) {
+    //   const currentUser = JSON.parse(localStorage.getItem("user"));
+    //   if (currentUser) {
+    //     const { token } = currentUser;
+    //     if (userToken !== token) {
+    //       dispatch({ type: DELIVERY_CART, payload: "" });
+    //     }
     //   }
     // }
 
@@ -104,6 +111,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
   // Log out
   const signOut = () => {
+    dispatcher({ type: REMOVE_DELIVERY_CART });
+    dispatcher({ type: CREATE_INVENTORY_NOTE_TRIGGER });
+    dispatcher({ type: REMOVE_INVENTORY_PRODUCT_LIST_LOG_OUT });
     dispatcher(logout());
     navigate("/");
   };

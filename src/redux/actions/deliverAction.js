@@ -24,6 +24,7 @@ import {
   DELIVERY_CART,
   DELIVERY_CART_ACTION_SUCCESS,
   DELIVERY_CART_ACTION_FAIL,
+  USER_TOKEN,
 } from "../../service/Validations/VarConstant";
 
 export const listImportDeliver = (page, size) => async (dispatch) => {
@@ -225,6 +226,11 @@ export const deliverCartAction = (products, delivery_cart) => async (dispatch) =
     }
     dispatch({ type: DELIVERY_CART, payload: delivery_cart });
     dispatch({ type: DELIVERY_CART_ACTION_SUCCESS, payload: true });
+    const currentUser = JSON.parse(localStorage.getItem("user"));
+    if (currentUser) {
+      const { token } = currentUser;
+      dispatch({ type: USER_TOKEN, payload: token });
+    }
   } catch (error) {
     dispatch({
       type: DELIVERY_CART_ACTION_FAIL,

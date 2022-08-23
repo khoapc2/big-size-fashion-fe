@@ -23,6 +23,7 @@ import {
   GET_INVENTORY_PRODUCT_LIST_REQUEST_AFTER_CREATE,
   GET_INVENTORY_PRODUCT_LIST_SUCCESS_AFTER_CREATE,
   GET_INVENTORY_PRODUCT_LIST_FAIL_AFTER_CREATE,
+  REMOVE_INVENTORY_PRODUCT_LIST_LOG_OUT,
 } from "../../service/Validations/VarConstant";
 
 function formatArray(payload) {
@@ -104,6 +105,8 @@ export const viewDetailInventoryNoteAfterCreateReducer = (
       return { ...state, loading: false, data: action.payload };
     case GET_INVENTORY_PRODUCT_LIST_FAIL_AFTER_CREATE:
       return { ...state, loading: false, error: action.payload };
+    case REMOVE_INVENTORY_PRODUCT_LIST_LOG_OUT:
+      return { ...state, data: {} };
     default:
       return state;
   }
@@ -131,7 +134,7 @@ export const createInventoryNoteReducer = (
 ) => {
   switch (action.type) {
     case CREATE_INVENTORY_NOTE_TRIGGER:
-      return { ...state, loading: "normal" };
+      return { ...state, loading: "normal", data: {} };
     case CREATE_INVENTORY_NOTE_REQUEST:
       return { ...state, loading: "loading" };
     case CREATE_INVENTORY_NOTE_SUCCESS:

@@ -5,6 +5,9 @@ import {
   USER_LOGIN_FAIL,
   TRIGGER_RELOAD,
   USER_LOGOUT,
+  REMOVE_DELIVERY_CART,
+  REMOVE_INVENTORY_PRODUCT_LIST_LOG_OUT,
+  CREATE_INVENTORY_NOTE_TRIGGER,
 } from "../../service/Validations/VarConstant";
 
 export const guestLogin = (username, password) => async (dispatch) => {
@@ -35,5 +38,8 @@ export const triggerReload = () => async (dispatch) => {
 
 export const logout = () => (dispatch) => {
   localStorage.removeItem("user");
+  dispatch({ type: REMOVE_DELIVERY_CART });
+  dispatch({ type: CREATE_INVENTORY_NOTE_TRIGGER });
+  dispatch({ type: REMOVE_INVENTORY_PRODUCT_LIST_LOG_OUT });
   dispatch({ type: USER_LOGOUT });
 };

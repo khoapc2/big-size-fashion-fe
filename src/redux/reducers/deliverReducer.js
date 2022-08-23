@@ -23,6 +23,7 @@ import {
   DELIVERY_CART,
   DELIVERY_CART_ACTION_SUCCESS,
   DELIVERY_CART_ACTION_FAIL,
+  REMOVE_DELIVERY_CART,
 } from "../../service/Validations/VarConstant";
 
 const calculateTotalPrice = ({ total_price }) => {
@@ -175,6 +176,8 @@ export const deliveryCartReducer = (
       return { ...state, actionSuccess: action.payload };
     case DELIVERY_CART_ACTION_FAIL:
       return { ...state, actionFail: action.payload };
+    case REMOVE_DELIVERY_CART:
+      return { ...state, deliveryNote: [] };
     default:
       return state;
   }
