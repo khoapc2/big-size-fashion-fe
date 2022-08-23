@@ -46,16 +46,28 @@ export default function ViewEmployeeForm() {
                   <Form onSubmit={formik.handleSubmit}>
                     <div className="accountTop">
                       <div className="accountTopLeft">
-                        <Form.Input
-                          fluid
-                          label="Họ và tên"
-                          placeholder="Họ và tên"
-                          name="fullname"
-                          onChange={formik.handleChange}
-                          value={formik.values.fullname}
-                          error={formik.errors.fullname}
-                          readOnly
-                        />
+                        <Form.Group widths="equal">
+                          <Form.Input
+                            fluid
+                            label="Họ và tên"
+                            placeholder="Họ và tên"
+                            name="fullname"
+                            onChange={formik.handleChange}
+                            value={formik.values.fullname}
+                            error={formik.errors.fullname}
+                            readOnly
+                          />
+                          <Form.Input
+                            fluid
+                            label="Cửa hàng"
+                            placeholder="Nhập lại mật khẩu"
+                            name="store_name"
+                            onChange={formik.handleChange}
+                            value={formik.values.store_name}
+                            error={formik.errors.store_name}
+                            readOnly
+                          />
+                        </Form.Group>
                         <Form.Group widths="equal">
                           <Form.Input
                             fluid
@@ -87,28 +99,6 @@ export default function ViewEmployeeForm() {
                             onChange={formik.handleChange}
                             value={formik.values.email}
                             error={formik.errors.email}
-                            readOnly
-                          />
-                          <Form.Input
-                            fluid
-                            label="Cửa hàng"
-                            placeholder="Nhập lại mật khẩu"
-                            name="store_name"
-                            onChange={formik.handleChange}
-                            value={formik.values.store_name}
-                            error={formik.errors.store_name}
-                            readOnly
-                          />
-                        </Form.Group>
-                        <Form.Group widths="equal">
-                          <Form.Input
-                            fluid
-                            label="Giới tính"
-                            placeholder="Giới tính"
-                            name="gender"
-                            onChange={formik.handleChange}
-                            value={formik.values.gender}
-                            error={formik.errors.gender}
                             readOnly
                           />
                           <Form.Input
