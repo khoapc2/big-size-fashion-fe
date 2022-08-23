@@ -434,6 +434,7 @@ export default function OfflineOrderForm() {
                                   />
                                 ) : (
                                   <Form.Select
+                                    search
                                     fluid
                                     options={staffDropdown.data || []}
                                     placeholder="Nhân viên"

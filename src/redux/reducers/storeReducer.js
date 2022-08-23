@@ -38,11 +38,12 @@ function resultArr(payload) {
 }
 
 function resultArr1(payload) {
+  console.log(payload);
   let result = [];
   const newArray = [...payload];
-  result = newArray.map(({ store_id, store_name }) => ({
+  result = newArray.map(({ store_id, store_name, distance }) => ({
     key: store_id.toString(),
-    text: store_name,
+    text: `${store_name}  | Cách ${distance} km`,
     value: store_id,
   }));
   return result;
