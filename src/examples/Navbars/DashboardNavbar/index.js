@@ -59,7 +59,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const route = useLocation().pathname.split("/").slice(1);
   const navigate = useNavigate();
   const dispatcher = useDispatch();
-  console.log(profile);
 
   useEffect(() => {
     // Setting the navbar type

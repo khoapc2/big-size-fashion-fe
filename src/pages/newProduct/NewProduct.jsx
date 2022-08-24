@@ -49,32 +49,8 @@ export default function NewProduct() {
   const [price, setPrice] = useState(0);
   const { size } = useSelector((state) => state.sizeList);
   const { colour } = useSelector((state) => state.colorList);
-  const  category  = useSelector((state) => state.getListCategoryDropdown);
+  const category = useSelector((state) => state.getListCategoryDropdown);
   const triggerReload = useSelector((state) => state.triggerReload);
-
-  // console.log(typeof colour);
-  // console.log(colour);
-  // console.log(typeof size);
-  // console.log(size);
-  console.log(typeof category);
-  console.log("category: " , category);
-  // console.log(typeof options);
-  // console.log(options);
-
-  // const newColorArray = color.map((item) => {
-  //   return {
-  //     key: item.colour_id,
-  //     text: item.colour_name,
-  //     value: item.colour_name,
-  //   };
-  // });
-  const handleClick = ({ values }) => {
-    values.colourWithSize.push({
-      id: values.colourWithSize - 1,
-      colour: "",
-      size: [],
-    });
-  };
 
   useEffect(() => {
     const status = true;
@@ -494,19 +470,6 @@ export default function NewProduct() {
                                         loading="lazy"
                                         alt={item}
                                       />
-                                      {/* {loading} ? (
-                        <Stack
-                          width="100%"
-                          height="100%"
-                          direction="column"
-                          alignItems="center"
-                          justifyContent="center"
-                        >
-                          <CircularProgress />
-                        </Stack>
-                        ) : (
-                        
-                        ) */}
                                       <ImageListItemBar
                                         sx={{
                                           background:

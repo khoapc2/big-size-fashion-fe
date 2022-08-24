@@ -43,18 +43,19 @@ export default function NewProduct() {
 
   const [selectedImgs, setSelectedImgs] = useState([]);
   const [fileImg, setFileImg] = useState();
+  const [testImg, setTestImg] = useState([]);
+
   const [flagSubmit, setFlagSubmit] = useState(false);
   // const [addToggle, setAddToggle] = useState(false);
-  console.log(flagSubmit);
   // const [price, setPrice] = useState(0);
   const { size } = useSelector((state) => state.getListSizeDropdown);
   const { colour } = useSelector((state) => state.getListColorDropdown);
   const { category } = useSelector((state) => state.getListCategoryDropdown);
   const response = useSelector((state) => state.createProductState);
   const { success, error, loading } = response;
+
   useEffect(() => {
     if (success) {
-      console.log(success);
       toast.success("Tạo sản phẩm thành công");
       setFlagSubmit(true);
       dispatch({ type: CREATE_PRODUCT_SUCCESS, payload: false });
@@ -74,38 +75,42 @@ export default function NewProduct() {
 
   const onSubmit = (data) => {
     const formData = new FormData();
-    Object.values(fileImg).forEach(function (img, index) {
-      console.log(img);
+    Object.values(testImg).forEach(function (img, index) {
       formData.append("files", img);
     });
-    for (var pair of formData.entries()) {
-      console.log(pair[0] + " : " + pair[1]);
-    }
     dispatch(createProduct(data, formData));
   };
 
   const selectedImg = (e) => {
     let selectedFiles = e.target.files;
-    console.log(selectedFiles);
     // console.log(selectedFiles);
     setFileImg(selectedFiles);
 
     const selectedFilesArray = Array.from(selectedFiles);
     // console.log(selectedFilesArray);
+    // console.log(fileImg);
 
     const getFileArray = selectedFilesArray.slice(0, 10);
+    // console.log(getFileArray);
+    setTestImg([...testImg, ...getFileArray]);
+
     const imgsArray = getFileArray.map((file) => URL.createObjectURL(file));
+    // console.log(imgsArray);
 
     setSelectedImgs((prevImg) => prevImg.concat(imgsArray));
+    // console.log(selectedImgs);
   };
 
-  const selectDelete = (image) => {
+  // console.log(testImg);
+
+  const selectDelete = (image, index) => {
     setSelectedImgs(selectedImgs.filter((e) => e !== image));
+    setTestImg(testImg.filter((e, ind) => ind !== index));
   };
   const handleReset = () => {
-    console.log("here");
     setFlagSubmit(false);
     setSelectedImgs([]);
+    setTestImg([]);
   };
 
   return (
@@ -130,7 +135,7 @@ export default function NewProduct() {
           validateOnChange={true}
         >
           {(formik) => {
-            console.log(formik);
+            // console.log(formik);
             return (
               <div className="product">
                 <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
@@ -169,9 +174,11 @@ export default function NewProduct() {
                           name="brandName"
                           onChange={formik.handleChange}
                           value={formik.values.brandName}
-                          error={formik.touched.brandName && formik.errors.brandName
-                            ? formik.errors.brandName
-                            : null}
+                          error={
+                            formik.touched.brandName && formik.errors.brandName
+                              ? formik.errors.brandName
+                              : null
+                          }
                           disabled={flagSubmit}
                         />
                       </Form.Group>
@@ -185,14 +192,14 @@ export default function NewProduct() {
                           placeholder="Thể loại"
                           onChange={(e, v) => {
                             formik.setFieldValue("category", v.value);
-                            console.log(v);
-                            console.log(v.value);
                           }}
                           name="category"
                           value={formik.values.category}
-                          error={formik.touched.category && formik.errors.category
-                            ? formik.errors.category
-                            : null}
+                          error={
+                            formik.touched.category && formik.errors.category
+                              ? formik.errors.category
+                              : null
+                          }
                           disabled={flagSubmit}
                         />
                         <Form.Select
@@ -204,9 +211,7 @@ export default function NewProduct() {
                           onChange={(e, v) => formik.setFieldValue("sex", v.value)}
                           name="sex"
                           value={formik.values.sex}
-                          error={formik.touched.sex && formik.errors.sex
-                            ? formik.errors.sex
-                            : null}
+                          error={formik.touched.sex && formik.errors.sex ? formik.errors.sex : null}
                           disabled={flagSubmit}
                         />
                       </Form.Group>
@@ -216,9 +221,11 @@ export default function NewProduct() {
                         name="description"
                         onChange={formik.handleChange}
                         value={formik.values.description}
-                        error={formik.touched.description && formik.errors.description
-                          ? formik.errors.description
-                          : null}
+                        error={
+                          formik.touched.description && formik.errors.description
+                            ? formik.errors.description
+                            : null
+                        }
                         disabled={flagSubmit}
                       />
 
@@ -233,6 +240,7 @@ export default function NewProduct() {
                                       className="form-control"
                                       name={`colourWithSize[${index}].colour`}
                                       fluid
+                                      search
                                       label="Màu sắc"
                                       options={colour || []}
                                       onChange={(e, v) =>
@@ -241,7 +249,7 @@ export default function NewProduct() {
                                           v.value
                                         )
                                       }
-                                      placeholder="Màu sắc"
+                                      // placeholder="Màu sắc"
                                       disabled={flagSubmit}
                                     />
                                     <div className="text-danger">
@@ -257,6 +265,7 @@ export default function NewProduct() {
                                       multiple
                                       fluid
                                       label="Kích cỡ"
+                                      search
                                       options={size || []}
                                       onChange={(e, v) =>
                                         formik.setFieldValue(
@@ -264,7 +273,7 @@ export default function NewProduct() {
                                           v.value
                                         )
                                       }
-                                      placeholder="Kích cỡ"
+                                      // placeholder="Kích cỡ"
                                       disabled={flagSubmit}
                                     />
                                     <div className="text-danger">
@@ -282,12 +291,13 @@ export default function NewProduct() {
                                     color="red"
                                     onClick={() => remove(index)}
                                   >
-                                    Xóa
+                                    X
                                   </Form.Button>
                                 </Form.Group>
                               </div>
                             ))}
                             <Form.Button
+                              className="button-add-size-color"
                               color="green"
                               onClick={() => push({ colour: "", size: [] })}
                               disabled={flagSubmit}
@@ -387,7 +397,7 @@ export default function NewProduct() {
                                             "rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)",
                                         }}
                                         position="top"
-                                        onClick={() => selectDelete(item)}
+                                        onClick={() => selectDelete(item, index)}
                                         actionIcon={
                                           <IconButton
                                             sx={{ color: "white !important" }}
@@ -415,10 +425,15 @@ export default function NewProduct() {
                         Tạo thêm sản phẩm
                       </Form.Button>
                     ) : (
-                      <Form.Button type="submit" color="green">
-                        Xác nhận
-                      </Form.Button>
+                      <div>
+                        {!loading && (
+                          <Form.Button type="submit" color="green">
+                            Xác nhận
+                          </Form.Button>
+                        )}
+                      </div>
                     )}
+                    {loading && <Loading />}
                   </div>
                 </Form>
               </div>
