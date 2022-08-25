@@ -16,7 +16,6 @@ import "./onlineOrder.css";
 
 import { listOrder } from "../../../../../redux/actions/orderAction";
 
-
 const styleLink = document.createElement("link");
 styleLink.rel = "stylesheet";
 styleLink.href = "https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css";
@@ -130,7 +129,6 @@ export default function StaffList() {
           rows={data}
           autoHeight
           rowCount={totalCount}
-          rowsPerPageOptions={[10, 20, 50, 100]}
           pagination
           page={pageState.page - 1}
           paginationMode="server"
@@ -146,7 +144,6 @@ export default function StaffList() {
               console.log(query);
             })
           }
-        
           components={{
             Toolbar: CustomToolbar,
             NoRowsOverlay,
@@ -154,7 +151,6 @@ export default function StaffList() {
           }}
         />
       </div>
-     
     </div>
   );
 }

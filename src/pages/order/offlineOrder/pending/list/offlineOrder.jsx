@@ -130,7 +130,6 @@ export default function StaffList() {
           getRowId={(r) => r.order_id}
           rows={data}
           rowCount={totalCount}
-          rowsPerPageOptions={[10, 20, 50, 100]}
           pagination
           page={pageState.page - 1}
           paginationMode="server"

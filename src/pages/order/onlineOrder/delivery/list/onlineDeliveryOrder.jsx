@@ -128,7 +128,6 @@ export default function StaffList() {
           rows={data}
           autoHeight
           rowCount={totalCount}
-          rowsPerPageOptions={[10, 20, 50, 100]}
           pagination
           page={pageState.page - 1}
           paginationMode="server"
