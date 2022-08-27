@@ -278,6 +278,13 @@ export default function OfflineOrderForm() {
       field: "current_quantity_in_store",
       headerName: "S.Lượng trong cửa hàng",
       width: 180,
+      renderCell: (params) => (
+        <div
+          style={{ color: params.row.current_quantity_in_store < params.row.quantity ? "red" : "" }}
+        >
+          {params.row.current_quantity_in_store}
+        </div>
+      ),
     },
     {
       field: "total_quantity_price",
