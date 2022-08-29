@@ -277,28 +277,6 @@ export default function CreateImportDeliver() {
                             }
                             disabled={submit}
                           />
-                          {store && store.length > 0 ? (
-                            <Form.Select
-                              label="Nhập hàng từ (cửa hàng còn hàng)"
-                              options={activeStore.store || []}
-                              placeholder="Từ cửa hàng"
-                              name="store_name"
-                              onChange={(e, v) => {
-                                const { text, value } = activeStore.store.find(
-                                  (o) => o.value === v.value
-                                );
-                                formik.setFieldValue("store_id", v.value);
-                                formik.setFieldValue("store_name", text);
-                                setStoreID(value);
-                              }}
-                              value={formik.values.store_id}
-                              // error={formik.errors.product_name}
-                              text={formik.values.store_name}
-                              disabled={submit}
-                            />
-                          ) : (
-                            ""
-                          )}
                         </Form.Group>
 
                         <Form.Group className="top-add-product" widths="4">
@@ -365,6 +343,31 @@ export default function CreateImportDeliver() {
                           >
                             Làm mới
                           </Form.Button>
+                        </Form.Group>
+
+                        <Form.Group className="top-add-product" widths="equal">
+                          {store && store.length > 0 ? (
+                            <Form.Select
+                              label="Nhập hàng từ (cửa hàng còn hàng)"
+                              options={activeStore.store || []}
+                              placeholder="Từ cửa hàng"
+                              name="store_name"
+                              onChange={(e, v) => {
+                                const { text, value } = activeStore.store.find(
+                                  (o) => o.value === v.value
+                                );
+                                formik.setFieldValue("store_id", v.value);
+                                formik.setFieldValue("store_name", text);
+                                setStoreID(value);
+                              }}
+                              value={formik.values.store_id}
+                              // error={formik.errors.product_name}
+                              text={formik.values.store_name}
+                              disabled={submit}
+                            />
+                          ) : (
+                            ""
+                          )}
                         </Form.Group>
                       </Form>
                     );

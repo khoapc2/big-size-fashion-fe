@@ -115,7 +115,13 @@ export default function OfflineOrderForm() {
       toast.success("Hủy thành công, đơn hàng quay lại chờ xác nhận");
       dispatch({ type: CANCEL_ONLINE_ORDER_SUCCESS, payload: false });
     }
-    if (cancelOnOrder.error) {
+    if (
+      typeof cancelOnOrder.error === "string" &&
+      cancelOnOrder.error.includes("Không thể hủy đơn hàng")
+    ) {
+      toast.error("Đơn hàng đã đóng gói hoặc đang giao, không thể hủy");
+      dispatch({ type: CANCEL_ONLINE_ORDER_FAIL, payload: false });
+    } else if (cancelOnOrder.error) {
       toast.error("Hủy đơn hàng thất bại, vui lòng thử lại");
       dispatch({ type: CANCEL_ONLINE_ORDER_FAIL, payload: false });
     }
@@ -363,7 +369,7 @@ export default function OfflineOrderForm() {
                       ) : (
                         <div />
                       )}
-                      {status === "Đã xác nhận" || status === "Đã đóng gói" ? (
+                      {status === "Đã xác nhận" ? (
                         <Stack className="bottom-button" direction="row" spacing={2}>
                           <Button
                             className="deny"
