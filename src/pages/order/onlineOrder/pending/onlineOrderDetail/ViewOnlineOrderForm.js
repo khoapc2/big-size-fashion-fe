@@ -363,7 +363,7 @@ export default function OfflineOrderForm() {
                       ) : (
                         <div />
                       )}
-                      {status === "Đã xác nhận" || status === "Đã đóng gói" ? (
+                      {status === "Đã xác nhận" ? (
                         <Stack className="bottom-button" direction="row" spacing={2}>
                           <Button
                             className="deny"
