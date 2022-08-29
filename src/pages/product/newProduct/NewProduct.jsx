@@ -284,6 +284,7 @@ export default function NewProduct() {
                                     </div>
                                   </div>
                                   <Form.Button
+                                    className="remove-category"
                                     label="."
                                     disabled={
                                       formik.values.colourWithSize.length == 1 || flagSubmit
