@@ -220,7 +220,9 @@ export const cancelOnlineOrderAction = (id) => async (dispatch) => {
     dispatch({
       type: CANCEL_ONLINE_ORDER_FAIL,
       payload:
-        error.response && error.response.data.message ? error.response.data.message : error.message,
+        error.response && error.response.data.error.message
+          ? error.response.data.error.message
+          : error.message,
     });
   }
 };
