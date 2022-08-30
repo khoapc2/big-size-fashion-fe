@@ -72,7 +72,6 @@ export default function CreateImportDeliver() {
 
   useEffect(() => {
     if (Object.entries(createInventoryNote.data).length !== 0) {
-      console.log("Có data");
       dispatch(
         viewDetailAfterCreateInventoryNoteAction(createInventoryNote.data.content.inventory_note_id)
       );

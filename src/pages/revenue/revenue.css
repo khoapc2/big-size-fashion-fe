@@ -9,6 +9,10 @@
   justify-content: center;
 }
 
+.field.view-revenue-button.field > label {
+  color: white;
+}
+
 .statistic-header-container-input {
   background-color: white;
   border-radius: 10px;
@@ -59,8 +63,4 @@
 .order-quantity {
   font-size: 50px;
   font-weight: bold;
-}
-
-.field.view-revenue-button.field > label {
-  color: white;
 }

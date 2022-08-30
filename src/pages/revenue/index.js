@@ -9,6 +9,7 @@ import { Formik } from "formik";
 
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import "./revenue.css";
 
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -26,7 +27,6 @@ import { SchemaErrorMessageRevenueManager } from "../../service/Validations/Reve
 // Dashboard components
 // import Projects from "layouts/dashboard/components/Projects";
 // import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
-import "./revenue.css";
 import { listRevenueInMonthAction } from "../../redux/actions/revenueAction";
 import { listActiveStore } from "../../redux/actions/storeAction";
 import { orderTodayAction } from "../../redux/actions/orderAction";

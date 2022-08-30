@@ -505,14 +505,22 @@ export default function CreateImportDeliver() {
           </div>
           <div className="accountBottom">
             {list_products && list_products.length > 0 ? (
-              <Form.Button
-                type="submit"
-                color="yellow"
-                onClick={handleClickAdjusment}
-                disabled={response.data.length > 0}
-              >
-                Điều chỉnh
-              </Form.Button>
+              <div>
+                <div>
+                  {response.loading ? (
+                    <Loading />
+                  ) : (
+                    <Form.Button
+                      type="submit"
+                      color="yellow"
+                      onClick={handleClickAdjusment}
+                      disabled={response.data.length > 0}
+                    >
+                      Điều chỉnh
+                    </Form.Button>
+                  )}
+                </div>
+              </div>
             ) : (
               <Form.Button type="submit" color="green" onClick={handleClickButton}>
                 Kiểm tra
