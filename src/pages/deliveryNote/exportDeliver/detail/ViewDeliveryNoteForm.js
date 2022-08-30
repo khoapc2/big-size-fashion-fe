@@ -309,6 +309,10 @@ export default function DeliveryNoteForm() {
                 <div className="title">Địa chỉ chi nhánh:</div>
                 <div className="content">&emsp;{data.to_store.store_address}</div>
               </div>
+              <div className="container-title">
+                <div className="title">Ngày tạo:</div>
+                <div className="content">&emsp;{data.to_store.store_phone}</div>
+              </div>
             </Grid>
             <Grid item xs={6}>
               <div className="container-title">

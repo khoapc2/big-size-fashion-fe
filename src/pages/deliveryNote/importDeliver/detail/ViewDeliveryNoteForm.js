@@ -32,6 +32,7 @@ export default function DeliveryNoteForm() {
   const { data, loading, totalProduct } = useSelector((state) => state.viewDetailDeliveryNote);
   const cancelDelivery = useSelector((state) => state.cancelDeliveryState);
 
+  // console.log(data);
   useEffect(() => {
     dispatch(viewDetailDeliveryNoteAction(deliveryId));
   }, [dispatch, triggerReload, cancelDelivery.success, cancelDelivery.error]);
@@ -159,10 +160,7 @@ export default function DeliveryNoteForm() {
                   <div className="title">Tên đơn:</div>
                   <div className="content">&emsp;{data.delivery_note_name}</div>
                 </div>
-                <div className="container-title">
-                  <div className="title">Ngày tạo:</div>
-                  <div className="content">&emsp;{data.create_date}</div>
-                </div>
+
                 <div className="container-title">
                   <div className="title">Người Tạo Đơn:</div>
                   <div className="content">&emsp;{data.receive_staff_name}</div>
@@ -171,8 +169,20 @@ export default function DeliveryNoteForm() {
                   <div className="title">Cửa hàng: </div>
                   <div className="content">&emsp;{data.to_store.store_name}</div>
                 </div>
+                <div className="container-title">
+                  <div className="title">SĐT: </div>
+                  <div className="content">&emsp;{data.to_store.store_phone}</div>
+                </div>
               </Grid>
               <Grid item xs={8}>
+                <div className="container-title">
+                  <div className="title">Ngày tạo:</div>
+                  <div className="content">&emsp;{data.create_date}</div>
+                </div>
+                <div className="container-title">
+                  <div className="title">Tới quản lí:</div>
+                  <div className="content">&emsp;{data.from_store.manager_name}</div>
+                </div>
                 <div className="container-title">
                   <div className="title">Cửa hàng nhận yêu cầu: </div>
                   <div className="content">&emsp;{data.from_store.store_name}</div>
