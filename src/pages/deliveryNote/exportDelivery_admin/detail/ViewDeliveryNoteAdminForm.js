@@ -289,32 +289,49 @@ export default function DeliveryNoteForm() {
             )}
           </div>
           <Grid container>
-            <Grid item xs={4}>
+            <Grid item xs={6}>
               <div className="container-title">
                 <div className="title">Tên đơn:</div>
                 <div className="content">&emsp;{data.delivery_note_name}</div>
               </div>
               <div className="container-title">
-                <div className="title">Ngày tạo:</div>
-                <div className="content">&emsp;{data.create_date}</div>
+                <div className="title">Từ chi nhánh:</div>
+                <div className="content">&emsp;{data.to_store.store_name}</div>
               </div>
               <div className="container-title">
                 <div className="title">Người Tạo Đơn:</div>
                 <div className="content">&emsp;{data.receive_staff_name}</div>
               </div>
-            </Grid>
-            <Grid item xs={8}>
+
               <div className="container-title">
-                <div className="title">Cửa hàng: </div>
-                <div className="content">&emsp;{data.to_store.store_name}</div>
+                <div className="title">SĐT Người tạo đơn:</div>
+                <div className="content">&emsp;{data.to_store.store_phone}</div>
+              </div>
+              <div className="container-title">
+                <div className="title">Địa chỉ chi nhánh:</div>
+                <div className="content">&emsp;{data.to_store.store_address}</div>
+              </div>
+            </Grid>
+            <Grid item xs={6}>
+              <div className="container-title">
+                <div className="title">Ngày tạo:</div>
+                <div className="content">&emsp;{data.create_date}</div>
+              </div>
+              <div className="container-title">
+                <div className="title">Đến Cửa hàng: </div>
+                <div className="content">&emsp;{data.from_store.store_name}</div>
+              </div>
+              <div className="container-title">
+                <div className="title">Quản lí: </div>
+                <div className="content">&emsp;{data.from_store.manager_name}</div>
               </div>
               <div className="container-title">
                 <div className="title">SĐT: </div>
-                <div className="content"> &emsp; {data.to_store.store_phone}</div>
+                <div className="content"> &emsp; {data.from_store.store_phone}</div>
               </div>
               <div className="container-title">
                 <div className="title">Địa chỉ: </div>
-                <div className="content">&emsp; {data.to_store.store_address}</div>
+                <div className="content">&emsp; {data.from_store.store_address}</div>
               </div>
             </Grid>
           </Grid>

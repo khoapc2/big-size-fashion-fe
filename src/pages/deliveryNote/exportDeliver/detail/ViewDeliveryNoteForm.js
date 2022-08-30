@@ -301,20 +301,19 @@ export default function DeliveryNoteForm() {
               </div>
 
               <div className="container-title">
-                <div className="title">Ngày tạo:</div>
-                <div className="content">&emsp;{data.create_date}</div>
+                <div className="title">SĐT Người tạo đơn:</div>
+                <div className="content">&emsp;{data.to_store.store_phone}</div>
               </div>
-
               <div className="container-title">
                 <div className="title">Địa chỉ chi nhánh:</div>
                 <div className="content">&emsp;{data.to_store.store_address}</div>
               </div>
-              <div className="container-title">
-                <div className="title">SĐT Người tạo đơn:</div>
-                <div className="content">&emsp;{data.to_store.store_phone}</div>
-              </div>
             </Grid>
             <Grid item xs={6}>
+              <div className="container-title">
+                <div className="title">Ngày tạo:</div>
+                <div className="content">&emsp;{data.create_date}</div>
+              </div>
               <div className="container-title">
                 <div className="title">Đến Cửa hàng: </div>
                 <div className="content">&emsp;{data.from_store.store_name}</div>
@@ -329,7 +328,7 @@ export default function DeliveryNoteForm() {
               </div>
               <div className="container-title">
                 <div className="title">Địa chỉ: </div>
-                <div className="content">&emsp; {data.to_store.store_address}</div>
+                <div className="content">&emsp; {data.from_store.store_address}</div>
               </div>
             </Grid>
           </Grid>
