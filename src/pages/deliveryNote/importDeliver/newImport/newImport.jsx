@@ -50,7 +50,7 @@ export default function CreateImportDeliver() {
   const activeStore = useSelector((state) => state.listActiveStoreDropdown);
   const { deliveryNote } = useSelector((state) => state.deliveryCart);
 
-  const { store } = activeStore;
+  const { store, loading } = activeStore;
   const mainWareHouse = useSelector((state) => state.getMainWareHouse);
   const { userToken } = useSelector((state) => state.userToken);
   const [rows, setRows] = useState([]);
@@ -416,14 +416,20 @@ export default function CreateImportDeliver() {
                 Xác nhận
               </Form.Button>
             ) : (
-              <Form.Button
-                type="submit"
-                color="blue"
-                onClick={handleCheckingButton}
-                disabled={submit}
-              >
-                Kiểm tra cửa hàng còn hàng
-              </Form.Button>
+              <div>
+                {loading ? (
+                  <Loading />
+                ) : (
+                  <Form.Button
+                    type="submit"
+                    color="blue"
+                    onClick={handleCheckingButton}
+                    disabled={submit}
+                  >
+                    Kiểm tra cửa hàng còn hàng
+                  </Form.Button>
+                )}
+              </div>
             )}
           </div>
         </div>
