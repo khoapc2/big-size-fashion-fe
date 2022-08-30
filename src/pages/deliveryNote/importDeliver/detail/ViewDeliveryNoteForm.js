@@ -185,11 +185,10 @@ export default function DeliveryNoteForm() {
                 </div>
                 <div className="container-title">
                   <div className="title">Cửa hàng nhận yêu cầu: </div>
-                  <div className="content">&emsp;{data.from_store.store_name}</div>
-                </div>
-                <div className="container-title">
-                  <div className="title">SĐT: </div>
-                  <div className="content"> &emsp; {data.from_store.store_phone}</div>
+                  <div className="content">
+                    &emsp;{data.from_store.store_name}&emsp; &emsp;<b>SĐT C.hàng yêu cầu: </b>
+                    &emsp;{data.from_store.store_phone}
+                  </div>
                 </div>
                 <div className="container-title">
                   <div className="title">Địa chỉ: </div>
