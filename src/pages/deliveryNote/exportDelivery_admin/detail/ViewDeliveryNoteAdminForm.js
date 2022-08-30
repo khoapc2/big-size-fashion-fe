@@ -107,12 +107,12 @@ export default function DeliveryNoteForm() {
 
   const columns = [
     {
-      field: "product_id",
+      field: "product_detail_id",
       headerName: "Mã",
       width: 70,
       renderCell: (params) => (
         <div className="productListItem">
-          {params.row.total_quantity_price ? "" : params.row.product_id}
+          {params.row.total_quantity_price ? "" : params.row.product_detail_id}
         </div>
       ),
     },
@@ -172,12 +172,12 @@ export default function DeliveryNoteForm() {
 
   const columnsPendingOrder = [
     {
-      field: "product_id",
+      field: "product_detail_id",
       headerName: "Mã",
       width: 50,
       renderCell: (params) => (
         <div className="productListItem">
-          {params.row.total_quantity_price ? "" : params.row.product_id}
+          {params.row.total_quantity_price ? "" : params.row.product_detail_id}
         </div>
       ),
     },
