@@ -214,3 +214,11 @@ section {
 .button-add-size-color {
   text-align: center;
 }
+
+.detailProduct .field > label {
+  color: white;
+}
+
+.field.remove-category.field > label {
+  color: white;
+}
