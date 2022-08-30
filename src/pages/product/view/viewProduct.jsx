@@ -88,7 +88,7 @@ export default function ViewProduct() {
                             placeholder="Giá"
                             type="number"
                             name="price"
-                            value={formik.values.price}
+                            value={formik.values.price.toLocaleString("vi-VN")}
                             readOnly
                           />
                           <Form.Input
