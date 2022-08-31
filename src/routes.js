@@ -330,12 +330,12 @@ export const routesOwner = [
     route: "/stores",
     component: <Stores />,
   },
-  {
-    type: "collapse",
-    name: "Quản lí",
-    key: "users",
-    icon: <Icon fontSize="small">manage_accounts </Icon>,
-    route: "/users",
-    component: <Users />,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Quản lí",
+  //   key: "users",
+  //   icon: <Icon fontSize="small">manage_accounts </Icon>,
+  //   route: "/users",
+  //   component: <Users />,
+  // },
 ];
