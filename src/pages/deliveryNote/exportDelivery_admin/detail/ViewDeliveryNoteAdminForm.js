@@ -293,19 +293,18 @@ export default function DeliveryNoteForm() {
               <div className="container-title">
                 <div className="title">Tên đơn:</div>
                 <div className="content">&emsp;{data.delivery_note_name}</div>
-              </div>
-              <div className="container-title">
-                <div className="title">Từ chi nhánh:</div>
-                <div className="content">&emsp;{data.to_store.store_name}</div>
-              </div>
+              </div>             
               <div className="container-title">
                 <div className="title">Người Tạo Đơn:</div>
                 <div className="content">&emsp;{data.receive_staff_name}</div>
               </div>
-
               <div className="container-title">
                 <div className="title">SĐT Người tạo đơn:</div>
                 <div className="content">&emsp;{data.to_store.store_phone}</div>
+              </div>
+              <div className="container-title">
+                <div className="title">Yêu cầu từ:</div>
+                <div className="content">&emsp;{data.to_store.store_name}</div>
               </div>
               <div className="container-title">
                 <div className="title">Địa chỉ chi nhánh:</div>
@@ -318,16 +317,16 @@ export default function DeliveryNoteForm() {
                 <div className="content">&emsp;{data.create_date}</div>
               </div>
               <div className="container-title">
-                <div className="title">Đến Cửa hàng: </div>
-                <div className="content">&emsp;{data.from_store.store_name}</div>
-              </div>
-              <div className="container-title">
                 <div className="title">Quản lí: </div>
                 <div className="content">&emsp;{data.from_store.manager_name}</div>
               </div>
               <div className="container-title">
                 <div className="title">SĐT: </div>
                 <div className="content"> &emsp; {data.from_store.store_phone}</div>
+              </div>
+              <div className="container-title">
+                <div className="title">Yêu cầu đến: </div>
+                <div className="content">&emsp;{data.from_store.store_name}</div>
               </div>
               <div className="container-title">
                 <div className="title">Địa chỉ: </div>

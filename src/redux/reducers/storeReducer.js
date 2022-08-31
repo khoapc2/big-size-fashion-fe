@@ -23,6 +23,9 @@ import {
   GET_MAINWAREHOUSE_REQUEST,
   GET_MAINWAREHOUSE_SUCCESS,
   GET_MAINWAREHOUSE_FAIL,
+  REVENUE_OWNER_STORE_REQUEST,
+  REVENUE_OWNER_STORE_SUCCESS,
+  REVENUE_OWNER_STORE_FAIL,
 } from "../../service/Validations/VarConstant";
 
 function resultArr(payload) {
@@ -35,6 +38,19 @@ function resultArr(payload) {
     status: status.toString(),
   }));
   return result;
+}
+
+function resultOwnerArr(payload) {
+  const result = [{ key: 0, text: "Tổng các cửa hàng", value: 0, status: true }];
+  const newArray = [...payload];
+  const storeArray = newArray.map(({ store_id, store_name, status }) => ({
+    key: store_id.toString(),
+    text: store_name,
+    value: store_id,
+    status: status.toString(),
+  }));
+  const finalResult = [...result, ...storeArray];
+  return finalResult;
 }
 
 function resultArr1(payload) {
@@ -132,6 +148,26 @@ export const listStoreDropdownReducer = (
         store: [...resultArr(action.payload)],
       };
     case STORE_LIST_DROPDOWN_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const listStoreOwnerDropdownReducer = (
+  state = { loading: true, store: [], error: "" },
+  action
+) => {
+  switch (action.type) {
+    case REVENUE_OWNER_STORE_REQUEST:
+      return { ...state, loading: true };
+    case REVENUE_OWNER_STORE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        store: [...resultOwnerArr(action.payload)],
+      };
+    case REVENUE_OWNER_STORE_FAIL:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;

@@ -18,17 +18,8 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
 import Loading from "../../components/Loading";
 import { SchemaErrorMessageRevenueManager } from "../../service/Validations/RevenueManagerValidation";
-// import Footer from "examples/Footer";
-
-// Data
-// import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
-// import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
-
-// Dashboard components
-// import Projects from "layouts/dashboard/components/Projects";
-// import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 import { listRevenueInMonthAction } from "../../redux/actions/revenueAction";
-import { listActiveStore } from "../../redux/actions/storeAction";
+import { getActiveStore } from "../../redux/actions/storeAction";
 import { orderTodayAction } from "../../redux/actions/orderAction";
 
 function generateArrayOfYears() {
@@ -60,7 +51,7 @@ function generateArrayOfMonths() {
 function Dashboard() {
   // const [selectedDate, handleDateChange] = useState(new Date());
   // const [age, setAge] = useState("");
-  const activeStore = useSelector((state) => state.listActiveStoreDropdown);
+  const activeStore = useSelector((state) => state.listStoreOwnerDropDown);
 
   const { revenue, loading, data } = useSelector((state) => state.viewRevenue);
   const orderToday = useSelector((state) => state.orderToday);
@@ -79,7 +70,7 @@ function Dashboard() {
     setRole(currentUser.role);
 
     if (currentUser.role === "Owner") {
-      dispatch(listActiveStore({ status: true, mainWareHouse: false }));
+      dispatch(getActiveStore({ status: true, mainWareHouse: false }));
     }
 
     dispatch(

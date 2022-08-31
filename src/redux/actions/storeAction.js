@@ -24,6 +24,9 @@ import {
   GET_MAINWAREHOUSE_REQUEST,
   GET_MAINWAREHOUSE_SUCCESS,
   GET_MAINWAREHOUSE_FAIL,
+  REVENUE_OWNER_STORE_REQUEST,
+  REVENUE_OWNER_STORE_SUCCESS,
+  REVENUE_OWNER_STORE_FAIL,
 } from "../../service/Validations/VarConstant";
 
 export const listStore =
@@ -202,5 +205,23 @@ export const getMainWareHouseAction = () => async (dispatch) => {
         ? error.respone.content.message
         : error.message;
     dispatch({ type: GET_MAINWAREHOUSE_FAIL, payload: message });
+  }
+};
+
+export const getActiveStore = (param) => async (dispatch) => {
+  dispatch({ type: REVENUE_OWNER_STORE_REQUEST });
+  try {
+    const params = {
+      IsMainWarehouse: param.mainWareHouse,
+      Status: param.status,
+    };
+    const { content } = await storeApi.getListStore(params);
+    dispatch({ type: REVENUE_OWNER_STORE_SUCCESS, payload: content });
+  } catch (error) {
+    const message =
+      error.respone && error.respone.content.message
+        ? error.respone.content.message
+        : error.message;
+    dispatch({ type: REVENUE_OWNER_STORE_FAIL, payload: message });
   }
 };

@@ -18,6 +18,7 @@ import {
   listStoreDropdownReducer,
   listActiveStoreDropdownReducer,
   getMainWareHouseReducer,
+  listStoreOwnerDropdownReducer,
 } from "redux/reducers/storeReducer";
 
 import {
@@ -193,6 +194,7 @@ const reducer = combineReducers({
   viewDetailInventoryNoteAfterCreate: viewDetailInventoryNoteAfterCreateReducer,
   deliveryCart: deliveryCartReducer,
   userToken: userTokenReducer,
+  listStoreOwnerDropDown: listStoreOwnerDropdownReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

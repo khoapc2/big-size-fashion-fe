@@ -375,7 +375,7 @@ export default function OfflineOrderForm() {
                 <div className="content">&emsp;{order_id}</div>
               </div>
               <div className="container-title">
-                <div className="title">Tên Khách hàng:</div>
+                <div className="title">Tên khách hàng:</div>
                 <div className="content">&emsp;{customer_name}</div>
               </div>
 
@@ -413,7 +413,7 @@ export default function OfflineOrderForm() {
             </Grid>
             <Grid item xs={7}>
               <div className="container-title">
-                <div className="title">Tên Nhân viên:</div>
+                <div className="title">Tên nhân viên:</div>
                 <div className="content">&emsp;{staff_name}</div>
               </div>
               <div className="container-title">
