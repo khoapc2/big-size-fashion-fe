@@ -63,8 +63,8 @@ export default function TableDialog(props) {
   useEffect(() => {
     if (actionSuccess) {
       toast.success("Thêm sản phẩm vào đơn nhập hàng thành công");
-      setConfirmDialog({ ...confirmDialog, isOpen: false });
       dispatch({ type: DELIVERY_CART_ACTION_SUCCESS, payload: "" });
+      setConfirmDialog({ ...confirmDialog, isOpen: false });
     }
     if (actionFail) {
       toast.success("Thêm sản phẩm vào đơn nhập hàng thất bại, Vui lòng thử lại sau");

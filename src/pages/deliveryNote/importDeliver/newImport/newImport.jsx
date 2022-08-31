@@ -199,7 +199,7 @@ export default function CreateImportDeliver() {
       sortable: false,
       renderCell: (params) => (
         <div>
-          {submit ? (
+          {store && store.length !== 0 ? (
             ""
           ) : (
             <button
